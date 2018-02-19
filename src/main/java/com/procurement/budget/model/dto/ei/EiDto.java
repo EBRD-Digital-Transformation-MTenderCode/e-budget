@@ -20,30 +20,27 @@ import lombok.Setter;
 @Setter
 @JsonPropertyOrder({
         "ocid",
-        "id",
         "date",
-        "planning",
         "tender",
+        "planning",
         "parties"
 })
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 public class EiDto {
     @JsonProperty("ocid")
     private String ocId;
-    @JsonProperty("id")
-    private String id;
     @JsonProperty("date")
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime date;
-    @JsonProperty("planning")
-    @NotNull
-    @Valid
-    private EiPlanningDto planning;
     @JsonProperty("tender")
     @NotNull
     @Valid
     private EiTenderDto tender;
+    @JsonProperty("planning")
+    @NotNull
+    @Valid
+    private EiPlanningDto planning;
     @JsonProperty("parties")
     @NotNull
     @Valid
@@ -51,16 +48,14 @@ public class EiDto {
 
     @JsonCreator
     public EiDto(@JsonProperty("ocid") final String ocId,
-                 @JsonProperty("id") final String id,
                  @JsonProperty("date") final LocalDateTime date,
-                 @JsonProperty("planning") final EiPlanningDto planning,
                  @JsonProperty("tender") final EiTenderDto tender,
+                 @JsonProperty("planning") final EiPlanningDto planning,
                  @JsonProperty("parties") final List<Organization> parties) {
         this.ocId = ocId;
-        this.id = id;
         this.date = date;
-        this.planning = planning;
         this.tender = tender;
+        this.planning = planning;
         this.parties = parties;
     }
 }

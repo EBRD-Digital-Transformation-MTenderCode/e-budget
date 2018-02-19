@@ -9,7 +9,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.procurement.budget.model.dto.databinding.LocalDateTimeDeserializer;
 import com.procurement.budget.model.dto.databinding.LocalDateTimeSerializer;
 import com.procurement.budget.model.dto.ocds.Organization;
-import com.procurement.budget.model.dto.ocds.Tender;
 import java.time.LocalDateTime;
 import java.util.List;
 import javax.validation.Valid;
@@ -21,7 +20,6 @@ import lombok.Setter;
 @Setter
 @JsonPropertyOrder({
         "ocid",
-        "id",
         "date",
         "tender",
         "parties",
@@ -31,8 +29,6 @@ import lombok.Setter;
 public class FsDto {
     @JsonProperty("ocid")
     private String ocId;
-    @JsonProperty("id")
-    private String id;
     @JsonProperty("date")
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
@@ -50,13 +46,11 @@ public class FsDto {
 
     @JsonCreator
     public FsDto(@JsonProperty("ocid") final String ocId,
-                 @JsonProperty("id") final String id,
                  @JsonProperty("date") final LocalDateTime date,
                  @JsonProperty("tender") final FsTenderDto tender,
                  @JsonProperty("planning") final FsPlanningDto planning,
                  @JsonProperty("parties") final List<Organization> parties) {
         this.ocId = ocId;
-        this.id = id;
         this.date = date;
         this.tender = tender;
         this.planning = planning;

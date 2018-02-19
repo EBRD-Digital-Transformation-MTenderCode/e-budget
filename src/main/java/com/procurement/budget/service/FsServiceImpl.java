@@ -18,8 +18,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class FsServiceImpl implements FsService {
 
-    private static final String DATA_NOT_FOUND_ERROR = "Data not found.";
-    private static final String INVALID_OWNER_ERROR = "Invalid owner.";
+    private static final String DATA_NOT_FOUND_ERROR = "FS not found.";
+    private static final String INVALID_OWNER_ERROR = "FS invalid owner.";
     private final JsonUtil jsonUtil;
     private final DateUtil dateUtil;
     private final FsDao fsDao;
@@ -40,7 +40,7 @@ public class FsServiceImpl implements FsService {
         fs.setDate(dateUtil.getNowUTC());
         setTender(fs, cpId);
         final FsEntity entity = getEntity(cpId, owner, fs);
-        fsDao.save(getEntity(cpId, owner, fs));
+        fsDao.save(entity);
         return getResponseDto(entity.getToken().toString(), fs);
     }
 
@@ -91,7 +91,6 @@ public class FsServiceImpl implements FsService {
         final FsResponseDto responseDto = new FsResponseDto(
                 token,
                 fs.getOcId(),
-                fs.getId(),
                 fs.getDate(),
                 fs.getTender(),
                 fs.getPlanning(),

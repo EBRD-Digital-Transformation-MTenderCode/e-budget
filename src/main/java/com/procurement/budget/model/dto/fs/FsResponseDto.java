@@ -20,7 +20,6 @@ import lombok.Setter;
 @JsonPropertyOrder({
         "token",
         "ocid",
-        "id",
         "date",
         "tender",
         "planning",
@@ -32,8 +31,6 @@ public class FsResponseDto {
     private final String token;
     @JsonProperty("ocid")
     private String ocId;
-    @JsonProperty("id")
-    private String id;
     @JsonProperty("date")
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
@@ -48,14 +45,12 @@ public class FsResponseDto {
     @JsonCreator
     public FsResponseDto(@JsonProperty("token") final String token,
                          @JsonProperty("ocid") final String ocId,
-                         @JsonProperty("id") final String id,
                          @JsonProperty("date") final LocalDateTime date,
                          @JsonProperty("tender") final FsTenderDto tender,
                          @JsonProperty("planning") final FsPlanningDto planning,
                          @JsonProperty("parties") final List<Organization> parties) {
         this.token = token;
         this.ocId = ocId;
-        this.id = id;
         this.date = date;
         this.tender = tender;
         this.planning = planning;

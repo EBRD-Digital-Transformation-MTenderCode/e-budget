@@ -18,8 +18,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class EiServiceImpl implements EiService {
 
-    private static final String DATA_NOT_FOUND_ERROR = "Data not found.";
-    private static final String INVALID_OWNER_ERROR = "Invalid owner.";
+    private static final String DATA_NOT_FOUND_ERROR = "EI not found.";
+    private static final String INVALID_OWNER_ERROR = "EI invalid owner.";
     private final OCDSProperties ocdsProperties;
     private final JsonUtil jsonUtil;
     private final DateUtil dateUtil;
@@ -91,10 +91,9 @@ public class EiServiceImpl implements EiService {
         final EiResponseDto responseDto = new EiResponseDto(
                 token,
                 cpId,
-                ei.getId(),
                 ei.getDate(),
-                ei.getPlanning(),
                 ei.getTender(),
+                ei.getPlanning(),
                 ei.getParties()
         );
         return new ResponseDto<>(true, null, responseDto);
