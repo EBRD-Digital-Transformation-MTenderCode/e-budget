@@ -22,8 +22,8 @@ import lombok.Setter;
         "ocid",
         "date",
         "tender",
-        "parties",
-        "planning"
+        "planning",
+        "parties"
 })
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 public class FsDto {
