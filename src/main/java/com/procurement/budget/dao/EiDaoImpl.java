@@ -43,10 +43,12 @@ public class EiDaoImpl implements EiDao {
                 .where(eq(CP_ID, cpId))
                 .and(eq(TOKEN, token)).limit(1);
         final Row row = session.execute(query).one();
+        if (row!=null)
         return new EiEntity(
                 row.getString(CP_ID),
                 row.getUUID(TOKEN),
                 row.getString(OWNER),
                 row.getString(JSON_DATA));
+        return null;
     }
 }
