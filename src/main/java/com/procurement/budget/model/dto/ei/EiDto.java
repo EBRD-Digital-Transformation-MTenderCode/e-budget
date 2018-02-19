@@ -43,7 +43,7 @@ public class EiDto {
     @JsonProperty("tender")
     @NotNull
     @Valid
-    private Tender tender;
+    private EiTenderDto tender;
     @JsonProperty("parties")
     @NotNull
     @Valid
@@ -54,7 +54,7 @@ public class EiDto {
                  @JsonProperty("id") final String id,
                  @JsonProperty("date") final LocalDateTime date,
                  @JsonProperty("planning") final EiPlanningDto planning,
-                 @JsonProperty("tender") final Tender tender,
+                 @JsonProperty("tender") final EiTenderDto tender,
                  @JsonProperty("parties") final List<Organization> parties) {
         this.ocId = ocId;
         this.id = id;

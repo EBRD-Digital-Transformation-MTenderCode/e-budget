@@ -4,9 +4,10 @@ import com.datastax.driver.core.utils.UUIDs;
 import com.procurement.budget.dao.FsDao;
 import com.procurement.budget.exception.ErrorException;
 import com.procurement.budget.model.dto.bpe.ResponseDto;
-import com.procurement.budget.model.dto.ei.EiDto;
 import com.procurement.budget.model.dto.fs.FsDto;
 import com.procurement.budget.model.dto.fs.FsResponseDto;
+import com.procurement.budget.model.dto.fs.FsTenderDto;
+import com.procurement.budget.model.dto.ocds.TenderStatus;
 import com.procurement.budget.model.entity.FsEntity;
 import com.procurement.budget.utils.DateUtil;
 import com.procurement.budget.utils.JsonUtil;
@@ -37,6 +38,7 @@ public class FsServiceImpl implements FsService {
                                 final FsDto fs) {
         fs.setOcId(getOcId(cpId));
         fs.setDate(dateUtil.getNowUTC());
+        setTender(fs, cpId);
         final FsEntity entity = getEntity(cpId, owner, fs);
         fsDao.save(getEntity(cpId, owner, fs));
         return getResponseDto(entity.getToken().toString(), fs);
@@ -44,34 +46,30 @@ public class FsServiceImpl implements FsService {
 
 
     @Override
-    public ResponseDto updateFs( final String cpId,
-                                 final String ocId,
-                                 final String token,
-                                 final String owner,
-                                 final FsDto fsDto) {
+    public ResponseDto updateFs(final String cpId,
+                                final String ocId,
+                                final String token,
+                                final String owner,
+                                final FsDto fsDto) {
         final FsEntity entity = Optional.ofNullable(fsDao.getByCpIdAndOcIdAndToken(cpId, ocId, UUID.fromString(token)))
                 .orElseThrow(() -> new ErrorException(DATA_NOT_FOUND_ERROR));
         if (!entity.getOwner().equals(owner)) throw new ErrorException(INVALID_OWNER_ERROR);
         final FsDto fs = jsonUtil.toObject(FsDto.class, entity.getJsonData());
         fs.setDate(dateUtil.getNowUTC());
         fs.setTender(fsDto.getTender());
-        setTenderId(fs, cpId);
         fs.setPlanning(fsDto.getPlanning());
         fs.setParties(fsDto.getParties());
         entity.setJsonData(jsonUtil.toJson(fs));
         fsDao.save(entity);
         return getResponseDto(entity.getToken().toString(), fs);
     }
-    private void setTenderId(final FsDto fs, final String cpId) {
-        fs.getTender().setId(cpId);
+
+    private void setTender(final FsDto fs, final String cpId) {
+        fs.setTender(new FsTenderDto(cpId, TenderStatus.PLANNING));
     }
 
     private String getOcId(final String cpId) {
-        return cpId + "-fs-"+ dateUtil.getMilliNowUTC();
-    }
-
-    private void setBudgetId(final FsDto fs) {
-        fs.getPlanning().getBudget().setId(fs.getTender().getClassification().getId());
+        return cpId + "-fs-" + dateUtil.getMilliNowUTC();
     }
 
     private Double getAmount(final FsDto fs) {

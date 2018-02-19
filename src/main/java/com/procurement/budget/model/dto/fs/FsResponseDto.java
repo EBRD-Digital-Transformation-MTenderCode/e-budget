@@ -39,7 +39,7 @@ public class FsResponseDto {
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime date;
     @JsonProperty("tender")
-    private Tender tender;
+    private FsTenderDto tender;
     @JsonProperty("planning")
     private final FsPlanningDto planning;
     @JsonProperty("parties")
@@ -50,7 +50,7 @@ public class FsResponseDto {
                          @JsonProperty("ocid") final String ocId,
                          @JsonProperty("id") final String id,
                          @JsonProperty("date") final LocalDateTime date,
-                         @JsonProperty("tender") final Tender tender,
+                         @JsonProperty("tender") final FsTenderDto tender,
                          @JsonProperty("planning") final FsPlanningDto planning,
                          @JsonProperty("parties") final List<Organization> parties) {
         this.token = token;

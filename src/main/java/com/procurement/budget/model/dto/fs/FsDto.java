@@ -38,7 +38,7 @@ public class FsDto {
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime date;
     @JsonProperty("tender")
-    private Tender tender;
+    private FsTenderDto tender;
     @JsonProperty("planning")
     @NotNull
     @Valid
@@ -52,11 +52,13 @@ public class FsDto {
     public FsDto(@JsonProperty("ocid") final String ocId,
                  @JsonProperty("id") final String id,
                  @JsonProperty("date") final LocalDateTime date,
+                 @JsonProperty("tender") final FsTenderDto tender,
                  @JsonProperty("planning") final FsPlanningDto planning,
                  @JsonProperty("parties") final List<Organization> parties) {
         this.ocId = ocId;
         this.id = id;
         this.date = date;
+        this.tender = tender;
         this.planning = planning;
         this.parties = parties;
     }
