@@ -40,7 +40,7 @@ public class EiResponseDto {
     @JsonProperty("planning")
     private final EiPlanningDto planning;
     @JsonProperty("tender")
-    private final Tender tender;
+    private final EiTenderDto tender;
     @JsonProperty("parties")
     private final List<Organization> parties;
 
@@ -50,7 +50,7 @@ public class EiResponseDto {
                          @JsonProperty("id") final String id,
                          @JsonProperty("date") final LocalDateTime date,
                          @JsonProperty("planning") final EiPlanningDto planning,
-                         @JsonProperty("tender") final Tender tender,
+                         @JsonProperty("tender") final EiTenderDto tender,
                          @JsonProperty("parties") final List<Organization> parties) {
         this.token = token;
         this.ocId = ocId;
