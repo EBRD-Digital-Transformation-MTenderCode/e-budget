@@ -51,6 +51,7 @@ public class FsDaoImpl implements FsDao {
                 .and(eq(TOKEN, token))
                 .limit(1);
         final Row row = session.execute(query).one();
+        if (row!=null)
         return new FsEntity(
                 row.getString(CP_ID),
                 row.getString(OC_ID),
@@ -59,5 +60,6 @@ public class FsDaoImpl implements FsDao {
                 row.getDouble(AMOUNT),
                 row.getDouble(AMOUNT_RESERVED),
                 row.getString(JSON_DATA));
+        return null;
     }
 }
