@@ -36,4 +36,13 @@ public class FsController {
         return new ResponseEntity<>(fsService.updateFs(cpId, ocId, token, owner, fsDto), HttpStatus.OK);
     }
 
+//    @PostMapping
+//    public ResponseEntity<ResponseDto> check(final String cpId,
+//                                              final String ocId,
+//                                              final String token,
+//                                              final String owner,
+//                                              @Valid @RequestBody final FsDto fsDto) {
+//        return new ResponseEntity<>(fsService.checkFs(cpId, ocId, token, owner, fsDto), HttpStatus.OK);
+//    }
+
 }
