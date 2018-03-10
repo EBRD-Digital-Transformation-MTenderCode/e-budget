@@ -81,7 +81,7 @@ public class EiServiceImpl implements EiService {
     private EiEntity getEntity(final EiDto ei, final String owner) {
         final EiEntity eiEntity = new EiEntity();
         eiEntity.setCpId(ei.getOcId());
-        eiEntity.setToken(UUIDs.timeBased());
+        eiEntity.setToken(UUIDs.random());
         eiEntity.setOwner(owner);
         eiEntity.setJsonData(jsonUtil.toJson(ei));
         return eiEntity;
