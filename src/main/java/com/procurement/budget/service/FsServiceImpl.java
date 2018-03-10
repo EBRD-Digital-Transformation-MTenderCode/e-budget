@@ -80,7 +80,7 @@ public class FsServiceImpl implements FsService {
         final FsEntity fsEntity = new FsEntity();
         fsEntity.setCpId(cpId);
         fsEntity.setOcId(fs.getOcId());
-        fsEntity.setToken(UUIDs.timeBased());
+        fsEntity.setToken(UUIDs.random());
         fsEntity.setOwner(owner);
         fsEntity.setJsonData(jsonUtil.toJson(fs));
         fsEntity.setAmount(getAmount(fs));
