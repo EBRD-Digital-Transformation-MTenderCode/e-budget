@@ -6,7 +6,6 @@ import com.procurement.budget.dao.EiDao;
 import com.procurement.budget.exception.ErrorException;
 import com.procurement.budget.model.dto.bpe.ResponseDto;
 import com.procurement.budget.model.dto.ei.EiDto;
-import com.procurement.budget.model.dto.ei.EiResponseDto;
 import com.procurement.budget.model.dto.ocds.TenderStatus;
 import com.procurement.budget.model.entity.EiEntity;
 import com.procurement.budget.utils.DateUtil;
@@ -45,7 +44,8 @@ public class EiServiceImpl implements EiService {
         setBudgetId(ei);
         final EiEntity entity = getEntity(ei, owner);
         eiDao.save(entity);
-        return getResponseDto(cpId, entity.getToken().toString(), ei);
+        ei.setToken(entity.getToken().toString());
+        return new ResponseDto<>(true, null, ei);
     }
 
     @Override
@@ -63,7 +63,7 @@ public class EiServiceImpl implements EiService {
         ei.setTender(eiDto.getTender());
         entity.setJsonData(jsonUtil.toJson(ei));
         eiDao.save(entity);
-        return getResponseDto(cpId, entity.getToken().toString(), ei);
+        return new ResponseDto<>(true, null, ei);
     }
 
     private void setTenderId(final EiDto ei, final String cpId) {
@@ -87,15 +87,4 @@ public class EiServiceImpl implements EiService {
         return eiEntity;
     }
 
-    private ResponseDto getResponseDto(final String cpId, final String token, final EiDto ei) {
-        final EiResponseDto responseDto = new EiResponseDto(
-                token,
-                cpId,
-                ei.getDate(),
-                ei.getTender(),
-                ei.getPlanning(),
-                ei.getParties()
-        );
-        return new ResponseDto<>(true, null, responseDto);
-    }
 }
