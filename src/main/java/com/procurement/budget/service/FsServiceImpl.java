@@ -70,8 +70,12 @@ public class FsServiceImpl implements FsService {
 
     private void processSourceParties(final List<BudgetBreakdown> budgetBreakdowns) {
         budgetBreakdowns.stream().forEach(b -> {
-            final OrganizationReference sourceParty = b.getSourceParty();
-            sourceParty.setId(sourceParty.getIdentifier().getScheme() + SEPARATOR + sourceParty.getIdentifier().getId());
+            final OrganizationReference sp = b.getSourceParty();
+            sp.setId(sp.getIdentifier().getScheme() + SEPARATOR + sp.getIdentifier().getId());
+            sp.setIdentifier(null);
+            sp.setAdditionalIdentifiers(null);
+            sp.setAddress(null);
+            sp.setContactPoint(null);
         });
     }
 

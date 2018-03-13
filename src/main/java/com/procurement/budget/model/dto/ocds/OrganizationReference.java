@@ -37,20 +37,20 @@ public class OrganizationReference {
 
     @JsonProperty("identifier")
     @Valid
-    private final Identifier identifier;
+    private Identifier identifier;
 
     @JsonProperty("address")
     @Valid
-    private final Address address;
+    private Address address;
 
     @JsonProperty("additionalIdentifiers")
     @JsonDeserialize(as = LinkedHashSet.class)
     @Valid
-    private final Set<Identifier> additionalIdentifiers;
+    private Set<Identifier> additionalIdentifiers;
 
     @JsonProperty("contactPoint")
     @Valid
-    private final ContactPoint contactPoint;
+    private ContactPoint contactPoint;
 
     @JsonCreator
     public OrganizationReference(@JsonProperty("name") final String name,
