@@ -86,18 +86,4 @@ public class FsServiceImpl implements FsService {
         fsEntity.setAmount(getAmount(fs));
         return fsEntity;
     }
-
-//    private String getIdentifier(final FsDto fs) {
-//        final RelatedProcess relatedProcess = fs.getRelatedProcesses()
-//                .stream()
-//                .filter(rp -> rp.getRelationship().contains(RelatedProcess.RelatedProcessType.PARENT))
-//                .filter(rp -> !rp.getIdentifier().isEmpty())
-//                .findFirst()
-//                .orElse(null);
-//        if (Objects.isNull(relatedProcess)) {
-//            throw new ErrorException("ocid in related processes not found.");
-//        } else {
-//            return relatedProcess.getIdentifier();
-//        }
-//    }
 }
