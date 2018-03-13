@@ -8,24 +8,23 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.procurement.budget.model.dto.databinding.LocalDateTimeDeserializer;
 import com.procurement.budget.model.dto.databinding.LocalDateTimeSerializer;
-import com.procurement.budget.model.dto.ocds.Organization;
 import com.procurement.budget.model.dto.ocds.OrganizationReference;
 import java.time.LocalDateTime;
-import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @JsonPropertyOrder({
         "token",
         "ocid",
         "date",
         "tender",
         "planning",
-        "buyer",
         "funder",
         "payer"
 })
@@ -45,10 +44,6 @@ public class FsDto {
     @JsonProperty("planning")
     @NotNull
     private FsPlanningDto planning;
-    @JsonProperty("buyer")
-    @NotNull
-    @Valid
-    private final OrganizationReference buyer;
     @JsonProperty("funder")
     private OrganizationReference funder;
     @JsonProperty("payer")
@@ -56,19 +51,18 @@ public class FsDto {
 
     @JsonCreator
     public FsDto(@JsonProperty("token") final String token,
-                         @JsonProperty("ocid") final String ocId,
-                         @JsonProperty("date") final LocalDateTime date,
-                         @JsonProperty("tender") final FsTenderDto tender,
-                         @JsonProperty("planning") final FsPlanningDto planning,
-                         @JsonProperty("buyer") final OrganizationReference buyer,
-                         @JsonProperty("funder") final OrganizationReference funder,
-                         @JsonProperty("payer") final OrganizationReference payer) {
+                 @JsonProperty("ocid") final String ocId,
+                 @JsonProperty("date") final LocalDateTime date,
+                 @JsonProperty("tender") final FsTenderDto tender,
+                 @JsonProperty("planning") final FsPlanningDto planning,
+                 @JsonProperty("buyer") final OrganizationReference buyer,
+                 @JsonProperty("funder") final OrganizationReference funder,
+                 @JsonProperty("payer") final OrganizationReference payer) {
         this.token = token;
         this.ocId = ocId;
         this.date = date;
         this.tender = tender;
         this.planning = planning;
-        this.buyer = buyer;
         this.funder = funder;
         this.payer = payer;
     }

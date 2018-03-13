@@ -2,6 +2,7 @@ package com.procurement.budget.controller;
 
 import com.procurement.budget.model.dto.bpe.ResponseDto;
 import com.procurement.budget.model.dto.fs.FsDto;
+import com.procurement.budget.model.dto.fs.FsRequestDto;
 import com.procurement.budget.service.FsService;
 import javax.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -23,7 +24,7 @@ public class FsController {
     @PostMapping
     public ResponseEntity<ResponseDto> create(final String cpId,
                                               final String owner,
-                                              @Valid @RequestBody final FsDto fsDto) {
+                                              @Valid @RequestBody final FsRequestDto fsDto) {
         return new ResponseEntity<>(fsService.createFs(cpId, owner, fsDto), HttpStatus.CREATED);
     }
 
@@ -35,14 +36,4 @@ public class FsController {
                                               @Valid @RequestBody final FsDto fsDto) {
         return new ResponseEntity<>(fsService.updateFs(cpId, ocId, token, owner, fsDto), HttpStatus.OK);
     }
-
-//    @PostMapping
-//    public ResponseEntity<ResponseDto> check(final String cpId,
-//                                              final String ocId,
-//                                              final String token,
-//                                              final String owner,
-//                                              @Valid @RequestBody final FsDto fsDto) {
-//        return new ResponseEntity<>(fsService.checkFs(cpId, ocId, token, owner, fsDto), HttpStatus.OK);
-//    }
-
 }
