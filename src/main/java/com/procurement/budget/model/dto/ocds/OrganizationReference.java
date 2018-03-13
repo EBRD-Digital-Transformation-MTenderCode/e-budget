@@ -26,7 +26,6 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 })
 public class OrganizationReference {
     @JsonProperty("id")
-    @NotNull
     private final String id;
 
     @JsonProperty("name")

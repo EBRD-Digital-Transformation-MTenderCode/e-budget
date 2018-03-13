@@ -41,7 +41,8 @@ public class FsServiceImpl implements FsService {
         setTender(fs, cpId);
         final FsEntity entity = getEntity(cpId, owner, fs);
         fsDao.save(entity);
-        return getResponseDto(entity.getToken().toString(), fs);
+        fs.setToken(entity.getToken().toString());
+        return new ResponseDto<>(true, null, fs);
     }
 
 
@@ -58,10 +59,9 @@ public class FsServiceImpl implements FsService {
         fs.setDate(dateUtil.getNowUTC());
         fs.setTender(fsDto.getTender());
         fs.setPlanning(fsDto.getPlanning());
-        fs.setParties(fsDto.getParties());
         entity.setJsonData(jsonUtil.toJson(fs));
         fsDao.save(entity);
-        return getResponseDto(entity.getToken().toString(), fs);
+        return new ResponseDto<>(true, null, fs);
     }
 
     private void setTender(final FsDto fs, final String cpId) {
@@ -85,18 +85,6 @@ public class FsServiceImpl implements FsService {
         fsEntity.setJsonData(jsonUtil.toJson(fs));
         fsEntity.setAmount(getAmount(fs));
         return fsEntity;
-    }
-
-    private ResponseDto getResponseDto(final String token, final FsDto fs) {
-        final FsResponseDto responseDto = new FsResponseDto(
-                token,
-                fs.getOcId(),
-                fs.getDate(),
-                fs.getTender(),
-                fs.getPlanning(),
-                fs.getParties()
-        );
-        return new ResponseDto<>(true, null, responseDto);
     }
 
 //    private String getIdentifier(final FsDto fs) {
