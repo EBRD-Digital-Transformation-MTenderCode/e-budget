@@ -5,6 +5,7 @@ import com.procurement.budget.dao.FsDao;
 import com.procurement.budget.exception.ErrorException;
 import com.procurement.budget.model.dto.bpe.ResponseDto;
 import com.procurement.budget.model.dto.fs.FsDto;
+import com.procurement.budget.model.dto.fs.FsRequestDto;
 import com.procurement.budget.model.dto.fs.FsTenderDto;
 import com.procurement.budget.model.dto.ocds.BudgetBreakdown;
 import com.procurement.budget.model.dto.ocds.OrganizationReference;
@@ -38,20 +39,23 @@ public class FsServiceImpl implements FsService {
     @Override
     public ResponseDto createFs(final String cpId,
                                 final String owner,
-                                final FsDto fs) {
+                                final FsRequestDto fsDto) {
+        final FsDto fs = new FsDto();
         fs.setOcId(getOcId(cpId));
         fs.setDate(dateUtil.getNowUTC());
+        fs.setPayer(fsDto.getTender().getProcuringEntity());
+        fsDto.getTender().setProcuringEntity(null);
+        fs.setFunder(fsDto.getBuyer());
+        fs.setTender(fsDto.getTender());
         fs.getTender().setStatus(TenderStatus.PLANNING);
         fs.getTender().setId(cpId);
-        fs.setPayer(fs.getBuyer());
-        fs.setFunder(fs.getTender().getProcuringEntity());
+        fs.setPlanning(fsDto.getPlanning());
         processSourceParties(fs.getPlanning().getBudget().getBudgetBreakdown());
         final FsEntity entity = getEntity(cpId, owner, fs);
         fsDao.save(entity);
         fs.setToken(entity.getToken().toString());
         return new ResponseDto<>(true, null, fs);
     }
-
 
     @Override
     public ResponseDto updateFs(final String cpId,
