@@ -25,6 +25,7 @@ import lombok.Setter;
         "date",
         "tender",
         "planning",
+        "buyer",
         "funder",
         "payer"
 })
@@ -44,14 +45,14 @@ public class FsDto {
     @JsonProperty("planning")
     @NotNull
     private FsPlanningDto planning;
+    @JsonProperty("buyer")
+    @NotNull
+    @Valid
+    private final OrganizationReference buyer;
     @JsonProperty("funder")
-    @NotNull
-    @Valid
-    private final OrganizationReference funder;
+    private OrganizationReference funder;
     @JsonProperty("payer")
-    @NotNull
-    @Valid
-    private final OrganizationReference payer;
+    private OrganizationReference payer;
 
     @JsonCreator
     public FsDto(@JsonProperty("token") final String token,
@@ -59,6 +60,7 @@ public class FsDto {
                          @JsonProperty("date") final LocalDateTime date,
                          @JsonProperty("tender") final FsTenderDto tender,
                          @JsonProperty("planning") final FsPlanningDto planning,
+                         @JsonProperty("buyer") final OrganizationReference buyer,
                          @JsonProperty("funder") final OrganizationReference funder,
                          @JsonProperty("payer") final OrganizationReference payer) {
         this.token = token;
@@ -66,6 +68,7 @@ public class FsDto {
         this.date = date;
         this.tender = tender;
         this.planning = planning;
+        this.buyer = buyer;
         this.funder = funder;
         this.payer = payer;
     }

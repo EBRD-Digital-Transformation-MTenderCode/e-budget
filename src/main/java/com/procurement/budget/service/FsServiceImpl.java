@@ -41,7 +41,10 @@ public class FsServiceImpl implements FsService {
                                 final FsDto fs) {
         fs.setOcId(getOcId(cpId));
         fs.setDate(dateUtil.getNowUTC());
-        setTender(fs, cpId);
+        fs.getTender().setStatus(TenderStatus.PLANNING);
+        fs.getTender().setId(cpId);
+        fs.setPayer(fs.getBuyer());
+        fs.setFunder(fs.getTender().getProcuringEntity());
         processSourceParties(fs.getPlanning().getBudget().getBudgetBreakdown());
         final FsEntity entity = getEntity(cpId, owner, fs);
         fsDao.save(entity);
@@ -77,10 +80,6 @@ public class FsServiceImpl implements FsService {
             sp.setAddress(null);
             sp.setContactPoint(null);
         });
-    }
-
-    private void setTender(final FsDto fs, final String cpId) {
-        fs.setTender(new FsTenderDto(cpId, TenderStatus.PLANNING));
     }
 
     private String getOcId(final String cpId) {
