@@ -33,8 +33,6 @@ public class BudgetBreakdown {
     private final Period period;
 
     @JsonProperty("sourceParty")
-    @JsonPropertyDescription("The id and name of the party being referenced. Used to cross-reference to the parties " +
-            "section")
     @Valid
     @NotNull
     private final OrganizationReference sourceParty;
