@@ -5,12 +5,14 @@ import com.procurement.budget.dao.FsDao;
 import com.procurement.budget.exception.ErrorException;
 import com.procurement.budget.model.dto.bpe.ResponseDto;
 import com.procurement.budget.model.dto.fs.FsDto;
-import com.procurement.budget.model.dto.fs.FsResponseDto;
 import com.procurement.budget.model.dto.fs.FsTenderDto;
+import com.procurement.budget.model.dto.ocds.BudgetBreakdown;
+import com.procurement.budget.model.dto.ocds.OrganizationReference;
 import com.procurement.budget.model.dto.ocds.TenderStatus;
 import com.procurement.budget.model.entity.FsEntity;
 import com.procurement.budget.utils.DateUtil;
 import com.procurement.budget.utils.JsonUtil;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class FsServiceImpl implements FsService {
 
+    private static final String SEPARATOR = "-";
     private static final String DATA_NOT_FOUND_ERROR = "FS not found.";
     private static final String INVALID_OWNER_ERROR = "FS invalid owner.";
     private final JsonUtil jsonUtil;
@@ -39,6 +42,7 @@ public class FsServiceImpl implements FsService {
         fs.setOcId(getOcId(cpId));
         fs.setDate(dateUtil.getNowUTC());
         setTender(fs, cpId);
+        processSourceParties(fs.getPlanning().getBudget().getBudgetBreakdown());
         final FsEntity entity = getEntity(cpId, owner, fs);
         fsDao.save(entity);
         fs.setToken(entity.getToken().toString());
@@ -62,6 +66,13 @@ public class FsServiceImpl implements FsService {
         entity.setJsonData(jsonUtil.toJson(fs));
         fsDao.save(entity);
         return new ResponseDto<>(true, null, fs);
+    }
+
+    private void processSourceParties(final List<BudgetBreakdown> budgetBreakdowns) {
+        budgetBreakdowns.stream().forEach(b -> {
+            final OrganizationReference sourceParty = b.getSourceParty();
+            sourceParty.setId(sourceParty.getIdentifier().getScheme() + SEPARATOR + sourceParty.getIdentifier().getId());
+        });
     }
 
     private void setTender(final FsDto fs, final String cpId) {
