@@ -18,9 +18,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @JsonPropertyOrder({
-        "token",
-        "ocid",
-        "date",
         "tender",
         "planning",
         "buyer",
@@ -35,7 +32,6 @@ public class FsRequestDto {
     @NotNull
     private FsPlanningDto planning;
     @JsonProperty("buyer")
-    @NotNull
     @Valid
     private final OrganizationReference buyer;
 
