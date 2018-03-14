@@ -95,7 +95,15 @@ public class FsServiceImpl implements FsService {
     }
 
     private void processSourceParties(final List<BudgetBreakdown> budgetBreakdowns, final OrganizationReference buyer) {
-        budgetBreakdowns.stream().forEach(b -> b.setSourceParty(buyer));
+        budgetBreakdowns.stream().forEach(b -> {
+            OrganizationReference sp = buyer;
+            sp.setIdentifier(null);
+            sp.setAdditionalIdentifiers(null);
+            sp.setAddress(null);
+            sp.setContactPoint(null);
+            sp.setDetails(null);
+            b.setSourceParty(sp);
+        });
     }
 
     private void processOrganizationReference(final OrganizationReference or) {

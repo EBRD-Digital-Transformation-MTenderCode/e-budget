@@ -54,7 +54,7 @@ public class OrganizationReference {
     private ContactPoint contactPoint;
 
     @JsonProperty("details")
-    private final Details details;
+    private Details details;
 
     @JsonCreator
     public OrganizationReference(@JsonProperty("id") final String id,
