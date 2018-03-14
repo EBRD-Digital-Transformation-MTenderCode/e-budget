@@ -44,8 +44,10 @@ public class FsServiceImpl implements FsService {
         fs.setOcId(getOcId(cpId));
         fs.setDate(dateUtil.getNowUTC());
         fs.setPayer(fsDto.getTender().getProcuringEntity());
+        processOrganizationReference(fs.getPayer());
         fsDto.getTender().setProcuringEntity(null);
         fs.setFunder(fsDto.getBuyer());
+        processOrganizationReference(fs.getFunder());
         fs.setTender(fsDto.getTender());
         fs.getTender().setStatus(TenderStatus.PLANNING);
         fs.getTender().setId(cpId);
@@ -78,13 +80,18 @@ public class FsServiceImpl implements FsService {
     private void processSourceParties(final List<BudgetBreakdown> budgetBreakdowns) {
         budgetBreakdowns.stream().forEach(b -> {
             final OrganizationReference sp = b.getSourceParty();
-            sp.setId(sp.getIdentifier().getScheme() + SEPARATOR + sp.getIdentifier().getId());
+            processOrganizationReference(sp);
             sp.setIdentifier(null);
             sp.setAdditionalIdentifiers(null);
             sp.setAddress(null);
             sp.setContactPoint(null);
         });
     }
+
+    private void processOrganizationReference(final OrganizationReference or) {
+        or.setId(or.getIdentifier().getScheme() + SEPARATOR + or.getIdentifier().getId());
+    }
+
 
     private String getOcId(final String cpId) {
         return cpId + "-fs-" + dateUtil.getMilliNowUTC();
