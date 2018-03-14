@@ -10,5 +10,7 @@ public interface EiDao {
     void save(EiEntity entity);
 
     EiEntity getByCpIdAndToken(String cpId, UUID token);
+
+    EiEntity getByCpId(String cpId);
 }
 

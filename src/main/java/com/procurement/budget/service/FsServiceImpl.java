@@ -1,9 +1,11 @@
 package com.procurement.budget.service;
 
 import com.datastax.driver.core.utils.UUIDs;
+import com.procurement.budget.dao.EiDao;
 import com.procurement.budget.dao.FsDao;
 import com.procurement.budget.exception.ErrorException;
 import com.procurement.budget.model.dto.bpe.ResponseDto;
+import com.procurement.budget.model.dto.ei.EiDto;
 import com.procurement.budget.model.dto.fs.FsDto;
 import com.procurement.budget.model.dto.fs.FsRequestDto;
 import com.procurement.budget.model.dto.fs.FsTenderDto;
@@ -14,6 +16,7 @@ import com.procurement.budget.model.entity.FsEntity;
 import com.procurement.budget.utils.DateUtil;
 import com.procurement.budget.utils.JsonUtil;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.stereotype.Service;
@@ -27,13 +30,16 @@ public class FsServiceImpl implements FsService {
     private final JsonUtil jsonUtil;
     private final DateUtil dateUtil;
     private final FsDao fsDao;
+    private final EiService eiService;
 
     public FsServiceImpl(final JsonUtil jsonUtil,
                          final DateUtil dateUtil,
-                         final FsDao fsDao) {
+                         final FsDao fsDao,
+                         final EiService eiService) {
         this.jsonUtil = jsonUtil;
         this.dateUtil = dateUtil;
         this.fsDao = fsDao;
+        this.eiService = eiService;
     }
 
     @Override
@@ -43,16 +49,27 @@ public class FsServiceImpl implements FsService {
         final FsDto fs = new FsDto();
         fs.setOcId(getOcId(cpId));
         fs.setDate(dateUtil.getNowUTC());
+        /*payer*/
         fs.setPayer(fsDto.getTender().getProcuringEntity());
         processOrganizationReference(fs.getPayer());
         fsDto.getTender().setProcuringEntity(null);
+        /*funder*/
         fs.setFunder(fsDto.getBuyer());
         processOrganizationReference(fs.getFunder());
+        /*source parties*/
+        OrganizationReference buyer = fsDto.getBuyer();
+        if (Objects.isNull(buyer)){
+            fs.getPlanning().getBudget().setVerified(true);
+            EiDto eiDto = eiService.getEi(cpId);
+            buyer = eiDto.getBuyer();
+        }
+        processSourceParties(fs.getPlanning().getBudget().getBudgetBreakdown(), buyer);
+        /*tender*/
         fs.setTender(fsDto.getTender());
         fs.getTender().setStatus(TenderStatus.PLANNING);
         fs.getTender().setId(cpId);
+        /*planning*/
         fs.setPlanning(fsDto.getPlanning());
-        processSourceParties(fs.getPlanning().getBudget().getBudgetBreakdown());
         final FsEntity entity = getEntity(cpId, owner, fs);
         fsDao.save(entity);
         fs.setToken(entity.getToken().toString());
@@ -77,15 +94,8 @@ public class FsServiceImpl implements FsService {
         return new ResponseDto<>(true, null, fs);
     }
 
-    private void processSourceParties(final List<BudgetBreakdown> budgetBreakdowns) {
-        budgetBreakdowns.stream().forEach(b -> {
-            final OrganizationReference sp = b.getSourceParty();
-            processOrganizationReference(sp);
-            sp.setIdentifier(null);
-            sp.setAdditionalIdentifiers(null);
-            sp.setAddress(null);
-            sp.setContactPoint(null);
-        });
+    private void processSourceParties(final List<BudgetBreakdown> budgetBreakdowns, final OrganizationReference buyer) {
+        budgetBreakdowns.stream().forEach(b -> b.setSourceParty(buyer));
     }
 
     private void processOrganizationReference(final OrganizationReference or) {

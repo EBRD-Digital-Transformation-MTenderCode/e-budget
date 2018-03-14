@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.procurement.budget.model.dto.ocds.BudgetBreakdown;
 import com.procurement.budget.model.dto.ocds.EuropeanUnionFunding;
 import com.procurement.budget.model.dto.ocds.Period;
-import com.procurement.budget.model.dto.ocds.Value;
 import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -57,7 +56,7 @@ public class FsBudgetDto {
     @JsonProperty("budgetBreakdown")
     private final List<BudgetBreakdown> budgetBreakdown;
     @JsonProperty("verified")
-    private final Boolean verified;
+    private Boolean verified;
 
     @JsonCreator
     public FsBudgetDto(@JsonProperty("id") final String id,
@@ -83,6 +82,6 @@ public class FsBudgetDto {
         this.europeanUnionFunding = europeanUnionFunding;
         this.isEuropeanUnionFunded = isEuropeanUnionFunded;
         this.budgetBreakdown = budgetBreakdown;
-        this.verified = verified;
+        this.verified = verified == null ? false : verified;
     }
 }
