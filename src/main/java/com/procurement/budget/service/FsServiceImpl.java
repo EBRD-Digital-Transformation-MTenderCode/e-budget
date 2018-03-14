@@ -7,6 +7,7 @@ import com.procurement.budget.model.dto.bpe.ResponseDto;
 import com.procurement.budget.model.dto.ei.EiDto;
 import com.procurement.budget.model.dto.fs.FsDto;
 import com.procurement.budget.model.dto.fs.FsRequestDto;
+import com.procurement.budget.model.dto.fs.FsTenderDto;
 import com.procurement.budget.model.dto.ocds.BudgetBreakdown;
 import com.procurement.budget.model.dto.ocds.OrganizationReference;
 import com.procurement.budget.model.dto.ocds.TenderStatus;
@@ -65,9 +66,7 @@ public class FsServiceImpl implements FsService {
         }
         processSourceParties(fs.getPlanning().getBudget().getBudgetBreakdown(), buyer);
         /*tender*/
-        fs.setTender(fsDto.getTender());
-        fs.getTender().setStatus(TenderStatus.PLANNING);
-        fs.getTender().setId(cpId);
+        fs.setTender(new FsTenderDto(cpId, TenderStatus.PLANNING, null));
         /*planning*/
         fs.setPlanning(fsDto.getPlanning());
         final FsEntity entity = getEntity(cpId, owner, fs);
