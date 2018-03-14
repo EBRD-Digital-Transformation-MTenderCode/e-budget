@@ -5,16 +5,15 @@ import com.procurement.budget.dao.FsDao;
 import com.procurement.budget.exception.ErrorException;
 import com.procurement.budget.model.dto.bpe.ResponseDto;
 import com.procurement.budget.model.dto.ei.EiDto;
+import com.procurement.budget.model.dto.fs.FsBudgetDto;
 import com.procurement.budget.model.dto.fs.FsDto;
 import com.procurement.budget.model.dto.fs.FsRequestDto;
 import com.procurement.budget.model.dto.fs.FsTenderDto;
-import com.procurement.budget.model.dto.ocds.BudgetBreakdown;
 import com.procurement.budget.model.dto.ocds.OrganizationReference;
 import com.procurement.budget.model.dto.ocds.TenderStatus;
 import com.procurement.budget.model.entity.FsEntity;
 import com.procurement.budget.utils.DateUtil;
 import com.procurement.budget.utils.JsonUtil;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -48,6 +47,8 @@ public class FsServiceImpl implements FsService {
         final FsDto fs = new FsDto();
         fs.setOcId(getOcId(cpId));
         fs.setDate(dateUtil.getNowUTC());
+        /*planning*/
+        fs.setPlanning(fsDto.getPlanning());
         /*payer*/
         fs.setPayer(fsDto.getTender().getProcuringEntity());
         processOrganizationReference(fs.getPayer());
@@ -64,11 +65,9 @@ public class FsServiceImpl implements FsService {
             EiDto eiDto = eiService.getEi(cpId);
             buyer = eiDto.getBuyer();
         }
-        processSourceParties(fs.getPlanning().getBudget().getBudgetBreakdown(), buyer);
+        processSourceEntity(fs.getPlanning().getBudget(), buyer);
         /*tender*/
         fs.setTender(new FsTenderDto(cpId, TenderStatus.PLANNING, null));
-        /*planning*/
-        fs.setPlanning(fsDto.getPlanning());
         final FsEntity entity = getEntity(cpId, owner, fs);
         fsDao.save(entity);
         fs.setToken(entity.getToken().toString());
@@ -93,16 +92,13 @@ public class FsServiceImpl implements FsService {
         return new ResponseDto<>(true, null, fs);
     }
 
-    private void processSourceParties(final List<BudgetBreakdown> budgetBreakdowns, final OrganizationReference buyer) {
-        budgetBreakdowns.forEach(b -> {
-            final OrganizationReference sp = buyer;
-            sp.setIdentifier(null);
-            sp.setAdditionalIdentifiers(null);
-            sp.setAddress(null);
-            sp.setContactPoint(null);
-            sp.setDetails(null);
-            b.setSourceParty(sp);
-        });
+    private void processSourceEntity(final FsBudgetDto budget, final OrganizationReference buyer) {
+        if (Objects.nonNull(budget)) {
+            final OrganizationReference se =
+                    new OrganizationReference(buyer.getId(), buyer.getName(), null, null,
+                    null, null, null);
+            budget.setSourceEntity(se);
+        }
     }
 
     private void processOrganizationReference(final OrganizationReference or) {
