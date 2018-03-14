@@ -1,0 +1,61 @@
+{
+  "token": "bc7bbb84-89eb-4b13-a335-6304fe3e3d64",
+  "ocid": "ocds-t1s2t3-MD-1521024856548",
+  "date": "2018-03-14T10:54:16Z",
+  "tender": {
+    "id": "ocds-t1s2t3-MD-1521024856548",
+    "title": "Препарати наркотичної, психотропної групи: МНН - тримеперидин, морфін гідрохлорид, діазепам, фентаніл, кетамін, феназепам, натрію оксибутират",
+    "description": "Під кількістю 8 штук слід розуміти 8 найменувань",
+    "status": "planning",
+    "classification": {
+      "scheme": "CPV",
+      "id": "33600000-6",
+      "description": "Фармацевтична продукція"
+    }
+  },
+  "planning": {
+    "budget": {
+      "id": "33600000-6",
+      "period": {
+        "startDate": "2018-02-27T00:00:00Z",
+        "endDate": "2018-02-27T00:00:00Z"
+      },
+      "amount": {
+        "currency": "UAH"
+      }
+    },
+    "rationale": "Обгрунтування закупівель надано у вільному тексті. Більш детальна інформація може бути надана у доданому документі."
+  },
+  "buyer": {
+    "name": "Новороздільська міська лікарня",
+    "id": "UA-EDR-20764314",
+    "identifier": {
+      "scheme": "UA-EDR",
+      "id": "20764314",
+      "legalName": "Новороздільська міська лікарня",
+      "uri": "http://buyerTestLink.ua"
+    },
+    "address": {
+      "streetAddress": "вул. Винниченка, 37",
+      "locality": "місто Новий Розділ",
+      "region": "Львівська область",
+      "postalCode": "7770777",
+      "countryName": "Україна"
+    },
+    "additionalIdentifiers": [
+      {
+        "scheme": "UA-EDR",
+        "id": "77764777",
+        "legalName": "Додатково Новороздільська міська лікарня",
+        "uri": "http://additionalBuyerTestLink.ua"
+      }
+    ],
+    "contactPoint": {
+      "name": "Осипових Сергій Олександрович",
+      "email": "test2@test.test",
+      "telephone": "+380222222222",
+      "faxNumber": "+380222222222",
+      "url": "test3@test.test"
+    }
+  }
+}
