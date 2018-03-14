@@ -58,10 +58,11 @@ public class FsServiceImpl implements FsService {
         if (Objects.nonNull(buyer)) {
             processOrganizationReference(buyer);
             fs.setFunder(buyer);
+            fs.getPlanning().getBudget().setVerified(true);
         }
         /*source parties*/
         if (Objects.isNull(buyer)) {
-            fs.getPlanning().getBudget().setVerified(true);
+            fs.getPlanning().getBudget().setVerified(false);
             EiDto eiDto = eiService.getEi(cpId);
             buyer = eiDto.getBuyer();
         }
@@ -96,7 +97,7 @@ public class FsServiceImpl implements FsService {
         if (Objects.nonNull(budget)) {
             final OrganizationReference se =
                     new OrganizationReference(buyer.getId(), buyer.getName(), null, null,
-                    null, null, null);
+                            null, null, null);
             budget.setSourceEntity(se);
         }
     }
