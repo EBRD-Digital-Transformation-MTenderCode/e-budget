@@ -24,7 +24,8 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
         "identifier",
         "address",
         "additionalIdentifiers",
-        "contactPoint"
+        "contactPoint",
+        "details"
 })
 public class OrganizationReference {
     @JsonProperty("id")
@@ -52,6 +53,9 @@ public class OrganizationReference {
     @Valid
     private ContactPoint contactPoint;
 
+    @JsonProperty("details")
+    private final Details details;
+
     @JsonCreator
     public OrganizationReference(@JsonProperty("id") final String id,
                                  @JsonProperty("name") final String name,
@@ -59,13 +63,15 @@ public class OrganizationReference {
                                  @JsonProperty("address") final Address address,
                                  @JsonProperty("additionalIdentifiers") final LinkedHashSet<Identifier>
                                          additionalIdentifiers,
-                                 @JsonProperty("contactPoint") final ContactPoint contactPoint) {
+                                 @JsonProperty("contactPoint") final ContactPoint contactPoint,
+                                 @JsonProperty("details") final Details details) {
         this.id = id;
         this.name = name;
         this.identifier = identifier;
         this.address = address;
         this.additionalIdentifiers = additionalIdentifiers;
         this.contactPoint = contactPoint;
+        this.details = details;
     }
 
     @Override
@@ -76,6 +82,7 @@ public class OrganizationReference {
                 .append(address)
                 .append(additionalIdentifiers)
                 .append(contactPoint)
+                .append(details)
                 .toHashCode();
     }
 
@@ -94,6 +101,7 @@ public class OrganizationReference {
                 .append(address, rhs.address)
                 .append(additionalIdentifiers, rhs.additionalIdentifiers)
                 .append(contactPoint, rhs.contactPoint)
+                .append(details, rhs.details)
                 .isEquals();
     }
 }

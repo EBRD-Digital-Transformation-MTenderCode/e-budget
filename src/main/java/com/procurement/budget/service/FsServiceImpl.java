@@ -1,14 +1,12 @@
 package com.procurement.budget.service;
 
 import com.datastax.driver.core.utils.UUIDs;
-import com.procurement.budget.dao.EiDao;
 import com.procurement.budget.dao.FsDao;
 import com.procurement.budget.exception.ErrorException;
 import com.procurement.budget.model.dto.bpe.ResponseDto;
 import com.procurement.budget.model.dto.ei.EiDto;
 import com.procurement.budget.model.dto.fs.FsDto;
 import com.procurement.budget.model.dto.fs.FsRequestDto;
-import com.procurement.budget.model.dto.fs.FsTenderDto;
 import com.procurement.budget.model.dto.ocds.BudgetBreakdown;
 import com.procurement.budget.model.dto.ocds.OrganizationReference;
 import com.procurement.budget.model.dto.ocds.TenderStatus;
@@ -54,11 +52,13 @@ public class FsServiceImpl implements FsService {
         processOrganizationReference(fs.getPayer());
         fsDto.getTender().setProcuringEntity(null);
         /*funder*/
-        fs.setFunder(fsDto.getBuyer());
-        processOrganizationReference(fs.getFunder());
-        /*source parties*/
         OrganizationReference buyer = fsDto.getBuyer();
-        if (Objects.isNull(buyer)){
+        if (Objects.nonNull(buyer)) {
+            processOrganizationReference(buyer);
+            fs.setFunder(buyer);
+        }
+        /*source parties*/
+        if (Objects.isNull(buyer)) {
             fs.getPlanning().getBudget().setVerified(true);
             EiDto eiDto = eiService.getEi(cpId);
             buyer = eiDto.getBuyer();
