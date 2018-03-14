@@ -6,10 +6,13 @@ import com.procurement.budget.dao.EiDao;
 import com.procurement.budget.exception.ErrorException;
 import com.procurement.budget.model.dto.bpe.ResponseDto;
 import com.procurement.budget.model.dto.ei.EiDto;
+import com.procurement.budget.model.dto.ocds.BudgetBreakdown;
+import com.procurement.budget.model.dto.ocds.OrganizationReference;
 import com.procurement.budget.model.dto.ocds.TenderStatus;
 import com.procurement.budget.model.entity.EiEntity;
 import com.procurement.budget.utils.DateUtil;
 import com.procurement.budget.utils.JsonUtil;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.stereotype.Service;
@@ -17,6 +20,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class EiServiceImpl implements EiService {
 
+    private static final String SEPARATOR = "-";
     private static final String DATA_NOT_FOUND_ERROR = "EI not found.";
     private static final String INVALID_OWNER_ERROR = "EI invalid owner.";
     private final OCDSProperties ocdsProperties;
@@ -42,6 +46,7 @@ public class EiServiceImpl implements EiService {
         setTenderId(ei, cpId);
         setTenderStatus(ei);
         setBudgetId(ei);
+        processOrganizationReference(ei.getBuyer());
         final EiEntity entity = getEntity(ei, owner);
         eiDao.save(entity);
         ei.setToken(entity.getToken().toString());
@@ -64,6 +69,10 @@ public class EiServiceImpl implements EiService {
         entity.setJsonData(jsonUtil.toJson(ei));
         eiDao.save(entity);
         return new ResponseDto<>(true, null, ei);
+    }
+
+    private void processOrganizationReference(final OrganizationReference or) {
+        or.setId(or.getIdentifier().getScheme() + SEPARATOR + or.getIdentifier().getId());
     }
 
     private void setTenderId(final EiDto ei, final String cpId) {
