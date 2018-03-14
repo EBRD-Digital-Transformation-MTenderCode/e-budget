@@ -68,7 +68,7 @@ public class FsServiceImpl implements FsService {
         }
         processSourceEntity(fs.getPlanning().getBudget(), buyer);
         /*tender*/
-        fs.setTender(new FsTenderDto(cpId, TenderStatus.PLANNING, null));
+        fs.setTender(new FsTenderDto(fs.getOcId(), TenderStatus.PLANNING, null));
         final FsEntity entity = getEntity(cpId, owner, fs);
         fsDao.save(entity);
         fs.setToken(entity.getToken().toString());
