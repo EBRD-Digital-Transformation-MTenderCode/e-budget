@@ -4,8 +4,10 @@ import com.fasterxml.jackson.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
         "id",
@@ -35,7 +37,7 @@ public class BudgetBreakdown {
     @JsonProperty("sourceParty")
     @Valid
     @NotNull
-    private final OrganizationReference sourceParty;
+    private OrganizationReference sourceParty;
 
     @JsonCreator
     public BudgetBreakdown(@JsonProperty("id") final String id,

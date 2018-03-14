@@ -71,6 +71,13 @@ public class EiServiceImpl implements EiService {
         return new ResponseDto<>(true, null, ei);
     }
 
+    @Override
+    public EiDto getEi(String cpId) {
+        final EiEntity entity = Optional.ofNullable(eiDao.getByCpId(cpId))
+                .orElseThrow(() -> new ErrorException(DATA_NOT_FOUND_ERROR));
+        return jsonUtil.toObject(EiDto.class, entity.getJsonData());
+    }
+
     private void processOrganizationReference(final OrganizationReference or) {
         or.setId(or.getIdentifier().getScheme() + SEPARATOR + or.getIdentifier().getId());
     }
@@ -86,6 +93,8 @@ public class EiServiceImpl implements EiService {
     private void setBudgetId(final EiDto ei) {
         ei.getPlanning().getBudget().setId(ei.getTender().getClassification().getId());
     }
+
+
 
     private EiEntity getEntity(final EiDto ei, final String owner) {
         final EiEntity eiEntity = new EiEntity();

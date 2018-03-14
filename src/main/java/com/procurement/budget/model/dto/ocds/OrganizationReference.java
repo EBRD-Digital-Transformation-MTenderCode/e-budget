@@ -53,8 +53,8 @@ public class OrganizationReference {
     private ContactPoint contactPoint;
 
     @JsonCreator
-    public OrganizationReference(@JsonProperty("name") final String name,
-                                 @JsonProperty("id") final String id,
+    public OrganizationReference(@JsonProperty("id") final String id,
+                                 @JsonProperty("name") final String name,
                                  @JsonProperty("identifier") final Identifier identifier,
                                  @JsonProperty("address") final Address address,
                                  @JsonProperty("additionalIdentifiers") final LinkedHashSet<Identifier>

@@ -2,6 +2,7 @@ package com.procurement.budget.service;
 
 import com.procurement.budget.model.dto.bpe.ResponseDto;
 import com.procurement.budget.model.dto.ei.EiDto;
+import com.procurement.budget.model.dto.ocds.OrganizationReference;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,4 +15,6 @@ public interface EiService {
                          String cpId,
                          String token,
                          EiDto eiDto);
+
+    EiDto getEi(String cpId);
 }
