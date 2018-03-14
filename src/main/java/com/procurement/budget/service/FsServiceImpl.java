@@ -95,8 +95,8 @@ public class FsServiceImpl implements FsService {
     }
 
     private void processSourceParties(final List<BudgetBreakdown> budgetBreakdowns, final OrganizationReference buyer) {
-        budgetBreakdowns.stream().forEach(b -> {
-            OrganizationReference sp = buyer;
+        budgetBreakdowns.forEach(b -> {
+            final OrganizationReference sp = buyer;
             sp.setIdentifier(null);
             sp.setAdditionalIdentifiers(null);
             sp.setAddress(null);
