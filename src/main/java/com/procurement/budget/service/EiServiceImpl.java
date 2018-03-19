@@ -39,9 +39,9 @@ public class EiServiceImpl implements EiService {
     }
 
     @Override
-    public ResponseDto createEi(final LocalDateTime startDate,
+    public ResponseDto createEi(final String owner,
                                 final String country,
-                                final String owner,
+                                final LocalDateTime startDate,
                                 final EiDto ei) {
         final String cpId = getCpId(startDate, country);
         ei.setOcId(cpId);
@@ -82,7 +82,7 @@ public class EiServiceImpl implements EiService {
     }
 
     private String getCpId(final LocalDateTime startDate, final String country) {
-        return "ocds" + SEPARATOR + ocdsProperties.getPrefix() + SEPARATOR + country.toUpperCase() + SEPARATOR +
+        return  ocdsProperties.getPrefix() + SEPARATOR + country.toUpperCase() + SEPARATOR +
                 dateUtil.getMilliUTC(startDate);
     }
 

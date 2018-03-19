@@ -28,7 +28,7 @@ public class EiController {
                                               @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
                                               @RequestParam final LocalDateTime startDate,
                                               @Valid @RequestBody final EiDto eiDto) {
-        return new ResponseEntity<>(eiService.createEi(startDate, country, owner, eiDto), HttpStatus.CREATED);
+        return new ResponseEntity<>(eiService.createEi(owner, country, startDate, eiDto), HttpStatus.CREATED);
     }
 
     @PutMapping

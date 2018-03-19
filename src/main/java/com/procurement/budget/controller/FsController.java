@@ -5,7 +5,9 @@ import com.procurement.budget.model.dto.check.CheckRequestDto;
 import com.procurement.budget.model.dto.fs.FsDto;
 import com.procurement.budget.model.dto.fs.FsRequestDto;
 import com.procurement.budget.service.FsService;
+import java.time.LocalDateTime;
 import javax.validation.Valid;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -25,8 +27,10 @@ public class FsController {
     @PostMapping
     public ResponseEntity<ResponseDto> create(@RequestParam final String cpId,
                                               @RequestParam final String owner,
+                                              @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+                                              @RequestParam final LocalDateTime startDate,
                                               @Valid @RequestBody final FsRequestDto fsDto) {
-        return new ResponseEntity<>(fsService.createFs(cpId, owner, fsDto), HttpStatus.CREATED);
+        return new ResponseEntity<>(fsService.createFs(cpId, owner, startDate, fsDto), HttpStatus.CREATED);
     }
 
     @PutMapping
