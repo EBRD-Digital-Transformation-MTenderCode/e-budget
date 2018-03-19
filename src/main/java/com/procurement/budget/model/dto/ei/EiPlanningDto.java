@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import lombok.Getter;
 
 @Getter
@@ -16,6 +17,7 @@ import lombok.Getter;
 public class EiPlanningDto {
     @JsonProperty("budget")
     @Valid
+    @NotNull
     private final EiBudgetDto budget;
     @JsonProperty("rationale")
     private final String rationale;

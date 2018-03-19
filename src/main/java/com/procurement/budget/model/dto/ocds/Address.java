@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -19,18 +20,22 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 })
 public class Address {
     @JsonProperty("streetAddress")
+    @NotNull
     private final String streetAddress;
 
     @JsonProperty("locality")
+    @NotNull
     private final String locality;
 
     @JsonProperty("region")
+    @NotNull
     private final String region;
 
     @JsonProperty("postalCode")
     private final String postalCode;
 
     @JsonProperty("countryName")
+    @NotNull
     private final String countryName;
 
     @JsonCreator

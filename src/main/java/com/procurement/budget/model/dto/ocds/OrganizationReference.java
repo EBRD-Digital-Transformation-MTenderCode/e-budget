@@ -25,7 +25,8 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
         "address",
         "additionalIdentifiers",
         "contactPoint",
-        "details"
+        "details",
+        "buyerProfile"
 })
 public class OrganizationReference {
     @JsonProperty("id")
@@ -38,10 +39,12 @@ public class OrganizationReference {
 
     @JsonProperty("identifier")
     @Valid
+    @NotNull
     private Identifier identifier;
 
     @JsonProperty("address")
     @Valid
+    @NotNull
     private Address address;
 
     @JsonProperty("additionalIdentifiers")
@@ -51,10 +54,15 @@ public class OrganizationReference {
 
     @JsonProperty("contactPoint")
     @Valid
+    @NotNull
     private ContactPoint contactPoint;
 
     @JsonProperty("details")
+    @NotNull
     private Details details;
+
+    @JsonProperty("buyerProfile")
+    private final String buyerProfile;
 
     @JsonCreator
     public OrganizationReference(@JsonProperty("id") final String id,
@@ -64,7 +72,8 @@ public class OrganizationReference {
                                  @JsonProperty("additionalIdentifiers") final LinkedHashSet<Identifier>
                                          additionalIdentifiers,
                                  @JsonProperty("contactPoint") final ContactPoint contactPoint,
-                                 @JsonProperty("details") final Details details) {
+                                 @JsonProperty("details") final Details details,
+                                 @JsonProperty("buyerProfile") final String buyerProfile) {
         this.id = id;
         this.name = name;
         this.identifier = identifier;
@@ -72,6 +81,7 @@ public class OrganizationReference {
         this.additionalIdentifiers = additionalIdentifiers;
         this.contactPoint = contactPoint;
         this.details = details;
+        this.buyerProfile = buyerProfile;
     }
 
     @Override
@@ -83,6 +93,7 @@ public class OrganizationReference {
                 .append(additionalIdentifiers)
                 .append(contactPoint)
                 .append(details)
+                .append(buyerProfile)
                 .toHashCode();
     }
 
@@ -102,6 +113,7 @@ public class OrganizationReference {
                 .append(additionalIdentifiers, rhs.additionalIdentifiers)
                 .append(contactPoint, rhs.contactPoint)
                 .append(details, rhs.details)
+                .append(buyerProfile, rhs.buyerProfile)
                 .isEquals();
     }
 }

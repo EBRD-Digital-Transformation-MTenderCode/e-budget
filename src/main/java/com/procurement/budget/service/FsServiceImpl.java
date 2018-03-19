@@ -4,6 +4,7 @@ import com.datastax.driver.core.utils.UUIDs;
 import com.procurement.budget.dao.FsDao;
 import com.procurement.budget.exception.ErrorException;
 import com.procurement.budget.model.dto.bpe.ResponseDto;
+import com.procurement.budget.model.dto.check.CheckRequestDto;
 import com.procurement.budget.model.dto.ei.EiDto;
 import com.procurement.budget.model.dto.fs.FsBudgetDto;
 import com.procurement.budget.model.dto.fs.FsDto;
@@ -11,6 +12,7 @@ import com.procurement.budget.model.dto.fs.FsRequestDto;
 import com.procurement.budget.model.dto.fs.FsTenderDto;
 import com.procurement.budget.model.dto.ocds.OrganizationReference;
 import com.procurement.budget.model.dto.ocds.TenderStatus;
+import com.procurement.budget.model.dto.ocds.TenderStatusDetails;
 import com.procurement.budget.model.entity.FsEntity;
 import com.procurement.budget.utils.DateUtil;
 import com.procurement.budget.utils.JsonUtil;
@@ -52,7 +54,6 @@ public class FsServiceImpl implements FsService {
         /*payer*/
         fs.setPayer(fsDto.getTender().getProcuringEntity());
         processOrganizationReference(fs.getPayer());
-        fsDto.getTender().setProcuringEntity(null);
         /*funder*/
         OrganizationReference buyer = fsDto.getBuyer();
         if (Objects.nonNull(buyer)) {
@@ -68,7 +69,7 @@ public class FsServiceImpl implements FsService {
         }
         processSourceEntity(fs.getPlanning().getBudget(), buyer);
         /*tender*/
-        fs.setTender(new FsTenderDto(fs.getOcId(), TenderStatus.PLANNING, null));
+        fs.setTender(new FsTenderDto(fs.getOcId(), TenderStatus.PLANNING, TenderStatusDetails.EMPTY, null));
         final FsEntity entity = getEntity(cpId, owner, fs);
         fsDao.save(entity);
         fs.setToken(entity.getToken().toString());
@@ -93,11 +94,23 @@ public class FsServiceImpl implements FsService {
         return new ResponseDto<>(true, null, fs);
     }
 
+    @Override
+    public ResponseDto checkFs(String cpId, String ocId, String token, String owner, CheckRequestDto dto) {
+        return null;
+    }
+
     private void processSourceEntity(final FsBudgetDto budget, final OrganizationReference buyer) {
         if (Objects.nonNull(budget)) {
             final OrganizationReference se =
-                    new OrganizationReference(buyer.getId(), buyer.getName(), null, null,
-                            null, null, null);
+                    new OrganizationReference(
+                            buyer.getId(),
+                            buyer.getName(),
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                            null);
             budget.setSourceEntity(se);
         }
     }

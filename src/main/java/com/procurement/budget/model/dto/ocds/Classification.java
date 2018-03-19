@@ -23,9 +23,11 @@ public class Classification {
     private final String id;
 
     @JsonProperty("description")
+    @NotNull
     private final String description;
 
     @JsonProperty("scheme")
+    @NotNull
     private final Scheme scheme;
 
     @JsonProperty("uri")
