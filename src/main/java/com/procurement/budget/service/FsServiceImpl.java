@@ -53,9 +53,9 @@ public class FsServiceImpl implements FsService {
         fs.setDate(startDate);
         final EiDto ei = eiService.getEi(cpId);
         /*checkCurrency*/
-        checkCurrency(ei, fs);
+        checkCurrency(ei, fsDto);
         /*checkPeriod*/
-        checkPeriod(ei, fs);
+        checkPeriod(ei, fsDto);
         /*planning*/
         fs.setPlanning(fsDto.getPlanning());
         /*tender*/
@@ -113,15 +113,15 @@ public class FsServiceImpl implements FsService {
         return null;
     }
 
-    private void checkCurrency(EiDto ei, FsDto fs) {
+    private void checkCurrency(EiDto ei, FsRequestDto fs) {
         final Currency eiCurrency = ei.getPlanning().getBudget().getAmount().getCurrency();
         final Currency fsCurrency = fs.getPlanning().getBudget().getAmount().getCurrency();
         if (!eiCurrency.equals(fsCurrency)) {
-            throw new ErrorException("Currency not valid.");
+            throw new ErrorException("Currency of financial source not valid.");
         }
     }
 
-    private void checkPeriod(EiDto ei, FsDto fs) {
+    private void checkPeriod(EiDto ei, FsRequestDto fs) {
         final Period eiPeriod = ei.getPlanning().getBudget().getPeriod();
         final Period fsPeriod = fs.getPlanning().getBudget().getPeriod();
         boolean fsPeriodValid = fsPeriod.getStartDate().isAfter(eiPeriod.getStartDate()) &&
