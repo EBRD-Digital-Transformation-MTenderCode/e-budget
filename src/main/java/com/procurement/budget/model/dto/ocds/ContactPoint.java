@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -19,18 +20,22 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 })
 public class ContactPoint {
     @JsonProperty("name")
+    @NotNull
     private final String name;
 
     @JsonProperty("email")
+    @NotNull
     private final String email;
 
     @JsonProperty("telephone")
+    @NotNull
     private final String telephone;
 
     @JsonProperty("faxNumber")
     private final String faxNumber;
 
     @JsonProperty("url")
+    @NotNull
     private final String url;
 
     @JsonCreator

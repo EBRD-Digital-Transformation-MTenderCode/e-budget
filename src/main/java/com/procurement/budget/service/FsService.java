@@ -1,6 +1,7 @@
 package com.procurement.budget.service;
 
 import com.procurement.budget.model.dto.bpe.ResponseDto;
+import com.procurement.budget.model.dto.check.CheckRequestDto;
 import com.procurement.budget.model.dto.fs.FsDto;
 import com.procurement.budget.model.dto.fs.FsRequestDto;
 import org.springframework.stereotype.Service;
@@ -17,4 +18,10 @@ public interface FsService {
                          String token,
                          String owner,
                          FsDto fsDto);
+
+    ResponseDto checkFs(String cpId,
+                        String ocId,
+                        String token,
+                        String owner,
+                        CheckRequestDto dto);
 }

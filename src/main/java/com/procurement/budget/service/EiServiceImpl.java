@@ -6,13 +6,13 @@ import com.procurement.budget.dao.EiDao;
 import com.procurement.budget.exception.ErrorException;
 import com.procurement.budget.model.dto.bpe.ResponseDto;
 import com.procurement.budget.model.dto.ei.EiDto;
-import com.procurement.budget.model.dto.ocds.BudgetBreakdown;
 import com.procurement.budget.model.dto.ocds.OrganizationReference;
 import com.procurement.budget.model.dto.ocds.TenderStatus;
+import com.procurement.budget.model.dto.ocds.TenderStatusDetails;
 import com.procurement.budget.model.entity.EiEntity;
 import com.procurement.budget.utils.DateUtil;
 import com.procurement.budget.utils.JsonUtil;
-import java.util.List;
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.stereotype.Service;
@@ -39,10 +39,13 @@ public class EiServiceImpl implements EiService {
     }
 
     @Override
-    public ResponseDto createEi(final String owner, final EiDto ei) {
-        final String cpId = ocdsProperties.getPrefix() + dateUtil.getMilliNowUTC();
+    public ResponseDto createEi(final LocalDateTime startDate,
+                                final String country,
+                                final String owner,
+                                final EiDto ei) {
+        final String cpId = getCpId(startDate, country);
         ei.setOcId(cpId);
-        ei.setDate(dateUtil.getNowUTC());
+        ei.setDate(startDate);
         setTenderId(ei, cpId);
         setTenderStatus(ei);
         setBudgetId(ei);
@@ -78,6 +81,11 @@ public class EiServiceImpl implements EiService {
         return jsonUtil.toObject(EiDto.class, entity.getJsonData());
     }
 
+    private String getCpId(final LocalDateTime startDate, final String country) {
+        return "ocds" + SEPARATOR + ocdsProperties.getPrefix() + SEPARATOR + country.toUpperCase() + SEPARATOR +
+                dateUtil.getMilliUTC(startDate);
+    }
+
     private void processOrganizationReference(final OrganizationReference or) {
         or.setId(or.getIdentifier().getScheme() + SEPARATOR + or.getIdentifier().getId());
     }
@@ -88,13 +96,12 @@ public class EiServiceImpl implements EiService {
 
     private void setTenderStatus(final EiDto ei) {
         ei.getTender().setStatus(TenderStatus.PLANNING);
+        ei.getTender().setStatusDetails(TenderStatusDetails.EMPTY);
     }
 
     private void setBudgetId(final EiDto ei) {
         ei.getPlanning().getBudget().setId(ei.getTender().getClassification().getId());
     }
-
-
 
     private EiEntity getEntity(final EiDto ei, final String owner) {
         final EiEntity eiEntity = new EiEntity();

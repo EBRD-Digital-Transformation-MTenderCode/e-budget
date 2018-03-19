@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.*;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -20,21 +21,26 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 })
 public class Details {
     @JsonProperty("typeOfBuyer")
+    @NotNull
     private final TypeOfBuyer typeOfBuyer;
 
     @JsonProperty("mainGeneralActivity")
+    @NotNull
     private final MainGeneralActivity mainGeneralActivity;
 
     @JsonProperty("mainSectoralActivity")
+    @NotNull
     private final MainSectoralActivity mainSectoralActivity;
 
     @JsonProperty("isACentralPurchasingBody")
+    @NotNull
     private final Boolean isACentralPurchasingBody;
 
     @JsonProperty("NUTSCode")
     private final String nutsCode;
 
     @JsonProperty("scale")
+    @NotNull
     private final Scale scale;
 
     @JsonCreator

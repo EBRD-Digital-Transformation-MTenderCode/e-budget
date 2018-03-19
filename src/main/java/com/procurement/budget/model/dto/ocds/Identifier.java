@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -18,15 +19,19 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 })
 public class Identifier {
     @JsonProperty("id")
+    @NotNull
     private final String id;
 
     @JsonProperty("scheme")
+    @NotNull
     private final String scheme;
 
     @JsonProperty("legalName")
+    @NotNull
     private final String legalName;
 
     @JsonProperty("uri")
+    @NotNull
     private final String uri;
 
     @JsonCreator
