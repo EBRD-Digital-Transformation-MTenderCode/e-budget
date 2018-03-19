@@ -20,7 +20,7 @@ import lombok.Setter;
 @JsonPropertyOrder({
         "tender",
         "planning",
-        "buyer",
+        "buyer"
 })
 
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
