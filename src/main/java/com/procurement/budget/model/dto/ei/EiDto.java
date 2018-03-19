@@ -44,7 +44,7 @@ public class EiDto {
     @JsonProperty("buyer")
     @NotNull
     @Valid
-    private final OrganizationReference buyer;
+    private final EiOrganizationReferenceDto buyer;
 
     @JsonCreator
     public EiDto(@JsonProperty("token") final String token,
@@ -52,7 +52,7 @@ public class EiDto {
                  @JsonProperty("date") final LocalDateTime date,
                  @JsonProperty("tender") final EiTenderDto tender,
                  @JsonProperty("planning") final EiPlanningDto planning,
-                 @JsonProperty("buyer") final OrganizationReference buyer) {
+                 @JsonProperty("buyer") final EiOrganizationReferenceDto buyer) {
         this.token = token;
         this.ocId = ocId;
         this.date = date;

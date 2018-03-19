@@ -33,12 +33,12 @@ public class FsRequestDto {
     private FsPlanningDto planning;
     @JsonProperty("buyer")
     @Valid
-    private final OrganizationReference buyer;
+    private final FsOrganizationReferenceDto buyer;
 
     @JsonCreator
     public FsRequestDto(@JsonProperty("tender") final FsTenderDto tender,
                         @JsonProperty("planning") final FsPlanningDto planning,
-                        @JsonProperty("buyer") final OrganizationReference buyer) {
+                        @JsonProperty("buyer") final FsOrganizationReferenceDto buyer) {
         this.tender = tender;
         this.planning = planning;
         this.buyer = buyer;

@@ -6,7 +6,7 @@ import com.procurement.budget.dao.EiDao;
 import com.procurement.budget.exception.ErrorException;
 import com.procurement.budget.model.dto.bpe.ResponseDto;
 import com.procurement.budget.model.dto.ei.EiDto;
-import com.procurement.budget.model.dto.ocds.OrganizationReference;
+import com.procurement.budget.model.dto.ei.EiOrganizationReferenceDto;
 import com.procurement.budget.model.dto.ocds.TenderStatus;
 import com.procurement.budget.model.dto.ocds.TenderStatusDetails;
 import com.procurement.budget.model.entity.EiEntity;
@@ -49,7 +49,7 @@ public class EiServiceImpl implements EiService {
         setTenderId(ei, cpId);
         setTenderStatus(ei);
         setBudgetId(ei);
-        processOrganizationReference(ei.getBuyer());
+        setIdOfOrganizationReference(ei.getBuyer());
         final EiEntity entity = getEntity(ei, owner);
         eiDao.save(entity);
         ei.setToken(entity.getToken().toString());
@@ -86,7 +86,7 @@ public class EiServiceImpl implements EiService {
                 dateUtil.getMilliUTC(startDate);
     }
 
-    private void processOrganizationReference(final OrganizationReference or) {
+    private void setIdOfOrganizationReference(final EiOrganizationReferenceDto or) {
         or.setId(or.getIdentifier().getScheme() + SEPARATOR + or.getIdentifier().getId());
     }
 

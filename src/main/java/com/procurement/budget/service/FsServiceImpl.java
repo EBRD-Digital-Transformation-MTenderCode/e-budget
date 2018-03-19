@@ -6,17 +6,17 @@ import com.procurement.budget.exception.ErrorException;
 import com.procurement.budget.model.dto.bpe.ResponseDto;
 import com.procurement.budget.model.dto.check.CheckRequestDto;
 import com.procurement.budget.model.dto.ei.EiDto;
-import com.procurement.budget.model.dto.fs.FsBudgetDto;
-import com.procurement.budget.model.dto.fs.FsDto;
-import com.procurement.budget.model.dto.fs.FsRequestDto;
-import com.procurement.budget.model.dto.fs.FsTenderDto;
-import com.procurement.budget.model.dto.ocds.OrganizationReference;
+import com.procurement.budget.model.dto.ei.EiOrganizationReferenceDto;
+import com.procurement.budget.model.dto.fs.*;
+import com.procurement.budget.model.dto.ocds.Currency;
+import com.procurement.budget.model.dto.ocds.Period;
 import com.procurement.budget.model.dto.ocds.TenderStatus;
 import com.procurement.budget.model.dto.ocds.TenderStatusDetails;
 import com.procurement.budget.model.entity.FsEntity;
 import com.procurement.budget.utils.DateUtil;
 import com.procurement.budget.utils.JsonUtil;
 import java.time.LocalDateTime;
+import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -50,28 +50,40 @@ public class FsServiceImpl implements FsService {
                                 final FsRequestDto fsDto) {
         final FsDto fs = new FsDto();
         fs.setOcId(getOcId(cpId));
-        fs.setDate(dateUtil.getNowUTC());
+        fs.setDate(startDate);
+        final EiDto ei = eiService.getEi(cpId);
+        /*checkCurrency*/
+        checkCurrency(ei, fs);
+        /*checkPeriod*/
+        checkPeriod(ei, fs);
         /*planning*/
         fs.setPlanning(fsDto.getPlanning());
+        /*tender*/
+        fs.setTender(new FsTenderDto(
+                fs.getOcId(),
+                TenderStatus.PLANNING,
+                TenderStatusDetails.EMPTY,
+                null)
+        );
         /*payer*/
         fs.setPayer(fsDto.getTender().getProcuringEntity());
-        processOrganizationReference(fs.getPayer());
-        /*funder*/
-        OrganizationReference buyer = fsDto.getBuyer();
-        if (Objects.nonNull(buyer)) {
-            processOrganizationReference(buyer);
-            fs.setFunder(buyer);
+        setIdOfOrganizationReference(fs.getPayer());
+        /*funder and source parties*/
+        FsOrganizationReferenceDto fsBuyer = fsDto.getBuyer();
+        /*from buyer*/
+        if (Objects.nonNull(fsBuyer)) {
+            setIdOfOrganizationReference(fsBuyer);
+            fs.setFunder(fsBuyer);
+            setSourceEntity(fs.getPlanning().getBudget(), fs.getFunder());
             fs.getPlanning().getBudget().setVerified(true);
         }
-        /*source parties*/
-        if (Objects.isNull(buyer)) {
+        /*from EI buyer*/
+        if (Objects.isNull(fsBuyer)) {
+            setFounderFromEi(fs, ei.getBuyer());
+            setSourceEntity(fs.getPlanning().getBudget(), fs.getFunder());
             fs.getPlanning().getBudget().setVerified(false);
-            EiDto eiDto = eiService.getEi(cpId);
-            buyer = eiDto.getBuyer();
         }
-        processSourceEntity(fs.getPlanning().getBudget(), buyer);
-        /*tender*/
-        fs.setTender(new FsTenderDto(fs.getOcId(), TenderStatus.PLANNING, TenderStatusDetails.EMPTY, null));
+        /*save*/
         final FsEntity entity = getEntity(cpId, owner, fs);
         fsDao.save(entity);
         fs.setToken(entity.getToken().toString());
@@ -101,14 +113,30 @@ public class FsServiceImpl implements FsService {
         return null;
     }
 
-    private void processSourceEntity(final FsBudgetDto budget, final OrganizationReference buyer) {
+    private void checkCurrency(EiDto ei, FsDto fs) {
+        final Currency eiCurrency = ei.getPlanning().getBudget().getAmount().getCurrency();
+        final Currency fsCurrency = fs.getPlanning().getBudget().getAmount().getCurrency();
+        if (!eiCurrency.equals(fsCurrency)) {
+            throw new ErrorException("Currency not valid.");
+        }
+    }
+
+    private void checkPeriod(EiDto ei, FsDto fs) {
+        final Period eiPeriod = ei.getPlanning().getBudget().getPeriod();
+        final Period fsPeriod = fs.getPlanning().getBudget().getPeriod();
+        boolean fsPeriodValid = fsPeriod.getStartDate().isAfter(eiPeriod.getStartDate()) &&
+                fsPeriod.getEndDate().isBefore(eiPeriod.getEndDate());
+        if (!fsPeriodValid) {
+            throw new ErrorException("Period of financial source not valid.");
+        }
+    }
+
+    private void setSourceEntity(final FsBudgetDto budget, final FsOrganizationReferenceDto funder) {
         if (Objects.nonNull(budget)) {
-            final OrganizationReference se =
-                    new OrganizationReference(
-                            buyer.getId(),
-                            buyer.getName(),
-                            null,
-                            null,
+            final FsOrganizationReferenceDto se =
+                    new FsOrganizationReferenceDto(
+                            funder.getId(),
+                            funder.getName(),
                             null,
                             null,
                             null,
@@ -117,7 +145,19 @@ public class FsServiceImpl implements FsService {
         }
     }
 
-    private void processOrganizationReference(final OrganizationReference or) {
+    private void setFounderFromEi(final FsDto fs, final EiOrganizationReferenceDto buyer) {
+        final FsOrganizationReferenceDto funder =
+                new FsOrganizationReferenceDto(
+                        buyer.getId(),
+                        buyer.getName(),
+                        buyer.getIdentifier(),
+                        buyer.getAddress(),
+                        new LinkedHashSet(buyer.getAdditionalIdentifiers()),
+                        buyer.getContactPoint());
+        fs.setFunder(funder);
+    }
+
+    private void setIdOfOrganizationReference(final FsOrganizationReferenceDto or) {
         or.setId(or.getIdentifier().getScheme() + SEPARATOR + or.getIdentifier().getId());
     }
 

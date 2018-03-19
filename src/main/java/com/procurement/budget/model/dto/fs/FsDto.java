@@ -45,9 +45,9 @@ public class FsDto {
     @NotNull
     private FsPlanningDto planning;
     @JsonProperty("funder")
-    private OrganizationReference funder;
+    private FsOrganizationReferenceDto funder;
     @JsonProperty("payer")
-    private OrganizationReference payer;
+    private FsOrganizationReferenceDto payer;
 
     @JsonCreator
     public FsDto(@JsonProperty("token") final String token,
@@ -56,8 +56,8 @@ public class FsDto {
                  @JsonProperty("tender") final FsTenderDto tender,
                  @JsonProperty("planning") final FsPlanningDto planning,
                  @JsonProperty("buyer") final OrganizationReference buyer,
-                 @JsonProperty("funder") final OrganizationReference funder,
-                 @JsonProperty("payer") final OrganizationReference payer) {
+                 @JsonProperty("funder") final FsOrganizationReferenceDto funder,
+                 @JsonProperty("payer") final FsOrganizationReferenceDto payer) {
         this.token = token;
         this.ocId = ocId;
         this.date = date;
