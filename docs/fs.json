@@ -1,68 +1,87 @@
 {
+  "tender": {
+    "procuringEntity": {
+      "name": "FS Procuring Entity Name",
+      "identifier": {
+        "scheme": "UA-EDR",
+        "id": "987654321",
+        "legalName": "Legal FS Procuring Entity Name",
+        "uri": "http://FS.PE.com"
+      },
+      "additionalIdentifiers": [
+        {
+          "scheme": "UA-EDR",
+          "id": "987123654",
+          "legalName": "Additional Legal FS Procuring Entity Name",
+          "uri": "http://additional.FS.PE.com"
+        }
+      ],
+      "address": {
+        "streetAddress": "FS PE Address",
+        "locality": "FS PE locality",
+        "region": "FS PE region",
+        "postalCode": "11111",
+        "countryName": "FS PE country"
+      },
+      "contactPoint": {
+        "name": "FS PE name",
+        "email": "fs.pe@test.test",
+        "telephone": "+38022000000",
+        "faxNumber": "+38022000000",
+        "url": "http://contactFS.PE.com"
+      }
+    }
+  },
   "planning": {
     "budget": {
       "id": "IBAN-777",
       "description": "A short free text description of the budget source. May be used to provide the title of the budget line, or the programme used to fund this project",
       "period": {
-        "startDate": "2018-07-07T00:00:00Z",
-        "endDate": "2019-07-07T00:00:00Z"
+        "startDate": "2018-03-07T00:00:00Z",
+        "endDate": "2018-03-07T00:00:00Z"
       },
       "amount": {
         "amount": 5,
-        "currency": "MDL"
+        "currency": "UAH"
       },
       "isEuropeanUnionFunded": true,
       "europeanUnionFunding": {
         "projectName": "Name or other national identification of the project providing full or partial funding",
         "projectIdentifier": "PROJ-ID-1234-5678-0987",
         "uri": "https://test.funding.org"
-      },
-      "verified": false
+      }
     },
     "rationale": "The rationale for the procurement provided in free text. More detail can be provided in an attached document"
   },
-  "parties": [
-    {
-      "name": "Velychnyi Svynarnyk",
-      "identifier": {
-        "id": "123412341234",
+  "buyer": {
+    "name": "FS Buyer Биківнянська міська лікарня",
+    "identifier": {
+      "id": "987654321",
+      "scheme": "UA-EDR",
+      "legalName": "FS Buyer Биківнянська міська лікарня",
+      "uri": "http://FSbuyerTestLink.ua"
+    },
+    "additionalIdentifiers": [
+      {
+        "id": "99999999",
         "scheme": "UA-EDR",
-        "legalName": "Velychnyi Svynarnyk",
-        "uri": "http://vs.com"
-      },
-      "additionalIdentifiers": [
-        {
-          "id": "789789789",
-          "scheme": "UA-EDR",
-          "legalName": "JBL",
-          "uri": "http://jbl.com"
-        }
-      ],
-      "address": {
-        "streetAddress": "149-159 High Street",
-        "locality": "Birmingham",
-        "region": "Digbeth",
-        "postalCode": "B12 0JU",
-        "countryName": "United Kingdom"
-      },
-      "contactPoint": {
-        "name": "Victoria",
-        "email": "tesla@test.test",
-        "telephone": "+380222222222",
-        "faxNumber": "+380222222222",
-        "url": "https://www.tesla.com"
-      },
-      "roles": [
-        "funder"
-      ],
-      "details": {
-        "typeOfBuyer": "BODY_PUBLIC",
-        "mainGeneralActivity": "DEFENCE",
-        "mainSectoralActivity": "AIRPORT_RELATED_ACTIVITIES",
-        "isACentralPurchasingBody": true,
-        "scale": "micro"
-      },
-      "buyerProfile": "http://linkToInfoAboutBuyer.ua"
+        "legalName": "Додатково Биківнянська міська лікарня",
+        "uri": "http://FSadditionalBuyerTestLink.ua"
+      }
+    ],
+    "address": {
+      "streetAddress": "вул. Ефесівська, 37",
+      "locality": "місто Новий Ефес",
+      "region": "Одеська область",
+      "postalCode": "12345",
+      "countryName": "Україна"
+    },
+    "contactPoint": {
+      "name": "Ефесенко Ефес Ефесович",
+      "email": "test3@test.test",
+      "telephone": "+380333333333",
+      "faxNumber": "+38033333333",
+      "url": "test3@test.test"
     }
-  ]
+  }
 }
