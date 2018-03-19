@@ -16,6 +16,7 @@ import com.procurement.budget.model.dto.ocds.TenderStatusDetails;
 import com.procurement.budget.model.entity.FsEntity;
 import com.procurement.budget.utils.DateUtil;
 import com.procurement.budget.utils.JsonUtil;
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -45,6 +46,7 @@ public class FsServiceImpl implements FsService {
     @Override
     public ResponseDto createFs(final String cpId,
                                 final String owner,
+                                final LocalDateTime startDate,
                                 final FsRequestDto fsDto) {
         final FsDto fs = new FsDto();
         fs.setOcId(getOcId(cpId));
