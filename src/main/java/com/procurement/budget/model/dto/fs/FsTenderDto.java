@@ -28,13 +28,13 @@ public class FsTenderDto {
 
     @JsonProperty("procuringEntity")
     @NotNull
-    private OrganizationReference procuringEntity;
+    private FsOrganizationReferenceDto procuringEntity;
 
     @JsonCreator
     public FsTenderDto(@JsonProperty("id") final String id,
                        @JsonProperty("status") final TenderStatus status,
                        @JsonProperty("statusDetails") final TenderStatusDetails statusDetails,
-                       @JsonProperty("procuringEntity") final OrganizationReference procuringEntity) {
+                       @JsonProperty("procuringEntity") final FsOrganizationReferenceDto procuringEntity) {
         this.id = id;
         this.status = status;
         this.statusDetails = statusDetails;
