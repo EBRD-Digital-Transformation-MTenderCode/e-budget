@@ -23,27 +23,27 @@ public class FsController {
     }
 
     @PostMapping
-    public ResponseEntity<ResponseDto> create(final String cpId,
-                                              final String owner,
+    public ResponseEntity<ResponseDto> create(@RequestParam final String cpId,
+                                              @RequestParam final String owner,
                                               @Valid @RequestBody final FsRequestDto fsDto) {
         return new ResponseEntity<>(fsService.createFs(cpId, owner, fsDto), HttpStatus.CREATED);
     }
 
     @PutMapping
-    public ResponseEntity<ResponseDto> update(final String cpId,
-                                              final String ocId,
-                                              final String token,
-                                              final String owner,
+    public ResponseEntity<ResponseDto> update(@RequestParam final String cpId,
+                                              @RequestParam final String ocId,
+                                              @RequestParam final String token,
+                                              @RequestParam final String owner,
                                               @Valid @RequestBody final FsDto fsDto) {
         return new ResponseEntity<>(fsService.updateFs(cpId, ocId, token, owner, fsDto), HttpStatus.OK);
     }
 
-    @PostMapping
-    public ResponseEntity<ResponseDto> check(final String cpId,
-                                              final String ocId,
-                                              final String token,
-                                              final String owner,
-                                              @Valid @RequestBody final CheckRequestDto dto) {
+    @PostMapping("/check")
+    public ResponseEntity<ResponseDto> check(@RequestParam final String cpId,
+                                             @RequestParam final String ocId,
+                                             @RequestParam final String token,
+                                             @RequestParam final String owner,
+                                             @Valid @RequestBody final CheckRequestDto dto) {
         return new ResponseEntity<>(fsService.checkFs(cpId, ocId, token, owner, dto), HttpStatus.OK);
     }
 
