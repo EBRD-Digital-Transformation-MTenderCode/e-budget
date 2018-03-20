@@ -46,11 +46,11 @@ public class FsServiceImpl implements FsService {
     @Override
     public ResponseDto createFs(final String cpId,
                                 final String owner,
-                                final LocalDateTime startDate,
+                                final LocalDateTime date,
                                 final FsRequestDto fsDto) {
         final FsDto fs = new FsDto();
         fs.setOcId(getOcId(cpId));
-        fs.setDate(startDate);
+        fs.setDate(date);
         final EiDto ei = eiService.getEi(cpId);
         /*checkCurrency*/
         checkCurrency(ei, fsDto);

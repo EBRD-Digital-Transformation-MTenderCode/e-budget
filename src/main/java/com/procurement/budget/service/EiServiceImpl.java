@@ -41,11 +41,11 @@ public class EiServiceImpl implements EiService {
     @Override
     public ResponseDto createEi(final String owner,
                                 final String country,
-                                final LocalDateTime startDate,
+                                final LocalDateTime date,
                                 final EiDto ei) {
-        final String cpId = getCpId(startDate, country);
+        final String cpId = getCpId(date, country);
         ei.setOcId(cpId);
-        ei.setDate(startDate);
+        ei.setDate(date);
         setTenderId(ei, cpId);
         setTenderStatus(ei);
         setBudgetId(ei);

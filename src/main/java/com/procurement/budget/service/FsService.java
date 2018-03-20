@@ -12,7 +12,7 @@ public interface FsService {
 
     ResponseDto createFs(String cpId,
                          String owner,
-                         LocalDateTime startDate,
+                         LocalDateTime date,
                          FsRequestDto fsDto);
 
     ResponseDto updateFs(String cpId,
