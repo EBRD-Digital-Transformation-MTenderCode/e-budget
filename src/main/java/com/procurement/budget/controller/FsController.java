@@ -25,30 +25,26 @@ public class FsController {
     }
 
     @PostMapping
-    public ResponseEntity<ResponseDto> create(@RequestParam final String cpId,
-                                              @RequestParam final String owner,
-                                              @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-                                              @RequestParam final LocalDateTime startDate,
-                                              @Valid @RequestBody final FsRequestDto fsDto) {
-        return new ResponseEntity<>(fsService.createFs(cpId, owner, startDate, fsDto), HttpStatus.CREATED);
+    public ResponseEntity<ResponseDto> createFs(@RequestParam final String cpId,
+                                                @RequestParam final String owner,
+                                                @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+                                                @RequestParam final LocalDateTime date,
+                                                @Valid @RequestBody final FsRequestDto fsDto) {
+        return new ResponseEntity<>(fsService.createFs(cpId, owner, date, fsDto), HttpStatus.CREATED);
     }
 
     @PutMapping
-    public ResponseEntity<ResponseDto> update(@RequestParam final String cpId,
-                                              @RequestParam final String ocId,
-                                              @RequestParam final String token,
-                                              @RequestParam final String owner,
-                                              @Valid @RequestBody final FsDto fsDto) {
+    public ResponseEntity<ResponseDto> updateFs(@RequestParam final String cpId,
+                                                @RequestParam final String ocId,
+                                                @RequestParam final String token,
+                                                @RequestParam final String owner,
+                                                @Valid @RequestBody final FsDto fsDto) {
         return new ResponseEntity<>(fsService.updateFs(cpId, ocId, token, owner, fsDto), HttpStatus.OK);
     }
 
     @PostMapping("/check")
-    public ResponseEntity<ResponseDto> check(@RequestParam final String cpId,
-                                             @RequestParam final String ocId,
-                                             @RequestParam final String token,
-                                             @RequestParam final String owner,
-                                             @Valid @RequestBody final CheckRequestDto dto) {
-        return new ResponseEntity<>(fsService.checkFs(cpId, ocId, token, owner, dto), HttpStatus.OK);
+    public ResponseEntity<ResponseDto> checkFs(@Valid @RequestBody final CheckRequestDto dto) {
+        return new ResponseEntity<>(fsService.checkFs(dto), HttpStatus.OK);
     }
 
 }

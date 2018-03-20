@@ -1,6 +1,7 @@
 package com.procurement.budget.dao;
 
 import com.procurement.budget.model.entity.FsEntity;
+import java.util.List;
 import java.util.UUID;
 import org.springframework.stereotype.Service;
 
@@ -10,5 +11,7 @@ public interface FsDao {
     void save(FsEntity entity);
 
     FsEntity getByCpIdAndOcIdAndToken(String cpId, String ocId, UUID token);
+
+    List<FsEntity> getAllByCpId(String cpId);
 }
 

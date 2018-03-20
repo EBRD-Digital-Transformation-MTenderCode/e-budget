@@ -1,10 +1,13 @@
 package com.procurement.budget.dao;
 
+import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.Row;
 import com.datastax.driver.core.Session;
 import com.datastax.driver.core.Statement;
 import com.datastax.driver.core.querybuilder.Insert;
 import com.procurement.budget.model.entity.FsEntity;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import org.springframework.stereotype.Service;
 
@@ -51,15 +54,35 @@ public class FsDaoImpl implements FsDao {
                 .and(eq(TOKEN, token))
                 .limit(1);
         final Row row = session.execute(query).one();
-        if (row!=null)
-        return new FsEntity(
-                row.getString(CP_ID),
-                row.getString(OC_ID),
-                row.getUUID(TOKEN),
-                row.getString(OWNER),
-                row.getDouble(AMOUNT),
-                row.getDouble(AMOUNT_RESERVED),
-                row.getString(JSON_DATA));
+        if (row != null)
+            return new FsEntity(
+                    row.getString(CP_ID),
+                    row.getString(OC_ID),
+                    row.getUUID(TOKEN),
+                    row.getString(OWNER),
+                    row.getDouble(AMOUNT),
+                    row.getDouble(AMOUNT_RESERVED),
+                    row.getString(JSON_DATA));
         return null;
+    }
+
+    @Override
+    public List<FsEntity> getAllByCpId(final String cpId) {
+        final Statement query = select()
+                .all()
+                .from(FS_TABLE)
+                .where(eq(CP_ID, cpId));
+        final ResultSet resultSet = session.execute(query);
+        List<FsEntity> entities = new ArrayList<>();
+        resultSet.forEach(row ->
+                entities.add(new FsEntity(
+                        row.getString(CP_ID),
+                        row.getString(OC_ID),
+                        row.getUUID(TOKEN),
+                        row.getString(OWNER),
+                        row.getDouble(AMOUNT),
+                        row.getDouble(AMOUNT_RESERVED),
+                        row.getString(JSON_DATA))));
+        return entities;
     }
 }

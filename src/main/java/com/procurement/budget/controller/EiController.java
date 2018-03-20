@@ -23,19 +23,19 @@ public class EiController {
     }
 
     @PostMapping
-    public ResponseEntity<ResponseDto> create(@RequestParam final String owner,
-                                              @RequestParam final String country,
-                                              @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-                                              @RequestParam final LocalDateTime startDate,
-                                              @Valid @RequestBody final EiDto eiDto) {
-        return new ResponseEntity<>(eiService.createEi(owner, country, startDate, eiDto), HttpStatus.CREATED);
+    public ResponseEntity<ResponseDto> createEi(@RequestParam final String owner,
+                                                @RequestParam final String country,
+                                                @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+                                                @RequestParam final LocalDateTime date,
+                                                @Valid @RequestBody final EiDto eiDto) {
+        return new ResponseEntity<>(eiService.createEi(owner, country, date, eiDto), HttpStatus.CREATED);
     }
 
     @PutMapping
-    public ResponseEntity<ResponseDto> update(@RequestParam final String cpId,
-                                              @RequestParam final String owner,
-                                              @RequestParam final String token,
-                                              @Valid @RequestBody final EiDto eiDto) {
+    public ResponseEntity<ResponseDto> updateEi(@RequestParam final String cpId,
+                                                @RequestParam final String owner,
+                                                @RequestParam final String token,
+                                                @Valid @RequestBody final EiDto eiDto) {
         return new ResponseEntity<>(eiService.updateEi(owner, cpId, token, eiDto), HttpStatus.OK);
     }
 }
