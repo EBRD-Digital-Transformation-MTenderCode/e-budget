@@ -21,9 +21,5 @@ public interface FsService {
                          String owner,
                          FsDto fsDto);
 
-    ResponseDto checkFs(String cpId,
-                        String ocId,
-                        String token,
-                        String owner,
-                        CheckRequestDto dto);
+    ResponseDto checkFs(CheckRequestDto dto);
 }

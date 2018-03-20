@@ -43,12 +43,8 @@ public class FsController {
     }
 
     @PostMapping("/check")
-    public ResponseEntity<ResponseDto> checkFs(@RequestParam final String cpId,
-                                               @RequestParam final String ocId,
-                                               @RequestParam final String token,
-                                               @RequestParam final String owner,
-                                               @Valid @RequestBody final CheckRequestDto dto) {
-        return new ResponseEntity<>(fsService.checkFs(cpId, ocId, token, owner, dto), HttpStatus.OK);
+    public ResponseEntity<ResponseDto> checkFs(@Valid @RequestBody final CheckRequestDto dto) {
+        return new ResponseEntity<>(fsService.checkFs(dto), HttpStatus.OK);
     }
 
 }
