@@ -19,6 +19,7 @@ import com.procurement.budget.utils.DateUtil;
 import com.procurement.budget.utils.JsonUtil;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -110,33 +111,38 @@ public class FsServiceImpl implements FsService {
 
     @Override
     public ResponseDto checkFs(CheckRequestDto dto) {
-        final String cpId = getCpIdFromOcId(dto.getBudgetBreakdown().get(0).getId());
-        final List<FsEntity> entities = fsDao.getAllByCpId(cpId);
-        if (entities.isEmpty()) throw new ErrorException(DATA_NOT_FOUND_ERROR);
-        Map<String, FsDto> fsMap = new HashMap<>();
+        List<CheckBudgetBreakdownDto> budgetBreakdown = dto.getBudgetBreakdown();
+        Set<String> eiIds = budgetBreakdown.stream()
+                .map(b -> getCpIdFromOcId(b.getId()))
+                .collect(Collectors.toSet());
         HashSet<FsOrganizationReferenceDto> funders = new HashSet<>();
         HashSet<FsOrganizationReferenceDto> payers = new HashSet<>();
-        entities.stream()
-                .map(e -> jsonUtil.toObject(FsDto.class, e.getJsonData()))
-                .forEach(fsDto -> fsMap.put(fsDto.getOcId(), fsDto));
-        dto.getBudgetBreakdown().forEach(bBr -> {
-            final FsDto fs = fsMap.get(bBr.getId());
-            if (Objects.isNull(fs)) throw new ErrorException(DATA_NOT_FOUND_ERROR);
-            checkTenderPeriod(fs, dto);
-            checkFsCurrency(fs, bBr);
-            checkFsAmount(fs, bBr);
-            checkFsStatus(fs);
-            funders.add(fs.getFunder());
-            payers.add(fs.getPayer());
-        });
-        final EiDto ei = eiService.getEi(cpId);
-        CheckResponseDto responseDto = new CheckResponseDto(
-                dto.getBudgetBreakdown(),
-                funders,
-                payers,
-                ei.getBuyer()
+        HashSet<EiOrganizationReferenceDto> buyers = new HashSet<>();
+        for (String cpId : eiIds) {
+            final List<FsEntity> entities = fsDao.getAllByCpId(cpId);
+            if (entities.isEmpty()) throw new ErrorException(DATA_NOT_FOUND_ERROR);
+            final Map<String, FsDto> fsMap = new HashMap<>();
+            entities.stream()
+                    .map(e -> jsonUtil.toObject(FsDto.class, e.getJsonData()))
+                    .forEach(fsDto -> fsMap.put(fsDto.getOcId(), fsDto));
+            dto.getBudgetBreakdown().forEach(bBr -> {
+                final FsDto fs = fsMap.get(bBr.getId());
+                if (Objects.isNull(fs)) throw new ErrorException(DATA_NOT_FOUND_ERROR);
+                checkTenderPeriod(fs, dto);
+                checkFsCurrency(fs, bBr);
+                checkFsAmount(fs, bBr);
+                checkFsStatus(fs);
+                funders.add(fs.getFunder());
+                payers.add(fs.getPayer());
+            });
+            final EiDto ei = eiService.getEi(cpId);
+            buyers.add(ei.getBuyer());
+        }
+        return new ResponseDto<>(
+                true,
+                null,
+                new CheckResponseDto(budgetBreakdown, eiIds, funders, payers, buyers)
         );
-        return new ResponseDto<>(true, null, responseDto);
     }
 
     private void checkTenderPeriod(FsDto fs, CheckRequestDto dto) {

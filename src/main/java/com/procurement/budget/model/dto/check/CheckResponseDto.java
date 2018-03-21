@@ -9,13 +9,12 @@ import com.procurement.budget.model.dto.fs.FsOrganizationReferenceDto;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import lombok.Getter;
 
 @Getter
 @JsonPropertyOrder({
         "budgetBreakdown",
+        "ei",
         "funder",
         "payer",
         "buyer"
@@ -24,19 +23,23 @@ import lombok.Getter;
 public class CheckResponseDto {
     @JsonProperty("budgetBreakdown")
     private final List<CheckBudgetBreakdownDto> budgetBreakdown;
+    @JsonProperty("ei")
+    private final Set<String> ei;
     @JsonProperty("funder")
     private Set<FsOrganizationReferenceDto> funder;
     @JsonProperty("payer")
     private Set<FsOrganizationReferenceDto> payer;
     @JsonProperty("buyer")
-    private EiOrganizationReferenceDto buyer;
+    private Set<EiOrganizationReferenceDto> buyer;
 
     @JsonCreator
     public CheckResponseDto(@JsonProperty("budgetBreakdown") final List<CheckBudgetBreakdownDto> budgetBreakdown,
+                            @JsonProperty("ei") final Set<String> ei,
                             @JsonProperty("funder") final HashSet<FsOrganizationReferenceDto> funder,
                             @JsonProperty("payer") final HashSet<FsOrganizationReferenceDto> payer,
-                            @JsonProperty("buyer")final EiOrganizationReferenceDto buyer) {
+                            @JsonProperty("buyer") final HashSet<EiOrganizationReferenceDto> buyer) {
         this.budgetBreakdown = budgetBreakdown;
+        this.ei = ei;
         this.funder = funder;
         this.payer = payer;
         this.buyer = buyer;
