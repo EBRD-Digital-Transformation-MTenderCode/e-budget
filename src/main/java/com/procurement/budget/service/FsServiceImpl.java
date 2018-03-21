@@ -25,7 +25,7 @@ import org.springframework.stereotype.Service;
 public class FsServiceImpl implements FsService {
 
     private static final String SEPARATOR = "-";
-    private static final String FS_SEPARATOR = "-fs-";
+    private static final String FS_SEPARATOR = "-FS-";
     private static final String DATA_NOT_FOUND_ERROR = "FS not found.";
     private static final String INVALID_OWNER_ERROR = "FS invalid owner.";
     private final JsonUtil jsonUtil;
