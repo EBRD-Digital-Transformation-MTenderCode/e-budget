@@ -49,7 +49,7 @@ public class FsServiceImpl implements FsService {
                                 final LocalDateTime date,
                                 final FsRequestDto fsDto) {
         final FsDto fs = new FsDto();
-        fs.setOcId(getOcId(cpId, date));
+        fs.setOcId(getOcId(cpId));
         fs.setDate(date);
         final EiDto ei = eiService.getEi(cpId);
         /*checkCurrency*/
@@ -222,8 +222,8 @@ public class FsServiceImpl implements FsService {
         or.setId(or.getIdentifier().getScheme() + SEPARATOR + or.getIdentifier().getId());
     }
 
-    private String getOcId(final String cpId, final LocalDateTime date) {
-        return cpId + FS_SEPARATOR + dateUtil.getMilliUTC(date);
+    private String getOcId(final String cpId) {
+        return cpId + FS_SEPARATOR + dateUtil.getMilliNowUTC();
     }
 
     private String getCpIdFromOcId(final String ocId) {

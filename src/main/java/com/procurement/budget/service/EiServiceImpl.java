@@ -43,7 +43,7 @@ public class EiServiceImpl implements EiService {
                                 final String country,
                                 final LocalDateTime date,
                                 final EiDto ei) {
-        final String cpId = getCpId(date, country);
+        final String cpId = getCpId(country);
         ei.setOcId(cpId);
         ei.setDate(date);
         setTenderId(ei, cpId);
@@ -81,9 +81,9 @@ public class EiServiceImpl implements EiService {
         return jsonUtil.toObject(EiDto.class, entity.getJsonData());
     }
 
-    private String getCpId(final LocalDateTime startDate, final String country) {
+    private String getCpId(final String country) {
         return  ocdsProperties.getPrefix() + SEPARATOR + country.toUpperCase() + SEPARATOR +
-                dateUtil.getMilliUTC(startDate);
+                dateUtil.getMilliNowUTC();
     }
 
     private void setIdOfOrganizationReference(final EiOrganizationReferenceDto or) {
