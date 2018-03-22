@@ -11,8 +11,10 @@ import com.procurement.budget.model.dto.check.CheckSourcePartyDto;
 import com.procurement.budget.model.dto.ei.EiDto;
 import com.procurement.budget.model.dto.ei.EiOrganizationReferenceDto;
 import com.procurement.budget.model.dto.fs.*;
-import com.procurement.budget.model.dto.ocds.*;
 import com.procurement.budget.model.dto.ocds.Currency;
+import com.procurement.budget.model.dto.ocds.Period;
+import com.procurement.budget.model.dto.ocds.TenderStatus;
+import com.procurement.budget.model.dto.ocds.TenderStatusDetails;
 import com.procurement.budget.model.entity.FsEntity;
 import com.procurement.budget.utils.DateUtil;
 import com.procurement.budget.utils.JsonUtil;
@@ -152,8 +154,13 @@ public class FsServiceImpl implements FsService {
     private void checkTenderPeriod(FsDto fs, CheckRequestDto dto) {
         final LocalDateTime tenderPeriodStartDate = dto.getTenderPeriod().getStartDate();
         final Period fsPeriod = fs.getPlanning().getBudget().getPeriod();
-        boolean tenderPeriodValid = tenderPeriodStartDate.isAfter(fsPeriod.getStartDate()) &&
-                tenderPeriodStartDate.isBefore(fsPeriod.getEndDate());
+        boolean tenderPeriodValid =
+                (tenderPeriodStartDate.isAfter(fsPeriod.getStartDate()) ||
+                        tenderPeriodStartDate.isEqual(fsPeriod.getStartDate()))
+                        &&
+                        (tenderPeriodStartDate.isBefore(fsPeriod.getEndDate()) ||
+                                tenderPeriodStartDate.isEqual(fsPeriod.getEndDate()));
+
         if (!tenderPeriodValid) {
             throw new ErrorException("Tender period start date is not in financial source period.");
         }
@@ -170,7 +177,7 @@ public class FsServiceImpl implements FsService {
     private void checkFsAmount(FsDto fs, CheckBudgetBreakdownDto br) {
         final Double fsAmount = fs.getPlanning().getBudget().getAmount().getAmount();
         final Double brAmount = br.getAmount().getAmount();
-        if (!(brAmount<=fsAmount)) {
+        if (!(brAmount <= fsAmount)) {
             throw new ErrorException("Budget breakdown amount invalid.");
         }
     }
@@ -197,8 +204,12 @@ public class FsServiceImpl implements FsService {
     private void checkPeriod(EiDto ei, FsRequestDto fs) {
         final Period eiPeriod = ei.getPlanning().getBudget().getPeriod();
         final Period fsPeriod = fs.getPlanning().getBudget().getPeriod();
-        boolean fsPeriodValid = fsPeriod.getStartDate().isAfter(eiPeriod.getStartDate()) &&
-                fsPeriod.getEndDate().isBefore(eiPeriod.getEndDate());
+        boolean fsPeriodValid =
+                (fsPeriod.getStartDate().isAfter(eiPeriod.getStartDate()) ||
+                        fsPeriod.getStartDate().isEqual(eiPeriod.getStartDate()))
+                        &&
+                        (fsPeriod.getEndDate().isBefore(eiPeriod.getEndDate()) ||
+                                fsPeriod.getEndDate().isEqual(eiPeriod.getEndDate()));
         if (!fsPeriodValid) {
             throw new ErrorException("Period of financial source not valid.");
         }
