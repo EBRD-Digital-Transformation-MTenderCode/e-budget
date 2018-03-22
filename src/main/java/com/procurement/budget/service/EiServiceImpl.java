@@ -65,7 +65,6 @@ public class EiServiceImpl implements EiService {
                 .orElseThrow(() -> new ErrorException(DATA_NOT_FOUND_ERROR));
         if (!entity.getOwner().equals(owner)) throw new ErrorException(INVALID_OWNER_ERROR);
         final EiDto ei = jsonUtil.toObject(EiDto.class, entity.getJsonData());
-        ei.setDate(dateUtil.getNowUTC());
         ei.setPlanning(eiDto.getPlanning());
         ei.setTender(eiDto.getTender());
         entity.setJsonData(jsonUtil.toJson(ei));

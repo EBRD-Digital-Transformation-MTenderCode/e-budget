@@ -18,7 +18,6 @@ import lombok.Setter;
 @JsonPropertyOrder({
         "token",
         "ocid",
-        "date",
         "tender",
         "planning",
         "buyer"
@@ -29,10 +28,6 @@ public class EiDto {
     private String token;
     @JsonProperty("ocid")
     private String ocId;
-    @JsonProperty("date")
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
-    private LocalDateTime date;
     @JsonProperty("tender")
     @NotNull
     @Valid
@@ -49,13 +44,11 @@ public class EiDto {
     @JsonCreator
     public EiDto(@JsonProperty("token") final String token,
                  @JsonProperty("ocid") final String ocId,
-                 @JsonProperty("date") final LocalDateTime date,
                  @JsonProperty("tender") final EiTenderDto tender,
                  @JsonProperty("planning") final EiPlanningDto planning,
                  @JsonProperty("buyer") final EiOrganizationReferenceDto buyer) {
         this.token = token;
         this.ocId = ocId;
-        this.date = date;
         this.tender = tender;
         this.planning = planning;
         this.buyer = buyer;

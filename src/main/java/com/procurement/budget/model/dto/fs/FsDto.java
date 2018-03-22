@@ -34,10 +34,6 @@ public class FsDto {
     private String token;
     @JsonProperty("ocid")
     private String ocId;
-    @JsonProperty("date")
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
-    private LocalDateTime date;
     @JsonProperty("tender")
     @NotNull
     private FsTenderDto tender;
@@ -52,15 +48,12 @@ public class FsDto {
     @JsonCreator
     public FsDto(@JsonProperty("token") final String token,
                  @JsonProperty("ocid") final String ocId,
-                 @JsonProperty("date") final LocalDateTime date,
                  @JsonProperty("tender") final FsTenderDto tender,
                  @JsonProperty("planning") final FsPlanningDto planning,
-                 @JsonProperty("buyer") final OrganizationReference buyer,
                  @JsonProperty("funder") final FsOrganizationReferenceDto funder,
                  @JsonProperty("payer") final FsOrganizationReferenceDto payer) {
         this.token = token;
         this.ocId = ocId;
-        this.date = date;
         this.tender = tender;
         this.planning = planning;
         this.funder = funder;
