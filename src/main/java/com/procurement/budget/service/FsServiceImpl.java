@@ -46,7 +46,7 @@ public class FsServiceImpl implements FsService {
     @Override
     public ResponseDto createFs(final String cpId,
                                 final String owner,
-                                final LocalDateTime date,
+                                final LocalDateTime dateTime,
                                 final FsRequestDto fsDto) {
         final FsDto fs = new FsDto();
         fs.setOcId(getOcId(cpId));
@@ -83,7 +83,7 @@ public class FsServiceImpl implements FsService {
             fs.getPlanning().getBudget().setVerified(false);
         }
         /*save*/
-        final FsEntity entity = getEntity(cpId, fs, owner, date);
+        final FsEntity entity = getEntity(cpId, fs, owner, dateTime);
         fsDao.save(entity);
         fs.setToken(entity.getToken().toString());
         return new ResponseDto<>(true, null, fs);
@@ -247,13 +247,13 @@ public class FsServiceImpl implements FsService {
         return fs.getPlanning().getBudget().getAmount().getAmount();
     }
 
-    private FsEntity getEntity(final String cpId, final FsDto fs, final String owner, final LocalDateTime date) {
+    private FsEntity getEntity(final String cpId, final FsDto fs, final String owner, final LocalDateTime dateTime) {
         final FsEntity fsEntity = new FsEntity();
         fsEntity.setCpId(cpId);
         fsEntity.setOcId(fs.getOcId());
         fsEntity.setToken(UUIDs.random());
         fsEntity.setOwner(owner);
-        fsEntity.setCreatedDate(dateUtil.localToDate(date));
+        fsEntity.setCreatedDate(dateUtil.localToDate(dateTime));
         fsEntity.setJsonData(jsonUtil.toJson(fs));
         fsEntity.setAmount(getAmount(fs));
         return fsEntity;

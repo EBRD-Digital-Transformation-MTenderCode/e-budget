@@ -10,7 +10,7 @@ public interface EiService {
 
     ResponseDto createEi(String owner,
                          String country,
-                         LocalDateTime date,
+                         LocalDateTime dateTime,
                          EiDto eiDto);
 
     ResponseDto updateEi(String owner,
