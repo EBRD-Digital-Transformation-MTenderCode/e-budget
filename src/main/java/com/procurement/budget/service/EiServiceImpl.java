@@ -45,12 +45,11 @@ public class EiServiceImpl implements EiService {
                                 final EiDto ei) {
         final String cpId = getCpId(country);
         ei.setOcId(cpId);
-        ei.setDate(date);
         setTenderId(ei, cpId);
         setTenderStatus(ei);
         setBudgetId(ei);
         setIdOfOrganizationReference(ei.getBuyer());
-        final EiEntity entity = getEntity(ei, owner);
+        final EiEntity entity = getEntity(ei, owner, date);
         eiDao.save(entity);
         ei.setToken(entity.getToken().toString());
         return new ResponseDto<>(true, null, ei);
@@ -103,11 +102,12 @@ public class EiServiceImpl implements EiService {
         ei.getPlanning().getBudget().setId(ei.getTender().getClassification().getId());
     }
 
-    private EiEntity getEntity(final EiDto ei, final String owner) {
+    private EiEntity getEntity(final EiDto ei, final String owner, final LocalDateTime date) {
         final EiEntity eiEntity = new EiEntity();
         eiEntity.setCpId(ei.getOcId());
         eiEntity.setToken(UUIDs.random());
         eiEntity.setOwner(owner);
+        eiEntity.setCreatedDate(dateUtil.localToDate(date));
         eiEntity.setJsonData(jsonUtil.toJson(ei));
         return eiEntity;
     }

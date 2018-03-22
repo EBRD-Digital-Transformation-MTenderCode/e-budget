@@ -1,5 +1,6 @@
 package com.procurement.budget.model.entity;
 
+import java.util.Date;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,6 +24,8 @@ public class FsEntity {
     private Double amount;
 
     private Double amountReserved;
+
+    private Date createdDate;
 
     private String jsonData;
 }

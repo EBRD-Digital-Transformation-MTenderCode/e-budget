@@ -4,6 +4,7 @@ CREATE TABLE IF NOT EXISTS  ocds.budget_ei (
     cp_id text,
     token_entity uuid,
     owner text,
+    created_date timestamp,
     json_data text,
     primary key(cp_id, token_entity)
 );
@@ -15,6 +16,7 @@ CREATE TABLE IF NOT EXISTS  ocds.budget_fs (
     owner text,
     amount double,
     amount_reserved double,
+    created_date timestamp,
     json_data text,
     primary key(cp_id, oc_id, token_entity)
 );

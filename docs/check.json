@@ -1,0 +1,21 @@
+{
+  "budgetBreakdown": [
+    {
+      "id": "ocds-t1s2t3-UA-1521719176123-FS-1521719179573",
+      "amount": {
+        "amount": 483067047.5,
+        "currency": "MDL"
+      }
+    },
+    {
+      "id": "ocds-t1s2t3-UA-1521719176123-FS-1521719180107",
+      "amount": {
+        "amount": 955.27,
+        "currency": "MDL"
+      }
+    }
+  ],
+  "tenderPeriod": {
+    "startDate": "2018-09-10T12:30:30Z"
+  }
+}

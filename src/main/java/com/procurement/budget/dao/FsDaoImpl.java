@@ -23,6 +23,7 @@ public class FsDaoImpl implements FsDao {
     private static final String OWNER = "owner";
     private static final String AMOUNT = "amount";
     private static final String AMOUNT_RESERVED = "amount_reserved";
+    private static final String CREATED_DATE = "created_date";
     private static final String JSON_DATA = "json_data";
 
     private final Session session;
@@ -40,6 +41,7 @@ public class FsDaoImpl implements FsDao {
                 .value(OWNER, entity.getOwner())
                 .value(AMOUNT, entity.getAmount())
                 .value(AMOUNT_RESERVED, entity.getAmountReserved())
+                .value(CREATED_DATE, entity.getCreatedDate())
                 .value(JSON_DATA, entity.getJsonData());
         session.execute(insert);
     }
@@ -62,6 +64,7 @@ public class FsDaoImpl implements FsDao {
                     row.getString(OWNER),
                     row.getDouble(AMOUNT),
                     row.getDouble(AMOUNT_RESERVED),
+                    row.getTimestamp(CREATED_DATE),
                     row.getString(JSON_DATA));
         return null;
     }
@@ -82,6 +85,7 @@ public class FsDaoImpl implements FsDao {
                         row.getString(OWNER),
                         row.getDouble(AMOUNT),
                         row.getDouble(AMOUNT_RESERVED),
+                        row.getTimestamp(CREATED_DATE),
                         row.getString(JSON_DATA))));
         return entities;
     }

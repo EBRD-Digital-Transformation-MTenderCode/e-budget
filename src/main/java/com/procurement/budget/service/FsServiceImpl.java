@@ -7,13 +7,12 @@ import com.procurement.budget.model.dto.bpe.ResponseDto;
 import com.procurement.budget.model.dto.check.CheckBudgetBreakdownDto;
 import com.procurement.budget.model.dto.check.CheckRequestDto;
 import com.procurement.budget.model.dto.check.CheckResponseDto;
+import com.procurement.budget.model.dto.check.CheckSourcePartyDto;
 import com.procurement.budget.model.dto.ei.EiDto;
 import com.procurement.budget.model.dto.ei.EiOrganizationReferenceDto;
 import com.procurement.budget.model.dto.fs.*;
+import com.procurement.budget.model.dto.ocds.*;
 import com.procurement.budget.model.dto.ocds.Currency;
-import com.procurement.budget.model.dto.ocds.Period;
-import com.procurement.budget.model.dto.ocds.TenderStatus;
-import com.procurement.budget.model.dto.ocds.TenderStatusDetails;
 import com.procurement.budget.model.entity.FsEntity;
 import com.procurement.budget.utils.DateUtil;
 import com.procurement.budget.utils.JsonUtil;
@@ -51,7 +50,6 @@ public class FsServiceImpl implements FsService {
                                 final FsRequestDto fsDto) {
         final FsDto fs = new FsDto();
         fs.setOcId(getOcId(cpId));
-        fs.setDate(date);
         final EiDto ei = eiService.getEi(cpId);
         /*checkCurrency*/
         checkCurrency(ei, fsDto);
@@ -85,7 +83,7 @@ public class FsServiceImpl implements FsService {
             fs.getPlanning().getBudget().setVerified(false);
         }
         /*save*/
-        final FsEntity entity = getEntity(cpId, owner, fs);
+        final FsEntity entity = getEntity(cpId, fs, owner, date);
         fsDao.save(entity);
         fs.setToken(entity.getToken().toString());
         return new ResponseDto<>(true, null, fs);
@@ -101,7 +99,6 @@ public class FsServiceImpl implements FsService {
                 .orElseThrow(() -> new ErrorException(DATA_NOT_FOUND_ERROR));
         if (!entity.getOwner().equals(owner)) throw new ErrorException(INVALID_OWNER_ERROR);
         final FsDto fs = jsonUtil.toObject(FsDto.class, entity.getJsonData());
-        fs.setDate(dateUtil.getNowUTC());
         fs.setTender(fsDto.getTender());
         fs.setPlanning(fsDto.getPlanning());
         entity.setJsonData(jsonUtil.toJson(fs));
@@ -125,13 +122,14 @@ public class FsServiceImpl implements FsService {
             entities.stream()
                     .map(e -> jsonUtil.toObject(FsDto.class, e.getJsonData()))
                     .forEach(fsDto -> fsMap.put(fsDto.getOcId(), fsDto));
-            dto.getBudgetBreakdown().forEach(bBr -> {
-                final FsDto fs = fsMap.get(bBr.getId());
+            dto.getBudgetBreakdown().forEach(br -> {
+                final FsDto fs = fsMap.get(br.getId());
                 if (Objects.isNull(fs)) throw new ErrorException(DATA_NOT_FOUND_ERROR);
-                checkTenderPeriod(fs, dto);
-                checkFsCurrency(fs, bBr);
-                checkFsAmount(fs, bBr);
+                processBudgetBreakdown(br, fs);
                 checkFsStatus(fs);
+                checkTenderPeriod(fs, dto);
+                checkFsAmount(fs, br);
+                checkFsCurrency(fs, br);
                 funders.add(fs.getFunder());
                 payers.add(fs.getPayer());
             });
@@ -145,6 +143,12 @@ public class FsServiceImpl implements FsService {
         );
     }
 
+    private void processBudgetBreakdown(CheckBudgetBreakdownDto br, FsDto fs) {
+        FsOrganizationReferenceDto fsSe = fs.getPlanning().getBudget().getSourceEntity();
+        br.setSourceParty(new CheckSourcePartyDto(fsSe.getId(), fsSe.getName()));
+        br.setPeriod(fs.getPlanning().getBudget().getPeriod());
+    }
+
     private void checkTenderPeriod(FsDto fs, CheckRequestDto dto) {
         final LocalDateTime tenderPeriodStartDate = dto.getTenderPeriod().getStartDate();
         final Period fsPeriod = fs.getPlanning().getBudget().getPeriod();
@@ -155,18 +159,18 @@ public class FsServiceImpl implements FsService {
         }
     }
 
-    private void checkFsCurrency(FsDto fs, CheckBudgetBreakdownDto breakdown) {
+    private void checkFsCurrency(FsDto fs, CheckBudgetBreakdownDto br) {
         final Currency fsCurrency = fs.getPlanning().getBudget().getAmount().getCurrency();
-        final Currency brCurrency = breakdown.getAmount().getCurrency();
+        final Currency brCurrency = br.getAmount().getCurrency();
         if (!fsCurrency.equals(brCurrency)) {
             throw new ErrorException("Budget breakdown currency invalid.");
         }
     }
 
-    private void checkFsAmount(FsDto fs, CheckBudgetBreakdownDto breakdown) {
+    private void checkFsAmount(FsDto fs, CheckBudgetBreakdownDto br) {
         final Double fsAmount = fs.getPlanning().getBudget().getAmount().getAmount();
-        final Double brAmount = breakdown.getAmount().getAmount();
-        if (!fsAmount.equals(brAmount)) {
+        final Double brAmount = br.getAmount().getAmount();
+        if (!(brAmount<=fsAmount)) {
             throw new ErrorException("Budget breakdown amount invalid.");
         }
     }
@@ -174,8 +178,10 @@ public class FsServiceImpl implements FsService {
     private void checkFsStatus(FsDto fs) {
         final TenderStatus fsStatus = fs.getTender().getStatus();
         final TenderStatusDetails fsStatusDetails = fs.getTender().getStatusDetails();
-        if ((!fsStatus.equals(TenderStatus.ACTIVE) || !fsStatus.equals(TenderStatus.PLANNING))
-                && !fsStatusDetails.equals(TenderStatusDetails.EMPTY)) {
+        if (!((fsStatus.equals(TenderStatus.ACTIVE) ||
+                fsStatus.equals(TenderStatus.PLANNING) ||
+                fsStatus.equals(TenderStatus.PLANNED))
+                && fsStatusDetails.equals(TenderStatusDetails.EMPTY))) {
             throw new ErrorException("Financial source status invalid.");
         }
     }
@@ -241,12 +247,13 @@ public class FsServiceImpl implements FsService {
         return fs.getPlanning().getBudget().getAmount().getAmount();
     }
 
-    private FsEntity getEntity(final String cpId, final String owner, final FsDto fs) {
+    private FsEntity getEntity(final String cpId, final FsDto fs, final String owner, final LocalDateTime date) {
         final FsEntity fsEntity = new FsEntity();
         fsEntity.setCpId(cpId);
         fsEntity.setOcId(fs.getOcId());
         fsEntity.setToken(UUIDs.random());
         fsEntity.setOwner(owner);
+        fsEntity.setCreatedDate(dateUtil.localToDate(date));
         fsEntity.setJsonData(jsonUtil.toJson(fs));
         fsEntity.setAmount(getAmount(fs));
         return fsEntity;

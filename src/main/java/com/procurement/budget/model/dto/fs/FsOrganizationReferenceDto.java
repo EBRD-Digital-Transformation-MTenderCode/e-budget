@@ -28,9 +28,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
         "identifier",
         "address",
         "additionalIdentifiers",
-        "contactPoint",
-        "details",
-        "buyerProfile"
+        "contactPoint"
 })
 public class FsOrganizationReferenceDto {
     @JsonProperty("id")
