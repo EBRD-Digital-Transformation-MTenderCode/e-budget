@@ -28,9 +28,9 @@ public class FsController {
     public ResponseEntity<ResponseDto> createFs(@RequestParam final String cpId,
                                                 @RequestParam final String owner,
                                                 @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-                                                @RequestParam("date") final LocalDateTime dateTime,
+                                                @RequestParam final LocalDateTime date,
                                                 @Valid @RequestBody final FsRequestDto fsDto) {
-        return new ResponseEntity<>(fsService.createFs(cpId, owner, dateTime, fsDto), HttpStatus.CREATED);
+        return new ResponseEntity<>(fsService.createFs(cpId, owner, date, fsDto), HttpStatus.CREATED);
     }
 
     @PutMapping

@@ -22,7 +22,6 @@ import lombok.Setter;
 @JsonPropertyOrder({
         "token",
         "ocid",
-        "date",
         "tender",
         "planning",
         "funder",
