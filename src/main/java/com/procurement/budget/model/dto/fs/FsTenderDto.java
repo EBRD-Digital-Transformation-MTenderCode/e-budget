@@ -14,6 +14,7 @@ import lombok.Setter;
 @JsonPropertyOrder({
         "id",
         "status",
+        "statusDetails",
         "procuringEntity"
 })
 public class FsTenderDto {

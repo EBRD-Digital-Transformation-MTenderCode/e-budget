@@ -80,7 +80,7 @@ public class EiServiceImpl implements EiService {
     }
 
     private String getCpId(final String country) {
-        return  ocdsProperties.getPrefix() + SEPARATOR + country.toUpperCase() + SEPARATOR +
+        return  ocdsProperties.getPrefix() + SEPARATOR + country + SEPARATOR +
                 dateUtil.getMilliNowUTC();
     }
 

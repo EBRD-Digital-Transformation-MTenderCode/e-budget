@@ -1,61 +1,89 @@
 {
-  "token": "bc7bbb84-89eb-4b13-a335-6304fe3e3d64",
-  "ocid": "ocds-t1s2t3-MD-1521024856548",
-  "date": "2018-03-14T10:54:16Z",
   "tender": {
-    "id": "ocds-t1s2t3-MD-1521024856548",
-    "title": "Препарати наркотичної, психотропної групи: МНН - тримеперидин, морфін гідрохлорид, діазепам, фентаніл, кетамін, феназепам, натрію оксибутират",
-    "description": "Під кількістю 8 штук слід розуміти 8 найменувань",
-    "status": "planning",
-    "classification": {
-      "scheme": "CPV",
-      "id": "33600000-6",
-      "description": "Фармацевтична продукція"
+    "procuringEntity": {
+      "name": "Jones, Payne and Miller",
+      "identifier": {
+        "scheme": "UA-EDR",
+        "id": "449-33-1022",
+        "legalName": "Jones, Payne and Miller Ltd",
+        "uri": "https://www.chavez-cohen.com/posts/wp-content/terms/"
+      },
+      "additionalIdentifiers": [
+        {
+          "scheme": "UA-EDR",
+          "id": "758-71-3727",
+          "legalName": "Jones, Payne and Miller and Sons",
+          "uri": "http://www.stone.biz/about/"
+        }
+      ],
+      "address": {
+        "streetAddress": "07713 James Flats",
+        "locality": "Crawfordshire",
+        "region": "Rhode Island",
+        "postalCode": "63288-9461",
+        "countryName": "Burkina Faso"
+      },
+      "contactPoint": {
+        "name": "Pamela Sandoval",
+        "email": "sancheztony@gmail.com",
+        "telephone": "251.064.2294x0991",
+        "faxNumber": "1-121-662-0058x86727",
+        "url": "https://vega.com/"
+      }
     }
   },
   "planning": {
     "budget": {
-      "id": "33600000-6",
+      "id": "GB47TJEZ3166246010086",
+      "description": "Role game image development partner of sort. Stage dark board door mention bar. Subject range my.",
       "period": {
-        "startDate": "2018-02-27T00:00:00Z",
-        "endDate": "2018-02-27T00:00:00Z"
+        "startDate": "2018-03-23T13:37:39Z",
+        "endDate": "2018-03-29T23:31:31Z"
       },
       "amount": {
-        "currency": "UAH"
-      }
+        "amount": 0.38,
+        "currency": "LAK"
+      },
+      "isEuropeanUnionFunded": false
     },
-    "rationale": "Обгрунтування закупівель надано у вільному тексті. Більш детальна інформація може бути надана у доданому документі."
+    "rationale": "Them deep lawyer manage either charge matter."
   },
   "buyer": {
-    "name": "Новороздільська міська лікарня",
-    "id": "UA-EDR-20764314",
+    "name": "Conway, Robinson and Mills",
     "identifier": {
       "scheme": "UA-EDR",
-      "id": "20764314",
-      "legalName": "Новороздільська міська лікарня",
-      "uri": "http://buyerTestLink.ua"
-    },
-    "address": {
-      "streetAddress": "вул. Винниченка, 37",
-      "locality": "місто Новий Розділ",
-      "region": "Львівська область",
-      "postalCode": "7770777",
-      "countryName": "Україна"
+      "id": "843-93-3305",
+      "legalName": "Conway, Robinson and Mills and Sons",
+      "uri": "http://navarro.com/app/homepage/"
     },
     "additionalIdentifiers": [
       {
         "scheme": "UA-EDR",
-        "id": "77764777",
-        "legalName": "Додатково Новороздільська міська лікарня",
-        "uri": "http://additionalBuyerTestLink.ua"
+        "id": "054-18-9725",
+        "legalName": "Conway, Robinson and Mills PLC",
+        "uri": "http://johnson.com/faq/"
       }
     ],
+    "address": {
+      "streetAddress": "4102 Evans Port Suite 808",
+      "locality": "Millerchester",
+      "region": "Minnesota",
+      "postalCode": "86409",
+      "countryName": "Saint Kitts and Nevis"
+    },
     "contactPoint": {
-      "name": "Осипових Сергій Олександрович",
-      "email": "test2@test.test",
-      "telephone": "+380222222222",
-      "faxNumber": "+380222222222",
-      "url": "test3@test.test"
+      "name": "Melissa Giles",
+      "email": "jennifer92@hotmail.com",
+      "telephone": "332-970-6301",
+      "faxNumber": "+85(6)0981178522",
+      "url": "http://rodgers.org/categories/explore/main.htm"
+    },
+    "details": {
+      "typeOfBuyer": "BODY_PUBLIC",
+      "mainGeneralActivity": "PUBLIC_ORDER_AND_SAFETY",
+      "mainSectoralActivity": "PRODUCTION_TRANSPORT_DISTRIBUTION_GAS_HEAT",
+      "isACentralPurchasingBody": false,
+      "scale": "sme"
     }
   }
 }
