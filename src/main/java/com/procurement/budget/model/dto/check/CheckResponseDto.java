@@ -13,18 +13,18 @@ import lombok.Getter;
 
 @Getter
 @JsonPropertyOrder({
-        "budgetBreakdown",
         "ei",
+        "budgetBreakdown",
         "funder",
         "payer",
         "buyer"
 })
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 public class CheckResponseDto {
-    @JsonProperty("budgetBreakdown")
-    private final List<CheckBudgetBreakdownDto> budgetBreakdown;
     @JsonProperty("ei")
     private final Set<String> ei;
+    @JsonProperty("budgetBreakdown")
+    private final List<CheckBudgetBreakdownDto> budgetBreakdown;
     @JsonProperty("funder")
     private Set<FsOrganizationReferenceDto> funder;
     @JsonProperty("payer")
@@ -33,13 +33,13 @@ public class CheckResponseDto {
     private Set<EiOrganizationReferenceDto> buyer;
 
     @JsonCreator
-    public CheckResponseDto(@JsonProperty("budgetBreakdown") final List<CheckBudgetBreakdownDto> budgetBreakdown,
-                            @JsonProperty("ei") final Set<String> ei,
+    public CheckResponseDto(@JsonProperty("ei") final Set<String> ei,
+                            @JsonProperty("budgetBreakdown") final List<CheckBudgetBreakdownDto> budgetBreakdown,
                             @JsonProperty("funder") final HashSet<FsOrganizationReferenceDto> funder,
                             @JsonProperty("payer") final HashSet<FsOrganizationReferenceDto> payer,
                             @JsonProperty("buyer") final HashSet<EiOrganizationReferenceDto> buyer) {
-        this.budgetBreakdown = budgetBreakdown;
         this.ei = ei;
+        this.budgetBreakdown = budgetBreakdown;
         this.funder = funder;
         this.payer = payer;
         this.buyer = buyer;

@@ -11,10 +11,8 @@ import com.procurement.budget.model.dto.check.CheckSourcePartyDto;
 import com.procurement.budget.model.dto.ei.EiDto;
 import com.procurement.budget.model.dto.ei.EiOrganizationReferenceDto;
 import com.procurement.budget.model.dto.fs.*;
+import com.procurement.budget.model.dto.ocds.*;
 import com.procurement.budget.model.dto.ocds.Currency;
-import com.procurement.budget.model.dto.ocds.Period;
-import com.procurement.budget.model.dto.ocds.TenderStatus;
-import com.procurement.budget.model.dto.ocds.TenderStatusDetails;
 import com.procurement.budget.model.entity.FsEntity;
 import com.procurement.budget.utils.DateUtil;
 import com.procurement.budget.utils.JsonUtil;
@@ -110,7 +108,8 @@ public class FsServiceImpl implements FsService {
 
     @Override
     public ResponseDto checkFs(CheckRequestDto dto) {
-        List<CheckBudgetBreakdownDto> budgetBreakdown = dto.getBudgetBreakdown();
+        final List<CheckBudgetBreakdownDto> budgetBreakdown = dto.getBudgetBreakdown();
+
         Set<String> eiIds = budgetBreakdown.stream()
                 .map(b -> getCpIdFromOcId(b.getId()))
                 .collect(Collectors.toSet());
@@ -124,25 +123,35 @@ public class FsServiceImpl implements FsService {
             entities.stream()
                     .map(e -> jsonUtil.toObject(FsDto.class, e.getJsonData()))
                     .forEach(fsDto -> fsMap.put(fsDto.getOcId(), fsDto));
-            dto.getBudgetBreakdown().forEach(br -> {
+
+            final EiDto ei = eiService.getEi(cpId);
+            checkCPV(ei, dto);
+            buyers.add(ei.getBuyer());
+            budgetBreakdown.forEach(br -> {
                 final FsDto fs = fsMap.get(br.getId());
                 if (Objects.isNull(fs)) throw new ErrorException(DATA_NOT_FOUND_ERROR);
-                processBudgetBreakdown(br, fs);
                 checkFsStatus(fs);
                 checkTenderPeriod(fs, dto);
                 checkFsAmount(fs, br);
                 checkFsCurrency(fs, br);
+                processBudgetBreakdown(br, fs);
                 funders.add(fs.getFunder());
                 payers.add(fs.getPayer());
-            });
-            final EiDto ei = eiService.getEi(cpId);
-            buyers.add(ei.getBuyer());
+             });
         }
         return new ResponseDto<>(
                 true,
                 null,
-                new CheckResponseDto(budgetBreakdown, eiIds, funders, payers, buyers)
+                new CheckResponseDto(eiIds, budgetBreakdown, funders, payers, buyers)
         );
+    }
+
+    private void checkCPV(EiDto ei, CheckRequestDto dto) {
+        final String eiCPV = ei.getTender().getClassification().getId();
+        final String dtoCPV = dto.getClassification().getId();
+        if (!eiCPV.substring(0, 2).toUpperCase().equals(dtoCPV.substring(0, 2).toUpperCase())) {
+            throw new ErrorException("CPV invalid.");
+        }
     }
 
     private void processBudgetBreakdown(CheckBudgetBreakdownDto br, FsDto fs) {
