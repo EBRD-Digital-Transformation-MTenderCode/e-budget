@@ -4,6 +4,7 @@ import com.datastax.driver.core.utils.UUIDs;
 import com.procurement.budget.config.properties.OCDSProperties;
 import com.procurement.budget.dao.EiDao;
 import com.procurement.budget.exception.ErrorException;
+import com.procurement.budget.exception.ErrorType;
 import com.procurement.budget.model.dto.bpe.ResponseDto;
 import com.procurement.budget.model.dto.ei.EiDto;
 import com.procurement.budget.model.dto.ei.EiOrganizationReferenceDto;
@@ -21,8 +22,6 @@ import org.springframework.stereotype.Service;
 public class EiServiceImpl implements EiService {
 
     private static final String SEPARATOR = "-";
-    private static final String DATA_NOT_FOUND_ERROR = "EI not found.";
-    private static final String INVALID_OWNER_ERROR = "EI invalid owner.";
     private final OCDSProperties ocdsProperties;
     private final JsonUtil jsonUtil;
     private final DateUtil dateUtil;
@@ -49,6 +48,7 @@ public class EiServiceImpl implements EiService {
         setTenderStatus(ei);
         setBudgetId(ei);
         setIdOfOrganizationReference(ei.getBuyer());
+        validatePeriod(ei);
         final EiEntity entity = getEntity(ei, owner, dateTime);
         eiDao.save(entity);
         ei.setToken(entity.getToken().toString());
@@ -62,8 +62,8 @@ public class EiServiceImpl implements EiService {
                                 final EiDto eiDto) {
 
         final EiEntity entity = Optional.ofNullable(eiDao.getByCpIdAndToken(cpId, UUID.fromString(token)))
-                .orElseThrow(() -> new ErrorException(DATA_NOT_FOUND_ERROR));
-        if (!entity.getOwner().equals(owner)) throw new ErrorException(INVALID_OWNER_ERROR);
+                .orElseThrow(() -> new ErrorException(ErrorType.DATA_NOT_FOUND));
+        if (!entity.getOwner().equals(owner)) throw new ErrorException(ErrorType.INVALID_OWNER);
         final EiDto ei = jsonUtil.toObject(EiDto.class, entity.getJsonData());
         ei.setPlanning(eiDto.getPlanning());
         ei.setTender(eiDto.getTender());
@@ -75,12 +75,12 @@ public class EiServiceImpl implements EiService {
     @Override
     public EiDto getEi(String cpId) {
         final EiEntity entity = Optional.ofNullable(eiDao.getByCpId(cpId))
-                .orElseThrow(() -> new ErrorException(DATA_NOT_FOUND_ERROR));
+                .orElseThrow(() -> new ErrorException(ErrorType.DATA_NOT_FOUND));
         return jsonUtil.toObject(EiDto.class, entity.getJsonData());
     }
 
     private String getCpId(final String country) {
-        return  ocdsProperties.getPrefix() + SEPARATOR + country + SEPARATOR +
+        return ocdsProperties.getPrefix() + SEPARATOR + country + SEPARATOR +
                 dateUtil.getMilliNowUTC();
     }
 
@@ -99,6 +99,12 @@ public class EiServiceImpl implements EiService {
 
     private void setBudgetId(final EiDto ei) {
         ei.getPlanning().getBudget().setId(ei.getTender().getClassification().getId());
+    }
+
+    private void validatePeriod(final EiDto ei) {
+        if (!ei.getPlanning().getBudget().getPeriod().getStartDate()
+                .isBefore(ei.getPlanning().getBudget().getPeriod().getEndDate()))
+            throw new ErrorException(ErrorType.INVALID_PERIOD);
     }
 
     private EiEntity getEntity(final EiDto ei, final String owner, final LocalDateTime dateTime) {

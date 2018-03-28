@@ -3,6 +3,7 @@ package com.procurement.budget.service;
 import com.datastax.driver.core.utils.UUIDs;
 import com.procurement.budget.dao.FsDao;
 import com.procurement.budget.exception.ErrorException;
+import com.procurement.budget.exception.ErrorType;
 import com.procurement.budget.model.dto.bpe.ResponseDto;
 import com.procurement.budget.model.dto.check.CheckBudgetBreakdownDto;
 import com.procurement.budget.model.dto.check.CheckRequestDto;
@@ -11,8 +12,10 @@ import com.procurement.budget.model.dto.check.CheckSourcePartyDto;
 import com.procurement.budget.model.dto.ei.EiDto;
 import com.procurement.budget.model.dto.ei.EiOrganizationReferenceDto;
 import com.procurement.budget.model.dto.fs.*;
-import com.procurement.budget.model.dto.ocds.*;
 import com.procurement.budget.model.dto.ocds.Currency;
+import com.procurement.budget.model.dto.ocds.Period;
+import com.procurement.budget.model.dto.ocds.TenderStatus;
+import com.procurement.budget.model.dto.ocds.TenderStatusDetails;
 import com.procurement.budget.model.entity.FsEntity;
 import com.procurement.budget.utils.DateUtil;
 import com.procurement.budget.utils.JsonUtil;
@@ -26,8 +29,6 @@ public class FsServiceImpl implements FsService {
 
     private static final String SEPARATOR = "-";
     private static final String FS_SEPARATOR = "-FS-";
-    private static final String DATA_NOT_FOUND_ERROR = "FS not found.";
-    private static final String INVALID_OWNER_ERROR = "FS invalid owner.";
     private final JsonUtil jsonUtil;
     private final DateUtil dateUtil;
     private final FsDao fsDao;
@@ -96,8 +97,8 @@ public class FsServiceImpl implements FsService {
                                 final String owner,
                                 final FsDto fsDto) {
         final FsEntity entity = Optional.ofNullable(fsDao.getByCpIdAndOcIdAndToken(cpId, ocId, UUID.fromString(token)))
-                .orElseThrow(() -> new ErrorException(DATA_NOT_FOUND_ERROR));
-        if (!entity.getOwner().equals(owner)) throw new ErrorException(INVALID_OWNER_ERROR);
+                .orElseThrow(() -> new ErrorException(ErrorType.DATA_NOT_FOUND));
+        if (!entity.getOwner().equals(owner)) throw new ErrorException(ErrorType.INVALID_OWNER);
         final FsDto fs = jsonUtil.toObject(FsDto.class, entity.getJsonData());
         fs.setTender(fsDto.getTender());
         fs.setPlanning(fsDto.getPlanning());
@@ -118,7 +119,7 @@ public class FsServiceImpl implements FsService {
         HashSet<EiOrganizationReferenceDto> buyers = new HashSet<>();
         for (String cpId : eiIds) {
             final List<FsEntity> entities = fsDao.getAllByCpId(cpId);
-            if (entities.isEmpty()) throw new ErrorException(DATA_NOT_FOUND_ERROR);
+            if (entities.isEmpty()) throw new ErrorException(ErrorType.DATA_NOT_FOUND);
             final Map<String, FsDto> fsMap = new HashMap<>();
             entities.stream()
                     .map(e -> jsonUtil.toObject(FsDto.class, e.getJsonData()))
@@ -129,7 +130,7 @@ public class FsServiceImpl implements FsService {
             buyers.add(ei.getBuyer());
             budgetBreakdown.forEach(br -> {
                 final FsDto fs = fsMap.get(br.getId());
-                if (Objects.isNull(fs)) throw new ErrorException(DATA_NOT_FOUND_ERROR);
+                if (Objects.isNull(fs)) throw new ErrorException(ErrorType.DATA_NOT_FOUND);
                 checkFsStatus(fs);
                 checkTenderPeriod(fs, dto);
                 checkFsAmount(fs, br);
@@ -137,7 +138,7 @@ public class FsServiceImpl implements FsService {
                 processBudgetBreakdown(br, fs);
                 funders.add(fs.getFunder());
                 payers.add(fs.getPayer());
-             });
+            });
         }
         return new ResponseDto<>(
                 true,
@@ -149,9 +150,8 @@ public class FsServiceImpl implements FsService {
     private void checkCPV(EiDto ei, CheckRequestDto dto) {
         final String eiCPV = ei.getTender().getClassification().getId();
         final String dtoCPV = dto.getClassification().getId();
-        if (!eiCPV.substring(0, 2).toUpperCase().equals(dtoCPV.substring(0, 2).toUpperCase())) {
-            throw new ErrorException("CPV invalid.");
-        }
+        if (!eiCPV.substring(0, 2).toUpperCase().equals(dtoCPV.substring(0, 2).toUpperCase()))
+            throw new ErrorException(ErrorType.INVALID_CPV);
     }
 
     private void processBudgetBreakdown(CheckBudgetBreakdownDto br, FsDto fs) {
@@ -170,25 +170,19 @@ public class FsServiceImpl implements FsService {
                         (tenderPeriodStartDate.isBefore(fsPeriod.getEndDate()) ||
                                 tenderPeriodStartDate.isEqual(fsPeriod.getEndDate()));
 
-        if (!tenderPeriodValid) {
-            throw new ErrorException("Tender period start date is not in financial source period.");
-        }
+        if (!tenderPeriodValid) throw new ErrorException(ErrorType.INVALID_DATE);
     }
 
     private void checkFsCurrency(FsDto fs, CheckBudgetBreakdownDto br) {
         final Currency fsCurrency = fs.getPlanning().getBudget().getAmount().getCurrency();
         final Currency brCurrency = br.getAmount().getCurrency();
-        if (!fsCurrency.equals(brCurrency)) {
-            throw new ErrorException("Budget breakdown currency invalid.");
-        }
+        if (!fsCurrency.equals(brCurrency)) throw new ErrorException(ErrorType.INVALID_CURRENCY);
     }
 
     private void checkFsAmount(FsDto fs, CheckBudgetBreakdownDto br) {
         final Double fsAmount = fs.getPlanning().getBudget().getAmount().getAmount();
         final Double brAmount = br.getAmount().getAmount();
-        if (!(brAmount <= fsAmount)) {
-            throw new ErrorException("Budget breakdown amount invalid.");
-        }
+        if (!(brAmount <= fsAmount)) throw new ErrorException(ErrorType.INVALID_AMOUNT);
     }
 
     private void checkFsStatus(FsDto fs) {
@@ -197,17 +191,14 @@ public class FsServiceImpl implements FsService {
         if (!((fsStatus.equals(TenderStatus.ACTIVE) ||
                 fsStatus.equals(TenderStatus.PLANNING) ||
                 fsStatus.equals(TenderStatus.PLANNED))
-                && fsStatusDetails.equals(TenderStatusDetails.EMPTY))) {
-            throw new ErrorException("Financial source status invalid.");
-        }
+                && fsStatusDetails.equals(TenderStatusDetails.EMPTY)))
+            throw new ErrorException(ErrorType.INVALID_STATUS);
     }
 
     private void checkCurrency(EiDto ei, FsRequestDto fs) {
         final Currency eiCurrency = ei.getPlanning().getBudget().getAmount().getCurrency();
         final Currency fsCurrency = fs.getPlanning().getBudget().getAmount().getCurrency();
-        if (!eiCurrency.equals(fsCurrency)) {
-            throw new ErrorException("Currency of financial source not valid.");
-        }
+        if (!eiCurrency.equals(fsCurrency)) throw new ErrorException(ErrorType.INVALID_CURRENCY);
     }
 
     private void checkPeriod(EiDto ei, FsRequestDto fs) {
@@ -219,9 +210,7 @@ public class FsServiceImpl implements FsService {
                         &&
                         (fsPeriod.getEndDate().isBefore(eiPeriod.getEndDate()) ||
                                 fsPeriod.getEndDate().isEqual(eiPeriod.getEndDate()));
-        if (!fsPeriodValid) {
-            throw new ErrorException("Period of financial source not valid.");
-        }
+        if (!fsPeriodValid) throw new ErrorException(ErrorType.INVALID_PERIOD);
     }
 
     private void setSourceEntity(final FsBudgetDto budget, final FsOrganizationReferenceDto funder) {
