@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.procurement.budget.model.dto.databinding.LocalDateTimeDeserializer;
 import com.procurement.budget.model.dto.databinding.LocalDateTimeSerializer;
+import com.procurement.budget.model.dto.ei.EiBudgetDto;
 import java.time.LocalDateTime;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
@@ -21,16 +22,17 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
         "endDate",
 })
 public class Period {
-    @JsonProperty("startDate")
+
+    @NotNull
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    @NotNull
+    @JsonProperty("startDate")
     private final LocalDateTime startDate;
 
-    @JsonProperty("endDate")
+    @NotNull
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    @NotNull
+    @JsonProperty("endDate")
     private final LocalDateTime endDate;
 
     @JsonCreator
@@ -38,5 +40,28 @@ public class Period {
                   @JsonProperty("endDate") final LocalDateTime endDate) {
         this.startDate = startDate;
         this.endDate = endDate;
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .append(startDate)
+                .append(endDate)
+                .toHashCode();
+    }
+
+    @Override
+    public boolean equals(final Object other) {
+        if (other == this) {
+            return true;
+        }
+        if (!(other instanceof Period)) {
+            return false;
+        }
+        final Period rhs = (Period) other;
+        return new EqualsBuilder()
+                .append(startDate, rhs.startDate)
+                .append(endDate, rhs.endDate)
+                .isEquals();
     }
 }

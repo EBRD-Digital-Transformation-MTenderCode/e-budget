@@ -19,14 +19,16 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
         "title",
         "description",
         "status",
+        "statusDetails",
         "classification"
 })
 public class EiTenderDto {
+
     @JsonProperty("id")
     private String id;
 
-    @JsonProperty("title")
     @NotNull
+    @JsonProperty("title")
     private final String title;
 
     @JsonProperty("description")
@@ -38,9 +40,9 @@ public class EiTenderDto {
     @JsonProperty("statusDetails")
     private TenderStatusDetails statusDetails;
 
-    @JsonProperty("classification")
     @Valid
     @NotNull
+    @JsonProperty("classification")
     private final Classification classification;
 
     @JsonCreator
@@ -57,4 +59,36 @@ public class EiTenderDto {
         this.statusDetails = statusDetails;
         this.classification = classification;
     }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .append(id)
+                .append(title)
+                .append(description)
+                .append(status)
+                .append(statusDetails)
+                .append(classification)
+                .toHashCode();
+    }
+
+    @Override
+    public boolean equals(final Object other) {
+        if (other == this) {
+            return true;
+        }
+        if (!(other instanceof EiTenderDto)) {
+            return false;
+        }
+        final EiTenderDto rhs = (EiTenderDto) other;
+        return new EqualsBuilder()
+                .append(id, rhs.id)
+                .append(title, rhs.title)
+                .append(description, rhs.description)
+                .append(status, rhs.status)
+                .append(statusDetails, rhs.statusDetails)
+                .append(classification, rhs.classification)
+                .isEquals();
+    }
+
 }

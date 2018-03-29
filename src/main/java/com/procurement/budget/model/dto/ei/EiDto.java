@@ -24,21 +24,26 @@ import lombok.Setter;
 })
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 public class EiDto {
+
     @JsonProperty("token")
     private String token;
+
     @JsonProperty("ocid")
     private String ocId;
+
+    @Valid
+    @NotNull
     @JsonProperty("tender")
-    @NotNull
-    @Valid
     private EiTenderDto tender;
+
+    @Valid
+    @NotNull
     @JsonProperty("planning")
-    @NotNull
-    @Valid
     private EiPlanningDto planning;
-    @JsonProperty("buyer")
-    @NotNull
+
     @Valid
+    @NotNull
+    @JsonProperty("buyer")
     private final EiOrganizationReferenceDto buyer;
 
     @JsonCreator

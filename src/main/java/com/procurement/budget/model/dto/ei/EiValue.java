@@ -16,10 +16,12 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
     "currency"
 })
 public class EiValue {
+
     @JsonProperty("amount")
     private final Double amount;
-    @JsonProperty("currency")
+
     @NotNull
+    @JsonProperty("currency")
     private final Currency currency;
 
     @JsonCreator
@@ -49,6 +51,4 @@ public class EiValue {
                                   .append(currency, rhs.currency)
                                   .isEquals();
     }
-
-
 }

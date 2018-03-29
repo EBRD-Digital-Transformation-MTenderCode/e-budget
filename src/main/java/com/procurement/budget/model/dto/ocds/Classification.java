@@ -12,23 +12,24 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-        "scheme",
         "id",
+        "scheme",
         "description",
         "uri"
 })
 public class Classification {
-    @JsonProperty("id")
+
     @NotNull
+    @JsonProperty("id")
     private final String id;
 
-    @JsonProperty("description")
     @NotNull
-    private final String description;
-
     @JsonProperty("scheme")
-    @NotNull
     private final Scheme scheme;
+
+    @NotNull
+    @JsonProperty("description")
+    private final String description;
 
     @JsonProperty("uri")
     private final String uri;
@@ -67,49 +68,5 @@ public class Classification {
                 .append(description, rhs.description)
                 .append(uri, rhs.uri)
                 .isEquals();
-    }
-
-    public enum Scheme {
-        CPV("CPV"),
-        CPVS("CPVS"),
-        GSIN("GSIN"),
-        UNSPSC("UNSPSC"),
-        CPC("CPC"),
-        OKDP("OKDP"),
-        OKPD("OKPD");
-
-        private final static Map<String, Scheme> CONSTANTS = new HashMap<>();
-
-        static {
-            for (final Scheme c : values()) {
-                CONSTANTS.put(c.value, c);
-            }
-        }
-
-        private final String value;
-
-        Scheme(final String value) {
-            this.value = value;
-        }
-
-        @JsonCreator
-        public static Scheme fromValue(final String value) {
-            final Scheme constant = CONSTANTS.get(value);
-            if (constant == null) {
-                throw new IllegalArgumentException(
-                        "Unknown enum type " + value + ", Allowed values are " + Arrays.toString(values()));
-            }
-            return constant;
-        }
-
-        @Override
-        public String toString() {
-            return this.value;
-        }
-
-        @JsonValue
-        public String value() {
-            return this.value;
-        }
     }
 }

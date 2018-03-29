@@ -10,6 +10,8 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 
 @Getter
 @Setter
@@ -20,15 +22,18 @@ import lombok.Setter;
         "amount"
 })
 public class EiBudgetDto {
+
     @JsonProperty("id")
     private String id;
+
     @Valid
     @NotNull
     @JsonProperty("period")
     private final Period period;
-    @JsonProperty("amount")
+
     @Valid
     @NotNull
+    @JsonProperty("amount")
     private final EiValue amount;
 
     @JsonCreator
@@ -39,5 +44,30 @@ public class EiBudgetDto {
         this.id = id;
         this.period = period;
         this.amount = amount;
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .append(id)
+                .append(period)
+                .append(amount)
+                .toHashCode();
+    }
+
+    @Override
+    public boolean equals(final Object other) {
+        if (other == this) {
+            return true;
+        }
+        if (!(other instanceof EiBudgetDto)) {
+            return false;
+        }
+        final EiBudgetDto rhs = (EiBudgetDto) other;
+        return new EqualsBuilder()
+                .append(id, rhs.id)
+                .append(period, rhs.period)
+                .append(amount, rhs.amount)
+                .isEquals();
     }
 }
