@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum TenderStatusDetails {
+
     PRESELECTION("preselection"),
     PRESELECTED("preselected"),
     PREQUALIFICATION("prequalification"),

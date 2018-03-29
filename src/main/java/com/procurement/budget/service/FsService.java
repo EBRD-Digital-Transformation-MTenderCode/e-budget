@@ -16,7 +16,6 @@ public interface FsService {
                          FsRequestDto fsDto);
 
     ResponseDto updateFs(String cpId,
-                         String ocId,
                          String token,
                          String owner,
                          FsDto fsDto);

@@ -1,12 +1,16 @@
 package com.procurement.budget.model.dto.fs;
 
-import com.fasterxml.jackson.annotation.*;
-import com.procurement.budget.model.dto.ocds.OrganizationReference;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.procurement.budget.model.dto.ocds.TenderStatus;
 import com.procurement.budget.model.dto.ocds.TenderStatusDetails;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 
 @Getter
 @Setter
@@ -18,6 +22,8 @@ import lombok.Setter;
         "procuringEntity"
 })
 public class FsTenderDto {
+
+    @NotNull
     @JsonProperty("id")
     private String id;
 
@@ -27,8 +33,8 @@ public class FsTenderDto {
     @JsonProperty("statusDetails")
     private TenderStatusDetails statusDetails;
 
-    @JsonProperty("procuringEntity")
     @NotNull
+    @JsonProperty("procuringEntity")
     private FsOrganizationReferenceDto procuringEntity;
 
     @JsonCreator
@@ -40,5 +46,32 @@ public class FsTenderDto {
         this.status = status;
         this.statusDetails = statusDetails;
         this.procuringEntity = procuringEntity;
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .append(id)
+                .append(status)
+                .append(statusDetails)
+                .append(procuringEntity)
+                .toHashCode();
+    }
+
+    @Override
+    public boolean equals(final Object other) {
+        if (other == this) {
+            return true;
+        }
+        if (!(other instanceof FsTenderDto)) {
+            return false;
+        }
+        final FsTenderDto rhs = (FsTenderDto) other;
+        return new EqualsBuilder()
+                .append(id, rhs.id)
+                .append(status, rhs.status)
+                .append(statusDetails, rhs.statusDetails)
+                .append(procuringEntity, rhs.procuringEntity)
+                .isEquals();
     }
 }

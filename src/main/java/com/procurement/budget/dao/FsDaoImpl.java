@@ -47,12 +47,11 @@ public class FsDaoImpl implements FsDao {
     }
 
     @Override
-    public FsEntity getByCpIdAndOcIdAndToken(final String cpId, final String ocId, final UUID token) {
+    public FsEntity getByCpIdAndToken(final String cpId, final UUID token) {
         final Statement query = select()
                 .all()
                 .from(FS_TABLE)
                 .where(eq(CP_ID, cpId))
-                .and(eq(OC_ID, ocId))
                 .and(eq(TOKEN, token))
                 .limit(1);
         final Row row = session.execute(query).one();

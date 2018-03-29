@@ -19,23 +19,24 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
         "url"
 })
 public class ContactPoint {
-    @JsonProperty("name")
+
     @NotNull
+    @JsonProperty("name")
     private final String name;
 
-    @JsonProperty("email")
     @NotNull
+    @JsonProperty("email")
     private final String email;
 
-    @JsonProperty("telephone")
     @NotNull
+    @JsonProperty("telephone")
     private final String telephone;
 
     @JsonProperty("faxNumber")
     private final String faxNumber;
 
-    @JsonProperty("url")
     @NotNull
+    @JsonProperty("url")
     private final String url;
 
     @JsonCreator
@@ -53,7 +54,8 @@ public class ContactPoint {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(name)
+        return new HashCodeBuilder()
+                .append(name)
                 .append(email)
                 .append(telephone)
                 .append(faxNumber)
@@ -70,7 +72,8 @@ public class ContactPoint {
             return false;
         }
         final ContactPoint rhs = (ContactPoint) other;
-        return new EqualsBuilder().append(name, rhs.name)
+        return new EqualsBuilder()
+                .append(name, rhs.name)
                 .append(email, rhs.email)
                 .append(telephone, rhs.telephone)
                 .append(faxNumber, rhs.faxNumber)

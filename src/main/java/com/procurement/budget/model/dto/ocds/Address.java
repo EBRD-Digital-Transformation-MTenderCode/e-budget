@@ -19,23 +19,24 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
         "countryName"
 })
 public class Address {
-    @JsonProperty("streetAddress")
+
     @NotNull
+    @JsonProperty("streetAddress")
     private final String streetAddress;
 
-    @JsonProperty("locality")
     @NotNull
+    @JsonProperty("locality")
     private final String locality;
 
-    @JsonProperty("region")
     @NotNull
+    @JsonProperty("region")
     private final String region;
 
     @JsonProperty("postalCode")
     private final String postalCode;
 
-    @JsonProperty("countryName")
     @NotNull
+    @JsonProperty("countryName")
     private final String countryName;
 
     @JsonCreator
@@ -53,7 +54,8 @@ public class Address {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(streetAddress)
+        return new HashCodeBuilder()
+                .append(streetAddress)
                 .append(locality)
                 .append(region)
                 .append(postalCode)
@@ -70,7 +72,8 @@ public class Address {
             return false;
         }
         final Address rhs = (Address) other;
-        return new EqualsBuilder().append(streetAddress, rhs.streetAddress)
+        return new EqualsBuilder()
+                .append(streetAddress, rhs.streetAddress)
                 .append(locality, rhs.locality)
                 .append(region, rhs.region)
                 .append(postalCode, rhs.postalCode)

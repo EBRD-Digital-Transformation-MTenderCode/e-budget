@@ -1,9 +1,12 @@
 package com.procurement.budget.model.dto.ei;
 
-import com.fasterxml.jackson.annotation.*;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.procurement.budget.model.dto.ocds.*;
-import java.util.*;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.procurement.budget.model.dto.ocds.Classification;
+import com.procurement.budget.model.dto.ocds.TenderStatus;
+import com.procurement.budget.model.dto.ocds.TenderStatusDetails;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
@@ -90,5 +93,4 @@ public class EiTenderDto {
                 .append(classification, rhs.classification)
                 .isEquals();
     }
-
 }

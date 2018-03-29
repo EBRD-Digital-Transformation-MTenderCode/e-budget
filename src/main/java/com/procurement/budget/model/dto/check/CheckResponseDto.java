@@ -21,14 +21,19 @@ import lombok.Getter;
 })
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 public class CheckResponseDto {
+
     @JsonProperty("ei")
     private final Set<String> ei;
+
     @JsonProperty("budgetBreakdown")
     private final List<CheckBudgetBreakdownDto> budgetBreakdown;
+
     @JsonProperty("funder")
     private Set<FsOrganizationReferenceDto> funder;
+
     @JsonProperty("payer")
     private Set<FsOrganizationReferenceDto> payer;
+
     @JsonProperty("buyer")
     private Set<EiOrganizationReferenceDto> buyer;
 

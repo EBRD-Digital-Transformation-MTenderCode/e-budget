@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum TenderStatus {
+
     PLANNING("planning"),
     PLANNED("planned"),
     ACTIVE("active"),

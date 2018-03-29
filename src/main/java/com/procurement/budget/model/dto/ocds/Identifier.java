@@ -12,31 +12,32 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-        "scheme",
         "id",
+        "scheme",
         "legalName",
         "uri"
 })
 public class Identifier {
-    @JsonProperty("id")
+
     @NotNull
+    @JsonProperty("id")
     private final String id;
 
-    @JsonProperty("scheme")
     @NotNull
+    @JsonProperty("scheme")
     private final String scheme;
 
-    @JsonProperty("legalName")
     @NotNull
+    @JsonProperty("legalName")
     private final String legalName;
 
-    @JsonProperty("uri")
     @NotNull
+    @JsonProperty("uri")
     private final String uri;
 
     @JsonCreator
-    public Identifier(@JsonProperty("scheme") final String scheme,
-                      @JsonProperty("id") final String id,
+    public Identifier(@JsonProperty("id") final String id,
+                      @JsonProperty("scheme") final String scheme,
                       @JsonProperty("legalName") final String legalName,
                       @JsonProperty("uri") final String uri) {
         this.id = id;
@@ -47,8 +48,9 @@ public class Identifier {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(scheme)
+        return new HashCodeBuilder()
                 .append(id)
+                .append(scheme)
                 .append(legalName)
                 .append(uri)
                 .toHashCode();
@@ -63,8 +65,9 @@ public class Identifier {
             return false;
         }
         final Identifier rhs = (Identifier) other;
-        return new EqualsBuilder().append(scheme, rhs.scheme)
+        return new EqualsBuilder()
                 .append(id, rhs.id)
+                .append(scheme, rhs.scheme)
                 .append(legalName, rhs.legalName)
                 .append(uri, rhs.uri)
                 .isEquals();

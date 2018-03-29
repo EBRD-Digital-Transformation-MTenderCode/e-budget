@@ -11,12 +11,12 @@ public class ResponseDto<T> {
     @JsonProperty(value = "success")
     private Boolean success;
 
-    @JsonProperty(value = "details")
     @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonProperty(value = "details")
     private List<ResponseDetailsDto> details;
 
-    @JsonProperty(value = "data")
     @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonProperty(value = "data")
     private T data;
 
     public ResponseDto(@JsonProperty("success") final Boolean success,

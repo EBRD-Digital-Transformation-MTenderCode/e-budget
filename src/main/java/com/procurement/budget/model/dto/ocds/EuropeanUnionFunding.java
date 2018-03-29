@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -11,32 +12,36 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-        "projectIdentifier",
         "projectName",
+        "projectIdentifier",
         "uri"
 })
 public class EuropeanUnionFunding {
-    @JsonProperty("projectIdentifier")
-    private final String projectIdentifier;
 
+    @NotNull
     @JsonProperty("projectName")
     private final String projectName;
+
+    @NotNull
+    @JsonProperty("projectIdentifier")
+    private final String projectIdentifier;
 
     @JsonProperty("uri")
     private final String uri;
 
     @JsonCreator
-    public EuropeanUnionFunding(@JsonProperty("projectIdentifier") final String projectIdentifier,
-                                @JsonProperty("projectName") final String projectName,
+    public EuropeanUnionFunding(@JsonProperty("projectName") final String projectName,
+                                @JsonProperty("projectIdentifier") final String projectIdentifier,
                                 @JsonProperty("uri") final String uri) {
-        this.projectIdentifier = projectIdentifier;
         this.projectName = projectName;
+        this.projectIdentifier = projectIdentifier;
         this.uri = uri;
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(projectIdentifier)
+        return new HashCodeBuilder()
+                .append(projectIdentifier)
                 .append(projectName)
                 .append(uri)
                 .toHashCode();
@@ -51,7 +56,8 @@ public class EuropeanUnionFunding {
             return false;
         }
         final EuropeanUnionFunding rhs = (EuropeanUnionFunding) other;
-        return new EqualsBuilder().append(projectIdentifier, rhs.projectIdentifier)
+        return new EqualsBuilder()
+                .append(projectIdentifier, rhs.projectIdentifier)
                 .append(projectName, rhs.projectName)
                 .append(uri, rhs.uri)
                 .isEquals();

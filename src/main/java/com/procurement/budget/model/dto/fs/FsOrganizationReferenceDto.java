@@ -7,8 +7,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.procurement.budget.model.dto.ocds.Address;
 import com.procurement.budget.model.dto.ocds.ContactPoint;
-import com.procurement.budget.model.dto.ocds.Details;
 import com.procurement.budget.model.dto.ocds.Identifier;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import javax.validation.Valid;
@@ -23,40 +23,41 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 @Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-        "name",
         "id",
+        "name",
         "identifier",
         "address",
         "additionalIdentifiers",
         "contactPoint"
 })
 public class FsOrganizationReferenceDto {
+
     @JsonProperty("id")
     private String id;
 
-    @JsonProperty("name")
     @Size(min = 1)
     @NotNull
+    @JsonProperty("name")
     private final String name;
 
-    @JsonProperty("identifier")
     @Valid
     @NotNull
+    @JsonProperty("identifier")
     private Identifier identifier;
 
-    @JsonProperty("address")
     @Valid
     @NotNull
+    @JsonProperty("address")
     private Address address;
 
-    @JsonProperty("additionalIdentifiers")
-    @JsonDeserialize(as = LinkedHashSet.class)
     @Valid
+    @JsonDeserialize(as = LinkedHashSet.class)
+    @JsonProperty("additionalIdentifiers")
     private Set<Identifier> additionalIdentifiers;
 
-    @JsonProperty("contactPoint")
     @Valid
     @NotNull
+    @JsonProperty("contactPoint")
     private ContactPoint contactPoint;
 
     @JsonCreator
@@ -64,8 +65,7 @@ public class FsOrganizationReferenceDto {
                                       @JsonProperty("name") final String name,
                                       @JsonProperty("identifier") final Identifier identifier,
                                       @JsonProperty("address") final Address address,
-                                      @JsonProperty("additionalIdentifiers") final LinkedHashSet<Identifier>
-                                         additionalIdentifiers,
+                                      @JsonProperty("additionalIdentifiers") final HashSet<Identifier> additionalIdentifiers,
                                       @JsonProperty("contactPoint") final ContactPoint contactPoint) {
         this.id = id;
         this.name = name;

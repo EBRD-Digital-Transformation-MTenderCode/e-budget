@@ -92,11 +92,10 @@ public class FsServiceImpl implements FsService {
 
     @Override
     public ResponseDto updateFs(final String cpId,
-                                final String ocId,
                                 final String token,
                                 final String owner,
                                 final FsDto fsDto) {
-        final FsEntity entity = Optional.ofNullable(fsDao.getByCpIdAndOcIdAndToken(cpId, ocId, UUID.fromString(token)))
+        final FsEntity entity = Optional.ofNullable(fsDao.getByCpIdAndToken(cpId, UUID.fromString(token)))
                 .orElseThrow(() -> new ErrorException(ErrorType.DATA_NOT_FOUND));
         if (!entity.getOwner().equals(owner)) throw new ErrorException(ErrorType.INVALID_OWNER);
         final FsDto fs = jsonUtil.toObject(FsDto.class, entity.getJsonData());
@@ -234,7 +233,7 @@ public class FsServiceImpl implements FsService {
                         buyer.getName(),
                         buyer.getIdentifier(),
                         buyer.getAddress(),
-                        new LinkedHashSet(buyer.getAdditionalIdentifiers()),
+                        new HashSet(buyer.getAdditionalIdentifiers()),
                         buyer.getContactPoint());
         fs.setFunder(funder);
     }
@@ -244,7 +243,7 @@ public class FsServiceImpl implements FsService {
     }
 
     private String getOcId(final String cpId) {
-        return cpId + FS_SEPARATOR + dateUtil.getMilliNowUTC();
+        return cpId + FS_SEPARATOR + dateUtil.milliNowUTC();
     }
 
     private String getCpIdFromOcId(final String ocId) {

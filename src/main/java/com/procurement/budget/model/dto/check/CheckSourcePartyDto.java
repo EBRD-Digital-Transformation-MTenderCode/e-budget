@@ -15,9 +15,9 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 @JsonPropertyOrder({
         "id",
         "name"
-
 })
 public class CheckSourcePartyDto {
+
     @JsonProperty("id")
     private String id;
 

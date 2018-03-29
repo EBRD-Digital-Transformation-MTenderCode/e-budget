@@ -9,6 +9,7 @@ import com.procurement.budget.model.dto.ocds.Address;
 import com.procurement.budget.model.dto.ocds.ContactPoint;
 import com.procurement.budget.model.dto.ocds.Details;
 import com.procurement.budget.model.dto.ocds.Identifier;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import javax.validation.Valid;
@@ -33,36 +34,37 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
         "buyerProfile"
 })
 public class EiOrganizationReferenceDto {
+
     @JsonProperty("id")
     private String id;
 
-    @JsonProperty("name")
     @Size(min = 1)
     @NotNull
+    @JsonProperty("name")
     private final String name;
 
-    @JsonProperty("identifier")
     @Valid
     @NotNull
+    @JsonProperty("identifier")
     private Identifier identifier;
 
-    @JsonProperty("address")
     @Valid
     @NotNull
+    @JsonProperty("address")
     private Address address;
 
-    @JsonProperty("additionalIdentifiers")
-    @JsonDeserialize(as = LinkedHashSet.class)
     @Valid
+    @JsonDeserialize(as = LinkedHashSet.class)
+    @JsonProperty("additionalIdentifiers")
     private Set<Identifier> additionalIdentifiers;
 
-    @JsonProperty("contactPoint")
     @Valid
     @NotNull
+    @JsonProperty("contactPoint")
     private ContactPoint contactPoint;
 
-    @JsonProperty("details")
     @NotNull
+    @JsonProperty("details")
     private Details details;
 
     @JsonProperty("buyerProfile")
@@ -73,8 +75,8 @@ public class EiOrganizationReferenceDto {
                                       @JsonProperty("name") final String name,
                                       @JsonProperty("identifier") final Identifier identifier,
                                       @JsonProperty("address") final Address address,
-                                      @JsonProperty("additionalIdentifiers") final LinkedHashSet<Identifier>
-                                         additionalIdentifiers,
+                                      @JsonProperty("additionalIdentifiers") final HashSet<Identifier>
+                                              additionalIdentifiers,
                                       @JsonProperty("contactPoint") final ContactPoint contactPoint,
                                       @JsonProperty("details") final Details details,
                                       @JsonProperty("buyerProfile") final String buyerProfile) {

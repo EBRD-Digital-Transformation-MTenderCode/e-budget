@@ -1,15 +1,17 @@
 package com.procurement.budget.model.dto.fs;
 
-import com.fasterxml.jackson.annotation.*;
-import com.procurement.budget.model.dto.ocds.BudgetBreakdown;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.procurement.budget.model.dto.ocds.EuropeanUnionFunding;
-import com.procurement.budget.model.dto.ocds.OrganizationReference;
 import com.procurement.budget.model.dto.ocds.Period;
-import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 
 @Getter
 @Setter
@@ -26,28 +28,37 @@ import lombok.Setter;
         "verificationDetails"
 })
 public class FsBudgetDto {
+
     @JsonProperty("id")
     private String id;
+
     @JsonProperty("description")
     private final String description;
+
+    @NotNull
     @JsonProperty("period")
-    @NotNull
     private final Period period;
+
+    @Valid
+    @NotNull
     @JsonProperty("amount")
-    @Valid
-    @NotNull
     private final FsValue amount;
-    @JsonProperty("europeanUnionFunding")
+
     @Valid
+    @JsonProperty("europeanUnionFunding")
     private final EuropeanUnionFunding europeanUnionFunding;
-    @JsonProperty("isEuropeanUnionFunded")
+
     @NotNull
+    @JsonProperty("isEuropeanUnionFunded")
     private final Boolean isEuropeanUnionFunded;
+
     @JsonProperty("verified")
     private Boolean verified;
-    @JsonProperty("sourceEntity")
+
     @Valid
+    @JsonProperty("sourceEntity")
     private FsOrganizationReferenceDto sourceEntity;
+
     @JsonProperty("verificationDetails")
     private final String verificationDetails;
 
@@ -70,5 +81,42 @@ public class FsBudgetDto {
         this.verified = verified == null ? false : verified;
         this.sourceEntity = sourceEntity;
         this.verificationDetails = verificationDetails;
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .append(id)
+                .append(description)
+                .append(period)
+                .append(amount)
+                .append(europeanUnionFunding)
+                .append(isEuropeanUnionFunded)
+                .append(verified)
+                .append(sourceEntity)
+                .append(verificationDetails)
+                .toHashCode();
+    }
+
+    @Override
+    public boolean equals(final Object other) {
+        if (other == this) {
+            return true;
+        }
+        if (!(other instanceof FsBudgetDto)) {
+            return false;
+        }
+        final FsBudgetDto rhs = (FsBudgetDto) other;
+        return new EqualsBuilder()
+                .append(id, rhs.id)
+                .append(description, rhs.description)
+                .append(period, rhs.period)
+                .append(amount, rhs.amount)
+                .append(europeanUnionFunding, rhs.europeanUnionFunding)
+                .append(isEuropeanUnionFunded, rhs.isEuropeanUnionFunded)
+                .append(verified, rhs.verified)
+                .append(sourceEntity, rhs.sourceEntity)
+                .append(verificationDetails, rhs.verificationDetails)
+                .isEquals();
     }
 }

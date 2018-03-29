@@ -1,13 +1,9 @@
 package com.procurement.budget.model.dto.ei;
 
-import com.fasterxml.jackson.annotation.*;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.procurement.budget.model.dto.databinding.LocalDateTimeDeserializer;
-import com.procurement.budget.model.dto.databinding.LocalDateTimeSerializer;
-import com.procurement.budget.model.dto.ocds.*;
-import java.time.LocalDateTime;
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;

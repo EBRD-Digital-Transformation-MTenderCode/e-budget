@@ -10,7 +10,7 @@ public interface FsDao {
 
     void save(FsEntity entity);
 
-    FsEntity getByCpIdAndOcIdAndToken(String cpId, String ocId, UUID token);
+    FsEntity getByCpIdAndToken(String cpId, UUID token);
 
     List<FsEntity> getAllByCpId(String cpId);
 }

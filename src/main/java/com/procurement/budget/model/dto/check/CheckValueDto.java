@@ -17,11 +17,13 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
         "currency"
 })
 public class CheckValueDto {
+
+    @NotNull
     @JsonProperty("amount")
-    @NotNull
     private final Double amount;
-    @JsonProperty("currency")
+
     @NotNull
+    @JsonProperty("currency")
     private final Currency currency;
 
     @JsonCreator
@@ -29,5 +31,28 @@ public class CheckValueDto {
                          @JsonProperty("currency") final Currency currency) {
         this.amount = amount;
         this.currency = currency;
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .append(amount)
+                .append(currency)
+                .toHashCode();
+    }
+
+    @Override
+    public boolean equals(final Object other) {
+        if (other == this) {
+            return true;
+        }
+        if (!(other instanceof CheckValueDto)) {
+            return false;
+        }
+        final CheckValueDto rhs = (CheckValueDto) other;
+        return new EqualsBuilder()
+                .append(amount, rhs.amount)
+                .append(currency, rhs.currency)
+                .isEquals();
     }
 }
