@@ -75,7 +75,7 @@ public class FsDaoImpl implements FsDao {
                 .from(FS_TABLE)
                 .where(eq(CP_ID, cpId));
         final ResultSet resultSet = session.execute(query);
-        List<FsEntity> entities = new ArrayList<>();
+        final List<FsEntity> entities = new ArrayList<>();
         resultSet.forEach(row ->
                 entities.add(new FsEntity(
                         row.getString(CP_ID),

@@ -2,6 +2,7 @@ package com.procurement.budget.model.dto.ocds;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+import com.procurement.budget.exception.EnumException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,7 +17,7 @@ public enum Scheme {
     OKDP("OKDP"),
     OKPD("OKPD");
 
-    private final static Map<String, Scheme> CONSTANTS = new HashMap<>();
+    private static final Map<String, Scheme> CONSTANTS = new HashMap<>();
 
     static {
         for (final Scheme c : values()) {
@@ -34,8 +35,7 @@ public enum Scheme {
     public static Scheme fromValue(final String value) {
         final Scheme constant = CONSTANTS.get(value);
         if (constant == null) {
-            throw new IllegalArgumentException(
-                    "Unknown enum type " + value + ", Allowed values are " + Arrays.toString(values()));
+            throw new EnumException(Scheme.class.getName(), value, Arrays.toString(values()));
         }
         return constant;
     }

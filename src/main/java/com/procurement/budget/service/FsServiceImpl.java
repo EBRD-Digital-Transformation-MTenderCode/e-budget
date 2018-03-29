@@ -52,38 +52,31 @@ public class FsServiceImpl implements FsService {
         final FsDto fs = new FsDto();
         fs.setOcId(getOcId(cpId));
         final EiDto ei = eiService.getEi(cpId);
-        /*checkCurrency*/
         checkCurrency(ei, fsDto);
-        /*checkPeriod*/
         checkPeriod(ei, fsDto);
-        /*planning*/
         fs.setPlanning(fsDto.getPlanning());
-        /*tender*/
         fs.setTender(new FsTenderDto(
                 fs.getOcId(),
                 TenderStatus.PLANNING,
                 TenderStatusDetails.EMPTY,
                 null)
         );
-        /*payer*/
         fs.setPayer(fsDto.getTender().getProcuringEntity());
         setIdOfOrganizationReference(fs.getPayer());
-        /*funder and source parties*/
-        FsOrganizationReferenceDto fsBuyer = fsDto.getBuyer();
-        /*from buyer*/
+        final FsOrganizationReferenceDto fsBuyer = fsDto.getBuyer();
+        //from buyer
         if (Objects.nonNull(fsBuyer)) {
             setIdOfOrganizationReference(fsBuyer);
             fs.setFunder(fsBuyer);
             setSourceEntity(fs.getPlanning().getBudget(), fs.getFunder());
             fs.getPlanning().getBudget().setVerified(true);
         }
-        /*from EI buyer*/
+        //from EI buyer
         if (Objects.isNull(fsBuyer)) {
             setFounderFromEi(fs, ei.getBuyer());
             setSourceEntity(fs.getPlanning().getBudget(), fs.getFunder());
             fs.getPlanning().getBudget().setVerified(false);
         }
-        /*save*/
         final FsEntity entity = getEntity(cpId, fs, owner, dateTime);
         fsDao.save(entity);
         fs.setToken(entity.getToken().toString());
@@ -107,16 +100,16 @@ public class FsServiceImpl implements FsService {
     }
 
     @Override
-    public ResponseDto checkFs(CheckRequestDto dto) {
+    public ResponseDto checkFs(final CheckRequestDto dto) {
         final List<CheckBudgetBreakdownDto> budgetBreakdown = dto.getBudgetBreakdown();
 
-        Set<String> eiIds = budgetBreakdown.stream()
+        final Set<String> eiIds = budgetBreakdown.stream()
                 .map(b -> getCpIdFromOcId(b.getId()))
                 .collect(Collectors.toSet());
-        HashSet<FsOrganizationReferenceDto> funders = new HashSet<>();
-        HashSet<FsOrganizationReferenceDto> payers = new HashSet<>();
-        HashSet<EiOrganizationReferenceDto> buyers = new HashSet<>();
-        for (String cpId : eiIds) {
+        final HashSet<FsOrganizationReferenceDto> funders = new HashSet<>();
+        final HashSet<FsOrganizationReferenceDto> payers = new HashSet<>();
+        final HashSet<EiOrganizationReferenceDto> buyers = new HashSet<>();
+        for (final String cpId : eiIds) {
             final List<FsEntity> entities = fsDao.getAllByCpId(cpId);
             if (entities.isEmpty()) throw new ErrorException(ErrorType.DATA_NOT_FOUND);
             final Map<String, FsDto> fsMap = new HashMap<>();
@@ -146,23 +139,23 @@ public class FsServiceImpl implements FsService {
         );
     }
 
-    private void checkCPV(EiDto ei, CheckRequestDto dto) {
+    private void checkCPV(final EiDto ei, final CheckRequestDto dto) {
         final String eiCPV = ei.getTender().getClassification().getId();
         final String dtoCPV = dto.getClassification().getId();
         if (!eiCPV.substring(0, 2).toUpperCase().equals(dtoCPV.substring(0, 2).toUpperCase()))
             throw new ErrorException(ErrorType.INVALID_CPV);
     }
 
-    private void processBudgetBreakdown(CheckBudgetBreakdownDto br, FsDto fs) {
-        FsOrganizationReferenceDto fsSe = fs.getPlanning().getBudget().getSourceEntity();
+    private void processBudgetBreakdown(final CheckBudgetBreakdownDto br, final FsDto fs) {
+        final FsOrganizationReferenceDto fsSe = fs.getPlanning().getBudget().getSourceEntity();
         br.setSourceParty(new CheckSourcePartyDto(fsSe.getId(), fsSe.getName()));
         br.setPeriod(fs.getPlanning().getBudget().getPeriod());
     }
 
-    private void checkTenderPeriod(FsDto fs, CheckRequestDto dto) {
+    private void checkTenderPeriod(final FsDto fs, final CheckRequestDto dto) {
         final LocalDateTime tenderPeriodStartDate = dto.getTenderPeriod().getStartDate();
         final Period fsPeriod = fs.getPlanning().getBudget().getPeriod();
-        boolean tenderPeriodValid =
+        final boolean tenderPeriodValid =
                 (tenderPeriodStartDate.isAfter(fsPeriod.getStartDate()) ||
                         tenderPeriodStartDate.isEqual(fsPeriod.getStartDate()))
                         &&
@@ -172,19 +165,19 @@ public class FsServiceImpl implements FsService {
         if (!tenderPeriodValid) throw new ErrorException(ErrorType.INVALID_DATE);
     }
 
-    private void checkFsCurrency(FsDto fs, CheckBudgetBreakdownDto br) {
+    private void checkFsCurrency(final FsDto fs, final CheckBudgetBreakdownDto br) {
         final Currency fsCurrency = fs.getPlanning().getBudget().getAmount().getCurrency();
         final Currency brCurrency = br.getAmount().getCurrency();
         if (!fsCurrency.equals(brCurrency)) throw new ErrorException(ErrorType.INVALID_CURRENCY);
     }
 
-    private void checkFsAmount(FsDto fs, CheckBudgetBreakdownDto br) {
+    private void checkFsAmount(final FsDto fs, final CheckBudgetBreakdownDto br) {
         final Double fsAmount = fs.getPlanning().getBudget().getAmount().getAmount();
         final Double brAmount = br.getAmount().getAmount();
         if (!(brAmount <= fsAmount)) throw new ErrorException(ErrorType.INVALID_AMOUNT);
     }
 
-    private void checkFsStatus(FsDto fs) {
+    private void checkFsStatus(final FsDto fs) {
         final TenderStatus fsStatus = fs.getTender().getStatus();
         final TenderStatusDetails fsStatusDetails = fs.getTender().getStatusDetails();
         if (!((fsStatus.equals(TenderStatus.ACTIVE) ||
@@ -194,16 +187,16 @@ public class FsServiceImpl implements FsService {
             throw new ErrorException(ErrorType.INVALID_STATUS);
     }
 
-    private void checkCurrency(EiDto ei, FsRequestDto fs) {
+    private void checkCurrency(final EiDto ei, final FsRequestDto fs) {
         final Currency eiCurrency = ei.getPlanning().getBudget().getAmount().getCurrency();
         final Currency fsCurrency = fs.getPlanning().getBudget().getAmount().getCurrency();
         if (!eiCurrency.equals(fsCurrency)) throw new ErrorException(ErrorType.INVALID_CURRENCY);
     }
 
-    private void checkPeriod(EiDto ei, FsRequestDto fs) {
+    private void checkPeriod(final EiDto ei, final FsRequestDto fs) {
         final Period eiPeriod = ei.getPlanning().getBudget().getPeriod();
         final Period fsPeriod = fs.getPlanning().getBudget().getPeriod();
-        boolean fsPeriodValid =
+        final boolean fsPeriodValid =
                 (fsPeriod.getStartDate().isAfter(eiPeriod.getStartDate()) ||
                         fsPeriod.getStartDate().isEqual(eiPeriod.getStartDate()))
                         &&
@@ -247,7 +240,7 @@ public class FsServiceImpl implements FsService {
     }
 
     private String getCpIdFromOcId(final String ocId) {
-        int pos = ocId.indexOf(FS_SEPARATOR);
+        final int pos = ocId.indexOf(FS_SEPARATOR);
         return ocId.substring(0, pos);
     }
 

@@ -1,6 +1,7 @@
 package com.procurement.budget.model.dto.ocds;
 
 import com.fasterxml.jackson.annotation.*;
+import com.procurement.budget.exception.EnumException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -98,15 +99,14 @@ public class Details {
         PUBLIC_ORDER_AND_SAFETY("PUBLIC_ORDER_AND_SAFETY"),
         RECREATION_CULTURE_AND_RELIGION("RECREATION_CULTURE_AND_RELIGION"),
         SOCIAL_PROTECTION("SOCIAL_PROTECTION");
-        private final static Map<String, MainGeneralActivity> CONSTANTS = new HashMap<>();
+        private static final Map<String, MainGeneralActivity> CONSTANTS = new HashMap<>();
+        private final String value;
 
         static {
             for (final MainGeneralActivity c : values()) {
                 CONSTANTS.put(c.value, c);
             }
         }
-
-        private final String value;
 
         MainGeneralActivity(final String value) {
             this.value = value;
@@ -115,10 +115,8 @@ public class Details {
         @JsonCreator
         public static MainGeneralActivity fromValue(final String value) {
             final MainGeneralActivity constant = CONSTANTS.get(value);
-            if (constant == null) {
-                throw new IllegalArgumentException(
-                        "Unknown enum type " + value + ", Allowed values are " + Arrays.toString(values()));
-            }
+            if (constant == null)
+                throw new EnumException(MainGeneralActivity.class.getName(), value, Arrays.toString(values()));
             return constant;
         }
 
@@ -131,7 +129,6 @@ public class Details {
         public String value() {
             return this.value;
         }
-
     }
 
     public enum MainSectoralActivity {
@@ -145,15 +142,14 @@ public class Details {
         RAILWAY_SERVICES("RAILWAY_SERVICES"),
         URBAN_RAILWAY_TRAMWAY_TROLLEYBUS_BUS_SERVICES("URBAN_RAILWAY_TRAMWAY_TROLLEYBUS_BUS_SERVICES"),
         WATER("WATER");
-        private final static Map<String, MainSectoralActivity> CONSTANTS = new HashMap<>();
+        private static final Map<String, MainSectoralActivity> CONSTANTS = new HashMap<>();
+        private final String value;
 
         static {
             for (final MainSectoralActivity c : values()) {
                 CONSTANTS.put(c.value, c);
             }
         }
-
-        private final String value;
 
         MainSectoralActivity(final String value) {
             this.value = value;
@@ -163,20 +159,21 @@ public class Details {
         public static MainSectoralActivity fromValue(final String value) {
             final MainSectoralActivity constant = CONSTANTS.get(value);
             if (constant == null) {
-                throw new IllegalArgumentException(value);
+                throw new EnumException(MainSectoralActivity.class.getName(), value, Arrays.toString(values()));
             }
             return constant;
-        }
-
-        @Override
-        public String toString() {
-            return this.value;
         }
 
         @JsonValue
         public String value() {
             return this.value;
         }
+
+        public String toString() {
+            return this.value;
+        }
+
+
     }
 
     public enum Scale {
@@ -184,15 +181,14 @@ public class Details {
         SME("sme"),
         LARGE("large"),
         EMPTY("");
-        private final static Map<String, Scale> CONSTANTS = new HashMap<>();
+        private static final Map<String, Scale> CONSTANTS = new HashMap<>();
+        private final String value;
 
         static {
             for (final Details.Scale c : values()) {
                 CONSTANTS.put(c.value, c);
             }
         }
-
-        private final String value;
 
         Scale(final String value) {
             this.value = value;
@@ -201,20 +197,18 @@ public class Details {
         @JsonCreator
         public static Scale fromValue(final String value) {
             final Details.Scale constant = CONSTANTS.get(value);
-            if (constant == null) {
-                throw new IllegalArgumentException(
-                        "Unknown enum type " + value + ", Allowed values are " + Arrays.toString(values()));
-            }
+            if (constant == null)
+                throw new EnumException(Scale.class.getName(), value, Arrays.toString(values()));
             return constant;
-        }
-
-        @Override
-        public String toString() {
-            return this.value;
         }
 
         @JsonValue
         public String value() {
+            return this.value;
+        }
+
+        @Override
+        public String toString() {
             return this.value;
         }
     }
@@ -226,15 +220,14 @@ public class Details {
         NATIONAL_AGENCY("NATIONAL_AGENCY"),
         REGIONAL_AGENCY("REGIONAL_AGENCY"),
         REGIONAL_AUTHORITY("REGIONAL_AUTHORITY");
-        private final static Map<String, TypeOfBuyer> CONSTANTS = new HashMap<>();
+        private static final Map<String, TypeOfBuyer> CONSTANTS = new HashMap<>();
+        private final String value;
 
         static {
             for (final Details.TypeOfBuyer c : values()) {
                 CONSTANTS.put(c.value, c);
             }
         }
-
-        private final String value;
 
         TypeOfBuyer(final String value) {
             this.value = value;
@@ -243,15 +236,9 @@ public class Details {
         @JsonCreator
         public static TypeOfBuyer fromValue(final String value) {
             final TypeOfBuyer constant = CONSTANTS.get(value);
-            if (constant == null) {
-                throw new IllegalArgumentException(value);
-            }
+            if (constant == null)
+                throw new EnumException(TypeOfBuyer.class.getName(), value, Arrays.toString(values()));
             return constant;
-        }
-
-        @Override
-        public String toString() {
-            return this.value;
         }
 
         @JsonValue
@@ -259,5 +246,9 @@ public class Details {
             return this.value;
         }
 
+        @Override
+        public String toString() {
+            return this.value;
+        }
     }
 }

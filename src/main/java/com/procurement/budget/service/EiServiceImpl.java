@@ -73,7 +73,7 @@ public class EiServiceImpl implements EiService {
     }
 
     @Override
-    public EiDto getEi(String cpId) {
+    public EiDto getEi(final String cpId) {
         final EiEntity entity = Optional.ofNullable(eiDao.getByCpId(cpId))
                 .orElseThrow(() -> new ErrorException(ErrorType.DATA_NOT_FOUND));
         return jsonUtil.toObject(EiDto.class, entity.getJsonData());
