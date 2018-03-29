@@ -54,29 +54,33 @@ public class FsServiceImpl implements FsService {
         final EiDto ei = eiService.getEi(cpId);
         checkCurrency(ei, fsDto);
         checkPeriod(ei, fsDto);
+        validatePeriod(fsDto);
         fs.setPlanning(fsDto.getPlanning());
-        fs.setTender(new FsTenderDto(
-                fs.getOcId(),
-                TenderStatus.PLANNING,
-                TenderStatusDetails.EMPTY,
-                null)
-        );
         fs.setPayer(fsDto.getTender().getProcuringEntity());
         setIdOfOrganizationReference(fs.getPayer());
         final FsOrganizationReferenceDto fsBuyer = fsDto.getBuyer();
-        //from buyer
+        TenderStatus tenderStatus = null;
+        //buyer from EI
+        if (Objects.isNull(fsBuyer)) {
+            setFounderFromEi(fs, ei.getBuyer());
+            setSourceEntity(fs.getPlanning().getBudget(), fs.getFunder());
+            fs.getPlanning().getBudget().setVerified(false);
+            tenderStatus = TenderStatus.PLANNING;
+        }
+        //from buyer fsDto
         if (Objects.nonNull(fsBuyer)) {
             setIdOfOrganizationReference(fsBuyer);
             fs.setFunder(fsBuyer);
             setSourceEntity(fs.getPlanning().getBudget(), fs.getFunder());
             fs.getPlanning().getBudget().setVerified(true);
+            tenderStatus = TenderStatus.ACTIVE;
         }
-        //from EI buyer
-        if (Objects.isNull(fsBuyer)) {
-            setFounderFromEi(fs, ei.getBuyer());
-            setSourceEntity(fs.getPlanning().getBudget(), fs.getFunder());
-            fs.getPlanning().getBudget().setVerified(false);
-        }
+        fs.setTender(new FsTenderDto(
+                cpId,
+                tenderStatus,
+                TenderStatusDetails.EMPTY,
+                null)
+        );
         final FsEntity entity = getEntity(cpId, fs, owner, dateTime);
         fsDao.save(entity);
         fs.setToken(entity.getToken().toString());
@@ -150,6 +154,12 @@ public class FsServiceImpl implements FsService {
         final FsOrganizationReferenceDto fsSe = fs.getPlanning().getBudget().getSourceEntity();
         br.setSourceParty(new CheckSourcePartyDto(fsSe.getId(), fsSe.getName()));
         br.setPeriod(fs.getPlanning().getBudget().getPeriod());
+    }
+
+    private void validatePeriod(final FsRequestDto fs) {
+        if (!fs.getPlanning().getBudget().getPeriod().getStartDate()
+                .isBefore(fs.getPlanning().getBudget().getPeriod().getEndDate()))
+            throw new ErrorException(ErrorType.INVALID_PERIOD);
     }
 
     private void checkTenderPeriod(final FsDto fs, final CheckRequestDto dto) {
