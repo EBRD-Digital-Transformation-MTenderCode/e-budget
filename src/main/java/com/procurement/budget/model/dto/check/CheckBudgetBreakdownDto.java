@@ -29,7 +29,7 @@ public class CheckBudgetBreakdownDto {
     private final String id;
 
     @JsonProperty("description")
-    private final String description;
+    private String description;
 
     @Valid
     @NotNull
