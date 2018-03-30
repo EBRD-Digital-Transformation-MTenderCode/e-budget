@@ -154,7 +154,7 @@ public class FsServiceImpl implements FsService {
         final FsOrganizationReferenceDto fsSe = fs.getPlanning().getBudget().getSourceEntity();
         br.setSourceParty(new CheckSourcePartyDto(fsSe.getId(), fsSe.getName()));
         br.setPeriod(fs.getPlanning().getBudget().getPeriod());
-        if (Objects.isNull(br.getDescription())) {
+        if (Objects.isNull(br.getDescription()) || br.getDescription().isEmpty()) {
             if (Objects.nonNull(fs.getPlanning().getBudget().getDescription())) {
                 br.setDescription(fs.getPlanning().getBudget().getDescription());
             }
