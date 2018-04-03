@@ -8,6 +8,7 @@ import com.datastax.driver.core.querybuilder.Insert;
 import com.procurement.budget.model.entity.FsEntity;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import org.springframework.stereotype.Service;
 
@@ -74,6 +75,27 @@ public class FsDaoImpl implements FsDao {
                 .all()
                 .from(FS_TABLE)
                 .where(eq(CP_ID, cpId));
+        final ResultSet resultSet = session.execute(query);
+        final List<FsEntity> entities = new ArrayList<>();
+        resultSet.forEach(row ->
+                entities.add(new FsEntity(
+                        row.getString(CP_ID),
+                        row.getString(OC_ID),
+                        row.getUUID(TOKEN),
+                        row.getString(OWNER),
+                        row.getDouble(AMOUNT),
+                        row.getDouble(AMOUNT_RESERVED),
+                        row.getTimestamp(CREATED_DATE),
+                        row.getString(JSON_DATA))));
+        return entities;
+    }
+
+    @Override
+    public List<FsEntity> getAllByCpIds(final Set<String> cpIds) {
+        final Statement query = select()
+                .all()
+                .from(FS_TABLE)
+                .where(in(CP_ID, cpIds.toArray()));
         final ResultSet resultSet = session.execute(query);
         final List<FsEntity> entities = new ArrayList<>();
         resultSet.forEach(row ->

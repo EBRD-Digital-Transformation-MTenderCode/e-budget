@@ -62,7 +62,7 @@ public class EiServiceImpl implements EiService {
                                 final EiDto eiDto) {
 
         final EiEntity entity = Optional.ofNullable(eiDao.getByCpIdAndToken(cpId, UUID.fromString(token)))
-                .orElseThrow(() -> new ErrorException(ErrorType.DATA_NOT_FOUND));
+                .orElseThrow(() -> new ErrorException(ErrorType.EI_NOT_FOUND));
         if (!entity.getOwner().equals(owner)) throw new ErrorException(ErrorType.INVALID_OWNER);
         final EiDto ei = jsonUtil.toObject(EiDto.class, entity.getJsonData());
         ei.setPlanning(eiDto.getPlanning());
@@ -75,7 +75,7 @@ public class EiServiceImpl implements EiService {
     @Override
     public EiDto getEi(final String cpId) {
         final EiEntity entity = Optional.ofNullable(eiDao.getByCpId(cpId))
-                .orElseThrow(() -> new ErrorException(ErrorType.DATA_NOT_FOUND));
+                .orElseThrow(() -> new ErrorException(ErrorType.EI_NOT_FOUND));
         return jsonUtil.toObject(EiDto.class, entity.getJsonData());
     }
 

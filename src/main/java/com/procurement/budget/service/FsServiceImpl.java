@@ -93,7 +93,7 @@ public class FsServiceImpl implements FsService {
                                 final String owner,
                                 final FsDto fsDto) {
         final FsEntity entity = Optional.ofNullable(fsDao.getByCpIdAndToken(cpId, UUID.fromString(token)))
-                .orElseThrow(() -> new ErrorException(ErrorType.DATA_NOT_FOUND));
+                .orElseThrow(() -> new ErrorException(ErrorType.FS_NOT_FOUND));
         if (!entity.getOwner().equals(owner)) throw new ErrorException(ErrorType.INVALID_OWNER);
         final FsDto fs = jsonUtil.toObject(FsDto.class, entity.getJsonData());
         fs.setTender(fsDto.getTender());
@@ -106,27 +106,25 @@ public class FsServiceImpl implements FsService {
     @Override
     public ResponseDto checkFs(final CheckRequestDto dto) {
         final List<CheckBudgetBreakdownDto> budgetBreakdown = dto.getBudgetBreakdown();
-
-        final Set<String> eiIds = budgetBreakdown.stream()
+        final Set<String> cpIds = budgetBreakdown.stream()
                 .map(b -> getCpIdFromOcId(b.getId()))
                 .collect(Collectors.toSet());
         final HashSet<FsOrganizationReferenceDto> funders = new HashSet<>();
         final HashSet<FsOrganizationReferenceDto> payers = new HashSet<>();
         final HashSet<EiOrganizationReferenceDto> buyers = new HashSet<>();
-        for (final String cpId : eiIds) {
-            final List<FsEntity> entities = fsDao.getAllByCpId(cpId);
-            if (entities.isEmpty()) throw new ErrorException(ErrorType.DATA_NOT_FOUND);
-            final Map<String, FsDto> fsMap = new HashMap<>();
-            entities.stream()
-                    .map(e -> jsonUtil.toObject(FsDto.class, e.getJsonData()))
-                    .forEach(fsDto -> fsMap.put(fsDto.getOcId(), fsDto));
-
+        final List<FsEntity> entities = fsDao.getAllByCpIds(cpIds);
+        if (entities.isEmpty()) throw new ErrorException(ErrorType.FS_NOT_FOUND);
+        final Map<String, FsDto> fsMap = new HashMap<>();
+        entities.stream()
+                .map(e -> jsonUtil.toObject(FsDto.class, e.getJsonData()))
+                .forEach(fsDto -> fsMap.put(fsDto.getOcId(), fsDto));
+        for (final String cpId : cpIds) {
             final EiDto ei = eiService.getEi(cpId);
             checkCPV(ei, dto);
             buyers.add(ei.getBuyer());
             budgetBreakdown.forEach(br -> {
                 final FsDto fs = fsMap.get(br.getId());
-                if (Objects.isNull(fs)) throw new ErrorException(ErrorType.DATA_NOT_FOUND);
+                if (Objects.isNull(fs)) throw new ErrorException(ErrorType.FS_NOT_FOUND);
                 checkFsStatus(fs);
                 checkTenderPeriod(fs, dto);
                 checkFsAmount(fs, br);
@@ -139,7 +137,7 @@ public class FsServiceImpl implements FsService {
         return new ResponseDto<>(
                 true,
                 null,
-                new CheckResponseDto(eiIds, budgetBreakdown, funders, payers, buyers)
+                new CheckResponseDto(cpIds, budgetBreakdown, funders, payers, buyers)
         );
     }
 
