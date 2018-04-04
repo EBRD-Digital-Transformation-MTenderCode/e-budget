@@ -1,4 +1,78 @@
 {
+  "budgetBreakdown": [
+    {
+      "id": "ocds-t1s2t3-UA-1522665013444-FS-1522665016840",
+      "description": "1 A short free text description of this budget entry.",
+      "amount": {
+        "amount": 2.07872268165E9,
+        "currency": "KHR"
+      }
+    },
+    {
+      "id": "ocds-t1s2t3-UA-1522665013444-FS-1522665017319",
+      "description": "2 A short free text description of this budget entry.",
+      "amount": {
+        "amount": 254455.33,
+        "currency": "KHR"
+      }
+    },
+    {
+      "id": "ocds-t1s2t3-MD-1522754967172-FS-1522755127723",
+      "description": "3 A short free text description of this budget entry.",
+      "amount": {
+        "amount": 5,
+        "currency": "KHR"
+      }
+    }
+  ],
+  "tenderPeriod": {
+    "endDate": "2018-05-05T15:58:30Z"
+  },
+  "classification": {
+    "scheme": "CPV",
+    "description": "Fire-prevention installation works",
+    "id": "45343000-3"
+  }
+}
+
+{
+  "budgetBreakdown": [
+    {
+      "id": "ocds-t1s2t3-UA-1522665013444-FS-1522665016840",
+      "description": "1 A short free text description of this budget entry.",
+      "amount": {
+        "amount": 2.07872268165E9,
+        "currency": "KHR"
+      }
+    },
+    {
+      "id": "ocds-t1s2t3-UA-1522665013444-FS-1522665017319",
+      "description": "2 A short free text description of this budget entry.",
+      "amount": {
+        "amount": 254455.33,
+        "currency": "KHR"
+      }
+    },
+    {
+      "id": "ocds-t1s2t3-MD-1522754967172-FS-1522755127723",
+      "description": "3 A short free text description of this budget entry.",
+      "amount": {
+        "amount": 5,
+        "currency": "KHR"
+      }
+    }
+  ],
+  "tenderPeriod": {
+    "startDate": "2018-04-03T11:57:23Z"
+  },
+  "classification": {
+    "scheme": "CPV",
+    "description": "Fire-prevention installation works",
+    "id": "45343000-3"
+  }
+}
+
+{
   "planning": {
     "rationale": "The rationale for the procurement provided in free text. More detail can be provided in an attached document.",
     "budget": {
@@ -15,24 +89,8 @@
       },
       "budgetBreakdown": [
         {
-          "id": "ocds-t1s2t3-UA-1522665013444-FS-1522665016840",
+          "id": "ocds-t1s2t3-MD-1522835027035-FS-1522837907116",
           "description": "1 A short free text description of this budget entry.",
-          "amount": {
-            "amount": 2.07872268165E9,
-            "currency": "KHR"
-          }
-        },
-        {
-          "id": "ocds-t1s2t3-UA-1522665013444-FS-1522665017319",
-          "description": "2 A short free text description of this budget entry.",
-          "amount": {
-            "amount": 254455.33,
-            "currency": "KHR"
-          }
-        },
-        {
-          "id": "ocds-t1s2t3-MD-1522754967172-FS-1522755127723",
-          "description": "3 A short free text description of this budget entry.",
           "amount": {
             "amount": 5,
             "currency": "KHR"
@@ -47,7 +105,7 @@
     "classification": {
       "scheme": "CPV",
       "description": "Fire-prevention installation works",
-      "id": "45343000-3"
+      "id": "45343000-2"
     },
     "acceleratedProcedure": {
       "isAcceleratedProcedure": false
@@ -87,7 +145,7 @@
       "ro"
     ],
     "tenderPeriod": {
-      "endDate": "2018-05-05T15:58:30Z"
+      "endDate": "2018-04-26T15:58:30Z"
     },
     "contractPeriod": {
       "startDate": "2018-09-27T00:00:00Z",
@@ -153,7 +211,7 @@
         "classification": {
           "scheme": "CPV",
           "description": "Fire-prevention installation works",
-          "id": "45343000-3"
+          "id": "45343000-2"
         },
         "additionalClassifications": [
           {
@@ -212,42 +270,5 @@
         "url": "http://test.ua"
       }
     }
-  }
-}
-
-{
-  "budgetBreakdown": [
-    {
-      "id": "ocds-t1s2t3-UA-1522665013444-FS-1522665016840",
-      "description": "1 A short free text description of this budget entry.",
-      "amount": {
-        "amount": 2.07872268165E9,
-        "currency": "KHR"
-      }
-    },
-    {
-      "id": "ocds-t1s2t3-UA-1522665013444-FS-1522665017319",
-      "description": "2 A short free text description of this budget entry.",
-      "amount": {
-        "amount": 254455.33,
-        "currency": "KHR"
-      }
-    },
-    {
-      "id": "ocds-t1s2t3-MD-1522754967172-FS-1522755127723",
-      "description": "3 A short free text description of this budget entry.",
-      "amount": {
-        "amount": 5,
-        "currency": "KHR"
-      }
-    }
-  ],
-  "tenderPeriod": {
-    "startDate": "2018-04-03T11:57:23Z"
-  },
-  "classification": {
-    "scheme": "CPV",
-    "description": "Fire-prevention installation works",
-    "id": "45343000-3"
   }
 }

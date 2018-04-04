@@ -49,7 +49,7 @@ public class ControllerExceptionHandler {
     @ResponseStatus(OK)
     @ExceptionHandler(JsonMappingException.class)
     public ResponseDto handleJsonMappingExceptionException(final JsonMappingException e) {
-        return new ResponseDto<>(false, getErrors(e.getClass().getName(), e.getMessage()), null);
+        return new ResponseDto<>(false, getErrors(e.getPathReference(), e.getMessage()), null);
     }
 
     @ResponseBody
@@ -63,7 +63,7 @@ public class ControllerExceptionHandler {
     @ResponseStatus(OK)
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseDto handleJsonMappingExceptionException(final MethodArgumentTypeMismatchException e) {
-        return new ResponseDto<>(false, getErrors(e.getClass().getName(), e.getMessage()), null);
+        return new ResponseDto<>(false, getErrors(e.getPropertyName(), e.getMessage()), null);
     }
 
     @ResponseBody

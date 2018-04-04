@@ -144,7 +144,7 @@ public class FsServiceImpl implements FsService {
     private void checkCPV(final EiDto ei, final CheckRequestDto dto) {
         final String eiCPV = ei.getTender().getClassification().getId();
         final String dtoCPV = dto.getClassification().getId();
-        if (!eiCPV.substring(0, 2).toUpperCase().equals(dtoCPV.substring(0, 2).toUpperCase()))
+        if (!eiCPV.substring(0, 3).toUpperCase().equals(dtoCPV.substring(0, 3).toUpperCase()))
             throw new ErrorException(ErrorType.INVALID_CPV);
     }
 

@@ -4,6 +4,9 @@ server:
 spring:
   application:
     name: e-budget
+  jackson:
+    deserialization:
+      fail-on-unknown-properties: true
 
 eureka:
   client:
