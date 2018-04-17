@@ -106,6 +106,11 @@ public class FsServiceImpl implements FsService {
     @Override
     public ResponseDto checkFs(final CheckRequestDto dto) {
         final List<CheckBudgetBreakdownDto> budgetBreakdown = dto.getBudgetBreakdown();
+
+        //check currency of Budget Breakdowns
+        if (budgetBreakdown.stream().map(b -> b.getAmount().getCurrency()).collect(Collectors.toSet()).size() > 1) {
+            throw new ErrorException(ErrorType.INVALID_CURRENCY);
+        }
         final Set<String> cpIds = budgetBreakdown.stream()
                 .map(b -> getCpIdFromOcId(b.getId()))
                 .collect(Collectors.toSet());
@@ -134,6 +139,7 @@ public class FsServiceImpl implements FsService {
                 payers.add(fs.getPayer());
             });
         }
+
         return new ResponseDto<>(
                 true,
                 null,

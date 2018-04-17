@@ -1,111 +1,37 @@
 {
-  "budgetBreakdown": [
-    {
-      "id": "ocds-t1s2t3-UA-1522665013444-FS-1522665016840",
-      "description": "1 A short free text description of this budget entry.",
-      "amount": {
-        "amount": 2.07872268165E9,
-        "currency": "KHR"
-      }
-    },
-    {
-      "id": "ocds-t1s2t3-UA-1522665013444-FS-1522665017319",
-      "description": "2 A short free text description of this budget entry.",
-      "amount": {
-        "amount": 254455.33,
-        "currency": "KHR"
-      }
-    },
-    {
-      "id": "ocds-t1s2t3-MD-1522754967172-FS-1522755127723",
-      "description": "3 A short free text description of this budget entry.",
-      "amount": {
-        "amount": 5,
-        "currency": "KHR"
-      }
-    }
-  ],
-  "tenderPeriod": {
-    "endDate": "2018-05-05T15:58:30Z"
-  },
-  "classification": {
-    "scheme": "CPV",
-    "description": "Fire-prevention installation works",
-    "id": "45343000-3"
-  }
-}
-
-{
-  "budgetBreakdown": [
-    {
-      "id": "ocds-t1s2t3-UA-1522665013444-FS-1522665016840",
-      "description": "1 A short free text description of this budget entry.",
-      "amount": {
-        "amount": 2.07872268165E9,
-        "currency": "KHR"
-      }
-    },
-    {
-      "id": "ocds-t1s2t3-UA-1522665013444-FS-1522665017319",
-      "description": "2 A short free text description of this budget entry.",
-      "amount": {
-        "amount": 254455.33,
-        "currency": "KHR"
-      }
-    },
-    {
-      "id": "ocds-t1s2t3-MD-1522754967172-FS-1522755127723",
-      "description": "3 A short free text description of this budget entry.",
-      "amount": {
-        "amount": 5,
-        "currency": "KHR"
-      }
-    }
-  ],
-  "tenderPeriod": {
-    "startDate": "2018-04-03T11:57:23Z"
-  },
-  "classification": {
-    "scheme": "CPV",
-    "description": "Fire-prevention installation works",
-    "id": "45343000-3"
-  }
-}
-
-{
   "planning": {
-    "rationale": "The rationale for the procurement provided in free text. More detail can be provided in an attached document.",
+    "rationale": "Rationale",
     "budget": {
-      "description": "A short free text description of the budget source. May be used to provide the title of the budget line, or the programme used to fund this project.",
+      "description": "Budget Description",
       "amount": {
-        "amount": 2.07872268165E9,
-        "currency": "KHR"
+        "amount": 123,
+        "currency": "AMD"
       },
-      "isEuropeanUnionFunded": true,
+      "isEuropeanUnionFunded": false,
       "europeanUnionFunding": {
-        "projectIdentifier": "proj-cn-12346",
-        "projectName": "test proj name",
-        "uri": "https://jwt.io"
+        "projectIdentifier": "Project Identifier",
+        "projectName": "Project Name",
+        "uri": "Project uri"
       },
       "budgetBreakdown": [
         {
-          "id": "ocds-t1s2t3-MD-1522835027035-FS-1522837907116",
-          "description": "1 A short free text description of this budget entry.",
+          "id": "ocds-t1s2t3-MD-1523620906836-FS-1523621819296",
+          "description": "Budget Description",
           "amount": {
-            "amount": 5,
-            "currency": "KHR"
+            "amount": 123,
+            "currency": "AMD"
           }
         }
       ]
     }
   },
   "tender": {
-    "title": "Tender title",
-    "description": "Tender description",
+    "title": "",
+    "description": "",
     "classification": {
       "scheme": "CPV",
-      "description": "Fire-prevention installation works",
-      "id": "45343000-2"
+      "description": "Virus protection software packag",
+      "id": "48760000-3"
     },
     "acceleratedProcedure": {
       "isAcceleratedProcedure": false
@@ -130,30 +56,60 @@
     "dynamicPurchasingSystem": {
       "hasDynamicPurchasingSystem": false
     },
-    "legalBasis": "DIRECTIVE_2014_24_EU",
-    "procurementMethod": "open",
-    "procurementMethodDetails": "Open Procurement",
-    "procurementMethodRationale": "Rationale of procurement method, especially in the case of Limited tendering.",
-    "procurementMethodAdditionalInfo": "Additional information about the procurement method.",
-    "mainProcurementCategory": "goods",
+    "legalBasis": "",
+    "procurementMethod": "",
+    "procurementMethodDetails": "",
+    "procurementMethodRationale": "",
+    "procurementMethodAdditionalInfo": "",
+    "mainProcurementCategory": "",
     "additionalProcurementCategories": [
-      "goods"
+      ""
     ],
-    "eligibilityCriteria": "A description of any eligibility criteria for potential suppliers.",
+    "eligibilityCriteria": "",
     "submissionLanguages": [
-      "pl",
-      "ro"
+      ""
     ],
     "tenderPeriod": {
-      "endDate": "2018-04-26T15:58:30Z"
+      "startDate": "2018-05-30T21:00:00Z"
     },
     "contractPeriod": {
-      "startDate": "2018-09-27T00:00:00Z",
-      "endDate": "2018-08-13T11:32:10Z"
+      "startDate": "2018-05-25T21:00:00Z",
+      "endDate": "2018-06-26T21:00:00Z"
+    },
+    "procuringEntity": {
+      "name": "111",
+      "identifier": {
+        "scheme": "2Additional identifier scheme*",
+        "id": "2Additional identifier ID*",
+        "legalName": "2Additional identifier legal name*",
+        "uri": "2Additional identifier URI*"
+      },
+      "additionalIdentifiers": [
+        {
+          "scheme": "",
+          "id": "",
+          "legalName": "",
+          "uri": ""
+        }
+      ],
+      "address": {
+        "streetAddress": "",
+        "locality": "",
+        "region": "",
+        "postalCode": "",
+        "countryName": ""
+      },
+      "contactPoint": {
+        "name": "",
+        "email": "",
+        "telephone": "",
+        "faxNumber": "",
+        "url": ""
+      }
     },
     "value": {
-      "amount": 2.07872268165E9,
-      "currency": "KHR"
+      "amount": 123,
+      "currency": "AMD"
     },
     "lotGroups": [
       {
@@ -162,12 +118,12 @@
     ],
     "lots": [
       {
-        "id": "lot-id-123123",
-        "title": "A title for this lot.",
-        "description": "A description of this lot.",
+        "id": "",
+        "title": "",
+        "description": "",
         "value": {
-          "amount": 2.07872268165E9,
-          "currency": "KHR"
+          "amount": 123,
+          "currency": "AMD"
         },
         "options": [
           {
@@ -190,85 +146,65 @@
           }
         ],
         "contractPeriod": {
-          "startDate": "2018-09-27T00:00:00Z",
-          "endDate": "2018-11-27T00:00:00Z"
+          "startDate": "2018-05-24T21:00:00Z",
+          "endDate": "2018-06-29T21:00:00Z"
         },
         "placeOfPerformance": {
           "address": {
-            "streetAddress": "149-159 High Street",
-            "locality": "Birmingham",
-            "region": "Digbeth",
-            "postalCode": "B12 0JU",
-            "countryName": "United Kingdom"
+            "streetAddress": "",
+            "locality": "",
+            "region": "",
+            "postalCode": "",
+            "countryName": ""
           },
-          "description": "Further description of the place of performance of the contract. Required by EU."
+          "description": ""
         }
       }
     ],
     "items": [
       {
-        "id": "item-id-123123",
+        "id": "",
         "classification": {
           "scheme": "CPV",
-          "description": "Fire-prevention installation works",
-          "id": "45343000-2"
+          "description": "Virus protection software package",
+          "id": "48760000-3"
         },
         "additionalClassifications": [
           {
-            "scheme": "CPVS",
-            "description": "A textual description or title for the code.",
-            "id": "CPVs-id-12341234"
+            "scheme": "CPV",
+            "description": "Virus protection software package",
+            "id": "48760000-3"
           }
         ],
-        "quantity": 10,
+        "quantity": 0,
         "unit": {
-          "id": "0971",
-          "name": "kg"
+          "id": "",
+          "name": ""
         },
-        "description": "A description of the goods, services to be provided.",
-        "relatedLot": "lot-id-123123"
+        "description": "",
+        "relatedLot": ""
       }
     ],
     "awardCriteria": "priceOnly",
     "requiresElectronicCatalogue": false,
     "submissionMethod": [
-      "electronicSubmission"
+      ""
     ],
     "submissionMethodRationale": [
-      "TOOLS_DEVICES_FILE_FORMATS_UNAVAILABLE",
-      "IPR_ISSUES"
+      ""
     ],
-    "submissionMethodDetails": "Any detailed or further information on the submission method. This may include the address, e-mail address or online service to which bids should be submitted, and any special requirements to be followed for submissions.",
-    "procuringEntity": {
-      "name": "Новороздільська міська лікарня",
-      "identifier": {
-        "scheme": "UA-EDR",
-        "id": "20764777",
-        "legalName": "Новороздільська міська лікарня",
-        "uri": "http://buyerTestLink.ua"
-      },
-      "additionalIdentifiers": [
-        {
-          "scheme": "UA-EDR",
-          "id": "123123123",
-          "legalName": "Додатково Новороздільська міська лікарня",
-          "uri": "http://additionalBuyerTestLink.ua"
-        }
-      ],
-      "address": {
-        "streetAddress": "вул. Винниченка, 37",
-        "locality": "місто Новий Розділ",
-        "region": "Львівська область",
-        "postalCode": "7770777",
-        "countryName": "Україна"
-      },
-      "contactPoint": {
-        "name": "Осипових Сергій Олександрович",
-        "email": "test2@test.test",
-        "telephone": "+380222222222",
-        "faxNumber": "+380222222222",
-        "url": "http://test.ua"
+    "submissionMethodDetails": "",
+    "documents": [
+      {
+        "documentType": "",
+        "id": "",
+        "title": "",
+        "description": "",
+        "language": "",
+        "relatedLots": [
+          ""
+        ]
       }
-    }
+    ]
   }
 }
