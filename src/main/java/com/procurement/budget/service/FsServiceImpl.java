@@ -19,6 +19,7 @@ import com.procurement.budget.model.dto.ocds.TenderStatusDetails;
 import com.procurement.budget.model.entity.FsEntity;
 import com.procurement.budget.utils.DateUtil;
 import com.procurement.budget.utils.JsonUtil;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -167,16 +168,10 @@ public class FsServiceImpl implements FsService {
     }
 
     private void checkTenderPeriod(final FsDto fs, final CheckRequestDto dto) {
-        final LocalDateTime tenderPeriodStartDate = dto.getTenderPeriod().getStartDate();
-        final Period fsPeriod = fs.getPlanning().getBudget().getPeriod();
-        final boolean tenderPeriodValid =
-                (tenderPeriodStartDate.isAfter(fsPeriod.getStartDate()) ||
-                        tenderPeriodStartDate.isEqual(fsPeriod.getStartDate()))
-                        &&
-                        (tenderPeriodStartDate.isBefore(fsPeriod.getEndDate()) ||
-                                tenderPeriodStartDate.isEqual(fsPeriod.getEndDate()));
-
-        if (!tenderPeriodValid) throw new ErrorException(ErrorType.INVALID_DATE);
+        final LocalDate tenderStartDate = dto.getTenderPeriod().getStartDate().toLocalDate();
+        final LocalDate fsEndDate = fs.getPlanning().getBudget().getPeriod().getEndDate().toLocalDate();
+        if (!(tenderStartDate.isBefore(fsEndDate) || tenderStartDate.isEqual(fsEndDate))) ;
+        throw new ErrorException(ErrorType.INVALID_DATE);
     }
 
     private void checkFsCurrency(final FsDto fs, final CheckBudgetBreakdownDto br) {
