@@ -170,8 +170,9 @@ public class FsServiceImpl implements FsService {
     private void checkTenderPeriod(final FsDto fs, final CheckRequestDto dto) {
         final LocalDate tenderStartDate = dto.getTenderPeriod().getStartDate().toLocalDate();
         final LocalDate fsEndDate = fs.getPlanning().getBudget().getPeriod().getEndDate().toLocalDate();
-        if (!(tenderStartDate.isBefore(fsEndDate) || tenderStartDate.isEqual(fsEndDate))) ;
-        throw new ErrorException(ErrorType.INVALID_DATE);
+        if (!(tenderStartDate.isBefore(fsEndDate) || tenderStartDate.isEqual(fsEndDate))) {
+            throw new ErrorException(ErrorType.INVALID_DATE);
+        }
     }
 
     private void checkFsCurrency(final FsDto fs, final CheckBudgetBreakdownDto br) {
