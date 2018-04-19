@@ -184,7 +184,7 @@ public class FsServiceImpl implements FsService {
     private void checkFsAmount(final FsDto fs, final CheckBudgetBreakdownDto br) {
         final Double fsAmount = fs.getPlanning().getBudget().getAmount().getAmount();
         final Double brAmount = br.getAmount().getAmount();
-        if (!(brAmount <= fsAmount)) throw new ErrorException(ErrorType.INVALID_AMOUNT);
+        if (brAmount > fsAmount) throw new ErrorException(ErrorType.INVALID_AMOUNT);
     }
 
     private void checkFsStatus(final FsDto fs) {
