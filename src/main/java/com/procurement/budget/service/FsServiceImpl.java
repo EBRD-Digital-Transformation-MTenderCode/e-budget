@@ -63,7 +63,7 @@ public class FsServiceImpl implements FsService {
         TenderStatus tenderStatus = null;
         //buyer from EI
         if (Objects.isNull(fsBuyer)) {
-            setSourceEntity(fs.getPlanning().getBudget(), fs.getFunder());
+            setSourceEntity(fs.getPlanning().getBudget(), getFounderFromEi(ei.getBuyer()));
             fs.getPlanning().getBudget().setVerified(false);
             tenderStatus = TenderStatus.PLANNING;
         }
@@ -228,16 +228,15 @@ public class FsServiceImpl implements FsService {
         }
     }
 
-    private void setFounderFromEi(final FsDto fs, final EiOrganizationReferenceDto buyer) {
-        final FsOrganizationReferenceDto funder =
-                new FsOrganizationReferenceDto(
-                        buyer.getId(),
-                        buyer.getName(),
-                        buyer.getIdentifier(),
-                        buyer.getAddress(),
-                        new HashSet(buyer.getAdditionalIdentifiers()),
-                        buyer.getContactPoint());
-        fs.setFunder(funder);
+    private FsOrganizationReferenceDto getFounderFromEi(final EiOrganizationReferenceDto buyer) {
+        return new FsOrganizationReferenceDto(
+                buyer.getId(),
+                buyer.getName(),
+                buyer.getIdentifier(),
+                buyer.getAddress(),
+                new HashSet(buyer.getAdditionalIdentifiers()),
+                buyer.getContactPoint());
+
     }
 
     private void setIdOfOrganizationReference(final FsOrganizationReferenceDto or) {
