@@ -131,7 +131,7 @@ public class FsServiceImpl implements FsService {
                 final FsDto fs = fsMap.get(br.getId());
                 if (Objects.isNull(fs)) throw new ErrorException(ErrorType.FS_NOT_FOUND);
                 checkFsStatus(fs);
-                checkTenderPeriod(fs, dto);
+//                checkTenderPeriod(fs, dto);
                 checkFsAmount(fs, br);
                 checkFsCurrency(fs, br);
                 processBudgetBreakdown(br, fs);
