@@ -63,7 +63,6 @@ public class FsServiceImpl implements FsService {
         TenderStatus tenderStatus = null;
         //buyer from EI
         if (Objects.isNull(fsBuyer)) {
-            setFounderFromEi(fs, ei.getBuyer());
             setSourceEntity(fs.getPlanning().getBudget(), fs.getFunder());
             fs.getPlanning().getBudget().setVerified(false);
             tenderStatus = TenderStatus.PLANNING;
