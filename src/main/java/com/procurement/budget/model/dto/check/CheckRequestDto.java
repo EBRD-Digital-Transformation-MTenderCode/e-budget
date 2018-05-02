@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.procurement.budget.model.dto.ocds.Classification;
 import java.util.List;
+import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
@@ -20,14 +21,17 @@ import lombok.Getter;
 public class CheckRequestDto {
 
     @NotEmpty
+    @Valid
     @JsonProperty("budgetBreakdown")
     private final List<CheckBudgetBreakdownDto> budgetBreakdown;
 
     @NotNull
+    @Valid
     @JsonProperty("tenderPeriod")
     private final CheckPeriodDto tenderPeriod;
 
     @NotNull
+    @Valid
     @JsonProperty("classification")
     private final Classification classification;
 
