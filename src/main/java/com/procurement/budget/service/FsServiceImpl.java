@@ -19,6 +19,7 @@ import com.procurement.budget.model.dto.ocds.TenderStatusDetails;
 import com.procurement.budget.model.entity.FsEntity;
 import com.procurement.budget.utils.DateUtil;
 import com.procurement.budget.utils.JsonUtil;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -181,9 +182,9 @@ public class FsServiceImpl implements FsService {
     }
 
     private void checkFsAmount(final FsDto fs, final CheckBudgetBreakdownDto br) {
-        final Double fsAmount = fs.getPlanning().getBudget().getAmount().getAmount();
-        final Double brAmount = br.getAmount().getAmount();
-        if (brAmount > fsAmount) throw new ErrorException(ErrorType.INVALID_AMOUNT);
+        final BigDecimal fsAmount = fs.getPlanning().getBudget().getAmount().getAmount();
+        final BigDecimal brAmount = br.getAmount().getAmount();
+        if (brAmount.compareTo(fsAmount) == 1) throw new ErrorException(ErrorType.INVALID_AMOUNT);
     }
 
     private void checkFsStatus(final FsDto fs) {
@@ -252,7 +253,7 @@ public class FsServiceImpl implements FsService {
         return ocId.substring(0, pos);
     }
 
-    private Double getAmount(final FsDto fs) {
+    private BigDecimal getAmount(final FsDto fs) {
         return fs.getPlanning().getBudget().getAmount().getAmount();
     }
 

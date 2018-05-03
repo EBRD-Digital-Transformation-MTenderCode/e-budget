@@ -1,5 +1,6 @@
 package com.procurement.budget.model.entity;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
@@ -21,9 +22,9 @@ public class FsEntity {
 
     private String owner;
 
-    private Double amount;
+    private BigDecimal amount;
 
-    private Double amountReserved;
+    private BigDecimal amountReserved;
 
     private Date createdDate;
 

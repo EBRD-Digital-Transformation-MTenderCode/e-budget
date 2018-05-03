@@ -62,8 +62,8 @@ public class FsDaoImpl implements FsDao {
                     row.getString(OC_ID),
                     row.getUUID(TOKEN),
                     row.getString(OWNER),
-                    row.getDouble(AMOUNT),
-                    row.getDouble(AMOUNT_RESERVED),
+                    row.getDecimal(AMOUNT),
+                    row.getDecimal(AMOUNT_RESERVED),
                     row.getTimestamp(CREATED_DATE),
                     row.getString(JSON_DATA));
         return null;
@@ -83,8 +83,8 @@ public class FsDaoImpl implements FsDao {
                         row.getString(OC_ID),
                         row.getUUID(TOKEN),
                         row.getString(OWNER),
-                        row.getDouble(AMOUNT),
-                        row.getDouble(AMOUNT_RESERVED),
+                        row.getDecimal(AMOUNT),
+                        row.getDecimal(AMOUNT_RESERVED),
                         row.getTimestamp(CREATED_DATE),
                         row.getString(JSON_DATA))));
         return entities;
@@ -104,8 +104,8 @@ public class FsDaoImpl implements FsDao {
                         row.getString(OC_ID),
                         row.getUUID(TOKEN),
                         row.getString(OWNER),
-                        row.getDouble(AMOUNT),
-                        row.getDouble(AMOUNT_RESERVED),
+                        row.getDecimal(AMOUNT),
+                        row.getDecimal(AMOUNT_RESERVED),
                         row.getTimestamp(CREATED_DATE),
                         row.getString(JSON_DATA))));
         return entities;
