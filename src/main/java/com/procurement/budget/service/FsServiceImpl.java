@@ -13,9 +13,7 @@ import com.procurement.budget.model.dto.ei.EiDto;
 import com.procurement.budget.model.dto.ei.EiOrganizationReferenceDto;
 import com.procurement.budget.model.dto.fs.*;
 import com.procurement.budget.model.dto.ocds.Currency;
-import com.procurement.budget.model.dto.ocds.Period;
-import com.procurement.budget.model.dto.ocds.TenderStatus;
-import com.procurement.budget.model.dto.ocds.TenderStatusDetails;
+import com.procurement.budget.model.dto.ocds.*;
 import com.procurement.budget.model.entity.FsEntity;
 import com.procurement.budget.utils.DateUtil;
 import com.procurement.budget.utils.JsonUtil;
@@ -230,12 +228,15 @@ public class FsServiceImpl implements FsService {
     }
 
     private FsOrganizationReferenceDto getFounderFromEi(final EiOrganizationReferenceDto buyer) {
+        HashSet<Identifier> additionalIdentifiers = null;
+        if (buyer.getAdditionalIdentifiers() != null)
+            additionalIdentifiers = new HashSet(buyer.getAdditionalIdentifiers());
         return new FsOrganizationReferenceDto(
                 buyer.getId(),
                 buyer.getName(),
                 buyer.getIdentifier(),
                 buyer.getAddress(),
-                new HashSet(buyer.getAdditionalIdentifiers()),
+                additionalIdentifiers,
                 buyer.getContactPoint());
 
     }

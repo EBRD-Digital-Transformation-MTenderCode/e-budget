@@ -1,105 +1,40 @@
 {
-  "ocid": "ocds-t1s2t3-MD-1523631112620-FS-1523631566521",
   "tender": {
-    "id": "ocds-t1s2t3-MD-1523631112620",
-    "status": "active",
-    "statusDetails": "empty"
-  },
-  "planning": {
-    "budget": {
-      "id": "Budget ID",
-      "description": "Budget Description",
-      "period": {
-        "startDate": "2018-05-25T21:00:00Z",
-        "endDate": "2018-06-26T21:00:00Z"
+    "procuringEntity": {
+      "name": "State Treasury",
+      "address": {
+        "countryName": "Ukraine",
+        "region": "Kyiv",
+        "locality": "Kyiv",
+        "streetAddress": "1, Kreshatik Str",
+        "postalCode": "01001"
       },
-      "amount": {
-        "amount": 123.0,
-        "currency": "AMD"
+      "identifier": {
+        "id": "1111111111",
+        "scheme": "UA-EDR",
+        "legalName": "State Treasury",
+        "uri": "treasury.org.ua"
       },
-      "isEuropeanUnionFunded": true,
-      "verified": true,
-      "sourceEntity": {
-        "id": "Identification Scheme*-Identifier*",
-        "name": "Official Name*"
+      "contactPoint": {
+        "name": "Vasily Poopkeen",
+        "url": "treasury.org.ua",
+        "telephone": "+380442345678",
+        "email": "poopkeen@treasury.org.ua"
       }
-    },
-    "rationale": "Rationale"
-  },
-  "funder": {
-    "id": "Identification Scheme*-Identifier*",
-    "name": "Official Name*",
-    "identifier": {
-      "id": "Identifier*",
-      "scheme": "Identification Scheme*",
-      "legalName": "Legal Name*",
-      "uri": "URI*"
-    },
-    "address": {
-      "streetAddress": "Street Address*",
-      "locality": "Locality*",
-      "region": "1",
-      "postalCode": "Postal Code",
-      "countryName": "Republic of Moldova"
-    },
-    "additionalIdentifiers": [
-      {
-        "id": "2Additional identifier ID*",
-        "scheme": "2Additional identifier scheme*",
-        "legalName": "2Additional identifier legal name*",
-        "uri": "2Additional identifier URI*"
-      },
-      {
-        "id": "1Additional identifier ID*",
-        "scheme": "1Additional identifier scheme*",
-        "legalName": "1Additional identifier legal name*",
-        "uri": "1Additional identifier URI*"
-      }
-    ],
-    "contactPoint": {
-      "name": "Name*",
-      "email": "E-mail*",
-      "telephone": "Telephone*",
-      "faxNumber": "Fax*",
-      "url": "URL*"
     }
   },
-  "payer": {
-    "id": "Identification Scheme*-Identifier*",
-    "name": "Official Name*",
-    "identifier": {
-      "id": "Identifier*",
-      "scheme": "Identification Scheme*",
-      "legalName": "Legal Name*",
-      "uri": "URI*"
-    },
-    "address": {
-      "streetAddress": "Street Address*",
-      "locality": "Locality*",
-      "region": "1",
-      "postalCode": "Postal Code",
-      "countryName": "Republic of Moldova"
-    },
-    "additionalIdentifiers": [
-      {
-        "id": "2Additional identifier ID*",
-        "scheme": "2Additional identifier scheme*",
-        "legalName": "2Additional identifier legal name*",
-        "uri": "2Additional identifier URI*"
+  "planning": {
+    "rationale": "Funding Source Rationale",
+    "budget": {
+      "amount": {
+        "amount": 50000,
+        "currency": "UAH"
       },
-      {
-        "id": "1Additional identifier ID*",
-        "scheme": "1Additional identifier scheme*",
-        "legalName": "1Additional identifier legal name*",
-        "uri": "1Additional identifier URI*"
-      }
-    ],
-    "contactPoint": {
-      "name": "Name*",
-      "email": "E-mail*",
-      "telephone": "Telephone*",
-      "faxNumber": "Fax*",
-      "url": "URL*"
+      "period": {
+        "startDate": "2018-05-31T21:00:00Z",
+        "endDate": "2018-12-30T22:00:00Z"
+      },
+      "isEuropeanUnionFunded": false
     }
   }
 }
