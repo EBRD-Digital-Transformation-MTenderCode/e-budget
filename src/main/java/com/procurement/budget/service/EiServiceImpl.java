@@ -1,15 +1,9 @@
 package com.procurement.budget.service;
 
 import com.datastax.driver.core.utils.UUIDs;
-import com.procurement.budget.config.properties.OCDSProperties;
-import com.procurement.budget.dao.EiDao;
-import com.procurement.budget.exception.ErrorException;
-import com.procurement.budget.exception.ErrorType;
-import com.procurement.budget.model.dto.bpe.ResponseDto;
+import com.procurement.budget.config.OCDSProperties;
 import com.procurement.budget.model.dto.ei.EiDto;
 import com.procurement.budget.model.dto.ei.EiOrganizationReferenceDto;
-import com.procurement.budget.model.dto.ocds.TenderStatus;
-import com.procurement.budget.model.dto.ocds.TenderStatusDetails;
 import com.procurement.budget.model.entity.EiEntity;
 import com.procurement.budget.utils.DateUtil;
 import com.procurement.budget.utils.JsonUtil;

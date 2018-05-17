@@ -1,10 +1,6 @@
 package com.procurement.budget.service;
 
 import com.datastax.driver.core.utils.UUIDs;
-import com.procurement.budget.dao.FsDao;
-import com.procurement.budget.exception.ErrorException;
-import com.procurement.budget.exception.ErrorType;
-import com.procurement.budget.model.dto.bpe.ResponseDto;
 import com.procurement.budget.model.dto.check.CheckBudgetBreakdownDto;
 import com.procurement.budget.model.dto.check.CheckRequestDto;
 import com.procurement.budget.model.dto.check.CheckResponseDto;
@@ -12,7 +8,6 @@ import com.procurement.budget.model.dto.check.CheckSourcePartyDto;
 import com.procurement.budget.model.dto.ei.EiDto;
 import com.procurement.budget.model.dto.ei.EiOrganizationReferenceDto;
 import com.procurement.budget.model.dto.fs.*;
-import com.procurement.budget.model.dto.ocds.Currency;
 import com.procurement.budget.model.dto.ocds.*;
 import com.procurement.budget.model.entity.FsEntity;
 import com.procurement.budget.utils.DateUtil;
