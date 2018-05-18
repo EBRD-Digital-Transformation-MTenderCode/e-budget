@@ -11,7 +11,7 @@ import java.time.ZoneOffset
 import java.util.*
 
 
-object JsonMapper {
+private object JsonMapper {
     val mapper: ObjectMapper = ObjectMapper()
 
     init {

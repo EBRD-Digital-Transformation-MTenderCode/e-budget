@@ -1,13 +1,21 @@
 package com.procurement.budget.utils
 
-import com.fasterxml.jackson.core.JsonFactory
-import com.fasterxml.jackson.core.JsonGenerator
-import com.fasterxml.jackson.core.JsonParser
+import com.fasterxml.jackson.databind.DeserializationFeature
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.node.JsonNodeFactory
 import org.junit.jupiter.api.Assertions
 import java.io.StringWriter
 
 
-object TestUtils
+private object JsonMapper {
+    val mapper: ObjectMapper = ObjectMapper()
+
+    init {
+        mapper.configure(DeserializationFeature.USE_BIG_INTEGER_FOR_INTS, true)
+        mapper.configure(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS, true)
+        mapper.nodeFactory = JsonNodeFactory.withExactBigDecimals(true)
+    }
+}
 
 fun <T> compare(target: Class<T>, file: String) {
     val resource = getJsonFromFile(file)
@@ -17,12 +25,11 @@ fun <T> compare(target: Class<T>, file: String) {
 }
 
 fun getJsonFromFile(fileName: String): String {
-   return toCompact(TestUtils.javaClass.getResource(fileName).readText())
+    return toCompact(JsonMapper.javaClass.getResource(fileName).readText())
 }
 
 private fun toCompact(source: String): String {
-    val factory = JsonFactory()
-    factory.enable(JsonGenerator.Feature.WRITE_NUMBERS_AS_STRINGS)
+    val factory  = JsonMapper.mapper.factory
     val parser = factory.createParser(source)
     val out = StringWriter()
     factory.createGenerator(out).use { gen ->
