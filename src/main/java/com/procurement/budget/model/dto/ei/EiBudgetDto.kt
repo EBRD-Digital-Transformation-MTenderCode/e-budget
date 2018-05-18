@@ -11,7 +11,7 @@ import javax.validation.Valid
 data class EiBudgetDto(
 
         @JsonProperty("id")
-        val id: String?,
+        var id: String?,
 
         @Valid
         @JsonProperty("period")

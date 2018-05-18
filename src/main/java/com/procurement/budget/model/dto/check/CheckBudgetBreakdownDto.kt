@@ -13,7 +13,6 @@ data class CheckBudgetBreakdownDto(
         @JsonProperty("id")
         val id: String,
 
-        @Valid
         @JsonProperty("description")
         val description: String?,
 
@@ -23,10 +22,10 @@ data class CheckBudgetBreakdownDto(
 
         @Valid
         @JsonProperty("period")
-        val period: Period?,
+        var period: Period?,
 
         @Valid
         @JsonProperty("sourceParty")
-        val sourceParty: CheckSourcePartyDto?
+        var sourceParty: CheckSourcePartyDto?
 )
 

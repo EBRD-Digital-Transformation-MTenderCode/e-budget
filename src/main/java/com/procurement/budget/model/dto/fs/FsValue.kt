@@ -1,4 +1,4 @@
-package com.procurement.budget.model.dto.check
+package com.procurement.budget.model.dto.fs
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
@@ -10,7 +10,7 @@ import java.math.BigDecimal
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder("amount", "currency")
-data class CheckValueDto(
+data class FsValue(
 
         @JsonProperty("amount")
         @JsonDeserialize(using = MoneyDeserializer::class)

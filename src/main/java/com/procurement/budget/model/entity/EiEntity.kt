@@ -2,15 +2,15 @@ package com.procurement.budget.model.entity
 
 import java.util.*
 
-class EiEntity (
+class EiEntity(
 
-    var cpId: String,
+        var cpId: String,
 
-    var token: UUID,
+        var token: UUID,
 
-    var owner: String,
+        var owner: String,
 
-    var createdDate: Date,
+        var createdDate: Date,
 
-    var jsonData: String
+        var jsonData: String
 )

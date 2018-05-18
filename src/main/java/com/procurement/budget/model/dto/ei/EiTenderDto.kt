@@ -13,7 +13,7 @@ import javax.validation.Valid
 data class EiTenderDto(
 
         @JsonProperty("id")
-        val id: String?,
+        var id: String?,
 
         @JsonProperty("title")
         val title: String,
@@ -22,12 +22,12 @@ data class EiTenderDto(
         val description: String?,
 
         @JsonProperty("status")
-        val status: TenderStatus?,
+        var status: TenderStatus?,
 
         @JsonProperty("statusDetails")
-        val statusDetails: TenderStatusDetails?,
+        var statusDetails: TenderStatusDetails?,
 
         @Valid
         @JsonProperty("classification")
-        private val classification: Classification
+        val classification: Classification
 )

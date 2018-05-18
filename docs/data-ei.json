@@ -1,0 +1,66 @@
+{
+  "eiSubject": {
+    "title": "Title (definition of type of object)*",
+    "classification": {
+      "scheme": "CPV",
+      "id": "03000000-1",
+      "description": "Agricultural, farming, fishing, forestry and related products"
+    },
+    "description": "Short description\n",
+    "period": {
+      "startDate": "2018-05-17T21:00:00Z",
+      "endDate": "2018-05-18T21:00:00Z"
+    },
+    "amount": {
+      "currency": "EUR"
+    },
+    "rationale": "Rationale"
+  },
+  "eiBuyer": {
+    "name": "Official Name*",
+    "address": {
+      "location": {
+        "countryName": "Country*",
+        "region": "Region*",
+        "locality": "Locality*"
+      },
+      "postalAddress": {
+        "streetAddress": "Street Address*",
+        "postalCode": "Postal Code"
+      }
+    },
+    "identifier": {
+      "id": "Identifier*",
+      "scheme": "Identification Scheme*",
+      "legalName": "Legal Name*",
+      "uri": "URI*"
+    },
+    "additionalIdentifiers": [
+      {
+        "id": "Additional identifier ID*",
+        "scheme": "Additional identifier scheme*",
+        "legalName": "Additional identifier legal name*",
+        "uri": "Additional identifier URI*"
+      }
+    ],
+    "details": {
+      "typeOfBuyer": "BODY_PUBLIC",
+      "mainGeneralActivity": "DEFENCE",
+      "mainSectoralActivity": "AIRPORT_RELATED_ACTIVITIES",
+      "isACentralPurchasingBody": true,
+      "scale": "micro"
+    },
+    "buyerProfile": "Buyer Profile",
+    "contactPoint": {
+      "person": {
+        "name": "Name*",
+        "url": "URL*"
+      },
+      "contacts": {
+        "telephone": "Telephone*",
+        "email": "E-mail*",
+        "faxNumber": "Fax number"
+      }
+    }
+  }
+}

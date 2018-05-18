@@ -8,15 +8,15 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder
 @JsonPropertyOrder("id", "scheme", "legalName", "uri")
 data class Identifier(
 
-        @param:JsonProperty("id")
+        @JsonProperty("id")
         val id: String,
 
-        @param:JsonProperty("scheme")
+        @JsonProperty("scheme")
         val scheme: String,
 
-        @param:JsonProperty("legalName")
+        @JsonProperty("legalName")
         val legalName: String,
 
-        @param:JsonProperty("uri")
+        @JsonProperty("uri")
         val uri: String
 )

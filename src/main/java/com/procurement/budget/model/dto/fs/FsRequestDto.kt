@@ -1,29 +1,23 @@
-package com.procurement.budget.model.dto.ei
+package com.procurement.budget.model.dto.fs
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonPropertyOrder
 import javax.validation.Valid
 
-@JsonPropertyOrder("token", "ocid", "tender", "planning", "buyer")
+@JsonPropertyOrder("tender", "planning", "buyer")
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
-data class EiDto(
-
-        @JsonProperty("token")
-        var token: String?,
-
-        @JsonProperty("ocid")
-        var ocId: String?,
+data class FsRequestDto(
 
         @Valid
         @JsonProperty("tender")
-        var tender: EiTenderDto,
+        val tender: FsTenderDto,
 
         @Valid
         @JsonProperty("planning")
-        var planning: EiPlanningDto,
+        val planning: FsPlanningDto,
 
         @Valid
         @JsonProperty("buyer")
-        val buyer: EiOrganizationReferenceDto
+        val buyer: FsOrganizationReferenceDto?
 )
