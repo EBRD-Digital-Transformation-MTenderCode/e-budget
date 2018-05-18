@@ -34,7 +34,7 @@ data class FsOrganizationReferenceDto(
 
         @Valid
         @JsonProperty("additionalIdentifiers")
-        val additionalIdentifiers: Set<Identifier>?,
+        val additionalIdentifiers: HashSet<Identifier>?,
 
         @Valid
         @NotNull
