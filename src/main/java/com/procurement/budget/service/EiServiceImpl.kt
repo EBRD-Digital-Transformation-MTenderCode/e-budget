@@ -7,7 +7,10 @@ import com.procurement.budget.model.dto.ei.EiDto
 import com.procurement.budget.model.dto.ocds.TenderStatus
 import com.procurement.budget.model.dto.ocds.TenderStatusDetails
 import com.procurement.budget.model.entity.EiEntity
-import com.procurement.budget.utils.*
+import com.procurement.budget.utils.milliNowUTC
+import com.procurement.budget.utils.toDate
+import com.procurement.budget.utils.toJson
+import com.procurement.budget.utils.toObject
 import com.procurement.notice.exception.ErrorException
 import com.procurement.notice.exception.ErrorType
 import com.procurement.notice.model.bpe.ResponseDto
