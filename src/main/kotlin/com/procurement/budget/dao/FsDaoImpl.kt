@@ -4,6 +4,7 @@ import com.datastax.driver.core.Session
 import com.datastax.driver.core.querybuilder.QueryBuilder.*
 import com.procurement.budget.model.entity.FsEntity
 import org.springframework.stereotype.Service
+import java.math.BigDecimal
 import java.util.*
 
 
@@ -16,6 +17,8 @@ interface FsDao {
     fun getAllByCpId(cpId: String): List<FsEntity>
 
     fun getAllByCpIds(cpIds: Set<String>): List<FsEntity>
+
+    fun getTotalAmountByCpId(cpId: String): BigDecimal?
 }
 
 @Service
@@ -93,6 +96,14 @@ class FsDaoImpl(private val session: Session) : FsDao {
                     row.getString(JSON_DATA)))
         }
         return entities
+    }
+
+    override fun getTotalAmountByCpId(cpId: String): BigDecimal? {
+        val query = select().sum(AMOUNT).`as`(AMOUNT)
+                .from(FS_TABLE)
+                .where(eq(CP_ID, cpId))
+        val row = session.execute(query).one()
+        return row?.getDecimal(AMOUNT)
     }
 
     companion object {

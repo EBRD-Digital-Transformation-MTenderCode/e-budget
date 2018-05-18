@@ -8,10 +8,7 @@ import com.procurement.budget.model.dto.check.CheckResponseDto
 import com.procurement.budget.model.dto.check.CheckSourcePartyDto
 import com.procurement.budget.model.dto.ei.EiDto
 import com.procurement.budget.model.dto.ei.EiOrganizationReferenceDto
-import com.procurement.budget.model.dto.fs.FsDto
-import com.procurement.budget.model.dto.fs.FsOrganizationReferenceDto
-import com.procurement.budget.model.dto.fs.FsRequestDto
-import com.procurement.budget.model.dto.fs.FsTenderDto
+import com.procurement.budget.model.dto.fs.*
 import com.procurement.budget.model.dto.ocds.TenderStatus
 import com.procurement.budget.model.dto.ocds.TenderStatusDetails
 import com.procurement.budget.model.entity.FsEntity
@@ -92,7 +89,8 @@ class FsServiceImpl(private val fsDao: FsDao,
         val entity = getEntity(cpId, fs, owner, dateTime)
         fsDao.save(entity)
         fs.token = entity.token.toString()
-        return ResponseDto(true, null, fs)
+        val totalAmount = fsDao.getTotalAmountByCpId(cpId) ?: BigDecimal.ZERO
+        return ResponseDto(true, null, FsResponseDto(totalAmount, fs))
     }
 
     override fun updateFs(cpId: String,
@@ -109,7 +107,8 @@ class FsServiceImpl(private val fsDao: FsDao,
         }
         entity.jsonData = toJson(fs)
         fsDao.save(entity)
-        return ResponseDto(true, null, fs)
+        val totalAmount = fsDao.getTotalAmountByCpId(cpId) ?: BigDecimal.ZERO
+        return ResponseDto(true, null, FsResponseDto(totalAmount, fs))
     }
 
     override fun checkFs(dto: CheckRequestDto): ResponseDto<*> {
