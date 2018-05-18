@@ -2,7 +2,6 @@ package com.procurement.budget.service
 
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
-import com.procurement.budget.config.JsonConfig
 import com.procurement.budget.config.OCDSProperties
 import com.procurement.budget.dao.EiDao
 import com.procurement.budget.model.entity.EiEntity
@@ -12,14 +11,9 @@ import com.procurement.budget.utils.toDate
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
-import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.context.junit.jupiter.SpringExtension
 import java.util.*
 
 
-@ExtendWith(SpringExtension::class)
-@SpringBootTest(classes = [(JsonConfig::class)])
 class EiServiceImplTest {
 
     companion object {
@@ -44,12 +38,13 @@ class EiServiceImplTest {
                 jsonData = TestUtils().getJsonFromFile("/json/ei.json"))
     }
 
-
     @Test
+    @DisplayName("createEi")
     fun createEi() {
     }
 
     @Test
+    @DisplayName("updateEi")
     fun updateEi() {
     }
 
@@ -60,5 +55,4 @@ class EiServiceImplTest {
         val ei = service.getEi(CPID)
         assert(ei.ocId == CPID)
     }
-
 }

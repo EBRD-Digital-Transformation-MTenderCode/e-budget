@@ -15,7 +15,7 @@ class FsEntity(
 
         var amount: BigDecimal,
 
-        var amountReserved: BigDecimal,
+        var amountReserved: BigDecimal?,
 
         var createdDate: Date,
 
