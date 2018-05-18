@@ -68,7 +68,7 @@ class FsServiceImpl(private val fsDao: FsDao,
             fsTenderStatus = TenderStatus.ACTIVE
         }
         val fs = FsDto(
-                ocId = getOcId(cpId),
+                ocid = getOcId(cpId),
                 token = null,
                 tender = FsTenderDto(
                         id = cpId,
@@ -123,7 +123,7 @@ class FsServiceImpl(private val fsDao: FsDao,
         val fsMap = HashMap<String?, FsDto>()
         entities.asSequence()
                 .map({ toObject(FsDto::class.java, it.jsonData) })
-                .forEach { fsMap[it.ocId] = it }
+                .forEach { fsMap[it.ocid] = it }
 
         for (cpId in cpIds) {
             val ei = eiService.getEi(cpId)
@@ -250,7 +250,7 @@ class FsServiceImpl(private val fsDao: FsDao,
     }
 
     private fun getEntity(cpId: String, fs: FsDto, owner: String, dateTime: LocalDateTime): FsEntity {
-        val ocId = fs.ocId ?: throw ErrorException(ErrorType.PARAM_ERROR)
+        val ocId = fs.ocid ?: throw ErrorException(ErrorType.PARAM_ERROR)
         return FsEntity(
                 cpId = cpId,
                 ocId = ocId,

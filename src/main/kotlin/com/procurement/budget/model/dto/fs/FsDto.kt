@@ -13,7 +13,7 @@ data class FsDto(
         var token: String?,
 
         @JsonProperty("ocid")
-        val ocId: String?,
+        val ocid: String?,
 
         @Valid
         @JsonProperty("tender")

@@ -13,6 +13,7 @@ import java.util.*
 
 object JsonMapper {
     val mapper: ObjectMapper = ObjectMapper()
+
     init {
         mapper.configure(DeserializationFeature.USE_BIG_INTEGER_FOR_INTS, true)
         mapper.configure(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS, true)
@@ -45,7 +46,6 @@ fun <Any> toJson(obj: Any): String {
 }
 
 fun <T> toObject(clazz: Class<T>, json: String): T {
-    Objects.requireNonNull(json)
     try {
         return JsonMapper.mapper.readValue(json, clazz)
     } catch (e: IOException) {

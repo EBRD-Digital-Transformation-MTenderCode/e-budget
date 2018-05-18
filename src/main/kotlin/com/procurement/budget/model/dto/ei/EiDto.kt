@@ -13,7 +13,7 @@ data class EiDto(
         var token: String?,
 
         @JsonProperty("ocid")
-        var ocId: String?,
+        var ocid: String?,
 
         @Valid
         @JsonProperty("tender")

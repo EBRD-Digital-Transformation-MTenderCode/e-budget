@@ -43,7 +43,7 @@ class EiServiceImpl(private val ocdsProperties: OCDSProperties,
                           ei: EiDto): ResponseDto<*> {
         val cpId = getCpId(country)
         ei.apply {
-            ocId = cpId
+            ocid = cpId
             tender.id = cpId
             tender.status = TenderStatus.PLANNING
             tender.statusDetails = TenderStatusDetails.EMPTY
@@ -89,7 +89,7 @@ class EiServiceImpl(private val ocdsProperties: OCDSProperties,
     }
 
     private fun getEntity(ei: EiDto, owner: String, dateTime: LocalDateTime): EiEntity {
-        val ocId = ei.ocId ?: throw ErrorException(ErrorType.PARAM_ERROR)
+        val ocId = ei.ocid ?: throw ErrorException(ErrorType.PARAM_ERROR)
         return EiEntity(
                 cpId = ocId,
                 token = UUIDs.random(),

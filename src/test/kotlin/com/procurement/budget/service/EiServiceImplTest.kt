@@ -5,7 +5,7 @@ import com.nhaarman.mockito_kotlin.whenever
 import com.procurement.budget.config.OCDSProperties
 import com.procurement.budget.dao.EiDao
 import com.procurement.budget.model.entity.EiEntity
-import com.procurement.budget.utils.TestUtils
+import com.procurement.budget.utils.getJsonFromFile
 import com.procurement.budget.utils.localNowUTC
 import com.procurement.budget.utils.toDate
 import org.junit.jupiter.api.BeforeEach
@@ -35,7 +35,7 @@ class EiServiceImplTest {
                 token = UUID.randomUUID(),
                 owner = "owner",
                 createdDate = localNowUTC().toDate(),
-                jsonData = TestUtils().getJsonFromFile("/json/ei.json"))
+                jsonData = getJsonFromFile("/json/ei.json"))
     }
 
     @Test
@@ -53,6 +53,6 @@ class EiServiceImplTest {
     fun getEi() {
         whenever(eiDao.getByCpId(CPID)).thenReturn(eiEntity)
         val ei = service.getEi(CPID)
-        assert(ei.ocId == CPID)
+        assert(ei.ocid == CPID)
     }
 }
