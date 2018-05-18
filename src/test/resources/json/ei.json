@@ -1,0 +1,74 @@
+{
+  "ocid": "cpid",
+  "tender": {
+    "id": "ocds-t1s2t3-MD-1526243458472",
+    "title": "Test Platform 1 Title (definition of type of object)*",
+    "description": "Short description",
+    "status": "planning",
+    "statusDetails": "empty",
+    "classification": {
+      "id": "03000000-1",
+      "scheme": "CPV",
+      "description": "Agricultural, farming, fishing, forestry and related products"
+    }
+  },
+  "planning": {
+    "budget": {
+      "id": "03000000-1",
+      "period": {
+        "startDate": "2018-04-30T21:00:00Z",
+        "endDate": "2018-05-30T21:00:00Z"
+      },
+      "amount": {
+        "currency": "UAH"
+      }
+    },
+    "rationale": "Rationale"
+  },
+  "buyer": {
+    "name": "Official Name*",
+    "id": "Identification Scheme*-Identifier*",
+    "identifier": {
+      "id": "Identifier*",
+      "scheme": "Identification Scheme*",
+      "legalName": "Legal Name*",
+      "uri": "URI*"
+    },
+    "address": {
+      "streetAddress": "Street Address*",
+      "locality": "Locality*",
+      "region": "1",
+      "postalCode": "Postal Code",
+      "countryName": "Republic of Moldova"
+    },
+    "additionalIdentifiers": [
+      {
+        "id": "1Additional identifier ID*",
+        "scheme": "1Additional identifier scheme*",
+        "legalName": "1Additional identifier legal name*",
+        "uri": "1Additional identifier URI*"
+      },
+      {
+        "id": "2Additional identifier ID*",
+        "scheme": "2Additional identifier scheme*",
+        "legalName": "2Additional identifier legal name*",
+        "uri": "2Additional identifier URI*"
+      }
+    ],
+    "contactPoint": {
+      "name": "Name*",
+      "email": "E-mail*",
+      "telephone": "Telephone*",
+      "faxNumber": "Fax*",
+      "url": "URL*"
+    },
+    "details": {
+      "typeOfBuyer": "BODY_PUBLIC",
+      "mainGeneralActivity": "DEFENCE",
+      "mainSectoralActivity": "AIRPORT_RELATED_ACTIVITIES",
+      "isACentralPurchasingBody": false,
+      "scale": "micro"
+    },
+    "buyerProfile": "Buyer Profile"
+  }
+}
