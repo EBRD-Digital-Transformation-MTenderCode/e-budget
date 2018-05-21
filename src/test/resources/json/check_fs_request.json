@@ -5,6 +5,10 @@
       "amount": {
         "amount": 123456789.12,
         "currency": "EUR"
+      },
+      "sourceParty": {
+        "id": "03000000-1",
+        "name": "CPV"
       }
     }
   ],
