@@ -4,11 +4,11 @@ import com.procurement.budget.utils.compare
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
-class CheckRequestDtoTest {
+class CheckResponseDtoTest {
 
     @Test
-    @DisplayName("checkRequestDto")
-    fun checkRequestDto() {
-        compare(CheckRequestDto::class.java, "/json/check_fs_request.json")
+    @DisplayName("CheckResponseDto")
+    fun checkResponseDto() {
+        compare(CheckResponseDto::class.java, "/json/check_fs_response.json")
     }
 }
