@@ -41,6 +41,7 @@ class EiServiceImpl(private val ocdsProperties: OCDSProperties,
                           country: String,
                           dateTime: LocalDateTime,
                           ei: EiDto): ResponseDto<*> {
+        validatePeriod(ei)
         val cpId = getCpId(country)
         ei.apply {
             ocid = cpId
@@ -50,7 +51,6 @@ class EiServiceImpl(private val ocdsProperties: OCDSProperties,
             planning.budget.id = tender.classification.id
             buyer.apply { id = identifier.scheme + SEPARATOR + identifier.id }
         }
-        validatePeriod(ei)
         val entity = getEntity(ei, owner, dateTime)
         eiDao.save(entity)
         ei.token = entity.token.toString()
@@ -79,7 +79,7 @@ class EiServiceImpl(private val ocdsProperties: OCDSProperties,
         return toObject(EiDto::class.java, entity.jsonData)
     }
 
-    private fun getCpId(country: String): String {
+    fun getCpId(country: String): String {
         return ocdsProperties.prefix + SEPARATOR + country + SEPARATOR + milliNowUTC()
     }
 

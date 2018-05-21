@@ -55,17 +55,17 @@ class FsServiceImpl(private val fsDao: FsDao,
         val fsFunder: FsOrganizationReferenceDto?
         val fsSourceEntity: FsOrganizationReferenceDto
         val fsVerified: Boolean
-        if (fsDto.buyer == null) {
-            fsFunder = null
-            fsSourceEntity = getSourceEntity(getFounderFromEi(ei.buyer))
-            fsVerified = false
-            fsTenderStatus = TenderStatus.PLANNING
-        } else {
+        if (fsDto.buyer != null) {
             fsFunder = fsDto.buyer
             fsFunder.apply { id = identifier?.scheme + SEPARATOR + identifier?.id }
             fsSourceEntity = getSourceEntity(fsFunder)
             fsVerified = true
             fsTenderStatus = TenderStatus.ACTIVE
+        } else {
+            fsFunder = null
+            fsSourceEntity = getSourceEntity(getFounderFromEi(ei.buyer))
+            fsVerified = false
+            fsTenderStatus = TenderStatus.PLANNING
         }
         val fs = FsDto(
                 ocid = getOcId(cpId),
