@@ -3,7 +3,7 @@
     {
       "id": "ocds-t1s2t3-MD-1526242168113-FS-1526242185601",
       "amount": {
-        "amount": 1,
+        "amount": 123456789.12,
         "currency": "EUR"
       }
     }
@@ -12,8 +12,8 @@
     "startDate": "2018-07-01T00:00:00Z"
   },
   "classification": {
-    "scheme": "CPV",
     "id": "03000000-1",
+    "scheme": "CPV",
     "description": "Agricultural, farming, fishing, forestry and related products"
   }
 }

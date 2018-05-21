@@ -1,67 +1,54 @@
 {
-  "token": "token",
-  "ocid": "cpid",
   "tender": {
-    "id": "ocds-t1s2t3-MD-1526243458472",
-    "title": "Test Platform 1 Title (definition of type of object)*",
-    "description": "Short description",
-    "status": "planning",
-    "statusDetails": "empty",
+    "title": "string",
+    "description": "string",
     "classification": {
-      "id": "03000000-1",
+      "id": "string",
       "scheme": "CPV",
-      "description": "Agricultural, farming, fishing, forestry and related products"
+      "description": "string"
     }
   },
   "planning": {
     "budget": {
-      "id": "03000000-1",
       "period": {
-        "startDate": "2018-04-30T21:00:00Z",
-        "endDate": "2018-05-30T21:00:00Z"
+        "startDate": "2018-05-17T15:24:53Z",
+        "endDate": "2018-06-17T15:24:53Z"
       },
       "amount": {
-        "currency": "UAH"
+        "currency": "CHC"
       }
     },
-    "rationale": "Rationale"
+    "rationale": "string"
   },
   "buyer": {
-    "name": "Official Name*",
-    "id": "Identification Scheme*-Identifier*",
+    "name": "string",
     "identifier": {
-      "id": "Identifier*",
-      "scheme": "Identification Scheme*",
-      "legalName": "Legal Name*",
-      "uri": "URI*"
+      "id": "string",
+      "scheme": "string",
+      "legalName": "string",
+      "uri": "string"
     },
     "address": {
-      "streetAddress": "Street Address*",
-      "locality": "Locality*",
-      "region": "1",
-      "postalCode": "Postal Code",
-      "countryName": "Republic of Moldova"
+      "streetAddress": "string",
+      "locality": "string",
+      "region": "string",
+      "postalCode": "string",
+      "countryName": "string"
     },
     "additionalIdentifiers": [
       {
-        "id": "1Additional identifier ID*",
-        "scheme": "1Additional identifier scheme*",
-        "legalName": "1Additional identifier legal name*",
-        "uri": "1Additional identifier URI*"
-      },
-      {
-        "id": "2Additional identifier ID*",
-        "scheme": "2Additional identifier scheme*",
-        "legalName": "2Additional identifier legal name*",
-        "uri": "2Additional identifier URI*"
+        "id": "string",
+        "scheme": "string",
+        "legalName": "string",
+        "uri": "string"
       }
     ],
     "contactPoint": {
-      "name": "Name*",
-      "email": "E-mail*",
-      "telephone": "Telephone*",
-      "faxNumber": "Fax*",
-      "url": "URL*"
+      "name": "string",
+      "email": "string",
+      "telephone": "string",
+      "faxNumber": "string",
+      "url": "string"
     },
     "details": {
       "typeOfBuyer": "BODY_PUBLIC",
@@ -70,6 +57,6 @@
       "isACentralPurchasingBody": false,
       "scale": "micro"
     },
-    "buyerProfile": "Buyer Profile"
+    "buyerProfile": "string"
   }
 }

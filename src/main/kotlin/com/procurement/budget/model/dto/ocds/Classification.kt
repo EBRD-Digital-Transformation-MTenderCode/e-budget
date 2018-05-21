@@ -8,11 +8,11 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder
 @JsonPropertyOrder("id", "scheme", "description", "uri")
 data class Classification(
 
-        @JsonProperty("scheme")
-        val scheme: Scheme,
-
         @JsonProperty("id")
         val id: String,
+
+        @JsonProperty("scheme")
+        val scheme: Scheme,
 
         @JsonProperty("description")
         val description: String,
