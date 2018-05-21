@@ -4,10 +4,10 @@ import com.procurement.budget.utils.compare
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
-class FsDtoTest {
+class FsRequestDtoTest {
     @Test
-    @DisplayName("FstDto")
-    fun fsDto() {
-        compare(FsDto::class.java, "/json/fs.json")
+    @DisplayName("FsRequestDto")
+    fun fsRequestDto() {
+        compare(FsRequestDto::class.java, "/json/fs_request.json")
     }
 }

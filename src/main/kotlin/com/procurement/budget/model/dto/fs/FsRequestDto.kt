@@ -5,17 +5,17 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonPropertyOrder
 import javax.validation.Valid
 
-@JsonPropertyOrder("tender", "planning", "buyer")
+@JsonPropertyOrder("planning", "tender", "buyer")
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 data class FsRequestDto(
 
         @Valid
-        @JsonProperty("tender")
-        val tender: FsTenderDto,
-
-        @Valid
         @JsonProperty("planning")
         val planning: FsPlanningDto,
+
+        @Valid
+        @JsonProperty("tender")
+        val tender: FsTenderDto,
 
         @Valid
         @JsonProperty("buyer")
