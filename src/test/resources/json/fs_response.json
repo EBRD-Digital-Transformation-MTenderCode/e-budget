@@ -14,13 +14,18 @@
         "description": "Partner professor rule coach trouble test. Apply thank conference really want grow task prepare.",
         "period": {
           "startDate": "2018-05-17T15:24:53Z",
-          "endDate": "2018-08-01T07:22:58Z"
+          "endDate": "2018-06-17T15:24:53Z"
         },
         "amount": {
           "amount": 5796.64,
-          "currency": "CHC"
+          "currency": "MDL"
         },
-        "isEuropeanUnionFunded": false,
+        "europeanUnionFunding": {
+          "projectName": "string",
+          "projectIdentifier": "string",
+          "uri": "string"
+        },
+        "isEuropeanUnionFunded": true,
         "verified": true,
         "sourceEntity": {
           "id": "UA-EDR-208-14-0103",
