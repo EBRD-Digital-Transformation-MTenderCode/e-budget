@@ -20,22 +20,24 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
+import java.math.BigDecimal
+import java.math.MathContext
 import java.util.*
 
 class FsServiceImplTest {
     companion object {
 
-        private val CPID = "ocds-t1s2t3-TEST-1526570694407"
-        private val OCID = "ocds-t1s2t3-TEST-1526570694407-FS-1526570698032"
-        private val OCID_SUFFICS = 1526570698032
-        private val TOKEN = "90d6581a-c710-4f08-936d-e13fecd8c560"
-        private val OWNER = "owner"
+        private const val CPID = "ocds-t1s2t3-TEST-1526570694407"
+        private const val OCID = "ocds-t1s2t3-TEST-1526570694407-FS-1526570698032"
+        private const val OCID_TIME_STAMP = 1526570698032
+        private const val TOKEN = "90d6581a-c710-4f08-936d-e13fecd8c560"
+        private const val OWNER = "owner"
         private val AMOUNT = 123456789.98
         private val AMOUNT_RESERVED = null
-        private val FS_JSON_REQUEST = "/json/fs_request.json"
-        private val FS_JSON_RESPONSE = "/json/fs_response.json"
-        private val FS_JSON = "/json/fs.json"
-        private val EI_JSON_CREATE = "/json/ei.json"
+        private const val FS_JSON_REQUEST = "/json/fs_request.json"
+        private const val FS_JSON_RESPONSE = "/json/fs_response.json"
+        private const val FS_JSON = "/json/fs.json"
+        private const val EI_JSON_CREATE = "/json/ei.json"
         private val DATE = localNowUTC()
 
     }
@@ -75,14 +77,11 @@ class FsServiceImplTest {
     fun createFs() {
         whenever(eiService.getEi(CPID)).thenReturn(eiDto)
         whenever(fsDao.getTotalAmountByCpId(CPID)).thenReturn(AMOUNT.toBigDecimal())
-        whenever(generateService.generateRandomUUID()).thenReturn(UUID.fromString("90d6581a-c710-4f08-936d-e13fecd8c560"))
-        whenever(generateService.getNowUtc()).thenReturn(1526570698032)
+        whenever(generateService.generateRandomUUID()).thenReturn(UUID.fromString(TOKEN))
+        whenever(generateService.getNowUtc()).thenReturn(OCID_TIME_STAMP)
         val fsRequestDto = toObject(FsRequestDto::class.java, getJsonFromFile(FS_JSON_REQUEST))
-
         val fsResponseDto = toObject(FsResponseDto::class.java, getJsonFromFile(FS_JSON_RESPONSE))
-
-        val response = fsService.createFs(CPID,OWNER, DATE,fsRequestDto)
-
+        val response = fsService.createFs(CPID,OWNER, DATE, fsRequestDto)
         Assertions.assertEquals(ResponseDto(true, null, fsResponseDto), response)
     }
 
