@@ -66,7 +66,7 @@ class FsServiceImplTest {
             amount = AMOUNT.toBigDecimal(),
             amountReserved = AMOUNT_RESERVED,
             createdDate = DATE.toDate(),
-            jsonData = getJsonFromFile(FS_JSON_REQUEST)
+            jsonData = getJsonFromFile(FS_JSON)
         )
     }
 
@@ -76,7 +76,7 @@ class FsServiceImplTest {
         whenever(eiService.getEi(CPID)).thenReturn(eiDto)
         whenever(fsDao.getTotalAmountByCpId(CPID)).thenReturn(AMOUNT.toBigDecimal())
         whenever(generateService.generateRandomUUID()).thenReturn(UUID.fromString("90d6581a-c710-4f08-936d-e13fecd8c560"))
-        whenever(generateService.getNowUtc()).thenReturn(1526570698032)
+        whenever(generateService.getNowUtc()).thenReturn(OCID_SUFFICS)
         val fsRequestDto = toObject(FsRequestDto::class.java, getJsonFromFile(FS_JSON_REQUEST))
 
         val fsResponseDto = toObject(FsResponseDto::class.java, getJsonFromFile(FS_JSON_RESPONSE))
@@ -84,6 +84,19 @@ class FsServiceImplTest {
         val response = fsService.createFs(CPID,OWNER, DATE,fsRequestDto)
 
         Assertions.assertEquals(ResponseDto(true, null, fsResponseDto), response)
+    }
+
+    @Test
+    @DisplayName("updateFs")
+    fun updateFs(){
+        whenever(fsDao.getByCpIdAndToken(CPID, UUID.fromString(TOKEN))).thenReturn(fsEntity)
+        whenever(fsDao.getTotalAmountByCpId(CPID)).thenReturn(AMOUNT.toBigDecimal())
+
+        val fsDto = toObject(FsDto::class.java, getJsonFromFile(FS_JSON))
+        val fsResponseDto = toObject(FsResponseDto::class.java, getJsonFromFile(FS_JSON_RESPONSE))
+        val response = fsService.updateFs(CPID,TOKEN, OWNER,fsDto)
+
+        Assertions.assertEquals(ResponseDto(true,null,fsResponseDto),response)
     }
 
 
