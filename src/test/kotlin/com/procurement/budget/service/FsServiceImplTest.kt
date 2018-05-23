@@ -5,6 +5,8 @@ import com.nhaarman.mockito_kotlin.whenever
 import com.procurement.budget.config.OCDSProperties
 import com.procurement.budget.dao.EiDao
 import com.procurement.budget.dao.FsDao
+import com.procurement.budget.model.dto.check.CheckRequestDto
+import com.procurement.budget.model.dto.check.CheckResponseDto
 import com.procurement.budget.model.dto.ei.EiDto
 import com.procurement.budget.model.dto.fs.FsDto
 import com.procurement.budget.model.dto.fs.FsRequestDto
@@ -36,6 +38,8 @@ class FsServiceImplTest {
         private val AMOUNT_RESERVED = null
         private const val FS_JSON_REQUEST = "/json/fs_request.json"
         private const val FS_JSON_RESPONSE = "/json/fs_response.json"
+        private const val CHECK_FS_JSON_REQUEST = "/json/check_fs_request.json"
+        private const val CHECK_FS_JSON_RESPONSE = "/json/check_fs_response.json"
         private const val FS_JSON = "/json/fs.json"
         private const val EI_JSON_CREATE = "/json/ei.json"
         private val DATE = localNowUTC()
@@ -50,6 +54,8 @@ class FsServiceImplTest {
     private lateinit var fsEntity: FsEntity
     private lateinit var eiDto:EiDto
     private lateinit var fsDto:FsDto
+    private lateinit var fsEntities:List<FsEntity>
+    private lateinit var cpIds:Set<String>
 
     @BeforeEach
     fun init() {
@@ -70,6 +76,8 @@ class FsServiceImplTest {
             createdDate = DATE.toDate(),
             jsonData = getJsonFromFile(FS_JSON)
         )
+        cpIds = setOf(CPID)
+        fsEntities = listOf(fsEntity)
     }
 
     @Test
@@ -96,6 +104,20 @@ class FsServiceImplTest {
         val response = fsService.updateFs(CPID,TOKEN, OWNER,fsDto)
 
         Assertions.assertEquals(ResponseDto(true,null,fsResponseDto),response)
+    }
+
+    @Test
+    @DisplayName("checkFs")
+    fun checkFs(){
+
+        whenever(fsDao.getAllByCpIds(cpIds)).thenReturn(fsEntities)
+        whenever(eiService.getEi(CPID)).thenReturn(eiDto)
+
+        val checkFsRequest = toObject(CheckRequestDto::class.java, getJsonFromFile(CHECK_FS_JSON_REQUEST))
+        val checkFsResponse = toObject(CheckResponseDto::class.java, getJsonFromFile(CHECK_FS_JSON_RESPONSE))
+        val response = fsService.checkFs(checkFsRequest)
+        Assertions.assertEquals(ResponseDto(true,null,checkFsResponse),response)
+
     }
 
 

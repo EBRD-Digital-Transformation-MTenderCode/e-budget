@@ -35,7 +35,8 @@ interface EiService {
 
 @Service
 class EiServiceImpl(private val ocdsProperties: OCDSProperties,
-                    private val eiDao: EiDao) : EiService {
+                    private val eiDao: EiDao,
+                    private val generateServise: GenerateServise) : EiService {
 
     override fun createEi(owner: String,
                           country: String,
@@ -79,8 +80,8 @@ class EiServiceImpl(private val ocdsProperties: OCDSProperties,
         return toObject(EiDto::class.java, entity.jsonData)
     }
 
-    fun getCpId(country: String): String {
-        return ocdsProperties.prefix + SEPARATOR + country + SEPARATOR + milliNowUTC()
+   private fun getCpId(country: String): String {
+        return ocdsProperties.prefix + SEPARATOR + country + SEPARATOR + generateServise.getNowUtc()
     }
 
     private fun validatePeriod(ei: EiDto) {
@@ -92,7 +93,7 @@ class EiServiceImpl(private val ocdsProperties: OCDSProperties,
         val ocId = ei.ocid ?: throw ErrorException(ErrorType.PARAM_ERROR)
         return EiEntity(
                 cpId = ocId,
-                token = UUIDs.random(),
+                token = generateServise.generateRandomUUID(),
                 owner = owner,
                 createdDate = dateTime.toDate(),
                 jsonData = toJson(ei)

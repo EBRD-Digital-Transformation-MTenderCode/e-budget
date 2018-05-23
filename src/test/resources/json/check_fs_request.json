@@ -1,10 +1,10 @@
 {
   "budgetBreakdown": [
     {
-      "id": "ocds-t1s2t3-MD-1526242168113-FS-1526242185601",
+      "id": "ocds-t1s2t3-TEST-1526570694407-FS-1526570698032",
       "amount": {
         "amount": 123456789.12,
-        "currency": "EUR"
+        "currency": "MDL"
       },
       "sourceParty": {
         "id": "03000000-1",

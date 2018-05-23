@@ -18,8 +18,9 @@ import java.util.*
 class EiServiceImplTest {
 
     companion object {
-        private val CPID = "ocds-t1s2t3-TEST-1526570694407"
+        private val CPID = "ocds-t1s2t3-TEST-1526570698032"
         private val TOKEN = "90d6581a-c710-4f08-936d-e13fecd8c560"
+        private val OCID_TIME_STAMP = 1526570698032
         private val OWNER = "owner"
         private val COUNTRY = "TEST"
         private val FILE_JSON = "/json/ei.json"
@@ -29,6 +30,7 @@ class EiServiceImplTest {
     private lateinit var properties: OCDSProperties
     private lateinit var eiDao: EiDao
     private lateinit var service: EiServiceImpl
+    private lateinit var generateService:GenerateServiceImpl
     private lateinit var eiEntity: EiEntity
     private lateinit var eiDto: EiDto
 
@@ -36,7 +38,8 @@ class EiServiceImplTest {
     fun init() {
         properties = mock()
         eiDao = mock()
-        service = EiServiceImpl(properties, eiDao)
+        generateService = mock()
+        service = EiServiceImpl(properties, eiDao,generateService)
         eiDto = toObject(EiDto::class.java, getJsonFromFile(FILE_JSON))
         eiEntity = EiEntity(
                 cpId = CPID,
@@ -49,7 +52,10 @@ class EiServiceImplTest {
     @Test
     @DisplayName("createEi")
     fun createEi() {
-        whenever(service.getCpId(COUNTRY)).thenReturn(CPID)
+
+        whenever(properties.prefix).thenReturn("ocds-t1s2t3")
+        whenever(generateService.generateRandomUUID()).thenReturn(UUID.fromString(TOKEN))
+        whenever(generateService.getNowUtc()).thenReturn(OCID_TIME_STAMP)
         val response = service.createEi(OWNER, COUNTRY, createdDate, eiDto.copy())
         val eiDtoFromResponse = response.data as EiDto
         assertEquals(eiDto, eiDtoFromResponse)
