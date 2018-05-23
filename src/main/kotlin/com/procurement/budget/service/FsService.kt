@@ -1,6 +1,5 @@
 package com.procurement.budget.service
 
-import com.datastax.driver.core.utils.UUIDs
 import com.procurement.budget.dao.FsDao
 import com.procurement.budget.model.dto.check.CheckBudgetBreakdownDto
 import com.procurement.budget.model.dto.check.CheckRequestDto
@@ -12,7 +11,6 @@ import com.procurement.budget.model.dto.fs.*
 import com.procurement.budget.model.dto.ocds.TenderStatus
 import com.procurement.budget.model.dto.ocds.TenderStatusDetails
 import com.procurement.budget.model.entity.FsEntity
-import com.procurement.budget.utils.milliNowUTC
 import com.procurement.budget.utils.toDate
 import com.procurement.budget.utils.toJson
 import com.procurement.budget.utils.toObject
