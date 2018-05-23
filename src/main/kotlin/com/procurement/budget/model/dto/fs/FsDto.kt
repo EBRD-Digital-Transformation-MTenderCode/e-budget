@@ -2,10 +2,9 @@ package com.procurement.budget.model.dto.fs
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.annotation.JsonPropertyOrder
 import javax.validation.Valid
+import javax.validation.constraints.NotNull
 
-@JsonPropertyOrder("token", "ocid", "tender", "planning", "funder", "payer")
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 data class FsDto(
 
@@ -16,10 +15,12 @@ data class FsDto(
         val ocid: String?,
 
         @Valid
+        @NotNull
         @JsonProperty("tender")
         var tender: FsTenderDto,
 
         @Valid
+        @NotNull
         @JsonProperty("planning")
         var planning: FsPlanningDto,
 

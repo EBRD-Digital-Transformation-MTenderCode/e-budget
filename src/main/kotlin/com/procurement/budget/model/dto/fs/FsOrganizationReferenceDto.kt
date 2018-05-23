@@ -2,7 +2,6 @@ package com.procurement.budget.model.dto.fs
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.annotation.JsonPropertyOrder
 import com.procurement.budget.model.dto.ocds.Address
 import com.procurement.budget.model.dto.ocds.ContactPoint
 import com.procurement.budget.model.dto.ocds.Identifier
@@ -11,15 +10,14 @@ import javax.validation.constraints.NotNull
 import javax.validation.constraints.Size
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder("id", "name", "identifier", "address", "additionalIdentifiers", "contactPoint")
 data class FsOrganizationReferenceDto(
 
         @JsonProperty("id")
         var id: String?,
 
-        @JsonProperty("name")
-        @Size(min = 1)
         @NotNull
+        @Size(min = 1)
+        @JsonProperty("name")
         val name: String,
 
         @Valid

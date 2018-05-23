@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonPropertyOrder
 import com.procurement.budget.model.dto.ocds.Period
 import javax.validation.Valid
+import javax.validation.constraints.NotNull
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder("id", "period", "amount")
@@ -14,10 +15,12 @@ data class EiBudgetDto(
         var id: String?,
 
         @Valid
+        @NotNull
         @JsonProperty("period")
         val period: Period,
 
         @Valid
+        @NotNull
         @JsonProperty("amount")
         val amount: EiValue
 )
