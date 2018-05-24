@@ -40,7 +40,7 @@ interface FsService {
 @Service
 class FsServiceImpl(private val fsDao: FsDao,
                     private val eiService: EiService,
-                    private val generateServise: GenerateServise) : FsService {
+                    private val generateService: GenerateService) : FsService {
 
     override fun createFs(cpId: String,
                           owner: String,
@@ -236,7 +236,7 @@ class FsServiceImpl(private val fsDao: FsDao,
     }
 
     private fun getOcId(cpId: String): String {
-        return cpId + FS_SEPARATOR + generateServise.getNowUtc()
+        return cpId + FS_SEPARATOR + generateService.getNowUtc()
     }
 
     private fun getCpIdFromOcId(ocId: String): String {
@@ -253,7 +253,7 @@ class FsServiceImpl(private val fsDao: FsDao,
         return FsEntity(
                 cpId = cpId,
                 ocId = ocId,
-                token = generateServise.generateRandomUUID(),
+                token = generateService.generateRandomUUID(),
                 owner = owner,
                 createdDate = dateTime.toDate(),
                 jsonData = toJson(fs),
