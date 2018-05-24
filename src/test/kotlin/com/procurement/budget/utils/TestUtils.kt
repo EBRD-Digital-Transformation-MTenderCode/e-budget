@@ -4,12 +4,12 @@ import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.JsonNodeFactory
-import com.procurement.budget.utils.JsonMapper.mapper
 import org.junit.jupiter.api.Assertions
 
 
 private object JsonMapper {
     val mapper: ObjectMapper = ObjectMapper()
+
     init {
         mapper.configure(DeserializationFeature.USE_BIG_INTEGER_FOR_INTS, true)
         mapper.configure(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS, true)
@@ -30,6 +30,6 @@ fun getJsonFromFile(fileName: String): String {
 
 private fun toCompact(source: String): String {
     val type = object : TypeReference<Map<String, Any>>() {}
-    val map: Map<String, Any> = mapper.readValue(source, type)
+    val map: Map<String, Any> = JsonMapper.mapper.readValue(source, type)
     return JsonMapper.mapper.writeValueAsString(map)
 }

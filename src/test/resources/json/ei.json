@@ -23,8 +23,8 @@
     "rationale": "string"
   },
   "buyer": {
-    "name": "Buyer Official Name*",
     "id": "Buyer Identification Scheme*-Buyer Identifier*",
+    "name": "Buyer Official Name*",
     "identifier": {
       "id": "Buyer Identifier*",
       "scheme": "Buyer Identification Scheme*",

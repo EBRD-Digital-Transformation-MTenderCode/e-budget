@@ -1,13 +1,11 @@
 package com.procurement.budget.service
 
-import com.datastax.driver.core.utils.UUIDs
 import com.procurement.budget.config.OCDSProperties
 import com.procurement.budget.dao.EiDao
 import com.procurement.budget.model.dto.ei.EiDto
 import com.procurement.budget.model.dto.ocds.TenderStatus
 import com.procurement.budget.model.dto.ocds.TenderStatusDetails
 import com.procurement.budget.model.entity.EiEntity
-import com.procurement.budget.utils.milliNowUTC
 import com.procurement.budget.utils.toDate
 import com.procurement.budget.utils.toJson
 import com.procurement.budget.utils.toObject
@@ -80,7 +78,7 @@ class EiServiceImpl(private val ocdsProperties: OCDSProperties,
         return toObject(EiDto::class.java, entity.jsonData)
     }
 
-   private fun getCpId(country: String): String {
+    private fun getCpId(country: String): String {
         return ocdsProperties.prefix + SEPARATOR + country + SEPARATOR + generateServise.getNowUtc()
     }
 

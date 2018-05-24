@@ -2,14 +2,14 @@ package com.procurement.budget.model.dto.check
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.annotation.JsonPropertyOrder
 import com.procurement.budget.model.dto.ocds.Period
 import javax.validation.Valid
+import javax.validation.constraints.NotNull
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder("id", "description", "amount", "period", "sourceParty")
 data class CheckBudgetBreakdownDto(
 
+        @NotNull
         @JsonProperty("id")
         val id: String,
 
@@ -17,6 +17,7 @@ data class CheckBudgetBreakdownDto(
         val description: String?,
 
         @Valid
+        @NotNull
         @JsonProperty("amount")
         val amount: CheckValueDto,
 

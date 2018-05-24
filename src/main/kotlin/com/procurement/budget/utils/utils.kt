@@ -10,7 +10,6 @@ import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.util.*
 
-
 private object JsonMapper {
     val mapper: ObjectMapper = ObjectMapper()
 
@@ -20,7 +19,6 @@ private object JsonMapper {
         mapper.nodeFactory = JsonNodeFactory.withExactBigDecimals(true)
     }
 }
-
 
 /*Date utils*/
 fun LocalDateTime.toDate(): Date {

@@ -5,15 +5,18 @@ import com.procurement.budget.utils.milliNowUTC
 import org.springframework.stereotype.Service
 import java.util.*
 
-interface GenerateServise{
-    fun generateRandomUUID():UUID
-    fun getNowUtc():Long
+interface GenerateServise {
+
+    fun generateRandomUUID(): UUID
+
+    fun getNowUtc(): Long
 }
 
 @Service
-class GenerateServiceImpl: GenerateServise{
+class GenerateServiceImpl : GenerateServise {
+
     override fun generateRandomUUID(): UUID {
-       return UUIDs.random()
+        return UUIDs.random()
     }
 
     override fun getNowUtc(): Long {
