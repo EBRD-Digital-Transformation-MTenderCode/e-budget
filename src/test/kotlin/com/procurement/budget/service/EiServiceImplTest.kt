@@ -30,7 +30,7 @@ class EiServiceImplTest {
     private lateinit var properties: OCDSProperties
     private lateinit var eiDao: EiDao
     private lateinit var service: EiServiceImpl
-    private lateinit var generateService: GenerateServiceImpl
+    private lateinit var generationService: GenerationServiceImpl
     private lateinit var eiEntity: EiEntity
     private lateinit var eiDto: EiDto
 
@@ -38,8 +38,8 @@ class EiServiceImplTest {
     fun init() {
         properties = mock()
         eiDao = mock()
-        generateService = mock()
-        service = EiServiceImpl(properties, eiDao, generateService)
+        generationService = mock()
+        service = EiServiceImpl(properties, eiDao, generationService)
         eiDto = toObject(EiDto::class.java, getJsonFromFile(FILE_JSON))
         eiEntity = EiEntity(
                 cpId = CPID,
@@ -53,8 +53,8 @@ class EiServiceImplTest {
     @DisplayName("createEi")
     fun createEi() {
         whenever(properties.prefix).thenReturn("ocds-t1s2t3")
-        whenever(generateService.generateRandomUUID()).thenReturn(UUID.fromString(TOKEN))
-        whenever(generateService.getNowUtc()).thenReturn(OCID_TIME_STAMP)
+        whenever(generationService.generateRandomUUID()).thenReturn(UUID.fromString(TOKEN))
+        whenever(generationService.getNowUtc()).thenReturn(OCID_TIME_STAMP)
         val response = service.createEi(OWNER, COUNTRY, createdDate, eiDto.copy())
         assertEquals(ResponseDto(true, null, eiDto), response)
     }

@@ -46,7 +46,7 @@ class FsServiceImplTest {
     private lateinit var fsDao: FsDao
     private lateinit var eiService: EiServiceImpl
     private lateinit var fsService: FsServiceImpl
-    private lateinit var generateService: GenerateServiceImpl
+    private lateinit var generationService: GenerationServiceImpl
     private lateinit var fsEntity: FsEntity
     private lateinit var eiDto: EiDto
     private lateinit var fsDto: FsDto
@@ -58,8 +58,8 @@ class FsServiceImplTest {
         properties = mock()
         fsDao = mock()
         eiService = mock()
-        generateService = mock()
-        fsService = FsServiceImpl(fsDao, eiService, generateService)
+        generationService = mock()
+        fsService = FsServiceImpl(fsDao, eiService, generationService)
         eiDto = toObject(EiDto::class.java, getJsonFromFile(EI_JSON_CREATE))
         fsDto = toObject(FsDto::class.java, getJsonFromFile(FS_JSON))
         fsEntity = FsEntity(
@@ -81,8 +81,8 @@ class FsServiceImplTest {
     fun createFs() {
         whenever(eiService.getEi(CPID)).thenReturn(eiDto)
         whenever(fsDao.getTotalAmountByCpId(CPID)).thenReturn(AMOUNT.toBigDecimal())
-        whenever(generateService.generateRandomUUID()).thenReturn(UUID.fromString(TOKEN))
-        whenever(generateService.getNowUtc()).thenReturn(OCID_TIME_STAMP)
+        whenever(generationService.generateRandomUUID()).thenReturn(UUID.fromString(TOKEN))
+        whenever(generationService.getNowUtc()).thenReturn(OCID_TIME_STAMP)
         val fsRequestDto = toObject(FsRequestDto::class.java, getJsonFromFile(FS_JSON_REQUEST))
         val fsResponseDto = toObject(FsResponseDto::class.java, getJsonFromFile(FS_JSON_RESPONSE))
         val response = fsService.createFs(CPID, OWNER, DATE, fsRequestDto)
