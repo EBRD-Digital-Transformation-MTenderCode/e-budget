@@ -5,7 +5,7 @@ import com.procurement.budget.utils.milliNowUTC
 import org.springframework.stereotype.Service
 import java.util.*
 
-interface GenerateService {
+interface GenerationService {
 
     fun generateRandomUUID(): UUID
 
@@ -13,7 +13,7 @@ interface GenerateService {
 }
 
 @Service
-class GenerateServiceImpl : GenerateService {
+class GenerationServiceImpl : GenerationService {
 
     override fun generateRandomUUID(): UUID {
         return UUIDs.random()
