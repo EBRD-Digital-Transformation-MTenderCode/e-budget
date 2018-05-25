@@ -11,4 +11,16 @@ class CheckRequestDtoTest {
     fun checkRequestDto() {
         compare(CheckRequestDto::class.java, "/json/check_fs_request.json")
     }
+
+    @Test
+    @DisplayName("checkRequestDtoWithoutReq")
+    fun checkRequestDtoWithoutReq() {
+        compare(CheckRequestDto::class.java, "/json/check_fs_request_without_req.json")
+    }
+
+    @Test
+    @DisplayName("checkRequestDtoFull")
+    fun checkRequestDtoFull() {
+        compare(CheckRequestDto::class.java, "/json/check_fs_request_full.json")
+    }
 }

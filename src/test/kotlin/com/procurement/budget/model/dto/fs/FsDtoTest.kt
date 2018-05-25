@@ -10,4 +10,17 @@ class FsDtoTest {
     fun fsDto() {
         compare(FsDto::class.java, "/json/fs.json")
     }
+
+    @Test
+    @DisplayName("FsDtoWithoutReq")
+    fun fsDtoWithoutReq() {
+        compare(FsDto::class.java, "/json/fs_without_req.json")
+    }
+    @Test
+    @DisplayName("FsDtoFull")
+    fun fsDtoFull() {
+        compare(FsDto::class.java, "/json/fs_full.json")
+    }
+
+
 }
