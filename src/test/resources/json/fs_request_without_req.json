@@ -1,0 +1,39 @@
+{
+  "planning": {
+    "budget": {
+      "period": {
+        "startDate": "2018-05-17T15:24:53Z",
+        "endDate": "2018-06-17T15:24:53Z"
+      },
+      "amount": {
+        "amount": 123456789.12,
+        "currency": "MDL"
+      },
+      "isEuropeanUnionFunded": true
+    }
+  },
+  "tender": {
+    "id": "string",
+    "procuringEntity": {
+      "name": "Dorsey PLC",
+      "identifier": {
+        "id": "208-14-0103",
+        "scheme": "UA-EDR",
+        "legalName": "Dorsey PLC PLC",
+        "uri": "https://macias.com/about/"
+      },
+      "address": {
+        "streetAddress": "34529 Jamie Landing Apt. 168",
+        "locality": "Jacksonville",
+        "region": "West Virginia",
+        "countryName": "Bolivia"
+      },
+      "contactPoint": {
+        "name": "Jessica Brooks",
+        "email": "usilva@yahoo.com",
+        "telephone": "(788)634-4117x75577",
+        "url": "http://hunter.org/search/tag/wp-content/privacy/"
+      }
+    }
+  }
+}
