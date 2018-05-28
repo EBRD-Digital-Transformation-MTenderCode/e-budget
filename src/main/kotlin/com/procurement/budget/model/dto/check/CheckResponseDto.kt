@@ -13,21 +13,21 @@ import javax.validation.Valid
 data class CheckResponseDto(
 
         @JsonProperty("ei")
-        val ei: Set<String>?,
+        val ei: Set<String>,
 
         @Valid
         @JsonProperty("budgetBreakdown")
-        val budgetBreakdown: List<CheckBudgetBreakdownDto>?,
+        val budgetBreakdown: List<CheckBudgetBreakdownDto>,
 
         @Valid
         @JsonProperty("funder")
-        val funder: HashSet<FsOrganizationReferenceDto>?,
+        val funder: HashSet<FsOrganizationReferenceDto>,
 
         @Valid
         @JsonProperty("payer")
-        val payer: HashSet<FsOrganizationReferenceDto>?,
+        val payer: HashSet<FsOrganizationReferenceDto>,
 
         @Valid
         @JsonProperty("buyer")
-        val buyer: HashSet<EiOrganizationReferenceDto>?
+        val buyer: HashSet<EiOrganizationReferenceDto>
 )

@@ -7,15 +7,9 @@ import org.junit.jupiter.api.Test
 class CheckRequestDtoTest {
 
     @Test
-    @DisplayName("checkRequestDto")
-    fun checkRequestDto() {
-        compare(CheckRequestDto::class.java, "/json/check_fs_request.json")
-    }
-
-    @Test
-    @DisplayName("checkRequestDtoWithoutReq")
+    @DisplayName("checkRequestDtoRequired")
     fun checkRequestDtoWithoutReq() {
-        compare(CheckRequestDto::class.java, "/json/check_fs_request_without_req.json")
+        compare(CheckRequestDto::class.java, "/json/check_fs_request_only_req.json")
     }
 
     @Test

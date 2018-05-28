@@ -22,7 +22,7 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import java.util.*
 
-class FsServiceImplTest {
+class FsServiceTest {
     companion object {
 
         private const val CPID = "ocds-t1s2t3-TEST-1526570694407"

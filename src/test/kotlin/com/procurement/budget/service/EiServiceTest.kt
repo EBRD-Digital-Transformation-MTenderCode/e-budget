@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test
 import java.util.*
 
 
-class EiServiceImplTest {
+class EiServiceTest {
 
     companion object {
         private val CPID = "ocds-t1s2t3-TEST-1526570698032"

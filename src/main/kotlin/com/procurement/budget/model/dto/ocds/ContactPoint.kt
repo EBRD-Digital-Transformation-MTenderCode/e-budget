@@ -20,7 +20,7 @@ data class ContactPoint(
         val telephone: String,
 
         @JsonProperty("faxNumber")
-        val faxNumber: String,
+        val faxNumber: String?,
 
         @NotNull
         @JsonProperty("url")

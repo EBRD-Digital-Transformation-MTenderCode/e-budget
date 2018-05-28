@@ -5,17 +5,13 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
 class FsDtoTest {
-    @Test
-    @DisplayName("FstDto")
-    fun fsDto() {
-        compare(FsDto::class.java, "/json/fs.json")
-    }
 
     @Test
-    @DisplayName("FsDtoWithoutReq")
+    @DisplayName("FsDtoRequired")
     fun fsDtoWithoutReq() {
-        compare(FsDto::class.java, "/json/fs_without_req.json")
+        compare(FsDto::class.java, "/json/fs_only_req.json")
     }
+
     @Test
     @DisplayName("FsDtoFull")
     fun fsDtoFull() {

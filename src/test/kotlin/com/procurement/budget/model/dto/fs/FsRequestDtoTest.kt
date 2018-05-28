@@ -7,15 +7,9 @@ import org.junit.jupiter.api.Test
 class FsRequestDtoTest {
 
     @Test
-    @DisplayName("FsRequestDto")
-    fun fsRequestDto() {
-        compare(FsRequestDto::class.java, "/json/fs_request.json")
-    }
-
-    @Test
-    @DisplayName("FsRequestDtoWithoutReq")
+    @DisplayName("FsRequestDtoRequired")
     fun fsRequestDtoWithoutReq() {
-        compare(FsRequestDto::class.java, "/json/fs_request_without_req.json")
+        compare(FsRequestDto::class.java, "/json/fs_request_only_req.json")
     }
 
     @Test

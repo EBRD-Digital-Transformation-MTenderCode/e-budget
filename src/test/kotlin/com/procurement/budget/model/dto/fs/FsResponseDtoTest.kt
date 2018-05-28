@@ -5,15 +5,11 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
 class FsResponseDtoTest {
+
     @Test
-    @DisplayName("FsResponseDto")
-    fun fsResponseDto() {
-        compare(FsResponseDto::class.java, "/json/fs_response.json")
-    }
-    @Test
-    @DisplayName("FsResponseDtoWithoutReq")
+    @DisplayName("FsResponseDtoRequired")
     fun fsResponseDtoWithoutReq() {
-        compare(FsResponseDto::class.java, "/json/fs_response_without_req.json")
+        compare(FsResponseDto::class.java, "/json/fs_response_only_req.json")
     }
 
     @Test
