@@ -1,4 +1,4 @@
-package com.procurement.notice.model.bpe
+package com.procurement.budget.model.bpe
 
 import com.fasterxml.jackson.annotation.JsonProperty
 

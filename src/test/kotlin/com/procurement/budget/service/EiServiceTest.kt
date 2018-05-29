@@ -7,7 +7,7 @@ import com.procurement.budget.dao.EiDao
 import com.procurement.budget.model.dto.ei.EiDto
 import com.procurement.budget.model.entity.EiEntity
 import com.procurement.budget.utils.*
-import com.procurement.notice.model.bpe.ResponseDto
+import com.procurement.budget.model.bpe.ResponseDto
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName

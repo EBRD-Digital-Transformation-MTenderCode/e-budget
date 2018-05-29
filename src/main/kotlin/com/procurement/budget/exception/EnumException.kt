@@ -1,4 +1,4 @@
-package com.procurement.notice.exception
+package com.procurement.budget.exception
 
 data class EnumException(private val enumType: String, val value: String, val values: String) : RuntimeException() {
 

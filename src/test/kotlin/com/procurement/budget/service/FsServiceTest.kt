@@ -15,7 +15,7 @@ import com.procurement.budget.utils.getJsonFromFile
 import com.procurement.budget.utils.localNowUTC
 import com.procurement.budget.utils.toDate
 import com.procurement.budget.utils.toObject
-import com.procurement.notice.model.bpe.ResponseDto
+import com.procurement.budget.model.bpe.ResponseDto
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName

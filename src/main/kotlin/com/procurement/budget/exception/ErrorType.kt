@@ -1,4 +1,4 @@
-package com.procurement.notice.exception
+package com.procurement.budget.exception
 
 enum class ErrorType constructor(val code: String, val message: String) {
     EI_NOT_FOUND("00.01", "EI not found."),
