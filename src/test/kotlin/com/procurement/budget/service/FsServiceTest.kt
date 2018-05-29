@@ -4,6 +4,7 @@ import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
 import com.procurement.budget.config.OCDSProperties
 import com.procurement.budget.dao.FsDao
+import com.procurement.budget.model.bpe.ResponseDto
 import com.procurement.budget.model.dto.check.CheckRequestDto
 import com.procurement.budget.model.dto.check.CheckResponseDto
 import com.procurement.budget.model.dto.ei.EiDto
@@ -15,7 +16,6 @@ import com.procurement.budget.utils.getJsonFromFile
 import com.procurement.budget.utils.localNowUTC
 import com.procurement.budget.utils.toDate
 import com.procurement.budget.utils.toObject
-import com.procurement.budget.model.bpe.ResponseDto
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName

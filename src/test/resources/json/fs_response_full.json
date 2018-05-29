@@ -59,7 +59,7 @@
         },
         "isEuropeanUnionFunded": true,
         "verified": true,
-        "sourceEntity":  {
+        "sourceEntity": {
           "id": "UA-EDR-208-14-0103",
           "name": "Dorsey PLC",
           "identifier": {
@@ -91,7 +91,7 @@
             "url": "http://hunter.org/search/tag/wp-content/privacy/"
           }
         },
-        "verificationDetails":"string"
+        "verificationDetails": "string"
       },
       "rationale": "Street past already represent idea."
     },

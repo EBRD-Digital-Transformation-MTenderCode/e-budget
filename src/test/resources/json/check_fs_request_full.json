@@ -2,7 +2,7 @@
   "budgetBreakdown": [
     {
       "id": "ocds-t1s2t3-TEST-1526570694407-FS-1526570698032",
-      "description":"string",
+      "description": "string",
       "amount": {
         "amount": 123456789.12,
         "currency": "MDL"
@@ -24,6 +24,6 @@
     "id": "03000000-1",
     "scheme": "CPV",
     "description": "Agricultural, farming, fishing, forestry and related products",
-    "uri":"uri"
+    "uri": "uri"
   }
 }

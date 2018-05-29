@@ -2,6 +2,9 @@ package com.procurement.budget.service
 
 import com.procurement.budget.config.OCDSProperties
 import com.procurement.budget.dao.EiDao
+import com.procurement.budget.exception.ErrorException
+import com.procurement.budget.exception.ErrorType
+import com.procurement.budget.model.bpe.ResponseDto
 import com.procurement.budget.model.dto.ei.EiDto
 import com.procurement.budget.model.dto.ocds.TenderStatus
 import com.procurement.budget.model.dto.ocds.TenderStatusDetails
@@ -9,9 +12,6 @@ import com.procurement.budget.model.entity.EiEntity
 import com.procurement.budget.utils.toDate
 import com.procurement.budget.utils.toJson
 import com.procurement.budget.utils.toObject
-import com.procurement.budget.exception.ErrorException
-import com.procurement.budget.exception.ErrorType
-import com.procurement.budget.model.bpe.ResponseDto
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 import java.util.*

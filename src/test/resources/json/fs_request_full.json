@@ -17,9 +17,9 @@
         "uri": "string"
       },
       "isEuropeanUnionFunded": true,
-      "verified":true,
-      "sourceEntity":{
-        "id":"string",
+      "verified": true,
+      "sourceEntity": {
+        "id": "string",
         "name": "Dorsey PLC",
         "identifier": {
           "id": "208-14-0103",
@@ -50,16 +50,16 @@
           "url": "http://hunter.org/search/tag/wp-content/privacy/"
         }
       },
-      "verificationDetails":"string"
+      "verificationDetails": "string"
     },
     "rationale": "Street past already represent idea."
   },
   "tender": {
     "id": "string",
-    "status":"planning",
-    "statusDetails":"planning",
+    "status": "planning",
+    "statusDetails": "planning",
     "procuringEntity": {
-      "id":"string",
+      "id": "string",
       "name": "Dorsey PLC",
       "identifier": {
         "id": "208-14-0103",
@@ -92,7 +92,7 @@
     }
   },
   "buyer": {
-    "id":"string",
+    "id": "string",
     "name": "Dorsey PLC",
     "identifier": {
       "id": "208-14-0103",

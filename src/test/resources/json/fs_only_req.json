@@ -12,7 +12,7 @@
         "amount": 123456789.12,
         "currency": "MDL"
       },
-      "isEuropeanUnionFunded":false
+      "isEuropeanUnionFunded": false
     }
   }
 }
