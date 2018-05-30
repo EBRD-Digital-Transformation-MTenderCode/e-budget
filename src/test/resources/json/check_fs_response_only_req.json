@@ -1,11 +1,7 @@
 {
-  "ei": [
-    "ocds-t1s2t3-TEST-1526570694407"
-  ],
   "budgetBreakdown": [
     {
       "id": "ocds-t1s2t3-TEST-1526570694407-FS-1526570698032",
-      "description": "string",
       "amount": {
         "amount": 123456789.12,
         "currency": "MDL"
@@ -18,109 +14,6 @@
         "id": "UA-EDR-208-14-0103",
         "name": "Dorsey PLC"
       }
-    }
-  ],
-  "funder": [
-    {
-      "id": "UA-EDR-208-14-0103",
-      "name": "Dorsey PLC",
-      "identifier": {
-        "id": "208-14-0103",
-        "scheme": "UA-EDR",
-        "legalName": "Dorsey PLC PLC",
-        "uri": "https://macias.com/about/"
-      },
-      "address": {
-        "streetAddress": "34529 Jamie Landing Apt. 168",
-        "locality": "Jacksonville",
-        "region": "West Virginia",
-        "postalCode": "89179-7640",
-        "countryName": "Bolivia"
-      },
-      "additionalIdentifiers": [
-        {
-          "id": "537-54-0471",
-          "scheme": "UA-EDR",
-          "legalName": "Dorsey PLC PLC",
-          "uri": "https://martinez.biz/tag/main/author/"
-        }
-      ],
-      "contactPoint": {
-        "name": "Jessica Brooks",
-        "email": "usilva@yahoo.com",
-        "telephone": "(788)634-4117x75577",
-        "faxNumber": "(193)729-0938x0483",
-        "url": "http://hunter.org/search/tag/wp-content/privacy/"
-      }
-    }
-  ],
-  "payer": [
-    {
-      "id": "UA-EDR-208-14-0103",
-      "name": "Dorsey PLC",
-      "identifier": {
-        "id": "208-14-0103",
-        "scheme": "UA-EDR",
-        "legalName": "Dorsey PLC PLC",
-        "uri": "https://macias.com/about/"
-      },
-      "address": {
-        "streetAddress": "34529 Jamie Landing Apt. 168",
-        "locality": "Jacksonville",
-        "region": "West Virginia",
-        "postalCode": "89179-7640",
-        "countryName": "Bolivia"
-      },
-      "additionalIdentifiers": [
-        {
-          "id": "537-54-0471",
-          "scheme": "UA-EDR",
-          "legalName": "Dorsey PLC PLC",
-          "uri": "https://martinez.biz/tag/main/author/"
-        }
-      ],
-      "contactPoint": {
-        "name": "Jessica Brooks",
-        "email": "usilva@yahoo.com",
-        "telephone": "(788)634-4117x75577",
-        "faxNumber": "(193)729-0938x0483",
-        "url": "http://hunter.org/search/tag/wp-content/privacy/"
-      }
-    }
-  ],
-  "buyer": [
-    {
-      "id": "Buyer Identification Scheme*-Buyer Identifier*",
-      "name": "Buyer Official Name*",
-      "identifier": {
-        "id": "Buyer Identifier*",
-        "scheme": "Buyer Identification Scheme*",
-        "legalName": "Buyer Legal Name*",
-        "uri": "Buyer URI*"
-      },
-      "address": {
-        "streetAddress": "Лисового",
-        "locality": "Buyer Locality*",
-        "region": "Dnipropetrovsk oblast",
-        "postalCode": "50000",
-        "countryName": "Украина"
-      },
-      "contactPoint": {
-        "name": "Volkov Dmitriy",
-        "email": "fufik93@gmail.com",
-        "telephone": "0972108063",
-        "faxNumber": "Buyer Fax",
-        "url": "Buyer URL*"
-      },
-      "details": {
-        "typeOfBuyer": "BODY_PUBLIC",
-        "mainGeneralActivity": "DEFENCE",
-        "mainSectoralActivity": "AIRPORT_RELATED_ACTIVITIES",
-        "isACentralPurchasingBody": false,
-        "scale": "sme",
-        "nutsCode": "string"
-      },
-      "buyerProfile": "Buyer Profile"
     }
   ]
 }

@@ -1,0 +1,34 @@
+{
+  //todo "isEuropenUnionFunded" req
+  "budgetBreakdown": [
+    {
+      "id": "ocds-t1s2t3-TEST-1526570694407-FS-1526570698032",
+      "description": "string",
+      "amount": {
+        "amount": 123456789.12,
+        "currency": "MDL"
+      },
+      //todo empty
+      "period": {
+        "startDate": "2018-05-17T15:24:53Z",
+        "endDate": "2018-06-17T15:24:53Z"
+      },
+      //todo empty
+      "sourceParty": {
+        "id": "03000000-1",
+        "name": "CPV"
+      }
+    }
+  ],
+  //todo empty
+  "tenderPeriod": {
+    "startDate": "2018-07-01T00:00:00Z"
+  },
+  "classification": {
+    "id": "03000000-1",
+    "scheme": "CPV",
+    //todo empty
+    "description": "Agricultural, farming, fishing, forestry and related products",
+    "uri": "uri"
+  }
+}

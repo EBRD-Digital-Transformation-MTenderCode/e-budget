@@ -42,6 +42,7 @@
       "typeOfBuyer": "BODY_PUBLIC",
       "mainGeneralActivity": "DEFENCE",
       "mainSectoralActivity": "AIRPORT_RELATED_ACTIVITIES",
+      //TODO  "isACentralPurchasingBody" req
       "scale": "sme"
     }
   }
