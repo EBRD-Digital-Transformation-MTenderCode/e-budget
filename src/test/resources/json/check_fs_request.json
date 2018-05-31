@@ -5,10 +5,6 @@
       "amount": {
         "amount": 123456789.12,
         "currency": "MDL"
-      },
-      "sourceParty": {
-        "id": "03000000-1",
-        "name": "CPV"
       }
     }
   ],

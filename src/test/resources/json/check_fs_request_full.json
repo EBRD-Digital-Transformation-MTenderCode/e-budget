@@ -6,14 +6,6 @@
       "amount": {
         "amount": 123456789.12,
         "currency": "MDL"
-      },
-      "period": {
-        "startDate": "2018-05-17T15:24:53Z",
-        "endDate": "2018-06-17T15:24:53Z"
-      },
-      "sourceParty": {
-        "id": "03000000-1",
-        "name": "CPV"
       }
     }
   ],

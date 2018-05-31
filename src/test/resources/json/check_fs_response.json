@@ -101,24 +101,20 @@
         "streetAddress": "Лисового",
         "locality": "Buyer Locality*",
         "region": "Dnipropetrovsk oblast",
-        "postalCode": "50000",
         "countryName": "Украина"
       },
       "contactPoint": {
         "name": "Volkov Dmitriy",
         "email": "fufik93@gmail.com",
         "telephone": "0972108063",
-        "faxNumber": "Buyer Fax",
         "url": "Buyer URL*"
       },
       "details": {
         "typeOfBuyer": "BODY_PUBLIC",
         "mainGeneralActivity": "DEFENCE",
         "mainSectoralActivity": "AIRPORT_RELATED_ACTIVITIES",
-        "isACentralPurchasingBody": false,
         "scale": "sme"
-      },
-      "buyerProfile": "Buyer Profile"
+      }
     }
   ]
 }

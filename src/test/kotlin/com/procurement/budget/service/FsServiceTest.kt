@@ -12,10 +12,7 @@ import com.procurement.budget.model.dto.fs.FsDto
 import com.procurement.budget.model.dto.fs.FsRequestDto
 import com.procurement.budget.model.dto.fs.FsResponseDto
 import com.procurement.budget.model.entity.FsEntity
-import com.procurement.budget.utils.getJsonFromFile
-import com.procurement.budget.utils.localNowUTC
-import com.procurement.budget.utils.toDate
-import com.procurement.budget.utils.toObject
+import com.procurement.budget.utils.*
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
@@ -39,7 +36,6 @@ class FsServiceTest {
         private const val FS_JSON = "/json/fs.json"
         private const val EI_JSON_CREATE = "/json/ei.json"
         private val DATE = localNowUTC()
-
     }
 
     private lateinit var properties: OCDSProperties
@@ -83,10 +79,11 @@ class FsServiceTest {
         whenever(fsDao.getTotalAmountByCpId(CPID)).thenReturn(AMOUNT.toBigDecimal())
         whenever(generationService.generateRandomUUID()).thenReturn(UUID.fromString(TOKEN))
         whenever(generationService.getNowUtc()).thenReturn(OCID_TIME_STAMP)
-        val fsRequestDto = toObject(FsRequestDto::class.java, getJsonFromFile(FS_JSON_REQUEST))
-        val fsResponseDto = toObject(FsResponseDto::class.java, getJsonFromFile(FS_JSON_RESPONSE))
-        val response = fsService.createFs(CPID, OWNER, DATE, fsRequestDto)
-        Assertions.assertEquals(ResponseDto(true, null, fsResponseDto), response)
+        val request = toObject(FsRequestDto::class.java, getJsonFromFile(FS_JSON_REQUEST))
+        val response = fsService.createFs(CPID, OWNER, DATE, request)
+        val responseExpected = getJsonFromFile(FS_JSON_RESPONSE)
+        val responseSerialised = toJson(response.data)
+        Assertions.assertEquals(responseExpected, responseSerialised)
     }
 
     @Test
@@ -94,10 +91,11 @@ class FsServiceTest {
     fun updateFs() {
         whenever(fsDao.getByCpIdAndToken(CPID, UUID.fromString(TOKEN))).thenReturn(fsEntity)
         whenever(fsDao.getTotalAmountByCpId(CPID)).thenReturn(AMOUNT.toBigDecimal())
-        val fsDto = toObject(FsDto::class.java, getJsonFromFile(FS_JSON))
-        val fsResponseDto = toObject(FsResponseDto::class.java, getJsonFromFile(FS_JSON_RESPONSE))
-        val response = fsService.updateFs(CPID, TOKEN, OWNER, fsDto)
-        Assertions.assertEquals(ResponseDto(true, null, fsResponseDto), response)
+        val request = toObject(FsDto::class.java, getJsonFromFile(FS_JSON))
+        val response = fsService.updateFs(CPID, TOKEN, OWNER, request)
+        val responseExpected = getJsonFromFile(FS_JSON_RESPONSE)
+        val responseSerialised = toJson(response.data)
+        Assertions.assertEquals(responseExpected, responseSerialised)
     }
 
     @Test
@@ -105,10 +103,11 @@ class FsServiceTest {
     fun checkFs() {
         whenever(fsDao.getAllByCpIds(cpIds)).thenReturn(fsEntities)
         whenever(eiService.getEi(CPID)).thenReturn(eiDto)
-        val checkFsRequest = toObject(CheckRequestDto::class.java, getJsonFromFile(CHECK_FS_JSON_REQUEST))
-        val checkFsResponse = toObject(CheckResponseDto::class.java, getJsonFromFile(CHECK_FS_JSON_RESPONSE))
-        val response = fsService.checkFs(checkFsRequest)
-        Assertions.assertEquals(ResponseDto(true, null, checkFsResponse), response)
+        val request = toObject(CheckRequestDto::class.java, getJsonFromFile(CHECK_FS_JSON_REQUEST))
+        val response = fsService.checkFs(request)
+        val responseExpected = getJsonFromFile(CHECK_FS_JSON_RESPONSE)
+        val responseSerialised = toJson(response.data)
+        Assertions.assertEquals(responseExpected, responseSerialised)
     }
 
 

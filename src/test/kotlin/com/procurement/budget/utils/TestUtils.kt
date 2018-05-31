@@ -24,6 +24,18 @@ fun <T> compare(target: Class<T>, file: String) {
     Assertions.assertEquals(resource, actual)
 }
 
+fun <T> testDeserialize(target: Class<T>, file: String) {
+    val resource = getJsonFromFile(file)
+    val obj = toObject(target, resource)
+    Assertions.assertNotNull(obj)
+}
+
+fun <Any> testSerialize(obj: Any, file: String) {
+    val resource = getJsonFromFile(file)
+    val actual = toJson(obj)
+    Assertions.assertEquals(resource, actual)
+}
+
 fun getJsonFromFile(fileName: String): String {
     return toCompact(JsonMapper.javaClass.getResource(fileName).readText())
 }

@@ -21,12 +21,12 @@ data class CheckBudgetBreakdownDto(
         @JsonProperty("amount")
         val amount: CheckValueDto,
 
-        @Valid
+//        @Valid
         //TODO Notnull
         @JsonProperty("period")
         var period: Period?,
 
-        @Valid
+//        @Valid
         //TODO notnull
         @JsonProperty("sourceParty")
         var sourceParty: CheckSourcePartyDto?

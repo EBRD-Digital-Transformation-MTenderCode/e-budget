@@ -1,30 +1,28 @@
 {
+  "token": "90d6581a-c710-4f08-936d-e13fecd8c560",
+  "ocid": "ocds-t1s2t3-TEST-1526570698032",
   "tender": {
-    "id": "string",
+    "id": "ocds-t1s2t3-TEST-1526570698032",
     "title": "string",
-    "description": "string",
     "status": "planning",
-    "statusDetails": "preselection",
+    "statusDetails": "empty",
     "classification": {
       "id": "03000000-1",
       "scheme": "CPV",
-      "description": "string",
-      "uri": "string"
+      "description": "string"
     }
   },
   "planning": {
     "budget": {
-      "id": "string",
+      "id": "03000000-1",
       "period": {
         "startDate": "2018-05-17T15:24:53Z",
         "endDate": "2018-06-17T15:24:53Z"
       },
       "amount": {
-        "amount": 0.00,
-        "currency": "ADP"
+        "currency": "MDL"
       }
-    },
-    "rationale": "string"
+    }
   },
   "buyer": {
     "id": "Buyer Identification Scheme*-Buyer Identifier*",
@@ -39,32 +37,19 @@
       "streetAddress": "Лисового",
       "locality": "Buyer Locality*",
       "region": "Dnipropetrovsk oblast",
-      "postalCode": "50000",
       "countryName": "Украина"
     },
-    "additionalIdentifiers": [
-      {
-        "id": "string",
-        "scheme": "string",
-        "legalName": "string",
-        "uri": "string"
-      }
-    ],
     "contactPoint": {
       "name": "Volkov Dmitriy",
       "email": "fufik93@gmail.com",
       "telephone": "0972108063",
-      "faxNumber": "Buyer Fax",
       "url": "Buyer URL*"
     },
     "details": {
       "typeOfBuyer": "BODY_PUBLIC",
       "mainGeneralActivity": "DEFENCE",
       "mainSectoralActivity": "AIRPORT_RELATED_ACTIVITIES",
-      "isACentralPurchasingBody": true,
-      "scale": "micro",
-      "nutsCode": "string"
-    },
-    "buyerProfile": "Buyer Profile"
+      "scale": "sme"
+    }
   }
 }

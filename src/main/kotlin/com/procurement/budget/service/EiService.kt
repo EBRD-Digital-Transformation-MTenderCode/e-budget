@@ -65,11 +65,12 @@ class EiServiceImpl(private val ocdsProperties: OCDSProperties,
         if (entity.owner != owner) throw ErrorException(ErrorType.INVALID_OWNER)
         val ei = toObject(EiDto::class.java, entity.jsonData)
         ei.apply {
-            planning = ei.planning
-            tender = ei.tender
+            planning = eiDto.planning
+            tender = eiDto.tender
         }
         entity.jsonData = toJson(ei)
         eiDao.save(entity)
+        ei.token = entity.token.toString()
         return ResponseDto(true, null, ei)
     }
 
