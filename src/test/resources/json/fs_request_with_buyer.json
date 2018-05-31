@@ -16,13 +16,17 @@
         "projectIdentifier": "string",
         "uri": "string"
       },
-      "isEuropeanUnionFunded": true
+      "isEuropeanUnionFunded": true,
+      "verificationDetails": "string"
     },
     "rationale": "Street past already represent idea."
   },
   "tender": {
     "id": "string",
+    "status": "planning",
+    "statusDetails": "planning",
     "procuringEntity": {
+      "id": "string",
       "name": "Dorsey PLC",
       "identifier": {
         "id": "208-14-0103",
@@ -55,6 +59,7 @@
     }
   },
   "buyer": {
+    "id": "string",
     "name": "Dorsey PLC",
     "identifier": {
       "id": "208-14-0103",

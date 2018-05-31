@@ -27,13 +27,13 @@ class FsController(private val fsService: FsService) {
         return ResponseEntity(fsService.createFs(cpId, owner, dateTime, data), HttpStatus.CREATED)
     }
 
-    @PutMapping
-    fun updateFs(@RequestParam("identifier") cpId: String,
-                 @RequestParam("token") token: String,
-                 @RequestParam("owner") owner: String,
-                 @Valid @RequestBody data: FsDto): ResponseEntity<ResponseDto<*>> {
-        return ResponseEntity(fsService.updateFs(cpId, token, owner, data), HttpStatus.OK)
-    }
+//    @PutMapping
+//    fun updateFs(@RequestParam("identifier") cpId: String,
+//                 @RequestParam("token") token: String,
+//                 @RequestParam("owner") owner: String,
+//                 @Valid @RequestBody data: FsDto): ResponseEntity<ResponseDto<*>> {
+//        return ResponseEntity(fsService.updateFs(cpId, token, owner, data), HttpStatus.OK)
+//    }
 
     @PostMapping("/check")
     fun checkFs(@Valid @RequestBody data: CheckRequestDto): ResponseEntity<ResponseDto<*>> {

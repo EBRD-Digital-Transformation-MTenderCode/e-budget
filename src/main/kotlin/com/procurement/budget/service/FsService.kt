@@ -29,10 +29,10 @@ interface FsService {
                  dateTime: LocalDateTime,
                  fsDto: FsRequestDto): ResponseDto<*>
 
-    fun updateFs(cpId: String,
-                 token: String,
-                 owner: String,
-                 fsDto: FsDto): ResponseDto<*>
+//    fun updateFs(cpId: String,
+//                 token: String,
+//                 owner: String,
+//                 fsDto: FsDto): ResponseDto<*>
 
     fun checkFs(dto: CheckRequestDto): ResponseDto<*>
 }
@@ -92,23 +92,23 @@ class FsServiceImpl(private val fsDao: FsDao,
         return ResponseDto(true, null, FsResponseDto(totalAmount, fs))
     }
 
-    override fun updateFs(cpId: String,
-                          token: String,
-                          owner: String,
-                          fsDto: FsDto): ResponseDto<*> {
-        val entity = fsDao.getByCpIdAndToken(cpId, UUID.fromString(token))
-                ?: throw ErrorException(ErrorType.FS_NOT_FOUND)
-        if (entity.owner != owner) throw ErrorException(ErrorType.INVALID_OWNER)
-        val fs = toObject(FsDto::class.java, entity.jsonData)
-        fs.apply {
-            tender = fsDto.tender
-            planning = fsDto.planning
-        }
-        entity.jsonData = toJson(fs)
-        fsDao.save(entity)
-        val totalAmount = fsDao.getTotalAmountByCpId(cpId) ?: BigDecimal.ZERO
-        return ResponseDto(true, null, FsResponseDto(totalAmount, fs))
-    }
+//    override fun updateFs(cpId: String,
+//                          token: String,
+//                          owner: String,
+//                          fsDto: FsDto): ResponseDto<*> {
+//        val entity = fsDao.getByCpIdAndToken(cpId, UUID.fromString(token))
+//                ?: throw ErrorException(ErrorType.FS_NOT_FOUND)
+//        if (entity.owner != owner) throw ErrorException(ErrorType.INVALID_OWNER)
+//        val fs = toObject(FsDto::class.java, entity.jsonData)
+//        fs.apply {
+//            tender = fsDto.tender
+//            planning = fsDto.planning
+//        }
+//        entity.jsonData = toJson(fs)
+//        fsDao.save(entity)
+//        val totalAmount = fsDao.getTotalAmountByCpId(cpId) ?: BigDecimal.ZERO
+//        return ResponseDto(true, null, FsResponseDto(totalAmount, fs))
+//    }
 
     override fun checkFs(dto: CheckRequestDto): ResponseDto<*> {
         val budgetBreakdowns = dto.budgetBreakdown

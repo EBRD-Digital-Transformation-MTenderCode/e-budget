@@ -64,16 +64,16 @@ class EiServiceTest {
         Assertions.assertEquals(responseExpected, responseSerialised)
     }
 
-    @Test
-    @DisplayName("updateEi")
-    fun updateEi() {
-        whenever(eiDao.getByCpId(CPID)).thenReturn(eiEntity)
-        val request = toObject(EiDto::class.java, getJsonFromFile(EI_UPDATE_JSON_REQUEST))
-        val response = service.updateEi(OWNER, CPID, TOKEN, request)
-        val responseExpected = getJsonFromFile(EI_JSON_RESPONSE)
-        val responseSerialised = toJson(response.data)
-        Assertions.assertEquals(responseExpected, responseSerialised)
-    }
+//    @Test
+//    @DisplayName("updateEi")
+//    fun updateEi() {
+//        whenever(eiDao.getByCpId(CPID)).thenReturn(eiEntity)
+//        val request = toObject(EiDto::class.java, getJsonFromFile(EI_UPDATE_JSON_REQUEST))
+//        val response = service.updateEi(OWNER, CPID, TOKEN, request)
+//        val responseExpected = getJsonFromFile(EI_JSON_RESPONSE)
+//        val responseSerialised = toJson(response.data)
+//        Assertions.assertEquals(responseExpected, responseSerialised)
+//    }
 
     @Test
     @DisplayName("getEi")

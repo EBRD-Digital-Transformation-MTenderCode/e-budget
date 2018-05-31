@@ -23,10 +23,10 @@ interface EiService {
                  dateTime: LocalDateTime,
                  ei: EiDto): ResponseDto<*>
 
-    fun updateEi(owner: String,
-                 cpId: String,
-                 token: String,
-                 eiDto: EiDto): ResponseDto<*>
+//    fun updateEi(owner: String,
+//                 cpId: String,
+//                 token: String,
+//                 eiDto: EiDto): ResponseDto<*>
 
     fun getEi(cpId: String): EiDto
 }
@@ -56,23 +56,23 @@ class EiServiceImpl(private val ocdsProperties: OCDSProperties,
         return ResponseDto(true, null, ei)
     }
 
-    override fun updateEi(owner: String,
-                          cpId: String,
-                          token: String,
-                          eiDto: EiDto): ResponseDto<*> {
-        val entity = eiDao.getByCpId(cpId) ?: throw ErrorException(ErrorType.EI_NOT_FOUND)
-        if (entity.token != UUID.fromString(token)) throw ErrorException(ErrorType.INVALID_TOKEN)
-        if (entity.owner != owner) throw ErrorException(ErrorType.INVALID_OWNER)
-        val ei = toObject(EiDto::class.java, entity.jsonData)
-        ei.apply {
-            planning = eiDto.planning
-            tender = eiDto.tender
-        }
-        entity.jsonData = toJson(ei)
-        eiDao.save(entity)
-        ei.token = entity.token.toString()
-        return ResponseDto(true, null, ei)
-    }
+//    override fun updateEi(owner: String,
+//                          cpId: String,
+//                          token: String,
+//                          eiDto: EiDto): ResponseDto<*> {
+//        val entity = eiDao.getByCpId(cpId) ?: throw ErrorException(ErrorType.EI_NOT_FOUND)
+//        if (entity.token != UUID.fromString(token)) throw ErrorException(ErrorType.INVALID_TOKEN)
+//        if (entity.owner != owner) throw ErrorException(ErrorType.INVALID_OWNER)
+//        val ei = toObject(EiDto::class.java, entity.jsonData)
+//        ei.apply {
+//            planning = eiDto.planning
+//            tender = eiDto.tender
+//        }
+//        entity.jsonData = toJson(ei)
+//        eiDao.save(entity)
+//        ei.token = entity.token.toString()
+//        return ResponseDto(true, null, ei)
+//    }
 
     override fun getEi(cpId: String): EiDto {
         val entity = eiDao.getByCpId(cpId) ?: throw ErrorException(ErrorType.EI_NOT_FOUND)

@@ -23,9 +23,10 @@ data class Details(
         @JsonProperty("mainSectoralActivity")
         val mainSectoralActivity: MainSectoralActivity,
 
+        @NotNull
         @JsonProperty("isACentralPurchasingBody")
         @get:JsonProperty("isACentralPurchasingBody")
-        val isACentralPurchasingBody: Boolean?,
+        val isACentralPurchasingBody: Boolean,
 
         @JsonProperty("NUTSCode")
         val nutsCode: String?,
