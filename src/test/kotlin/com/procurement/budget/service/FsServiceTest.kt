@@ -99,18 +99,6 @@ class FsServiceTest {
         Assertions.assertEquals(responseExpected, responseSerialised)
     }
 
-//    @Test
-//    @DisplayName("updateFs")
-//    fun updateFs() {
-//        whenever(fsDao.getByCpIdAndToken(CPID, UUID.fromString(TOKEN))).thenReturn(fsEntity)
-//        whenever(fsDao.getTotalAmountByCpId(CPID)).thenReturn(AMOUNT.toBigDecimal())
-//        val request = toObject(FsDto::class.java, getJsonFromFile(FS_JSON))
-//        val response = fsService.updateFs(CPID, TOKEN, OWNER, request)
-//        val responseExpected = getJsonFromFile(FS_JSON_RESPONSE)
-//        val responseSerialised = toJson(response.data)
-//        Assertions.assertEquals(responseExpected, responseSerialised)
-//    }
-
     @Test
     @DisplayName("checkFs")
     fun checkFs() {

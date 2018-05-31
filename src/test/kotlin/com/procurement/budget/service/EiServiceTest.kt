@@ -24,7 +24,6 @@ class EiServiceTest {
         private val COUNTRY = "TEST"
         private const val EI_JSON = "/json/ei.json"
         private const val EI_CREATE_JSON_REQUEST = "/json/ei_request.json"
-        private const val EI_UPDATE_JSON_REQUEST = "/json/ei_update_request.json"
         private const val EI_JSON_RESPONSE = "/json/ei_response.json"
         private val createdDate = localNowUTC()
     }
@@ -63,17 +62,6 @@ class EiServiceTest {
         val responseSerialised = toJson(response.data)
         Assertions.assertEquals(responseExpected, responseSerialised)
     }
-
-//    @Test
-//    @DisplayName("updateEi")
-//    fun updateEi() {
-//        whenever(eiDao.getByCpId(CPID)).thenReturn(eiEntity)
-//        val request = toObject(EiDto::class.java, getJsonFromFile(EI_UPDATE_JSON_REQUEST))
-//        val response = service.updateEi(OWNER, CPID, TOKEN, request)
-//        val responseExpected = getJsonFromFile(EI_JSON_RESPONSE)
-//        val responseSerialised = toJson(response.data)
-//        Assertions.assertEquals(responseExpected, responseSerialised)
-//    }
 
     @Test
     @DisplayName("getEi")

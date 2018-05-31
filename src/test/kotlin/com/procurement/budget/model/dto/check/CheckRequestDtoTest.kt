@@ -9,7 +9,7 @@ class CheckRequestDtoTest {
     @Test
     @DisplayName("checkRequestDtoRequired")
     fun checkRequestDtoWithoutReq() {
-        testDeserialize(CheckRequestDto::class.java, "/json/check_fs_request_only_req.json")
+        testDeserialize(CheckRequestDto::class.java, "/json/check_fs_request.json")
     }
 
     @Test
