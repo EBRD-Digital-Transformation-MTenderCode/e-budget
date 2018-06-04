@@ -2,6 +2,7 @@ package com.procurement.budget.service
 
 import com.procurement.budget.config.OCDSProperties
 import com.procurement.budget.dao.EiDao
+import com.procurement.budget.dao.FsDao
 import com.procurement.budget.exception.ErrorException
 import com.procurement.budget.exception.ErrorType
 import com.procurement.budget.model.bpe.ResponseDto
@@ -23,10 +24,10 @@ interface EiService {
                  dateTime: LocalDateTime,
                  ei: EiDto): ResponseDto<*>
 
-//    fun updateEi(owner: String,
-//                 cpId: String,
-//                 token: String,
-//                 eiDto: EiDto): ResponseDto<*>
+    fun updateEi(owner: String,
+                 cpId: String,
+                 token: String,
+                 eiDto: EiDto): ResponseDto<*>
 
     fun getEi(cpId: String): EiDto
 }
@@ -34,6 +35,7 @@ interface EiService {
 @Service
 class EiServiceImpl(private val ocdsProperties: OCDSProperties,
                     private val eiDao: EiDao,
+                    private val fsDao: FsDao,
                     private val generationService: GenerationService) : EiService {
 
     override fun createEi(owner: String,
@@ -56,28 +58,45 @@ class EiServiceImpl(private val ocdsProperties: OCDSProperties,
         return ResponseDto(true, null, ei)
     }
 
-//    override fun updateEi(owner: String,
-//                          cpId: String,
-//                          token: String,
-//                          eiDto: EiDto): ResponseDto<*> {
-//        val entity = eiDao.getByCpId(cpId) ?: throw ErrorException(ErrorType.EI_NOT_FOUND)
-//        if (entity.token != UUID.fromString(token)) throw ErrorException(ErrorType.INVALID_TOKEN)
-//        if (entity.owner != owner) throw ErrorException(ErrorType.INVALID_OWNER)
-//        val ei = toObject(EiDto::class.java, entity.jsonData)
-//        ei.apply {
-//            planning = eiDto.planning
-//            tender = eiDto.tender
-//        }
-//        entity.jsonData = toJson(ei)
-//        eiDao.save(entity)
-//        ei.token = entity.token.toString()
-//        return ResponseDto(true, null, ei)
-//    }
+    override fun updateEi(owner: String,
+                          cpId: String,
+                          token: String,
+                          eiDto: EiDto): ResponseDto<*> {
+        validateForUpdate(eiDto)
+        val entity = eiDao.getByCpId(cpId) ?: throw ErrorException(ErrorType.EI_NOT_FOUND)
+        if (entity.token != UUID.fromString(token)) throw ErrorException(ErrorType.INVALID_TOKEN)
+        if (entity.owner != owner) throw ErrorException(ErrorType.INVALID_OWNER)
+        val ei = toObject(EiDto::class.java, entity.jsonData)
+        val fsExist = fsDao.getCountByCpId(cpId) > 0
+        eiDto.apply {
+            ocid = ei.ocid
+            tender.id = ei.tender.id
+            tender.classification.scheme = ei.tender.classification.scheme
+            buyer = ei.buyer
+            if (fsExist) {
+                planning.budget.amount.currency = ei.planning.budget.amount.currency
+                checkCPVAndSetBudgetId(ei, eiDto)
+            }
+        }
+        entity.jsonData = toJson(eiDto)
+        eiDao.save(entity)
+        ei.token = entity.token.toString()
+        return ResponseDto(true, null, ei)
+    }
 
     override fun getEi(cpId: String): EiDto {
         val entity = eiDao.getByCpId(cpId) ?: throw ErrorException(ErrorType.EI_NOT_FOUND)
         return toObject(EiDto::class.java, entity.jsonData)
     }
+
+    private fun checkCPVAndSetBudgetId(ei: EiDto, dto: EiDto) {
+        val eiCPV = ei.tender.classification.id
+        val dtoCPV = dto.tender.classification.id
+        if (eiCPV.substring(0, 3).toUpperCase() != dtoCPV.substring(0, 3).toUpperCase())
+            throw ErrorException(ErrorType.INVALID_CPV)
+        if (eiCPV != dtoCPV) ei.planning.budget.id = generationService.getNowUtc().toString()
+    }
+
 
     private fun getCpId(country: String): String {
         return ocdsProperties.prefix + SEPARATOR + country + SEPARATOR + generationService.getNowUtc()
@@ -86,6 +105,11 @@ class EiServiceImpl(private val ocdsProperties: OCDSProperties,
     private fun validatePeriod(ei: EiDto) {
         if (!ei.planning.budget.period.startDate.isBefore(ei.planning.budget.period.endDate))
             throw ErrorException(ErrorType.INVALID_PERIOD)
+    }
+
+    private fun validateForUpdate(ei: EiDto) {
+        if (ei.planning.budget.id == null) throw ErrorException(ErrorType.INVALID_BUDGET_ID)
+        if (ei.buyer.id == null) throw ErrorException(ErrorType.INVALID_BUYER_ID)
     }
 
     private fun getEntity(ei: EiDto, owner: String, dateTime: LocalDateTime): EiEntity {

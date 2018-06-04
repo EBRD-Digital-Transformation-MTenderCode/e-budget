@@ -29,5 +29,5 @@ data class EiDto(
         @Valid
         @NotNull
         @JsonProperty("buyer")
-        val buyer: EiOrganizationReferenceDto
+        var buyer: EiOrganizationReferenceDto
 )

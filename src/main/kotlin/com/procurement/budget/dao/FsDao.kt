@@ -19,6 +19,8 @@ interface FsDao {
     fun getAllByCpIds(cpIds: Set<String>): List<FsEntity>
 
     fun getTotalAmountByCpId(cpId: String): BigDecimal?
+
+    fun getCountByCpId(cpId: String): Long
 }
 
 @Service
@@ -104,6 +106,14 @@ class FsDaoImpl(private val session: Session) : FsDao {
                 .where(eq(CP_ID, cpId))
         val row = session.execute(query).one()
         return row?.getDecimal(AMOUNT)
+    }
+
+    override fun getCountByCpId(cpId: String): Long {
+        val query = select().countAll()
+                .from(FS_TABLE)
+                .where(eq(CP_ID, cpId))
+        val row = session.execute(query).one()
+        return row?.getLong(1) ?: 0L
     }
 
     companion object {

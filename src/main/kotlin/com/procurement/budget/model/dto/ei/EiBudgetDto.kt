@@ -8,7 +8,6 @@ import javax.validation.Valid
 import javax.validation.constraints.NotNull
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder("id", "period", "amount")
 data class EiBudgetDto(
 
         @JsonProperty("id")

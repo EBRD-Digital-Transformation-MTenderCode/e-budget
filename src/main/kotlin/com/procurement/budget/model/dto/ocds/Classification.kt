@@ -13,7 +13,7 @@ data class Classification(
 
         @NotNull
         @JsonProperty("scheme")
-        val scheme: Scheme,
+        var scheme: Scheme,
 
         @NotNull
         @JsonProperty("description")

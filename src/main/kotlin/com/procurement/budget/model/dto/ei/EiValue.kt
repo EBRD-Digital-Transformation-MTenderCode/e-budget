@@ -11,11 +11,7 @@ import javax.validation.constraints.NotNull
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class EiValue(
 
-        @JsonProperty("amount")
-        @JsonDeserialize(using = MoneyDeserializer::class)
-        val amount: BigDecimal?,
-
         @NotNull
         @JsonProperty("currency")
-        val currency: Currency
+        var currency: Currency
 )
