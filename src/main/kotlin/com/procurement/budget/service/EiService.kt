@@ -61,27 +61,27 @@ class EiServiceImpl(private val ocdsProperties: OCDSProperties,
     override fun updateEi(owner: String,
                           cpId: String,
                           token: String,
-                          eiDto: EiDto): ResponseDto<*> {
-        validateForUpdate(eiDto)
+                          updatableEi: EiDto): ResponseDto<*> {
+        validateForUpdate(updatableEi)
         val entity = eiDao.getByCpId(cpId) ?: throw ErrorException(ErrorType.EI_NOT_FOUND)
         if (entity.token != UUID.fromString(token)) throw ErrorException(ErrorType.INVALID_TOKEN)
         if (entity.owner != owner) throw ErrorException(ErrorType.INVALID_OWNER)
         val ei = toObject(EiDto::class.java, entity.jsonData)
         val fsExist = fsDao.getCountByCpId(cpId) > 0
-        eiDto.apply {
+        updatableEi.apply {
             ocid = ei.ocid
             tender.id = ei.tender.id
             tender.classification.scheme = ei.tender.classification.scheme
             buyer = ei.buyer
             if (fsExist) {
                 planning.budget.amount.currency = ei.planning.budget.amount.currency
-                checkCPVAndSetBudgetId(ei, eiDto)
+                checkCPVAndSetBudgetId(ei, updatableEi)
             }
         }
-        entity.jsonData = toJson(eiDto)
+        entity.jsonData = toJson(updatableEi)
         eiDao.save(entity)
-        ei.token = entity.token.toString()
-        return ResponseDto(true, null, ei)
+        updatableEi.token = entity.token.toString()
+        return ResponseDto(true, null, updatableEi)
     }
 
     override fun getEi(cpId: String): EiDto {
