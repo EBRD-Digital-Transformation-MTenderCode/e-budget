@@ -3,7 +3,6 @@ package com.procurement.budget.model.dto.fs
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonPropertyOrder
-import com.procurement.budget.model.dto.ocds.Fs
 import java.math.BigDecimal
 import javax.validation.Valid
 
@@ -17,5 +16,5 @@ data class FsResponseDto(
 
         @Valid
         @JsonProperty("fs")
-        val fs: Fs
+        val fs: FsDto
 )
