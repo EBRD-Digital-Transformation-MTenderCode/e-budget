@@ -6,8 +6,8 @@ import com.procurement.budget.config.OCDSProperties
 import com.procurement.budget.dao.FsDao
 import com.procurement.budget.model.dto.check.CheckRequestDto
 import com.procurement.budget.model.dto.ei.EiDto
-import com.procurement.budget.model.dto.fs.FsDto
-import com.procurement.budget.model.dto.fs.FsRequestDto
+import com.procurement.budget.model.dto.ocds.Fs
+import com.procurement.budget.model.dto.fs.create.FsCreateDto
 import com.procurement.budget.model.entity.FsEntity
 import com.procurement.budget.utils.*
 import org.junit.jupiter.api.Assertions
@@ -44,7 +44,7 @@ class FsServiceTest {
     private lateinit var generationService: GenerationServiceImpl
     private lateinit var fsEntity: FsEntity
     private lateinit var eiDto: EiDto
-    private lateinit var fsDto: FsDto
+    private lateinit var fsDto: Fs
     private lateinit var fsEntities: List<FsEntity>
     private lateinit var cpIds: Set<String>
 
@@ -56,7 +56,7 @@ class FsServiceTest {
         generationService = mock()
         fsService = FsServiceImpl(fsDao, eiService, generationService)
         eiDto = toObject(EiDto::class.java, getJsonFromFile(EI_JSON_CREATE))
-        fsDto = toObject(FsDto::class.java, getJsonFromFile(FS_JSON))
+        fsDto = toObject(Fs::class.java, getJsonFromFile(FS_JSON))
         fsEntity = FsEntity(
                 cpId = CPID,
                 ocId = OCID,
@@ -78,7 +78,7 @@ class FsServiceTest {
         whenever(fsDao.getTotalAmountByCpId(CPID)).thenReturn(AMOUNT.toBigDecimal())
         whenever(generationService.generateRandomUUID()).thenReturn(UUID.fromString(TOKEN))
         whenever(generationService.getNowUtc()).thenReturn(OCID_TIME_STAMP)
-        val request = toObject(FsRequestDto::class.java, getJsonFromFile(FS_JSON_REQUEST_WITHOUT_BUYER))
+        val request = toObject(FsCreateDto::class.java, getJsonFromFile(FS_JSON_REQUEST_WITHOUT_BUYER))
         val response = fsService.createFs(CPID, OWNER, DATE, request)
         val responseExpected = getJsonFromFile(FS_JSON_RESPONSE_WITHOUT_BUYER)
         val responseSerialised = toJson(response.data)
@@ -92,7 +92,7 @@ class FsServiceTest {
         whenever(fsDao.getTotalAmountByCpId(CPID)).thenReturn(AMOUNT.toBigDecimal())
         whenever(generationService.generateRandomUUID()).thenReturn(UUID.fromString(TOKEN))
         whenever(generationService.getNowUtc()).thenReturn(OCID_TIME_STAMP)
-        val request = toObject(FsRequestDto::class.java, getJsonFromFile(FS_JSON_REQUEST_WITH_BUYER))
+        val request = toObject(FsCreateDto::class.java, getJsonFromFile(FS_JSON_REQUEST_WITH_BUYER))
         val response = fsService.createFs(CPID, OWNER, DATE, request)
         val responseExpected = getJsonFromFile(FS_JSON_RESPONSE_WITH_BUYER)
         val responseSerialised = toJson(response.data)

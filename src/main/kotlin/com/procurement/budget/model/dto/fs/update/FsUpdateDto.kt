@@ -1,22 +1,23 @@
-package com.procurement.budget.model.dto.fs
+package com.procurement.budget.model.dto.fs.update
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.procurement.budget.model.dto.fs.FsOrganizationReferenceDto
 import javax.validation.Valid
 import javax.validation.constraints.NotNull
 
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
-data class FsRequestDto(
+data class FsUpdateDto(
 
         @Valid
         @NotNull
         @JsonProperty("planning")
-        val planning: FsPlanningDto,
+        val planning: FsPlanningUpdateDto,
 
         @Valid
         @NotNull
         @JsonProperty("tender")
-        val tender: FsTenderDto,
+        val tender: FsTenderUpdateDto,
 
         @Valid
         @JsonProperty("buyer")
