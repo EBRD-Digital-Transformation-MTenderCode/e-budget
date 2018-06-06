@@ -9,12 +9,12 @@ class FsRequestDtoTest {
     @Test
     @DisplayName("fsRequestDtoRequired")
     fun fsRequestDtoRequired() {
-        compare(FsRequestDto::class.java, "/json/fs_request_without_buyer.json")
+        compare(FsRequestCreateDto::class.java, "/json/fs_request_without_buyer.json")
     }
 
     @Test
     @DisplayName("fsRequestDtoFull")
     fun fsRequestDtoFull() {
-        compare(FsRequestDto::class.java, "/json/fs_request_with_buyer.json")
+        compare(FsRequestCreateDto::class.java, "/json/fs_request_with_buyer.json")
     }
 }
