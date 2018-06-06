@@ -8,13 +8,13 @@ import javax.validation.Valid
 import javax.validation.constraints.NotNull
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-data class FsBudgetDto(
+data class FsRequestUpdateBudgetDto(
 
         @JsonProperty("id")
-        var id: String?,
+        val id: String?,
 
         @JsonProperty("description")
-        var description: String?,
+        val description: String?,
 
         @Valid
         @NotNull
@@ -28,21 +28,23 @@ data class FsBudgetDto(
 
         @Valid
         @JsonProperty("europeanUnionFunding")
-        var europeanUnionFunding: EuropeanUnionFunding?,
+        val europeanUnionFunding: EuropeanUnionFunding?,
 
         @NotNull
         @JsonProperty("isEuropeanUnionFunded")
         @get:JsonProperty("isEuropeanUnionFunded")
-        var isEuropeanUnionFunded: Boolean,
+        val isEuropeanUnionFunded: Boolean,
 
+        @NotNull
         @JsonProperty("verified")
         @get:JsonProperty("verified")
-        var verified: Boolean?,
+        var verified: Boolean,
 
+        @NotNull
         @Valid
         @JsonProperty("sourceEntity")
-        var sourceEntity: FsOrganizationReferenceDto?,
+        var sourceEntity: FsRequestUpdateBudgetOrganizationReferenceDto,
 
         @JsonProperty("verificationDetails")
-        var verificationDetails: String?
+        val verificationDetails: String?
 )

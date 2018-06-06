@@ -4,6 +4,7 @@ import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
 import com.procurement.budget.config.OCDSProperties
 import com.procurement.budget.dao.EiDao
+import com.procurement.budget.dao.FsDao
 import com.procurement.budget.model.dto.ei.EiDto
 import com.procurement.budget.model.entity.EiEntity
 import com.procurement.budget.utils.*
@@ -30,6 +31,7 @@ class EiServiceTest {
 
     private lateinit var properties: OCDSProperties
     private lateinit var eiDao: EiDao
+    private lateinit var fsDao: FsDao
     private lateinit var service: EiServiceImpl
     private lateinit var generationService: GenerationServiceImpl
     private lateinit var eiEntity: EiEntity
@@ -39,8 +41,9 @@ class EiServiceTest {
     fun init() {
         properties = mock()
         eiDao = mock()
+        fsDao = mock()
         generationService = mock()
-        service = EiServiceImpl(properties, eiDao, generationService)
+        service = EiServiceImpl(properties, eiDao,fsDao, generationService)
         ei = toObject(EiDto::class.java, getJsonFromFile(EI_JSON))
         eiEntity = EiEntity(
                 cpId = CPID,

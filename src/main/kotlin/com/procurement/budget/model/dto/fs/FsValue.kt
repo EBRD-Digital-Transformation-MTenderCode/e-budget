@@ -14,7 +14,7 @@ data class FsValue(
         @NotNull
         @JsonProperty("amount")
         @JsonDeserialize(using = MoneyDeserializer::class)
-        val amount: BigDecimal,
+        var amount: BigDecimal,
 
         @NotNull
         @JsonProperty("currency")

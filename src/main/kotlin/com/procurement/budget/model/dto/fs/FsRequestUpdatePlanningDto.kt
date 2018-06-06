@@ -6,13 +6,13 @@ import javax.validation.Valid
 import javax.validation.constraints.NotNull
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-data class FsPlanningDto(
+data class FsRequestUpdatePlanningDto(
 
         @Valid
         @NotNull
         @JsonProperty("budget")
-        val budget: FsBudgetDto,
+        val budget: FsRequestUpdateBudgetDto,
 
         @JsonProperty("rationale")
-        var rationale: String?
+        val rationale: String?
 )

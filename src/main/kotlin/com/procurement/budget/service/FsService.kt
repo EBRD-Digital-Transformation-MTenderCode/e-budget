@@ -27,12 +27,12 @@ interface FsService {
     fun createFs(cpId: String,
                  owner: String,
                  dateTime: LocalDateTime,
-                 fsDto: FsRequestDto): ResponseDto<*>
+                 fsDto: FsRequestCreateDto): ResponseDto<*>
 
-//    fun updateFs(cpId: String,
-//                 token: String,
-//                 owner: String,
-//                 fsDto: FsDto): ResponseDto<*>
+    fun updateFs(cpId: String,
+                 token: String,
+                 owner: String,
+                 fsDto: FsRequestUpdateDto): ResponseDto<*>
 
     fun checkFs(dto: CheckRequestDto): ResponseDto<*>
 }
@@ -45,7 +45,7 @@ class FsServiceImpl(private val fsDao: FsDao,
     override fun createFs(cpId: String,
                           owner: String,
                           dateTime: LocalDateTime,
-                          fsDto: FsRequestDto): ResponseDto<*> {
+                          fsDto: FsRequestCreateDto): ResponseDto<*> {
         val ei = eiService.getEi(cpId)
         checkCurrency(ei, fsDto)
         checkPeriod(ei, fsDto)
@@ -92,23 +92,22 @@ class FsServiceImpl(private val fsDao: FsDao,
         return ResponseDto(true, null, FsResponseDto(totalAmount, fs))
     }
 
-//    override fun updateFs(cpId: String,
-//                          token: String,
-//                          owner: String,
-//                          fsDto: FsDto): ResponseDto<*> {
-//        val entity = fsDao.getByCpIdAndToken(cpId, UUID.fromString(token))
-//                ?: throw ErrorException(ErrorType.FS_NOT_FOUND)
-//        if (entity.owner != owner) throw ErrorException(ErrorType.INVALID_OWNER)
-//        val fs = toObject(FsDto::class.java, entity.jsonData)
-//        fs.apply {
-//            tender = fsDto.tender
-//            planning = fsDto.planning
-//        }
-//        entity.jsonData = toJson(fs)
-//        fsDao.save(entity)
-//        val totalAmount = fsDao.getTotalAmountByCpId(cpId) ?: BigDecimal.ZERO
-//        return ResponseDto(true, null, FsResponseDto(totalAmount, fs))
-//    }
+    override fun updateFs(cpId: String,
+                          token: String,
+                          owner: String,
+                          fsUpdateDto: FsRequestUpdateDto): ResponseDto<*> {
+        val entity = fsDao.getByCpIdAndToken(cpId, UUID.fromString(token))
+                ?: throw ErrorException(ErrorType.FS_NOT_FOUND)
+        if (entity.owner != owner) throw ErrorException(ErrorType.INVALID_OWNER)
+        val fs = toObject(FsDto::class.java, entity.jsonData)
+
+        validateAndUpdateFS(fs, fsUpdateDto)
+
+        entity.jsonData = toJson(fs)
+        fsDao.save(entity)
+        val totalAmount = fsDao.getTotalAmountByCpId(cpId) ?: BigDecimal.ZERO
+        return ResponseDto(true, null, FsResponseDto(totalAmount, fs))
+    }
 
     override fun checkFs(dto: CheckRequestDto): ResponseDto<*> {
         val budgetBreakdowns = dto.budgetBreakdown
@@ -154,12 +153,12 @@ class FsServiceImpl(private val fsDao: FsDao,
         if (budgetBreakdown.asSequence().map { it.amount.currency }.toSet().size > 1) throw ErrorException(ErrorType.INVALID_CURRENCY)
     }
 
-    private fun validatePeriod(fs: FsRequestDto) {
+    private fun validatePeriod(fs: FsRequestCreateDto) {
         if (!fs.planning.budget.period.startDate.isBefore(fs.planning.budget.period.endDate))
             throw ErrorException(ErrorType.INVALID_PERIOD)
     }
 
-    private fun checkPeriod(ei: EiDto, fs: FsRequestDto) {
+    private fun checkPeriod(ei: EiDto, fs: FsRequestCreateDto) {
         val (eiStartDate, eiEndDate) = ei.planning.budget.period
         val (fsStartDate, fsEndDate) = fs.planning.budget.period
         val fsPeriodValid = (fsStartDate.isAfter(eiStartDate) || fsStartDate.isEqual(eiStartDate))
@@ -167,7 +166,7 @@ class FsServiceImpl(private val fsDao: FsDao,
         if (!fsPeriodValid) throw ErrorException(ErrorType.INVALID_PERIOD)
     }
 
-    private fun checkCurrency(ei: EiDto, fs: FsRequestDto) {
+    private fun checkCurrency(ei: EiDto, fs: FsRequestCreateDto) {
         val eiCurrency = ei.planning.budget.amount.currency
         val fsCurrency = fs.planning.budget.amount.currency
         if (eiCurrency != fsCurrency) throw ErrorException(ErrorType.INVALID_CURRENCY)
@@ -266,4 +265,39 @@ class FsServiceImpl(private val fsDao: FsDao,
         private val SEPARATOR = "-"
         private val FS_SEPARATOR = "-FS-"
     }
+
+    private fun validateAndUpdateFS(fs: FsDto, fsUpdateDto: FsRequestUpdateDto) {
+        val tenderStatus = fs.tender.status
+
+        if (tenderStatus != TenderStatus.ACTIVE || tenderStatus != TenderStatus.PLANNING) throw ErrorException(ErrorType.INVALID_STATUS)//current status
+
+        if (tenderStatus == TenderStatus.ACTIVE) {
+            updateFsWhenStatusActive(fs, fsUpdateDto)
+        } else if (tenderStatus == TenderStatus.PLANNING) {
+            updateFsWhenStatusPlanning(fs, fsUpdateDto)
+        }
+
+    }
+
+    private fun updateFsWhenStatusPlanning(fs: FsDto, fsUpdateDto: FsRequestUpdateDto) {
+        fs.planning.apply {
+            rationale = fsUpdateDto.planning.rationale
+            budget.apply {
+                description = fsUpdateDto.planning.budget.description
+                amount.amount = fsUpdateDto.planning.budget.amount.amount
+                europeanUnionFunding = fsUpdateDto.planning.budget.europeanUnionFunding
+                isEuropeanUnionFunded = fsUpdateDto.planning.budget.isEuropeanUnionFunded
+                verified = fsUpdateDto.planning.budget.verified
+                verificationDetails = fsUpdateDto.planning.budget.verificationDetails
+            }
+        }
+
+    }
+
+    private fun updateFsWhenStatusActive(fs: FsDto, fsUpdateDto: FsRequestUpdateDto) {
+        updateFsWhenStatusPlanning(fs, fsUpdateDto)
+        fs.apply { planning.budget.id = fsUpdateDto.planning.budget.id }
+    }
+
+
 }

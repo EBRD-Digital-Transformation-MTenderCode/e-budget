@@ -2,8 +2,8 @@ package com.procurement.budget.controller
 
 import com.procurement.budget.model.bpe.ResponseDto
 import com.procurement.budget.model.dto.check.CheckRequestDto
-import com.procurement.budget.model.dto.fs.FsDto
-import com.procurement.budget.model.dto.fs.FsRequestDto
+import com.procurement.budget.model.dto.fs.FsRequestCreateDto
+import com.procurement.budget.model.dto.fs.FsRequestUpdateDto
 import com.procurement.budget.service.FsService
 import org.springframework.format.annotation.DateTimeFormat
 import org.springframework.http.HttpStatus
@@ -23,17 +23,17 @@ class FsController(private val fsService: FsService) {
                  @RequestParam("owner") owner: String,
                  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
                  @RequestParam("date") dateTime: LocalDateTime,
-                 @Valid @RequestBody data: FsRequestDto): ResponseEntity<ResponseDto<*>> {
+                 @Valid @RequestBody data: FsRequestCreateDto): ResponseEntity<ResponseDto<*>> {
         return ResponseEntity(fsService.createFs(cpId, owner, dateTime, data), HttpStatus.CREATED)
     }
 
-//    @PutMapping
-//    fun updateFs(@RequestParam("identifier") cpId: String,
-//                 @RequestParam("token") token: String,
-//                 @RequestParam("owner") owner: String,
-//                 @Valid @RequestBody data: FsDto): ResponseEntity<ResponseDto<*>> {
-//        return ResponseEntity(fsService.updateFs(cpId, token, owner, data), HttpStatus.OK)
-//    }
+    @PutMapping
+    fun updateFs(@RequestParam("identifier") cpId: String,
+                @RequestParam("token") token: String,
+                @RequestParam("owner") owner: String,
+                @Valid @RequestBody data: FsRequestUpdateDto): ResponseEntity<ResponseDto<*>> {
+        return ResponseEntity(fsService.updateFs(cpId, token, owner, data), HttpStatus.OK)
+    }
 
     @PostMapping("/check")
     fun checkFs(@Valid @RequestBody data: CheckRequestDto): ResponseEntity<ResponseDto<*>> {
