@@ -25,11 +25,11 @@ class EiController(private val eiService: EiService) {
         return ResponseEntity(eiService.createEi(owner, country, dateTime, data), HttpStatus.CREATED)
     }
 
-//    @PutMapping
-//    fun updateEi(@RequestParam("identifier") cpId: String,
-//                 @RequestParam("owner") owner: String,
-//                 @RequestParam("token") token: String,
-//                 @Valid @RequestBody data: EiDto): ResponseEntity<ResponseDto<*>> {
-//        return ResponseEntity(eiService.updateEi(owner, cpId, token, data), HttpStatus.OK)
-//    }
+    @PutMapping
+    fun updateEi(@RequestParam("identifier") cpId: String,
+                 @RequestParam("owner") owner: String,
+                 @RequestParam("token") token: String,
+                 @Valid @RequestBody data: EiDto): ResponseEntity<ResponseDto<*>> {
+        return ResponseEntity(eiService.updateEi(owner, cpId, token, data), HttpStatus.OK)
+    }
 }
