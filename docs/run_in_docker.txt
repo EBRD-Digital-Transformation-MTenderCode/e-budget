@@ -15,10 +15,10 @@ docker network create \
 #****************************************#
 
 mvn clean package docker:build
-docker login https://docker-registry.eprocurement.systems
+docker login https://dev.docker-registry.eprocurement.systems
 Username: docker
-Password: 3FFcKYtMxzmwFMa
-docker push docker-registry.eprocurement.systems/e-budget:17.12.1
+Password: EGrH4rOVQrcwXCtM
+docker push dev.docker-registry.eprocurement.systems/e-budget:17.12.1
 
 docker run -d --name=budget-1 \
   --env __PROP_spring_cloud_config_uri=http://config-server-1:8700 \
@@ -27,4 +27,4 @@ docker run -d --name=budget-1 \
   --publish 9051:8080 \
   --network ocds-network \
   --dns 10.0.10.115 \
-  docker-registry.eprocurement.systems/e-budget:17.12.1
+  dev.docker-registry.eprocurement.systems/e-budget:18.06.1

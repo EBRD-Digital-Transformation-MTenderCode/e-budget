@@ -27,7 +27,7 @@ interface EiService {
     fun updateEi(owner: String,
                  cpId: String,
                  token: String,
-                 eiDto: EiDto): ResponseDto<*>
+                 updatableEi: EiDto): ResponseDto<*>
 
     fun getEi(cpId: String): EiDto
 }
