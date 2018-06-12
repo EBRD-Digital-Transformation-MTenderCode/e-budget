@@ -2,6 +2,7 @@ package com.procurement.budget.utils
 
 import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.DeserializationFeature
+import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.JsonNodeFactory
 import java.io.IOException
@@ -49,4 +50,9 @@ fun <T> toObject(clazz: Class<T>, json: String): T {
     } catch (e: IOException) {
         throw IllegalArgumentException(e)
     }
+}
+
+fun ff() {
+    val aaa = JsonNode()
+    aaa.asText()
 }
