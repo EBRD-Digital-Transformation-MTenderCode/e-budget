@@ -51,8 +51,3 @@ fun <T> toObject(clazz: Class<T>, json: String): T {
         throw IllegalArgumentException(e)
     }
 }
-
-fun ff() {
-    val aaa = JsonNode()
-    aaa.asText()
-}
