@@ -1,0 +1,61 @@
+{
+  "planning": {
+    "budget": {
+      "id": "Budget ID",
+      "description": "Budget Description",
+      "amount": {
+        "amount": 2000,
+        "currency": "MDL"
+      },
+      "period": {
+        "startDate": "2018-06-25T14:00:00Z",
+        "endDate": "2018-10-04T14:30:00Z"
+      },
+      "isEuropeanUnionFunded": true,
+      "europeanUnionFunding": {
+        "uri": "Project uri",
+        "projectName": "Project Name*",
+        "projectIdentifier": "Project Identifier*"
+      }
+    }
+  },
+  "tender": {
+    "procuringEntity": {
+      "name": "Official Name*",
+      "identifier": {
+        "id": "Identifier*",
+        "uri": "URI*",
+        "scheme": "Identification Scheme*",
+        "legalName": "Legal Name*"
+      },
+      "address": {
+        "region": "1",
+        "locality": "Locality*",
+        "postalCode": "Postal Code",
+        "countryName": "Republic of Moldova",
+        "streetAddress": "Street Address*"
+      },
+      "contactPoint": {
+        "url": "URL*",
+        "name": "Name*",
+        "email": "E-mail*",
+        "faxNumber": "Fax*",
+        "telephone": "Telephone*"
+      },
+      "additionalIdentifiers": [
+        {
+          "id": "2Additional identifier ID*",
+          "uri": "2Additional identifier URI*",
+          "scheme": "2Additional identifier scheme*",
+          "legalName": "2Additional identifier legal name*"
+        },
+        {
+          "id": "1Additional identifier ID*",
+          "uri": "1Additional identifier URI*",
+          "scheme": "1Additional identifier scheme*",
+          "legalName": "1Additional identifier legal name*"
+        }
+      ]
+    }
+  }
+}
