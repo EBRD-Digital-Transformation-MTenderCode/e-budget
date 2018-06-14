@@ -32,7 +32,7 @@ interface FsService {
     fun updateFs(cpId: String,
                  token: String,
                  owner: String,
-                 fsDto: FsRequestUpdateDto): ResponseDto<*>
+                 fsUpdateDto: FsRequestUpdateDto): ResponseDto<*>
 
     fun checkFs(dto: CheckRequestDto): ResponseDto<*>
 }
