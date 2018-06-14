@@ -11,8 +11,7 @@ import javax.validation.constraints.NotNull
 data class FsTenderDto(
 
         @JsonProperty("id")
-        @NotNull
-        val id: String,
+        val id: String?,
 
         @JsonProperty("status")
         val status: TenderStatus?,
