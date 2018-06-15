@@ -1,0 +1,77 @@
+{
+  "planning": {
+    "rationale": "",
+    "budget": {
+      "id": "",
+      "description": "",
+      "amount": {
+        "amount": 0.001,
+        "currency": "MDL"
+      },
+      "period": {
+        "startDate": "2018-06-25T14:00:00Z",
+        "endDate": "2018-10-04T14:30:00Z"
+      },
+      "isEuropeanUnionFunded": 1,
+      "europeanUnionFunding": {
+        "uri": "",
+        "projectName": 1212,
+        "projectIdentifier": true
+      }
+    }
+  },
+  "buyer": {
+    "name": "nameofbuyer",
+    "identifier": {
+      "id": "123654",
+      "scheme": "CPV",
+      "legalName": "987",
+      "uri": "uri"
+    },
+    "address": {
+      "streetAddress": "54",
+      "locality": "987",
+      "region": "987",
+      "countryName": "97"
+    },
+    "contactPoint": {
+      "name": "98987",
+      "email": "7",
+      "telephone": "444",
+      "url": "string"
+    }
+  },
+  "tender": {
+    "procuringEntity": {
+      "name": "nameofbuyer",
+      "identifier": {
+        "id": "123654",
+        "uri": "URI*",
+        "scheme": "CPV",
+        "legalName": "987"
+      },
+      "address": {
+        "region": "1",
+        "locality": "987",
+        "postalCode": "987",
+        "countryName": "97",
+        "streetAddress": "54"
+      },
+      "contactPoint": {
+        "url": "URL*",
+        "name": "98987",
+        "email": "7",
+        "faxNumber": "Fax*",
+        "telephone": "444"
+      },
+      "additionalIdentifiers": [
+        {
+          "id": "1Additional identifier ID*",
+          "uri": "1Additional identifier URI*",
+          "scheme": "1Additional identifier scheme*",
+          "legalName": "1Additional identifier legal name*"
+        }
+      ]
+    }
+  }
+}

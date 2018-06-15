@@ -29,9 +29,9 @@ class FsController(private val fsService: FsService) {
 
     @PutMapping
     fun updateFs(@RequestParam("identifier") cpId: String,
-                @RequestParam("token") token: String,
-                @RequestParam("owner") owner: String,
-                @Valid @RequestBody data: FsRequestUpdateDto): ResponseEntity<ResponseDto<*>> {
+                 @RequestParam("token") token: String,
+                 @RequestParam("owner") owner: String,
+                 @Valid @RequestBody data: FsRequestUpdateDto): ResponseEntity<ResponseDto<*>> {
         return ResponseEntity(fsService.updateFs(cpId, token, owner, data), HttpStatus.OK)
     }
 
