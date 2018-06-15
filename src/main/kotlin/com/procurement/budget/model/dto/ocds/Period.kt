@@ -12,13 +12,13 @@ import javax.validation.constraints.NotNull
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class Period(
 
-        @NotNull
+        @field:NotNull
         @JsonProperty("startDate")
         @JsonDeserialize(using = JsonDateDeserializer::class)
         @JsonSerialize(using = JsonDateSerializer::class)
         val startDate: LocalDateTime,
 
-        @NotNull
+        @field:NotNull
         @JsonProperty("endDate")
         @JsonDeserialize(using = JsonDateDeserializer::class)
         @JsonSerialize(using = JsonDateSerializer::class)

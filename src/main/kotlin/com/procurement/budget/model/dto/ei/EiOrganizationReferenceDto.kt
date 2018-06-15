@@ -17,18 +17,18 @@ data class EiOrganizationReferenceDto(
         @JsonProperty("id")
         var id: String?,
 
-        @NotNull
+        @field:NotNull
         @Size(min = 1)
         @JsonProperty("name")
         val name: String,
 
         @Valid
-        @NotNull
+        @field:NotNull
         @JsonProperty("identifier")
         val identifier: Identifier,
 
         @Valid
-        @NotNull
+        @field:NotNull
         @JsonProperty("address")
         val address: Address,
 
@@ -37,12 +37,12 @@ data class EiOrganizationReferenceDto(
         val additionalIdentifiers: HashSet<Identifier>?,
 
         @Valid
-        @NotNull
+        @field:NotNull
         @JsonProperty("contactPoint")
         val contactPoint: ContactPoint,
 
         @Valid
-        @NotNull
+        @field:NotNull
         @JsonProperty("details")
         val details: Details,
 

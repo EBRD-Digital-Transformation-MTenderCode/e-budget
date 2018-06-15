@@ -9,21 +9,21 @@ import javax.validation.constraints.NotNull
 data class Details(
 
         @Valid
-        @NotNull
+        @field:NotNull
         @JsonProperty("typeOfBuyer")
         val typeOfBuyer: TypeOfBuyer,
 
         @Valid
-        @NotNull
+        @field:NotNull
         @JsonProperty("mainGeneralActivity")
         val mainGeneralActivity: MainGeneralActivity,
 
         @Valid
-        @NotNull
+        @field:NotNull
         @JsonProperty("mainSectoralActivity")
         val mainSectoralActivity: MainSectoralActivity,
 
-        @NotNull
+        @field:NotNull
         @JsonProperty("isACentralPurchasingBody")
         @get:JsonProperty("isACentralPurchasingBody")
         val isACentralPurchasingBody: Boolean,
@@ -32,7 +32,7 @@ data class Details(
         val nutsCode: String?,
 
         @Valid
-        @NotNull
+        @field:NotNull
         @JsonProperty("scale")
         val scale: Scale
 )

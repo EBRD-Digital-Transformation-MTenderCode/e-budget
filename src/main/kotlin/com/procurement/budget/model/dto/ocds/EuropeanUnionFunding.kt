@@ -7,11 +7,11 @@ import javax.validation.constraints.NotNull
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class EuropeanUnionFunding(
 
-        @NotNull
+        @field:NotNull
         @JsonProperty("projectName")
         val projectName: String,
 
-        @NotNull
+        @field:NotNull
         @JsonProperty("projectIdentifier")
         val projectIdentifier: String,
 

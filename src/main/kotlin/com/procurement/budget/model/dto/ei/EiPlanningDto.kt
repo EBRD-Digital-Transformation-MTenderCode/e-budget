@@ -9,10 +9,10 @@ import javax.validation.constraints.NotNull
 data class EiPlanningDto(
 
         @Valid
-        @NotNull
+        @field:NotNull
         @JsonProperty("budget")
         val budget: EiBudgetDto,
 
-        @JsonProperty("rationale")
+        @field:JsonProperty("rationale")
         val rationale: String?
 )

@@ -9,17 +9,17 @@ import javax.validation.constraints.NotNull
 data class FsRequestUpdateDto(
 
     @Valid
-    @NotNull
+    @field:NotNull
     @JsonProperty("ocid")
     val ocid: String,
 
     @Valid
-    @NotNull
+    @field:NotNull
     @JsonProperty("planning")
     val planning: FsRequestUpdatePlanningDto,
 
     @Valid
-    @NotNull
+    @field:NotNull
     @JsonProperty("tender")
     val tender: FsTenderDto,
 

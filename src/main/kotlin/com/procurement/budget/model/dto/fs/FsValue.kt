@@ -11,12 +11,12 @@ import javax.validation.constraints.NotNull
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class FsValue(
 
-        @NotNull
+        @field:NotNull
         @JsonProperty("amount")
         @JsonDeserialize(using = MoneyDeserializer::class)
         var amount: BigDecimal,
 
-        @NotNull
+        @field:NotNull
         @JsonProperty("currency")
         val currency: Currency
 )

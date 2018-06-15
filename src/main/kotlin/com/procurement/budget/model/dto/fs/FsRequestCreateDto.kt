@@ -9,12 +9,12 @@ import javax.validation.constraints.NotNull
 data class FsRequestCreateDto(
 
         @Valid
-        @NotNull
+        @field:NotNull
         @JsonProperty("planning")
         val planning: FsPlanningDto,
 
         @Valid
-        @NotNull
+        @field:NotNull
         @JsonProperty("tender")
         val tender: FsTenderDto,
 

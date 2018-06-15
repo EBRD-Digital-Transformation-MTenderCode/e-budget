@@ -7,22 +7,22 @@ import javax.validation.constraints.NotNull
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class Address(
 
-        @NotNull
+        @field:NotNull
         @JsonProperty("streetAddress")
         val streetAddress: String,
 
-        @NotNull
+        @field:NotNull
         @JsonProperty("locality")
         val locality: String,
 
-        @NotNull
+        @field:NotNull
         @JsonProperty("region")
         val region: String,
 
         @JsonProperty("postalCode")
         val postalCode: String?,
 
-        @NotNull
+        @field:NotNull
         @JsonProperty("countryName")
         val countryName: String
 )

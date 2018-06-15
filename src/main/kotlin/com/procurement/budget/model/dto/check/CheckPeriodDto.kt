@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull
 
 data class CheckPeriodDto(
 
-        @NotNull
+        @field:NotNull
         @JsonProperty("startDate")
         @JsonDeserialize(using = JsonDateDeserializer::class)
         @JsonSerialize(using = JsonDateSerializer::class)

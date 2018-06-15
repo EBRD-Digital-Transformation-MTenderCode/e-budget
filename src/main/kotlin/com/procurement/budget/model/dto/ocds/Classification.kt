@@ -7,15 +7,15 @@ import javax.validation.constraints.NotNull
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class Classification(
 
-        @NotNull
+        @field:NotNull
         @JsonProperty("id")
         val id: String,
 
-        @NotNull
+        @field:NotNull
         @JsonProperty("scheme")
         var scheme: Scheme,
 
-        @NotNull
+        @field:NotNull
         @JsonProperty("description")
         val description: String,
 

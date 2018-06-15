@@ -4,16 +4,16 @@ import com.procurement.budget.model.bpe.ResponseDto
 import com.procurement.budget.model.dto.check.CheckRequestDto
 import com.procurement.budget.model.dto.fs.FsRequestCreateDto
 import com.procurement.budget.model.dto.fs.FsRequestUpdateDto
+import com.procurement.budget.model.dto.fs.TestJava
+import com.procurement.budget.model.dto.fs.TestKotlin
 import com.procurement.budget.service.FsService
 import org.springframework.format.annotation.DateTimeFormat
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import java.time.LocalDateTime
 import javax.validation.Valid
 
-@Validated
 @RestController
 @RequestMapping("/fs")
 class FsController(private val fsService: FsService) {
@@ -38,6 +38,19 @@ class FsController(private val fsService: FsService) {
     @PostMapping("/check")
     fun checkFs(@Valid @RequestBody data: CheckRequestDto): ResponseEntity<ResponseDto<*>> {
         return ResponseEntity(fsService.checkFs(data), HttpStatus.OK)
+    }
+
+
+    @PostMapping("testKotlin")
+    fun testKotlin(@Valid @RequestBody data: TestKotlin): ResponseEntity<ResponseDto<*>> {
+        val dto = data
+        return ResponseEntity(ResponseDto(true, null, dto), HttpStatus.CREATED)
+    }
+
+    @PostMapping("testJava")
+    fun testJava(@Valid @RequestBody data: TestJava): ResponseEntity<ResponseDto<*>> {
+        val dto = data
+        return ResponseEntity(ResponseDto(true, null, dto), HttpStatus.CREATED)
     }
 
 }

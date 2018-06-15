@@ -8,11 +8,11 @@ import javax.validation.constraints.Size
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class FsRequestUpdateBudgetOrganizationReferenceDto(
 
-    @NotNull
+    @field:NotNull
     @JsonProperty("id")
     var id: String,
 
-    @NotNull
+    @field:NotNull
     @JsonProperty("name")
     val name: String
 

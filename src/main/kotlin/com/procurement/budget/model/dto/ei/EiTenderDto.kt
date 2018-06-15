@@ -14,7 +14,7 @@ data class EiTenderDto(
         @JsonProperty("id")
         var id: String?,
 
-        @NotNull
+        @field:NotNull
         @JsonProperty("title")
         val title: String,
 
@@ -28,7 +28,7 @@ data class EiTenderDto(
         var statusDetails: TenderStatusDetails?,
 
         @Valid
-        @NotNull
+        @field:NotNull
         @JsonProperty("classification")
         val classification: Classification
 )

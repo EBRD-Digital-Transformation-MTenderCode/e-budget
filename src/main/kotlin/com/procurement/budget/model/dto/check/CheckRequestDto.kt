@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 data class CheckRequestDto(
 
-        @NotNull
+        @field:NotNull
         @JsonProperty("isEuropeanUnionFunded")
         @get:JsonProperty("isEuropeanUnionFunded")
         val isEuropeanUnionFunded: Boolean,
@@ -21,12 +21,12 @@ data class CheckRequestDto(
         val budgetBreakdown: List<CheckBudgetBreakdownDto>,
 
         @Valid
-        @NotNull
+        @field:NotNull
         @JsonProperty("tenderPeriod")
         val tenderPeriod: CheckPeriodDto,
 
         @Valid
-        @NotNull
+        @field:NotNull
         @JsonProperty("classification")
         val classification: Classification
 )

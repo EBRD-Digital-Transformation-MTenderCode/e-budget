@@ -51,3 +51,11 @@ fun <T> toObject(clazz: Class<T>, json: String): T {
         throw IllegalArgumentException(e)
     }
 }
+
+fun <T> toObject(clazz: Class<T>, json: JsonNode): T {
+    try {
+        return JsonMapper.mapper.treeToValue(json, clazz)
+    } catch (e: IOException) {
+        throw IllegalArgumentException(e)
+    }
+}

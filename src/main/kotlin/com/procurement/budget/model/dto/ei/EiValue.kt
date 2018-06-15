@@ -15,7 +15,7 @@ data class EiValue(
         @JsonDeserialize(using = MoneyDeserializer::class)
         val amount: BigDecimal?,
 
-        @NotNull
+        @field:NotNull
         @JsonProperty("currency")
         var currency: Currency
 )

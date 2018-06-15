@@ -7,19 +7,19 @@ import javax.validation.constraints.NotNull
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class Identifier(
 
-        @NotNull
+        @field:NotNull
         @JsonProperty("id")
         val id: String,
 
-        @NotNull
+        @field:NotNull
         @JsonProperty("scheme")
         val scheme: String,
 
-        @NotNull
+        @field:NotNull
         @JsonProperty("legalName")
         val legalName: String,
 
-        @NotNull
+        @field:NotNull
         @JsonProperty("uri")
         val uri: String
 )

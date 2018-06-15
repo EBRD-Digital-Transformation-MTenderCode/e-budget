@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class CheckBudgetBreakdownDto(
 
-        @NotNull
+        @field:NotNull
         @JsonProperty("id")
         val id: String,
 
@@ -17,7 +17,7 @@ data class CheckBudgetBreakdownDto(
         val description: String?,
 
         @Valid
-        @NotNull
+        @field:NotNull
         @JsonProperty("amount")
         val amount: CheckValueDto,
 

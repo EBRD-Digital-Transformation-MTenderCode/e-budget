@@ -15,12 +15,12 @@ data class EiBudgetDto(
         var id: String?,
 
         @Valid
-        @NotNull
+        @field:NotNull
         @JsonProperty("period")
         val period: Period,
 
         @Valid
-        @NotNull
+        @field:NotNull
         @JsonProperty("amount")
         val amount: EiValue
 )

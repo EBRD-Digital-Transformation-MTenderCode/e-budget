@@ -17,17 +17,17 @@ data class EiDto(
         var ocid: String?,
 
         @Valid
-        @NotNull
+        @field:NotNull
         @JsonProperty("tender")
         var tender: EiTenderDto,
 
         @Valid
-        @NotNull
+        @field:NotNull
         @JsonProperty("planning")
         var planning: EiPlanningDto,
 
         @Valid
-        @NotNull
+        @field:NotNull
         @JsonProperty("buyer")
         var buyer: EiOrganizationReferenceDto
 )

@@ -1,6 +1,5 @@
 package com.procurement.budget.model.dto.fs
 
-import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.procurement.budget.model.dto.ocds.EuropeanUnionFunding
@@ -9,7 +8,7 @@ import javax.validation.Valid
 import javax.validation.constraints.NotNull
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-data class FsBudgetDto @JsonCreator constructor(
+data class FsBudgetDto (
 
         @JsonProperty("id")
         var id: String?,
@@ -18,12 +17,12 @@ data class FsBudgetDto @JsonCreator constructor(
         var description: String?,
 
         @Valid
-        @NotNull
+        @field:NotNull
         @JsonProperty("period")
         val period: Period,
 
         @Valid
-        @NotNull
+        @field:NotNull
         @JsonProperty("amount")
         val amount: FsValue,
 
@@ -31,7 +30,7 @@ data class FsBudgetDto @JsonCreator constructor(
         @JsonProperty("europeanUnionFunding")
         var europeanUnionFunding: EuropeanUnionFunding?,
 
-        @NotNull
+        @field:NotNull
         @JsonProperty("isEuropeanUnionFunded")
         @get:JsonProperty("isEuropeanUnionFunded")
         val isEuropeanUnionFunded: Boolean,

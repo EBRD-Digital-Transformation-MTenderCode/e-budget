@@ -7,22 +7,22 @@ import javax.validation.constraints.NotNull
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class ContactPoint(
 
-        @NotNull
+        @field:NotNull
         @JsonProperty("name")
         val name: String,
 
-        @NotNull
+        @field:NotNull
         @JsonProperty("email")
         val email: String,
 
-        @NotNull
+        @field:NotNull
         @JsonProperty("telephone")
         val telephone: String,
 
         @JsonProperty("faxNumber")
         val faxNumber: String?,
 
-        @NotNull
+        @field:NotNull
         @JsonProperty("url")
         val url: String
 )

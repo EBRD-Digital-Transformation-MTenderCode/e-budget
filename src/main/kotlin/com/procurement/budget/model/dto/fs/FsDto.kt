@@ -15,12 +15,12 @@ data class FsDto(
         val ocid: String?,
 
         @Valid
-        @NotNull
+        @field:NotNull
         @JsonProperty("tender")
         var tender: FsTenderDto,
 
         @Valid
-        @NotNull
+        @field:NotNull
         @JsonProperty("planning")
         var planning: FsPlanningDto,
 
