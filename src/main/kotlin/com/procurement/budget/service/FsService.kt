@@ -286,7 +286,7 @@ class FsServiceImpl(private val fsDao: FsDao,
                 description = fsUpdateDto.planning.budget.description
                 amount.amount = fsUpdateDto.planning.budget.amount.amount
                 europeanUnionFunding = fsUpdateDto.planning.budget.europeanUnionFunding
-                isEuropeanUnionFunded = fsUpdateDto.planning.budget.isEuropeanUnionFunded
+//                isEuropeanUnionFunded = fsUpdateDto.planning.budget.isEuropeanUnionFunded
                 verified = fsUpdateDto.planning.budget.verified
                 verificationDetails = fsUpdateDto.planning.budget.verificationDetails
             }

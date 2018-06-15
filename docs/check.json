@@ -1,54 +1,70 @@
 {
   "planning": {
+    "rationale": "",
     "budget": {
-      "id": "Budget ID",
-      "description": "Budget Description",
+      "id": "",
+      "description": "",
       "amount": {
-        "amount": 2000,
+        "amount": 0.001,
         "currency": "MDL"
       },
       "period": {
         "startDate": "2018-06-25T14:00:00Z",
         "endDate": "2018-10-04T14:30:00Z"
       },
-      "isEuropeanUnionFunded": true,
+      "isEuropeanUnionFunded": 1,
       "europeanUnionFunding": {
-        "uri": "Project uri",
-        "projectName": "Project Name*",
-        "projectIdentifier": "Project Identifier*"
+        "uri": "",
+        "projectName": 1212,
+        "projectIdentifier": true
       }
+    }
+  },
+  "buyer": {
+    "name": "nameofbuyer",
+    "identifier": {
+      "id": "123654",
+      "scheme": "CPV",
+      "legalName": "987",
+      "uri": "uri"
+    },
+    "address": {
+      "streetAddress": "54",
+      "locality": "987",
+      "region": "987",
+      "countryName": "97"
+    },
+    "contactPoint": {
+      "name": "98987",
+      "email": "7",
+      "telephone": "444",
+      "url": "string"
     }
   },
   "tender": {
     "procuringEntity": {
-      "name": "Official Name*",
+      "name": "nameofbuyer",
       "identifier": {
-        "id": "Identifier*",
+        "id": "123654",
         "uri": "URI*",
-        "scheme": "Identification Scheme*",
-        "legalName": "Legal Name*"
+        "scheme": "CPV",
+        "legalName": "987"
       },
       "address": {
         "region": "1",
-        "locality": "Locality*",
-        "postalCode": "Postal Code",
-        "countryName": "Republic of Moldova",
-        "streetAddress": "Street Address*"
+        "locality": "987",
+        "postalCode": "987",
+        "countryName": "97",
+        "streetAddress": "54"
       },
       "contactPoint": {
         "url": "URL*",
-        "name": "Name*",
-        "email": "E-mail*",
+        "name": "98987",
+        "email": "7",
         "faxNumber": "Fax*",
-        "telephone": "Telephone*"
+        "telephone": "444"
       },
       "additionalIdentifiers": [
-        {
-          "id": "2Additional identifier ID*",
-          "uri": "2Additional identifier URI*",
-          "scheme": "2Additional identifier scheme*",
-          "legalName": "2Additional identifier legal name*"
-        },
         {
           "id": "1Additional identifier ID*",
           "uri": "1Additional identifier URI*",
