@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.JsonNodeFactory
+import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import java.io.IOException
 import java.time.Instant
 import java.time.LocalDateTime
@@ -15,6 +16,7 @@ private object JsonMapper {
     val mapper: ObjectMapper = ObjectMapper()
 
     init {
+        mapper.registerKotlinModule()
         mapper.configure(DeserializationFeature.USE_BIG_INTEGER_FOR_INTS, true)
         mapper.configure(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS, true)
         mapper.nodeFactory = JsonNodeFactory.withExactBigDecimals(true)
