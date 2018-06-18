@@ -6,15 +6,15 @@ import org.junit.jupiter.api.Test
 
 class CheckRequestDtoTest {
 
-    @Test
-    @DisplayName("checkRequestDtoRequired")
-    fun checkRequestDtoWithoutReq() {
-        testDeserialize(CheckRequestDto::class.java, "/json/check_fs_request.json")
-    }
-
-    @Test
-    @DisplayName("checkRequestDtoFull")
-    fun checkRequestDtoFull() {
-        testDeserialize(CheckRequestDto::class.java, "/json/check_fs_request_full.json")
-    }
+//    @Test
+//    @DisplayName("checkRequestDtoRequired")
+//    fun checkRequestDtoWithoutReq() {
+//        testDeserialize(CheckRequestDto::class.java, "/json/check_fs_request.json")
+//    }
+//
+//    @Test
+//    @DisplayName("checkRequestDtoFull")
+//    fun checkRequestDtoFull() {
+//        testDeserialize(CheckRequestDto::class.java, "/json/check_fs_request_full.json")
+//    }
 }
