@@ -8,17 +8,17 @@ import javax.validation.constraints.NotNull
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class Details(
 
-        @Valid
+        @field:Valid
         @field:NotNull
         @JsonProperty("typeOfBuyer")
         val typeOfBuyer: TypeOfBuyer,
 
-        @Valid
+        @field:Valid
         @field:NotNull
         @JsonProperty("mainGeneralActivity")
         val mainGeneralActivity: MainGeneralActivity,
 
-        @Valid
+        @field:Valid
         @field:NotNull
         @JsonProperty("mainSectoralActivity")
         val mainSectoralActivity: MainSectoralActivity,
@@ -31,7 +31,7 @@ data class Details(
         @JsonProperty("NUTSCode")
         val nutsCode: String?,
 
-        @Valid
+        @field:Valid
         @field:NotNull
         @JsonProperty("scale")
         val scale: Scale

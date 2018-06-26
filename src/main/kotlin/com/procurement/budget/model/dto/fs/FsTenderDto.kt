@@ -19,7 +19,7 @@ data class FsTenderDto(
         @JsonProperty("statusDetails")
         val statusDetails: TenderStatusDetails?,
 
-        @Valid
+        @field:Valid
         @JsonProperty("procuringEntity")
         val procuringEntity: FsOrganizationReferenceDto?
 )

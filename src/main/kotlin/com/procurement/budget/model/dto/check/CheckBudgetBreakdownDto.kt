@@ -1,32 +1,25 @@
 package com.procurement.budget.model.dto.check
 
-import com.fasterxml.jackson.annotation.JsonInclude
-import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.procurement.budget.model.dto.ocds.Period
 import javax.validation.Valid
 import javax.validation.constraints.NotNull
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
-data class CheckBudgetBreakdownDto(
+data class CheckBudgetBreakdownDto @JsonCreator constructor(
 
         @field:NotNull
-        @JsonProperty("id")
         val id: String,
 
-        @JsonProperty("description")
         val description: String?,
 
-        @Valid
+        @field:Valid
         @field:NotNull
-        @JsonProperty("amount")
         val amount: CheckValueDto,
 
-        @Valid
-        @JsonProperty("period")
+        @field:Valid
         var period: Period?,
 
-        @Valid
-        @JsonProperty("sourceParty")
+        @field:Valid
         var sourceParty: CheckSourcePartyDto?
 )
 

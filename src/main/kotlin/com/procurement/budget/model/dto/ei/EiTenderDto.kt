@@ -27,7 +27,7 @@ data class EiTenderDto(
         @JsonProperty("statusDetails")
         var statusDetails: TenderStatusDetails?,
 
-        @Valid
+        @field:Valid
         @field:NotNull
         @JsonProperty("classification")
         val classification: Classification

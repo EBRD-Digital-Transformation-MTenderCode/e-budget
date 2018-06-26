@@ -10,11 +10,11 @@ import javax.validation.Valid
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 data class FsResponseDto(
 
-        @Valid
+        @field:Valid
         @JsonProperty("totalAmount")
         val totalAmount: BigDecimal,
 
-        @Valid
+        @field:Valid
         @JsonProperty("fs")
         val fs: FsDto
 )

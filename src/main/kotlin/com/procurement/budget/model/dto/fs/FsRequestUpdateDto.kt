@@ -8,22 +8,22 @@ import javax.validation.constraints.NotNull
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 data class FsRequestUpdateDto(
 
-    @Valid
+    @field:Valid
     @field:NotNull
     @JsonProperty("ocid")
     val ocid: String,
 
-    @Valid
+    @field:Valid
     @field:NotNull
     @JsonProperty("planning")
     val planning: FsRequestUpdatePlanningDto,
 
-    @Valid
+    @field:Valid
     @field:NotNull
     @JsonProperty("tender")
     val tender: FsTenderDto,
 
-    @Valid
+    @field:Valid
     @JsonProperty("buyer")
     val buyer: FsOrganizationReferenceDto?
 )

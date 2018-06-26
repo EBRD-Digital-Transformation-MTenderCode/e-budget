@@ -16,19 +16,19 @@ data class CheckResponseDto(
         @JsonProperty("ei")
         val ei: Set<String>?,
 
-        @Valid @NotEmpty
+        @field:Valid @field:NotEmpty
         @JsonProperty("budgetBreakdown")
         val budgetBreakdown: List<CheckBudgetBreakdownDto>,
 
-        @Valid
+        @field:Valid
         @JsonProperty("funder")
         val funder: HashSet<FsOrganizationReferenceDto>?,
 
-        @Valid
+        @field:Valid
         @JsonProperty("payer")
         val payer: HashSet<FsOrganizationReferenceDto>?,
 
-        @Valid
+        @field:Valid
         @JsonProperty("buyer")
         val buyer: HashSet<EiOrganizationReferenceDto>?
 )

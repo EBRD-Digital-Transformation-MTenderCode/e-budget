@@ -22,26 +22,26 @@ data class EiOrganizationReferenceDto(
         @JsonProperty("name")
         val name: String,
 
-        @Valid
+        @field:Valid
         @field:NotNull
         @JsonProperty("identifier")
         val identifier: Identifier,
 
-        @Valid
+        @field:Valid
         @field:NotNull
         @JsonProperty("address")
         val address: Address,
 
-        @Valid
+        @field:Valid
         @JsonProperty("additionalIdentifiers")
         val additionalIdentifiers: HashSet<Identifier>?,
 
-        @Valid
+        @field:Valid
         @field:NotNull
         @JsonProperty("contactPoint")
         val contactPoint: ContactPoint,
 
-        @Valid
+        @field:Valid
         @field:NotNull
         @JsonProperty("details")
         val details: Details,

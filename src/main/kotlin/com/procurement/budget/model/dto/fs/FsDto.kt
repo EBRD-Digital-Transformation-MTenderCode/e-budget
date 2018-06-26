@@ -14,21 +14,21 @@ data class FsDto(
         @JsonProperty("ocid")
         val ocid: String?,
 
-        @Valid
+        @field:Valid
         @field:NotNull
         @JsonProperty("tender")
         var tender: FsTenderDto,
 
-        @Valid
+        @field:Valid
         @field:NotNull
         @JsonProperty("planning")
         var planning: FsPlanningDto,
 
-        @Valid
+        @field:Valid
         @JsonProperty("funder")
         val funder: FsOrganizationReferenceDto?,
 
-        @Valid
+        @field:Valid
         @JsonProperty("payer")
         val payer: FsOrganizationReferenceDto?
 )

@@ -16,17 +16,17 @@ data class FsRequestUpdateBudgetDto(
         @JsonProperty("description")
         val description: String?,
 
-        @Valid
+        @field:Valid
         @field:NotNull
         @JsonProperty("period")
         val period: Period,
 
-        @Valid
+        @field:Valid
         @field:NotNull
         @JsonProperty("amount")
         val amount: FsValue,
 
-        @Valid
+        @field:Valid
         @JsonProperty("europeanUnionFunding")
         val europeanUnionFunding: EuropeanUnionFunding?,
 
@@ -41,7 +41,7 @@ data class FsRequestUpdateBudgetDto(
         var verified: Boolean,
 
         @field:NotNull
-        @Valid
+        @field:Valid
         @JsonProperty("sourceEntity")
         var sourceEntity: FsRequestUpdateBudgetOrganizationReferenceDto,
 

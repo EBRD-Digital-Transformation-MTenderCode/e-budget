@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class EiPlanningDto(
 
-        @Valid
+        @field:Valid
         @field:NotNull
         @JsonProperty("budget")
         val budget: EiBudgetDto,
