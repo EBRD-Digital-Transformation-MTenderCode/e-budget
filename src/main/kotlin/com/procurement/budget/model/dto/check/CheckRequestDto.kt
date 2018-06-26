@@ -9,10 +9,6 @@ import javax.validation.constraints.NotNull
 
 data class CheckRequestDto @JsonCreator constructor(
 
-        @field:NotNull
-        @get:JsonProperty("isEuropeanUnionFunded")
-        val isEuropeanUnionFunded: Boolean,
-
         @field:Valid
         @field:NotEmpty
         val budgetBreakdown: List<CheckBudgetBreakdownDto>,

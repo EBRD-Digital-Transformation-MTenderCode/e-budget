@@ -11,7 +11,5 @@ import javax.validation.constraints.NotNull
 data class CheckPeriodDto @JsonCreator constructor(
 
         @field:NotNull
-        @field:JsonDeserialize(using = JsonDateDeserializer::class)
-        @field:JsonSerialize(using = JsonDateSerializer::class)
         val startDate: LocalDateTime
 )

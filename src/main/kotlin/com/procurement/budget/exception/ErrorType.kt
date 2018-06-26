@@ -1,6 +1,7 @@
 package com.procurement.budget.exception
 
 enum class ErrorType constructor(val code: String, val message: String) {
+    INVALID_JSON_TYPE("00.00", "Invalid type: "),
     EI_NOT_FOUND("00.01", "EI not found."),
     FS_NOT_FOUND("00.02", "FS not found."),
     INVALID_OWNER("00.03", "Invalid owner."),
