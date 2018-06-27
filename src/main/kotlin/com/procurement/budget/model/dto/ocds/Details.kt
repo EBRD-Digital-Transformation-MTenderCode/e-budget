@@ -8,15 +8,12 @@ import javax.validation.constraints.NotNull
 
 data class Details @JsonCreator constructor(
 
-        @field:Valid
         @field:NotNull
         val typeOfBuyer: TypeOfBuyer,
 
-        @field:Valid
         @field:NotNull
         val mainGeneralActivity: MainGeneralActivity,
 
-        @field:Valid
         @field:NotNull
         val mainSectoralActivity: MainSectoralActivity,
 
@@ -26,7 +23,6 @@ data class Details @JsonCreator constructor(
 
         val nutsCode: String?,
 
-        @field:Valid
         @field:NotNull
         val scale: Scale
 )

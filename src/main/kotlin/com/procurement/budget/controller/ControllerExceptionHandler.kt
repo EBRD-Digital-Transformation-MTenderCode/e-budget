@@ -23,15 +23,14 @@ class ControllerExceptionHandler {
     @ResponseStatus(OK)
     @ExceptionHandler(Exception::class)
     fun handle(ex: Exception) =
-        ResponseDto(false, getErrors(ex.toString(), ex.message), null)
+            ResponseDto(false, getErrors("Exception", ex.message), null)
 
 
     @ResponseBody
     @ResponseStatus(OK)
     @ExceptionHandler(NoSuchElementException::class)
     fun handle(ex: NoSuchElementException) =
-        ResponseDto(false, getErrors("NoSuchElementException", ex.message), null)
-
+            ResponseDto(false, getErrors("NoSuchElementException", ex.message), null)
 
 
     @ResponseBody
