@@ -1,4 +1,62 @@
 {
-  "id": "",
-  "isEuropeanUnionFunded": 1
+  "tender": {
+    "title": "Препарати наркотичної, психотропної групи: МНН - тримеперидин, морфін гідрохлорид, діазепам, фентаніл, кетамін, феназепам, натрію оксибутират",
+    "description": "Під кількістю 8 штук слід розуміти 8 найменувань",
+    "classification": {
+      "id": "33600000-6",
+      "scheme": "CPV",
+      "description": "Фармацевтична продукція"
+    }
+  },
+  "planning": {
+    "budget": {
+      "period": {
+        "startDate": "2018-05-28T00:00:00Z",
+        "endDate": "2018-06-27T00:00:01Z"
+      },
+      "amount": {
+        "currency": "UAH"
+      }
+    },
+    "rationale": "Обгрунтування закупівель надано у вільному тексті. Більш детальна інформація може бути надана у доданому документі."
+  },
+  "buyer": {
+    "name": "EI Byuer Новороздільська міська лікарня",
+    "identifier": {
+      "id": "20764314",
+      "scheme": "UA-EDR",
+      "legalName": "EI Byuer Новороздільська міська лікарня",
+      "uri": "http://buyerTestLink.ua"
+    },
+    "additionalIdentifiers": [
+      {
+        "id": "77764777",
+        "scheme": "UA-EDR",
+        "legalName": "Додатково Новороздільська міська лікарня",
+        "uri": "http://additionalBuyerTestLink.ua"
+      }
+    ],
+    "address": {
+      "streetAddress": "вул. Винниченка, 37",
+      "locality": "місто Новий Розділ",
+      "region": "Львівська область",
+      "postalCode": "7770777",
+      "countryName": "Україна"
+    },
+    "contactPoint": {
+      "name": "Осипових Сергій Олександрович",
+      "email": "test2@test.test",
+      "telephone": "+380222222222",
+      "faxNumber": "+380222222222",
+      "url": "test3@test.test"
+    },
+    "details": {
+      "typeOfBuyer": "BODY_PUBLIC",
+      "mainGeneralActivity": "DEFENCE",
+      "mainSectoralActivity": "AIRPORT_RELATED_ACTIVITIES",
+      "isACentralPurchasingBody": true,
+      "scale": "micro"
+    },
+    "buyerProfile": "https://jsonlint.com/"
+  }
 }
