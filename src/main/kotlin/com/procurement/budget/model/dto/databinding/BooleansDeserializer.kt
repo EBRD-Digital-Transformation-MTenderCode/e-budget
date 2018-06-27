@@ -13,10 +13,10 @@ class BooleansDeserializer : JsonDeserializer<Boolean>() {
 
 
     @Throws(IOException::class)
-    override fun deserialize(jsonParser: JsonParser, deserializationContext: DeserializationContext): Boolean {
-        if (jsonParser.currentToken != JsonToken.VALUE_FALSE || jsonParser.currentToken != JsonToken.VALUE_TRUE) {
+    override fun deserialize(jsonParser: JsonParser, deserializationContext: DeserializationContext):Boolean {
+        if (!jsonParser.currentToken.isBoolean) {
             throw ErrorException(ErrorType.INVALID_JSON_TYPE, jsonParser.currentName)
         }
-        return jsonParser.valueAsBoolean
+        return jsonParser.currentToken().isBoolean
     }
 }
