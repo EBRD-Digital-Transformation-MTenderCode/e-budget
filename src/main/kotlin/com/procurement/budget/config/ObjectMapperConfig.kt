@@ -15,15 +15,15 @@ import java.time.LocalDateTime
 class ObjectMapperConfig(@Autowired objectMapper: ObjectMapper) {
 
     init {
-        val module = SimpleModule()
-        module.addSerializer(LocalDateTime::class.java, JsonDateSerializer())
-        module.addDeserializer(LocalDateTime::class.java, JsonDateDeserializer())
-        module.addDeserializer(BigDecimal::class.java, MoneyDeserializer())
-        module.addDeserializer(String::class.java, StringDeserializer())
-        module.addDeserializer(Boolean::class.java, BooleanDeserializer())
-        module.addDeserializer(Int::class.java, IntDeserializer())
-
-        objectMapper.registerModule(module)
+//        val module = SimpleModule()
+//        module.addSerializer(LocalDateTime::class.java, JsonDateSerializer())
+//        module.addDeserializer(LocalDateTime::class.java, JsonDateDeserializer())
+//        module.addDeserializer(BigDecimal::class.java, MoneyDeserializer())
+//        module.addDeserializer(String::class.java, StringDeserializer())
+//        module.addDeserializer(Boolean::class.java, BooleanDeserializer())
+//        module.addDeserializer(Int::class.java, IntDeserializer())
+//
+//        objectMapper.registerModule(module)
         objectMapper.configure(DeserializationFeature.USE_BIG_INTEGER_FOR_INTS, true)
         objectMapper.configure(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS, true)
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)

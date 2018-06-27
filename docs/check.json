@@ -60,3 +60,76 @@
     "buyerProfile": "https://jsonlint.com/"
   }
 }
+
+{
+  "token": "string",
+  "ocid": "string",
+  "tender": {
+    "id": "string",
+    "title": "string",
+    "description": "string",
+    "status": "planning",
+    "statusDetails": "preselection",
+    "classification": {
+      "id": "string",
+      "scheme": "CPV",
+      "description": "string",
+      "uri": "string"
+    }
+  },
+  "planning": {
+    "budget": {
+      "id": "string",
+      "period": {
+        "startDate": "2018-06-27T10:23:40Z",
+        "endDate": "2018-06-27T10:23:40Z"
+      },
+      "amount": {
+        "amount": 0,
+        "currency": "ADP"
+      }
+    },
+    "rationale": "string"
+  },
+  "buyer": {
+    "id": "string",
+    "name": "string",
+    "identifier": {
+      "id": "string",
+      "scheme": "string",
+      "legalName": "string",
+      "uri": "string"
+    },
+    "address": {
+      "streetAddress": "string",
+      "locality": "string",
+      "region": "string",
+      "postalCode": "string",
+      "countryName": "string"
+    },
+    "additionalIdentifiers": [
+      {
+        "id": "string",
+        "scheme": "string",
+        "legalName": "string",
+        "uri": "string"
+      }
+    ],
+    "contactPoint": {
+      "name": "string",
+      "email": "string",
+      "telephone": "string",
+      "faxNumber": "string",
+      "url": "string"
+    },
+    "details": {
+      "typeOfBuyer": "BODY_PUBLIC",
+      "mainGeneralActivity": "DEFENCE",
+      "mainSectoralActivity": "AIRPORT_RELATED_ACTIVITIES",
+      "isACentralPurchasingBody": true,
+      "nutsCode": "string",
+      "scale": "micro"
+    },
+    "buyerProfile": "string"
+  }
+}
