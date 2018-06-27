@@ -1,5 +1,6 @@
 package com.procurement.budget.model.dto.fs
 
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.procurement.budget.model.dto.ocds.Address
@@ -9,33 +10,25 @@ import javax.validation.Valid
 import javax.validation.constraints.NotNull
 import javax.validation.constraints.Size
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
-data class FsOrganizationReferenceDto(
+data class FsOrganizationReferenceDto @JsonCreator constructor(
 
-        @JsonProperty("id")
         var id: String?,
 
         @field:NotNull
-        @Size(min = 1)
-        @JsonProperty("name")
         val name: String,
 
-        @Valid
+        @field:Valid
         @field:NotNull
-        @JsonProperty("identifier")
         val identifier: Identifier?,
 
-        @Valid
+        @field:Valid
         @field:NotNull
-        @JsonProperty("address")
         val address: Address?,
 
-        @Valid
-        @JsonProperty("additionalIdentifiers")
+        @field:Valid
         val additionalIdentifiers: HashSet<Identifier>?,
 
-        @Valid
+        @field:Valid
         @field:NotNull
-        @JsonProperty("contactPoint")
         val contactPoint: ContactPoint?
 )

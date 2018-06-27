@@ -1,5 +1,6 @@
 package com.procurement.budget.model.dto.fs
 
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.procurement.budget.model.dto.ocds.EuropeanUnionFunding
@@ -7,44 +8,34 @@ import com.procurement.budget.model.dto.ocds.Period
 import javax.validation.Valid
 import javax.validation.constraints.NotNull
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
-data class FsRequestUpdateBudgetDto(
+data class FsRequestUpdateBudgetDto  @JsonCreator constructor(
 
-        @JsonProperty("id")
         val id: String?,
 
-        @JsonProperty("description")
         val description: String?,
 
-        @Valid
+        @field:Valid
         @field:NotNull
-        @JsonProperty("period")
         val period: Period,
 
-        @Valid
+        @field:Valid
         @field:NotNull
-        @JsonProperty("amount")
         val amount: FsValue,
 
-        @Valid
-        @JsonProperty("europeanUnionFunding")
+        @field:Valid
         val europeanUnionFunding: EuropeanUnionFunding?,
 
         @field:NotNull
-        @JsonProperty("isEuropeanUnionFunded")
         @get:JsonProperty("isEuropeanUnionFunded")
-        val isEuropeanUnionFunded: Boolean,
+        val isEuropeanUnionFunded: Boolean?,
 
         @field:NotNull
-        @JsonProperty("verified")
         @get:JsonProperty("verified")
-        var verified: Boolean,
+        var verified: Boolean?,
 
         @field:NotNull
-        @Valid
-        @JsonProperty("sourceEntity")
+        @field:Valid
         var sourceEntity: FsRequestUpdateBudgetOrganizationReferenceDto,
 
-        @JsonProperty("verificationDetails")
         val verificationDetails: String?
 )

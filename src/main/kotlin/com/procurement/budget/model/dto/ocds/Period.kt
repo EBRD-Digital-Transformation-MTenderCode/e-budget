@@ -1,5 +1,6 @@
 package com.procurement.budget.model.dto.ocds
 
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
@@ -9,18 +10,11 @@ import com.procurement.budget.model.dto.databinding.JsonDateSerializer
 import java.time.LocalDateTime
 import javax.validation.constraints.NotNull
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
-data class Period(
+data class Period @JsonCreator constructor(
 
         @field:NotNull
-        @JsonProperty("startDate")
-        @JsonDeserialize(using = JsonDateDeserializer::class)
-        @JsonSerialize(using = JsonDateSerializer::class)
         val startDate: LocalDateTime,
 
         @field:NotNull
-        @JsonProperty("endDate")
-        @JsonDeserialize(using = JsonDateDeserializer::class)
-        @JsonSerialize(using = JsonDateSerializer::class)
         val endDate: LocalDateTime
 )

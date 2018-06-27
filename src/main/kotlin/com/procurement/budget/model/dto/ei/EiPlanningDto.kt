@@ -1,18 +1,14 @@
 package com.procurement.budget.model.dto.ei
 
-import com.fasterxml.jackson.annotation.JsonInclude
-import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.annotation.JsonCreator
 import javax.validation.Valid
 import javax.validation.constraints.NotNull
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
-data class EiPlanningDto(
+data class EiPlanningDto @JsonCreator constructor(
 
-        @Valid
+        @field:Valid
         @field:NotNull
-        @JsonProperty("budget")
         val budget: EiBudgetDto,
 
-        @field:JsonProperty("rationale")
         val rationale: String?
 )

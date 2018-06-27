@@ -9,26 +9,16 @@ import java.util.*
 import javax.validation.Valid
 import javax.validation.constraints.NotEmpty
 
-@JsonPropertyOrder("ei", "budgetBreakdown", "funder", "payer", "buyer")
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 data class CheckResponseDto(
 
-        @JsonProperty("ei")
-        val ei: Set<String>?,
+        val ei: HashSet<String>?,
 
-        @Valid @NotEmpty
-        @JsonProperty("budgetBreakdown")
         val budgetBreakdown: List<CheckBudgetBreakdownDto>,
 
-        @Valid
-        @JsonProperty("funder")
         val funder: HashSet<FsOrganizationReferenceDto>?,
 
-        @Valid
-        @JsonProperty("payer")
         val payer: HashSet<FsOrganizationReferenceDto>?,
 
-        @Valid
-        @JsonProperty("buyer")
         val buyer: HashSet<EiOrganizationReferenceDto>?
 )
