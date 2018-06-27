@@ -1,7 +1,6 @@
 package com.procurement.budget.model.dto.fs
 
 import com.fasterxml.jackson.annotation.JsonCreator
-import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.procurement.budget.model.dto.databinding.BooleansDeserializer
@@ -10,7 +9,7 @@ import com.procurement.budget.model.dto.ocds.Period
 import javax.validation.Valid
 import javax.validation.constraints.NotNull
 
-data class FsRequestUpdateBudgetDto  @JsonCreator constructor(
+data class FsRequestUpdateBudgetDto @JsonCreator constructor(
 
         val id: String?,
 
