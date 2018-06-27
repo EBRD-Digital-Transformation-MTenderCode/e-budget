@@ -21,6 +21,21 @@ class ControllerExceptionHandler {
 
     @ResponseBody
     @ResponseStatus(OK)
+    @ExceptionHandler(Exception::class)
+    fun handle(ex: Exception) =
+        ResponseDto(false, getErrors(ex.toString(), ex.message), null)
+
+
+    @ResponseBody
+    @ResponseStatus(OK)
+    @ExceptionHandler(NoSuchElementException::class)
+    fun handle(ex: NoSuchElementException) =
+        ResponseDto(false, getErrors("NoSuchElementException", ex.message), null)
+
+
+
+    @ResponseBody
+    @ResponseStatus(OK)
     @ExceptionHandler(NullPointerException::class)
     fun nullPointer(e: NullPointerException) =
             ResponseDto(false, getErrors("NullPointerException", "NullPointerException"), null)
@@ -75,7 +90,7 @@ class ControllerExceptionHandler {
     private fun getErrors(result: BindingResult) =
             result.fieldErrors.asSequence()
                     .map {
-                        ResponseDetailsDto(code = ERROR_PREFIX + it.field, message = """${it.code} : ${it
+                        ResponseDetailsDto(code = "400.10." + it.field, message = """${it.code} : ${it
                                 .defaultMessage}""")
                     }
                     .toList()
@@ -84,16 +99,13 @@ class ControllerExceptionHandler {
             e.constraintViolations.asSequence()
                     .map {
                         ResponseDetailsDto(
-                                code = ERROR_PREFIX + it.propertyPath.toString(),
+                                code = "400.10." + it.propertyPath.toString(),
                                 message = """${it.message} ${it.messageTemplate}""")
                     }
                     .toList()
 
 
     private fun getErrors(code: String, error: String?) =
-            listOf(ResponseDetailsDto(code = ERROR_PREFIX + code, message = error!!))
+            listOf(ResponseDetailsDto(code = "400.10." + code, message = error!!))
 
-    companion object {
-        private val ERROR_PREFIX = "400.10."
-    }
 }
