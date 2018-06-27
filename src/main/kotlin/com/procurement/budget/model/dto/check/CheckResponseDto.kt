@@ -12,7 +12,7 @@ import javax.validation.constraints.NotEmpty
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 data class CheckResponseDto(
 
-        val ei: HashSet<String>?,
+        val ei: Set<String>?,
 
         val budgetBreakdown: List<CheckBudgetBreakdownDto>,
 
