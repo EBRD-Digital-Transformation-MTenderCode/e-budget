@@ -9,7 +9,7 @@ import com.procurement.budget.exception.ErrorType
 import java.io.IOException
 
 
-class StringDeserializer : JsonDeserializer<String>() {
+class StringsDeserializer : JsonDeserializer<String>() {
 
     @Throws(IOException::class)
     override fun deserialize(jsonParser: JsonParser, deserializationContext: DeserializationContext): String {

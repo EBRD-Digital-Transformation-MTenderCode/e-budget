@@ -19,8 +19,7 @@ class ObjectMapperConfig(@Autowired objectMapper: ObjectMapper) {
         module.addSerializer(LocalDateTime::class.java, JsonDateSerializer())
         module.addDeserializer(LocalDateTime::class.java, JsonDateDeserializer())
         module.addDeserializer(BigDecimal::class.java, MoneyDeserializer())
-        module.addDeserializer(String::class.java, StringDeserializer())
-        module.addDeserializer(Boolean::class.java, BooleanDeserializer())
+        module.addDeserializer(String::class.java, StringsDeserializer())
         module.addDeserializer(Int::class.java, IntDeserializer())
 
         objectMapper.registerModule(module)

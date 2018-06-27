@@ -8,7 +8,9 @@ import com.procurement.budget.exception.ErrorException
 import com.procurement.budget.exception.ErrorType
 import java.io.IOException
 
-class BooleanDeserializer : JsonDeserializer<Boolean>() {
+
+class BooleansDeserializer : JsonDeserializer<Boolean>() {
+
 
     @Throws(IOException::class)
     override fun deserialize(jsonParser: JsonParser, deserializationContext: DeserializationContext): Boolean {
