@@ -15,7 +15,6 @@ data class FsOrganizationReferenceDto @JsonCreator constructor(
         var id: String?,
 
         @field:NotNull
-        @Size(min = 1)
         val name: String,
 
         @field:Valid

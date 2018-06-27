@@ -35,9 +35,7 @@ data class FsRequestUpdateBudgetDto  @JsonCreator constructor(
 
         @field:NotNull
         @field:Valid
-        @JsonProperty("sourceEntity")
         var sourceEntity: FsRequestUpdateBudgetOrganizationReferenceDto,
 
-        @JsonProperty("verificationDetails")
         val verificationDetails: String?
 )
