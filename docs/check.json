@@ -54,7 +54,7 @@
       "typeOfBuyer": "BODY_PUBLIC",
       "mainGeneralActivity": "DEFENCE",
       "mainSectoralActivity": "AIRPORT_RELATED_ACTIVITIES",
-      "isACentralPurchasingBody": 1,
+      "isACentralPurchasingBody": true,
       "scale": "micro"
     },
     "buyerProfile": "https://jsonlint.com/"
