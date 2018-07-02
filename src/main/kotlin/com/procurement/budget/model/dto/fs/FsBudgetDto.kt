@@ -31,8 +31,8 @@ data class FsBudgetDto @JsonCreator constructor(
         @get:JsonProperty("isEuropeanUnionFunded")
         val isEuropeanUnionFunded: Boolean?,
 
-        @get:JsonProperty("verified")
         @field:JsonDeserialize(using = BooleansDeserializer::class)
+        @get:JsonProperty("verified")
         var verified: Boolean?,
 
         @field:Valid
