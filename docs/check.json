@@ -1,62 +1,105 @@
 {
+  "token": null,
+  "ocid": "t1s2t3-TEST-1530514382059-FS-1530514578711",
   "tender": {
-    "title": "Препарати наркотичної, психотропної групи: МНН - тримеперидин, морфін гідрохлорид, діазепам, фентаніл, кетамін, феназепам, натрію оксибутират",
-    "description": "Під кількістю 8 штук слід розуміти 8 найменувань",
-    "classification": {
-      "id": "33600000-6",
-      "scheme": "CPV",
-      "description": "Фармацевтична продукція"
-    }
+    "id": "t1s2t3-TEST-1530514382059",
+    "status": "active",
+    "statusDetails": "empty",
+    "procuringEntity": null
   },
   "planning": {
     "budget": {
+      "id": "GB33AGGR3464333469938",
+      "description": "Eight several college seven quite. Moment billion risk decision form plan.",
       "period": {
-        "startDate": "2018-05-28T00:00:00Z",
-        "endDate": "2018-06-27T00:00:01Z"
+        "startDate": "2018-07-02T05:24:16Z",
+        "endDate": "2018-12-29T05:24:16Z"
       },
       "amount": {
-        "currency": "UAH"
-      }
+        "amount": 17626.81,
+        "currency": "PTE"
+      },
+      "europeanUnionFunding": {
+        "projectName": "implement viral web services",
+        "projectIdentifier": "0-608-28716-4",
+        "uri": "https://pope.com/"
+      },
+      "isEuropeanUnionFunded": true,
+      "verified": true,
+      "sourceEntity": {
+        "id": "UA-EDR-102-55-4463",
+        "name": "Hayes-Smith",
+        "identifier": null,
+        "address": null,
+        "additionalIdentifiers": null,
+        "contactPoint": null
+      },
+      "verificationDetails": null
     },
-    "rationale": "Обгрунтування закупівель надано у вільному тексті. Більш детальна інформація може бути надана у доданому документі."
+    "rationale": "Business later positive grow serve improve."
   },
-  "buyer": {
-    "name": "EI Byuer Новороздільська міська лікарня",
+  "funder": {
+    "id": "UA-EDR-102-55-4463",
+    "name": "Hayes-Smith",
     "identifier": {
-      "id": "20764314",
+      "id": "102-55-4463",
       "scheme": "UA-EDR",
-      "legalName": "EI Byuer Новороздільська міська лікарня",
-      "uri": "http://buyerTestLink.ua"
+      "legalName": "Hayes-Smith PLC",
+      "uri": "https://taylor.org/main/login.php"
+    },
+    "address": {
+      "streetAddress": "68811 Fuentes Ridge",
+      "locality": "Port Robertbury",
+      "region": "Washington",
+      "postalCode": "57734",
+      "countryName": "Tanzania"
     },
     "additionalIdentifiers": [
       {
-        "id": "77764777",
+        "id": "566-50-5322",
         "scheme": "UA-EDR",
-        "legalName": "Додатково Новороздільська міська лікарня",
-        "uri": "http://additionalBuyerTestLink.ua"
+        "legalName": "Hayes-Smith and Sons",
+        "uri": "http://www.johnson.com/"
       }
     ],
-    "address": {
-      "streetAddress": "вул. Винниченка, 37",
-      "locality": "місто Новий Розділ",
-      "region": "Львівська область",
-      "postalCode": "7770777",
-      "countryName": "Україна"
-    },
     "contactPoint": {
-      "name": "Осипових Сергій Олександрович",
-      "email": "test2@test.test",
-      "telephone": "+380222222222",
-      "faxNumber": "+380222222222",
-      "url": "test3@test.test"
+      "name": "Linda Jordan",
+      "email": "brittany91@hotmail.com",
+      "telephone": "240.693.2212x45229",
+      "faxNumber": "635-811-8287",
+      "url": "https://franklin.com/author.php"
+    }
+  },
+  "payer": {
+    "id": "UA-EDR-117-48-6151",
+    "name": "Lewis, Lynch and Jones",
+    "identifier": {
+      "id": "117-48-6151",
+      "scheme": "UA-EDR",
+      "legalName": "Lewis, Lynch and Jones PLC",
+      "uri": "https://harrison.com/search.html"
     },
-    "details": {
-      "typeOfBuyer": "BODY_PUBLIC",
-      "mainGeneralActivity": "DEFENCE",
-      "mainSectoralActivity": "AIRPORT_RELATED_ACTIVITIES",
-      "isACentralPurchasingBody": 1,
-      "scale": "micro"
+    "address": {
+      "streetAddress": "675 Christopher Islands",
+      "locality": "West Brianport",
+      "region": "Delaware",
+      "postalCode": "39884",
+      "countryName": "Ukraine"
     },
-    "buyerProfile": "https://jsonlint.com/"
+    "additionalIdentifiers": [
+      {
+        "id": "766-58-0860",
+        "scheme": "UA-EDR",
+        "legalName": "Lewis, Lynch and Jones Group",
+        "uri": "http://cervantes.net/terms.htm"
+      }
+    ],
+    "contactPoint": {
+      "name": "William Martin",
+      "email": "sanfordalexis@gmail.com",
+      "telephone": "1-548-655-8903x36871",
+      "faxNumber": "05659808747",
+      "url": "http://davis.com/main/"
+    }
   }
 }
