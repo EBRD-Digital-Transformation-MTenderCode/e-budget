@@ -1,6 +1,7 @@
 package com.procurement.budget.model.dto.fs
 
 import com.fasterxml.jackson.annotation.JsonCreator
+import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.procurement.budget.model.dto.databinding.BooleansDeserializer
@@ -9,18 +10,17 @@ import com.procurement.budget.model.dto.ocds.Period
 import javax.validation.Valid
 import javax.validation.constraints.NotNull
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 data class FsBudgetDto @JsonCreator constructor(
 
         var id: String?,
 
         var description: String?,
 
-        @field:Valid
-        @field:NotNull
+        @field:Valid        @field:NotNull
         val period: Period,
 
-        @field:Valid
-        @field:NotNull
+        @field:Valid        @field:NotNull
         val amount: FsValue,
 
         @field:Valid

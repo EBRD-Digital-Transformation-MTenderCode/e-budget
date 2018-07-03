@@ -8,7 +8,6 @@ import com.fasterxml.jackson.databind.module.SimpleModule
 import com.fasterxml.jackson.databind.node.JsonNodeFactory
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import com.procurement.budget.model.dto.databinding.*
-import org.springframework.beans.factory.annotation.Autowired
 import java.io.IOException
 import java.math.BigDecimal
 import java.time.Instant
@@ -16,7 +15,7 @@ import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.util.*
 
-private object JsonMapper{
+private object JsonMapper {
 
     val mapper: ObjectMapper = ObjectMapper()
 

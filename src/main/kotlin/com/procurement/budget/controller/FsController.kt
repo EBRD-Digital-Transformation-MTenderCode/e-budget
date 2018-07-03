@@ -21,7 +21,7 @@ class FsController(private val fsService: FsService) {
                  @RequestParam("owner") owner: String,
                  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
                  @RequestParam("date") dateTime: LocalDateTime,
-                 @Valid @RequestBody data: FsRequestCreateDto): ResponseEntity<ResponseDto<*>> {
+                 @Valid @RequestBody data: FsRequestCreateDto): ResponseEntity<ResponseDto> {
         return ResponseEntity(fsService.createFs(cpId, owner, dateTime, data), HttpStatus.CREATED)
     }
 
@@ -29,12 +29,12 @@ class FsController(private val fsService: FsService) {
     fun updateFs(@RequestParam("identifier") cpId: String,
                  @RequestParam("token") token: String,
                  @RequestParam("owner") owner: String,
-                 @Valid @RequestBody data: FsRequestUpdateDto): ResponseEntity<ResponseDto<*>> {
+                 @Valid @RequestBody data: FsRequestUpdateDto): ResponseEntity<ResponseDto> {
         return ResponseEntity(fsService.updateFs(cpId, token, owner, data), HttpStatus.OK)
     }
 
     @PostMapping("/check")
-    fun checkFs(@Valid @RequestBody data: CheckRequestDto): ResponseEntity<ResponseDto<*>> {
+    fun checkFs(@Valid @RequestBody data: CheckRequestDto): ResponseEntity<ResponseDto> {
         return ResponseEntity(fsService.checkFs(data), HttpStatus.OK)
     }
 }

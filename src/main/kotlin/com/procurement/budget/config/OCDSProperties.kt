@@ -5,6 +5,6 @@ import org.springframework.stereotype.Component
 
 @Component
 @ConfigurationProperties(prefix = "ocds")
-class OCDSProperties {
-    var prefix: String? = null
-}
+class OCDSProperties(
+        var prefix: String? = null
+)

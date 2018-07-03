@@ -22,12 +22,12 @@ interface EiService {
     fun createEi(owner: String,
                  country: String,
                  dateTime: LocalDateTime,
-                 ei: EiDto): ResponseDto<*>
+                 ei: EiDto): ResponseDto
 
     fun updateEi(owner: String,
                  cpId: String,
                  token: String,
-                 updatableEi: EiDto): ResponseDto<*>
+                 updatableEi: EiDto): ResponseDto
 
     fun getEi(cpId: String): EiDto
 }
@@ -41,7 +41,7 @@ class EiServiceImpl(private val ocdsProperties: OCDSProperties,
     override fun createEi(owner: String,
                           country: String,
                           dateTime: LocalDateTime,
-                          ei: EiDto): ResponseDto<*> {
+                          ei: EiDto): ResponseDto {
         validatePeriod(ei)
         val cpId = getCpId(country)
         ei.apply {
@@ -61,7 +61,7 @@ class EiServiceImpl(private val ocdsProperties: OCDSProperties,
     override fun updateEi(owner: String,
                           cpId: String,
                           token: String,
-                          updatableEi: EiDto): ResponseDto<*> {
+                          updatableEi: EiDto): ResponseDto {
         validateForUpdate(updatableEi)
         val entity = eiDao.getByCpId(cpId) ?: throw ErrorException(ErrorType.EI_NOT_FOUND)
         if (entity.token != UUID.fromString(token)) throw ErrorException(ErrorType.INVALID_TOKEN)

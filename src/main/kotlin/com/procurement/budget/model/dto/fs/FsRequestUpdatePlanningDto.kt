@@ -8,8 +8,7 @@ import javax.validation.constraints.NotNull
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class FsRequestUpdatePlanningDto @JsonCreator constructor(
 
-        @field:Valid
-        @field:NotNull
+        @field:Valid        @field:NotNull
         val budget: FsRequestUpdateBudgetDto,
 
         val rationale: String?

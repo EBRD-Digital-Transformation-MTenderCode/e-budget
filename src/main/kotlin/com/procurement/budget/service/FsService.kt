@@ -27,14 +27,14 @@ interface FsService {
     fun createFs(cpId: String,
                  owner: String,
                  dateTime: LocalDateTime,
-                 fsDto: FsRequestCreateDto): ResponseDto<*>
+                 fsDto: FsRequestCreateDto): ResponseDto
 
     fun updateFs(cpId: String,
                  token: String,
                  owner: String,
-                 fsUpdateDto: FsRequestUpdateDto): ResponseDto<*>
+                 fsUpdateDto: FsRequestUpdateDto): ResponseDto
 
-    fun checkFs(dto: CheckRequestDto): ResponseDto<*>
+    fun checkFs(dto: CheckRequestDto): ResponseDto
 }
 
 @Service
@@ -45,7 +45,7 @@ class FsServiceImpl(private val fsDao: FsDao,
     override fun createFs(cpId: String,
                           owner: String,
                           dateTime: LocalDateTime,
-                          fsDto: FsRequestCreateDto): ResponseDto<*> {
+                          fsDto: FsRequestCreateDto): ResponseDto {
         val ei = eiService.getEi(cpId)
         checkCurrency(ei, fsDto)
         checkPeriod(ei, fsDto)
@@ -95,7 +95,7 @@ class FsServiceImpl(private val fsDao: FsDao,
     override fun updateFs(cpId: String,
                           token: String,
                           owner: String,
-                          fsUpdateDto: FsRequestUpdateDto): ResponseDto<*> {
+                          fsUpdateDto: FsRequestUpdateDto): ResponseDto {
         val entity = fsDao.getByCpIdAndToken(cpId, UUID.fromString(token))
                 ?: throw ErrorException(ErrorType.FS_NOT_FOUND)
         if (entity.owner != owner) throw ErrorException(ErrorType.INVALID_OWNER)
@@ -109,7 +109,7 @@ class FsServiceImpl(private val fsDao: FsDao,
         return ResponseDto(true, null, FsResponseDto(totalAmount, fs))
     }
 
-    override fun checkFs(dto: CheckRequestDto): ResponseDto<*> {
+    override fun checkFs(dto: CheckRequestDto): ResponseDto {
         val budgetBreakdowns = dto.budgetBreakdown
         checkBudgetBreakdownCurrency(budgetBreakdowns)
         val cpIds = budgetBreakdowns.asSequence().map { getCpIdFromOcId(it.id) }.toSet()
@@ -120,7 +120,7 @@ class FsServiceImpl(private val fsDao: FsDao,
         if (entities.isEmpty()) throw ErrorException(ErrorType.FS_NOT_FOUND)
         val fsMap = HashMap<String?, FsDto>()
         entities.asSequence()
-                .map({ toObject(FsDto::class.java, it.jsonData) })
+                .map { toObject(FsDto::class.java, it.jsonData) }
                 .forEach { fsMap[it.ocid] = it }
 
         for (cpId in cpIds) {

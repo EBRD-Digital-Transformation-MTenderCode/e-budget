@@ -21,7 +21,7 @@ class EiController(private val eiService: EiService) {
                  @RequestParam("country") country: String,
                  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
                  @RequestParam("date") dateTime: LocalDateTime,
-                 @Valid @RequestBody data: EiDto): ResponseEntity<ResponseDto<*>> {
+                 @Valid @RequestBody data: EiDto): ResponseEntity<ResponseDto> {
         return ResponseEntity(eiService.createEi(owner, country, dateTime, data), HttpStatus.CREATED)
     }
 
@@ -29,7 +29,7 @@ class EiController(private val eiService: EiService) {
     fun updateEi(@RequestParam("identifier") cpId: String,
                  @RequestParam("owner") owner: String,
                  @RequestParam("token") token: String,
-                 @Valid @RequestBody data: EiDto): ResponseEntity<ResponseDto<*>> {
+                 @Valid @RequestBody data: EiDto): ResponseEntity<ResponseDto> {
         return ResponseEntity(eiService.updateEi(owner, cpId, token, data), HttpStatus.OK)
     }
 }

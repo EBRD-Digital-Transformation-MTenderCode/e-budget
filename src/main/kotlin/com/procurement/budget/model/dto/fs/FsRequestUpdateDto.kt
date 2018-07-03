@@ -1,21 +1,20 @@
 package com.procurement.budget.model.dto.fs
 
 import com.fasterxml.jackson.annotation.JsonCreator
+import com.fasterxml.jackson.annotation.JsonInclude
 import javax.validation.Valid
 import javax.validation.constraints.NotNull
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 data class FsRequestUpdateDto @JsonCreator constructor(
 
-        @field:Valid
-        @field:NotNull
+        @field:Valid        @field:NotNull
         val ocid: String,
 
-        @field:Valid
-        @field:NotNull
+        @field:Valid        @field:NotNull
         val planning: FsRequestUpdatePlanningDto,
 
-        @field:Valid
-        @field:NotNull
+        @field:Valid        @field:NotNull
         val tender: FsTenderDto,
 
         @field:Valid
