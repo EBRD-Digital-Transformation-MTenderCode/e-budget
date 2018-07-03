@@ -16,6 +16,6 @@ class BooleansDeserializer : JsonDeserializer<Boolean>() {
         if (!jsonParser.currentToken.isBoolean) {
             throw ErrorException(ErrorType.INVALID_JSON_TYPE, jsonParser.currentName)
         }
-        return jsonParser.currentToken().isBoolean
+        return jsonParser.valueAsBoolean
     }
 }
