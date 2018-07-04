@@ -1,62 +1,68 @@
 {
+  "ocid": "t1s2t3-TEST-1530704493064",
   "tender": {
-    "title": "Препарати наркотичної, психотропної групи: МНН - тримеперидин, морфін гідрохлорид, діазепам, фентаніл, кетамін, феназепам, натрію оксибутират",
-    "description": "Під кількістю 8 штук слід розуміти 8 найменувань",
+    "id": "t1s2t3-TEST-1530704493064",
+    "title": "Hand become put day with west join.",
+    "description": "Break along kitchen whom trip choice seem class adult travel high throughout government room receive second former family girl base same son democratic itself public girl say week.",
+    "status": "planning",
+    "statusDetails": "empty",
     "classification": {
-      "id": "33600000-6",
+      "id": "48760000-3",
       "scheme": "CPV",
-      "description": "Фармацевтична продукція"
+      "description": "Virus protection software package"
     }
   },
   "planning": {
     "budget": {
+      "id": "48760000-3",
       "period": {
-        "startDate": "2018-05-28T00:00:00Z",
-        "endDate": "2018-06-27T00:00:01Z"
+        "startDate": "2018-04-22T09:00:00Z",
+        "endDate": "2018-08-22T09:00:00Z"
       },
       "amount": {
-        "currency": "UAH"
+        "currency": "LVL"
       }
     },
-    "rationale": "Обгрунтування закупівель надано у вільному тексті. Більш детальна інформація може бути надана у доданому документі."
+    "rationale": "Ground national key nothing you sometimes."
   },
   "buyer": {
-    "name": "EI Byuer Новороздільська міська лікарня",
+    "id": "UA-EDR-354-37-1072",
+    "name": "Burns-Davis",
     "identifier": {
-      "id": "20764314",
+      "id": "354-37-1072",
       "scheme": "UA-EDR",
-      "legalName": "EI Byuer Новороздільська міська лікарня",
-      "uri": "http://buyerTestLink.ua"
+      "legalName": "Burns-Davis PLC",
+      "uri": "http://edwards.net/"
+    },
+    "address": {
+      "streetAddress": "077 Shaw Plaza Apt. 268",
+      "locality": "Sethtown",
+      "region": "Kansas",
+      "postalCode": "72091-7701",
+      "countryName": "Pakistan"
     },
     "additionalIdentifiers": [
       {
-        "id": "77764777",
+        "id": "713-49-7544",
         "scheme": "UA-EDR",
-        "legalName": "Додатково Новороздільська міська лікарня",
-        "uri": "http://additionalBuyerTestLink.ua"
+        "legalName": "Burns-Davis PLC",
+        "uri": "http://baker.com/posts/about.asp"
       }
     ],
-    "address": {
-      "streetAddress": "вул. Винниченка, 37",
-      "locality": "місто Новий Розділ",
-      "region": "Львівська область",
-      "postalCode": "7770777",
-      "countryName": "Україна"
-    },
     "contactPoint": {
-      "name": "Осипових Сергій Олександрович",
-      "email": "test2@test.test",
-      "telephone": "+380222222222",
-      "faxNumber": "+380222222222",
-      "url": "test3@test.test"
+      "name": "Jacqueline Soto",
+      "email": "tiffanygutierrez@yahoo.com",
+      "telephone": "724-095-3938x237",
+      "faxNumber": "897-612-1545",
+      "url": "http://hudson.biz/explore/list/category/"
     },
     "details": {
-      "typeOfBuyer": "BODY_PUBLIC",
-      "mainGeneralActivity": "DEFENCE",
-      "mainSectoralActivity": "AIRPORT_RELATED_ACTIVITIES",
-      "isACentralPurchasingBody": 1,
-      "scale": "micro"
+      "typeOfBuyer": "MINISTRY",
+      "mainGeneralActivity": "HEALTH",
+      "mainSectoralActivity": "WATER",
+      "isACentralPurchasingBody": false,
+      "scale": "sme"
     },
-    "buyerProfile": "https://jsonlint.com/"
+    "buyerProfile": "http://ray.com/"
   }
 }

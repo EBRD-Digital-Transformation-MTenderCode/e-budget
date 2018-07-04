@@ -8,12 +8,12 @@ import javax.validation.constraints.NotNull
 
 data class CheckRequestDto @JsonCreator constructor(
 
-        @field:Valid        @field:NotEmpty
+        @field:Valid @field:NotEmpty
         val budgetBreakdown: List<CheckBudgetBreakdownDto>,
 
-        @field:Valid        @field:NotNull
+        @field:Valid @field:NotNull
         val tenderPeriod: CheckPeriodDto,
 
-        @field:Valid        @field:NotNull
+        @field:Valid @field:NotNull
         val classification: Classification
 )

@@ -12,10 +12,10 @@ data class FsDto @JsonCreator constructor(
 
         val ocid: String?,
 
-        @field:Valid        @field:NotNull
+        @field:Valid @field:NotNull
         var tender: FsTenderDto,
 
-        @field:Valid        @field:NotNull
+        @field:Valid @field:NotNull
         var planning: FsPlanningDto,
 
         @field:Valid

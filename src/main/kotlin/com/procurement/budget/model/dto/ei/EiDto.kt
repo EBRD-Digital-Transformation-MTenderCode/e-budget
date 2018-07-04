@@ -12,12 +12,12 @@ data class EiDto @JsonCreator constructor(
 
         var ocid: String?,
 
-        @field:Valid        @field:NotNull
+        @field:Valid @field:NotNull
         var tender: EiTenderDto,
 
-        @field:Valid        @field:NotNull
+        @field:Valid @field:NotNull
         var planning: EiPlanningDto,
 
-        @field:Valid        @field:NotNull
+        @field:Valid @field:NotNull
         var buyer: EiOrganizationReferenceDto
 )

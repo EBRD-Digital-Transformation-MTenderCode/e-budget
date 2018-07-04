@@ -17,10 +17,10 @@ data class FsBudgetDto @JsonCreator constructor(
 
         var description: String?,
 
-        @field:Valid        @field:NotNull
+        @field:Valid @field:NotNull
         val period: Period,
 
-        @field:Valid        @field:NotNull
+        @field:Valid @field:NotNull
         val amount: FsValue,
 
         @field:Valid

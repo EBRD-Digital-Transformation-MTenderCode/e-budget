@@ -17,10 +17,10 @@ data class FsRequestUpdateBudgetDto @JsonCreator constructor(
 
         val description: String?,
 
-        @field:Valid        @field:NotNull
+        @field:Valid @field:NotNull
         val period: Period,
 
-        @field:Valid        @field:NotNull
+        @field:Valid @field:NotNull
         val amount: FsValue,
 
         @field:Valid
@@ -36,7 +36,7 @@ data class FsRequestUpdateBudgetDto @JsonCreator constructor(
         @get:JsonProperty("verified")
         var verified: Boolean?,
 
-        @field:NotNull        @field:Valid
+        @field:NotNull @field:Valid
         var sourceEntity: FsRequestUpdateBudgetOrganizationReferenceDto,
 
         val verificationDetails: String?

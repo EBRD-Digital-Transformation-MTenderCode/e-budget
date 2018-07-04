@@ -22,6 +22,6 @@ data class EiTenderDto @JsonCreator constructor(
 
         var statusDetails: TenderStatusDetails?,
 
-        @field:Valid        @field:NotNull
+        @field:Valid @field:NotNull
         val classification: Classification
 )

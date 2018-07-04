@@ -8,7 +8,6 @@ import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import com.procurement.budget.model.dto.databinding.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Configuration
-import java.math.BigDecimal
 import java.time.LocalDateTime
 
 
@@ -19,7 +18,6 @@ class ObjectMapperConfig(@Autowired objectMapper: ObjectMapper) {
         val module = SimpleModule()
         module.addSerializer(LocalDateTime::class.java, JsonDateSerializer())
         module.addDeserializer(LocalDateTime::class.java, JsonDateDeserializer())
-        module.addDeserializer(BigDecimal::class.java, MoneyDeserializer())
         module.addDeserializer(String::class.java, StringsDeserializer())
         module.addDeserializer(Int::class.java, IntDeserializer())
 
