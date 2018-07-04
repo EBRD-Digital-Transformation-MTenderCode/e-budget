@@ -1,68 +1,21 @@
 {
-  "ocid": "t1s2t3-TEST-1530704493064",
-  "tender": {
-    "id": "t1s2t3-TEST-1530704493064",
-    "title": "Hand become put day with west join.",
-    "description": "Break along kitchen whom trip choice seem class adult travel high throughout government room receive second former family girl base same son democratic itself public girl say week.",
-    "status": "planning",
-    "statusDetails": "empty",
-    "classification": {
-      "id": "48760000-3",
-      "scheme": "CPV",
-      "description": "Virus protection software package"
-    }
-  },
-  "planning": {
-    "budget": {
-      "id": "48760000-3",
-      "period": {
-        "startDate": "2018-04-22T09:00:00Z",
-        "endDate": "2018-08-22T09:00:00Z"
-      },
+  "budgetBreakdown": [
+    {
+      "id": "ocds-t1s2t3-MD-1530699021588-FS-1530702936376",
+      "description": "Yourself reach piece law land. Here list serve deal poor while positive. Return last lawyer real particularly certain morning fact.",
       "amount": {
+        "amount": 123456.789,
         "currency": "LVL"
       }
-    },
-    "rationale": "Ground national key nothing you sometimes."
+    }
+  ],
+  "tenderPeriod": {
+    "endDate": "2018-07-05T13:51:00Z",
+    "startDate": "2018-07-04T12:43:55Z"
   },
-  "buyer": {
-    "id": "UA-EDR-354-37-1072",
-    "name": "Burns-Davis",
-    "identifier": {
-      "id": "354-37-1072",
-      "scheme": "UA-EDR",
-      "legalName": "Burns-Davis PLC",
-      "uri": "http://edwards.net/"
-    },
-    "address": {
-      "streetAddress": "077 Shaw Plaza Apt. 268",
-      "locality": "Sethtown",
-      "region": "Kansas",
-      "postalCode": "72091-7701",
-      "countryName": "Pakistan"
-    },
-    "additionalIdentifiers": [
-      {
-        "id": "713-49-7544",
-        "scheme": "UA-EDR",
-        "legalName": "Burns-Davis PLC",
-        "uri": "http://baker.com/posts/about.asp"
-      }
-    ],
-    "contactPoint": {
-      "name": "Jacqueline Soto",
-      "email": "tiffanygutierrez@yahoo.com",
-      "telephone": "724-095-3938x237",
-      "faxNumber": "897-612-1545",
-      "url": "http://hudson.biz/explore/list/category/"
-    },
-    "details": {
-      "typeOfBuyer": "MINISTRY",
-      "mainGeneralActivity": "HEALTH",
-      "mainSectoralActivity": "WATER",
-      "isACentralPurchasingBody": false,
-      "scale": "sme"
-    },
-    "buyerProfile": "http://ray.com/"
+  "classification": {
+    "id": "48760000-3",
+    "scheme": "CPV",
+    "description": "Virus protection software package"
   }
 }
