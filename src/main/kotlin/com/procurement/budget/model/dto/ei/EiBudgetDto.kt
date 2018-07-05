@@ -12,8 +12,8 @@ data class EiBudgetDto @JsonCreator constructor(
         var id: String?,
 
         @field:Valid @field:NotNull
-        val period: Period,
+        val period: Period
 
-        @field:Valid @field:NotNull
-        val amount: EiValue
+//        @field:Valid @field:NotNull
+//        val amount: EiValue
 )

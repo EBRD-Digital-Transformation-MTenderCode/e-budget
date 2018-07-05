@@ -74,7 +74,7 @@ class EiServiceImpl(private val ocdsProperties: OCDSProperties,
             tender.classification.scheme = ei.tender.classification.scheme
             buyer = ei.buyer
             if (fsExist) {
-                planning.budget.amount.currency = ei.planning.budget.amount.currency
+//                planning.budget.amount.currency = ei.planning.budget.amount.currency
                 checkCPVAndSetBudgetId(ei, updatableEi)
             }
         }

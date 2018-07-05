@@ -1,21 +1,58 @@
 {
-  "budgetBreakdown": [
-    {
-      "id": "ocds-t1s2t3-MD-1530699021588-FS-1530702936376",
-      "description": "Yourself reach piece law land. Here list serve deal poor while positive. Return last lawyer real particularly certain morning fact.",
-      "amount": {
-        "amount": 123456.789,
-        "currency": "LVL"
-      }
+  "tender": {
+    "title": "",
+    "classification": {
+      "id": "12300000-5",
+      "scheme": "CPV",
+      "description": ""
     }
-  ],
-  "tenderPeriod": {
-    "endDate": "2018-07-05T13:51:00Z",
-    "startDate": "2018-07-04T12:43:55Z"
   },
-  "classification": {
-    "id": "48760000-3",
-    "scheme": "CPV",
-    "description": "Virus protection software package"
+  "planning": {
+    "budget": {
+      "period": {
+        "startDate": "2018-06-18T14:13:03Z",
+        "endDate": "2018-12-15T14:13:03Z"
+      },
+      "rationale": "Star enter cup."
+    }
+  },
+  "buyer": {
+    "name": "Ritter, Campbell and Luna",
+    "identifier": {
+      "scheme": "UA-EDR",
+      "id": "266-99-6331",
+      "legalName": "Ritter, Campbell and Luna Inc",
+      "uri": "https://www.giles.org/home/"
+    },
+    "additionalIdentifiers": [
+      {
+        "scheme": "UA-EDR",
+        "id": "484-41-3372",
+        "legalName": "Ritter, Campbell and Luna Ltd",
+        "uri": "http://www.watkins-michael.com/index.htm"
+      }
+    ],
+    "address": {
+      "streetAddress": "7491 Amanda Harbor",
+      "locality": "Port Jesse",
+      "region": "Nebraska",
+      "postalCode": "84045-4609",
+      "countryName": "Qatar"
+    },
+    "contactPoint": {
+      "name": "Oscar Navarro",
+      "email": "pricesarah@gmail.com",
+      "telephone": "807.124.7099",
+      "faxNumber": "1-657-781-3064x436",
+      "url": "http://www.smith-chavez.net/tags/wp-content/search.html"
+    },
+    "details": {
+      "typeOfBuyer": "REGIONAL_AUTHORITY",
+      "mainGeneralActivity": "GENERAL_PUBLIC_SERVICES",
+      "mainSectoralActivity": "WATER",
+      "isACentralPurchasingBody": true,
+      "scale": "large"
+    },
+    "buyerProfile": "http://www.anderson.net/wp-content/list/tags/homepage/"
   }
 }

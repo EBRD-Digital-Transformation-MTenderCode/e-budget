@@ -167,9 +167,9 @@ class FsServiceImpl(private val fsDao: FsDao,
     }
 
     private fun checkCurrency(ei: EiDto, fs: FsRequestCreateDto) {
-        val eiCurrency = ei.planning.budget.amount.currency
-        val fsCurrency = fs.planning.budget.amount.currency
-        if (eiCurrency != fsCurrency) throw ErrorException(ErrorType.INVALID_CURRENCY)
+//        val eiCurrency = ei.planning.budget.amount.currency
+//        val fsCurrency = fs.planning.budget.amount.currency
+//        if (eiCurrency != fsCurrency) throw ErrorException(ErrorType.INVALID_CURRENCY)
     }
 
     private fun checkCPV(ei: EiDto, dto: CheckRequestDto) {
