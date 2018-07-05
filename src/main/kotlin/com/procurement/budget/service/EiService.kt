@@ -43,6 +43,7 @@ class EiServiceImpl(private val ocdsProperties: OCDSProperties,
                           dateTime: LocalDateTime,
                           ei: EiDto): ResponseDto {
         validatePeriod(ei)
+        validateCpv(ei)
         val cpId = getCpId(country)
         ei.apply {
             ocid = cpId
@@ -89,14 +90,8 @@ class EiServiceImpl(private val ocdsProperties: OCDSProperties,
         return toObject(EiDto::class.java, entity.jsonData)
     }
 
-    private fun checkCPVAndSetBudgetId(ei: EiDto, dto: EiDto) {
-        val eiCPV = ei.tender.classification.id
-        val dtoCPV = dto.tender.classification.id
-        if (eiCPV.substring(0, 3).toUpperCase() != dtoCPV.substring(0, 3).toUpperCase())
-            throw ErrorException(ErrorType.INVALID_CPV)
-        if (eiCPV != dtoCPV) ei.planning.budget.id = generationService.getNowUtc().toString()
+    private fun validateCpv(dto: EiDto) {
     }
-
 
     private fun getCpId(country: String): String {
         return ocdsProperties.prefix + SEPARATOR + country + SEPARATOR + generationService.getNowUtc()
@@ -105,6 +100,14 @@ class EiServiceImpl(private val ocdsProperties: OCDSProperties,
     private fun validatePeriod(ei: EiDto) {
         if (!ei.planning.budget.period.startDate.isBefore(ei.planning.budget.period.endDate))
             throw ErrorException(ErrorType.INVALID_PERIOD)
+    }
+
+    private fun checkCPVAndSetBudgetId(ei: EiDto, dto: EiDto) {
+        val eiCPV = ei.tender.classification.id
+        val dtoCPV = dto.tender.classification.id
+        if (eiCPV.substring(0, 3).toUpperCase() != dtoCPV.substring(0, 3).toUpperCase())
+            throw ErrorException(ErrorType.INVALID_CPV)
+        if (eiCPV != dtoCPV) ei.planning.budget.id = generationService.getNowUtc().toString()
     }
 
     private fun validateForUpdate(ei: EiDto) {
