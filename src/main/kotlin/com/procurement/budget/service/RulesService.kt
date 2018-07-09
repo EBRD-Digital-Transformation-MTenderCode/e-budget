@@ -14,11 +14,10 @@ interface RulesService {
 class RulesServiceImpl(private val rulesDao: RulesDao) : RulesService {
 
     override fun getCpvCodeRegex(country: String): String {
-        return rulesDao.getValue(country, PARAMETER_CPV)?.toString()
-                ?: throw ErrorException(ErrorType.RULES_NOT_FOUND)
+        return rulesDao.getValue(country, PARAMETER_CPV) ?: throw ErrorException(ErrorType.RULES_NOT_FOUND)
     }
 
     companion object {
-        private val PARAMETER_CPV = "interval"
+        private val PARAMETER_CPV = "cpv"
     }
 }
