@@ -14,6 +14,4 @@ data class EiBudgetDto @JsonCreator constructor(
         @field:Valid @field:NotNull
         val period: Period
 
-//        @field:Valid @field:NotNull
-//        val amount: EiValue
 )
