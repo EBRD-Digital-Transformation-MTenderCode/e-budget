@@ -26,5 +26,5 @@ data class EiTenderDto @JsonCreator constructor(
         val classification: Classification,
 
         @field:NotNull
-        val mainProcurementCategory: String
+        val mainProcurementCategory: String?
 )
