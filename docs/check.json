@@ -5,7 +5,8 @@
       "id": "12300000-5",
       "scheme": "CPV",
       "description": ""
-    }
+    },
+    "mainProcurementCategory": "mainProcurementCategory"
   },
   "planning": {
     "budget": {

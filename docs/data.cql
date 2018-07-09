@@ -28,4 +28,4 @@ CREATE TABLE IF NOT EXISTS  ocds.budget_rules (
     primary key(country, parameter)
 );
 
-INSERT INTO ocds.budget_rules (country, parameter, value)  VALUES ('MD', 'cpv', 'XXX0XXXX-Y');
+INSERT INTO ocds.budget_rules (country, parameter, value)  VALUES ('MD', 'cpv', '^\d\d\d0\d\d\d\d-\d$');
