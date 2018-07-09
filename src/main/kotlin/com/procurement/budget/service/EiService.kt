@@ -36,14 +36,15 @@ interface EiService {
 class EiServiceImpl(private val ocdsProperties: OCDSProperties,
                     private val eiDao: EiDao,
                     private val fsDao: FsDao,
-                    private val generationService: GenerationService) : EiService {
+                    private val generationService: GenerationService,
+                    private val rulesService: RulesService) : EiService {
 
     override fun createEi(owner: String,
                           country: String,
                           dateTime: LocalDateTime,
                           ei: EiDto): ResponseDto {
         validatePeriod(ei)
-        validateCpv(ei)
+        validateCpv(country, ei)
         val cpId = getCpId(country)
         ei.apply {
             ocid = cpId
@@ -90,7 +91,9 @@ class EiServiceImpl(private val ocdsProperties: OCDSProperties,
         return toObject(EiDto::class.java, entity.jsonData)
     }
 
-    private fun validateCpv(dto: EiDto) {
+    private fun validateCpv(country: String, dto: EiDto) {
+        val cpvCodeRegex = rulesService.getCpvCodeRegex(country).toRegex()
+        if (!cpvCodeRegex.matches(dto.tender.classification.id)) throw ErrorException(ErrorType.INVALID_CPV)
     }
 
     private fun getCpId(country: String): String {

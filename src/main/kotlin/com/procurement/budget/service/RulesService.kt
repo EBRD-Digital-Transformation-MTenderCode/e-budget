@@ -1,0 +1,24 @@
+package com.procurement.budget.service
+
+import com.procurement.budget.exception.ErrorException
+import com.procurement.budget.exception.ErrorType
+import com.procurement.submission.dao.RulesDao
+import org.springframework.stereotype.Service
+
+interface RulesService {
+
+    fun getCpvCodeRegex(country: String): String
+}
+
+@Service
+class RulesServiceImpl(private val rulesDao: RulesDao) : RulesService {
+
+    override fun getCpvCodeRegex(country: String): String {
+        return rulesDao.getValue(country, PARAMETER_CPV)?.toString()
+                ?: throw ErrorException(ErrorType.RULES_NOT_FOUND)
+    }
+
+    companion object {
+        private val PARAMETER_CPV = "interval"
+    }
+}

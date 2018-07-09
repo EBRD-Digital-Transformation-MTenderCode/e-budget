@@ -9,7 +9,6 @@ import javax.validation.constraints.Pattern
 data class Classification @JsonCreator constructor(
 
         @field:NotNull
-        @field:Pattern(regexp = "XXX00000-Y")
         val id: String,
 
         @field:NotNull

@@ -21,9 +21,11 @@ CREATE TABLE IF NOT EXISTS  ocds.budget_fs (
     primary key(cp_id, oc_id, token_entity)
 );
 
+CREATE TABLE IF NOT EXISTS  ocds.budget_rules (
+    country text,
+    parameter text,
+    value text,
+    primary key(country, parameter)
+);
 
-SELECT * FROM ocds.budget_ei;
-SELECT * FROM ocds.budget_fs;
-
-TRUNCATE ocds.budget_fs;
-TRUNCATE ocds.budget_ei;
+INSERT INTO ocds.budget_rules (country, parameter, value)  VALUES ('MD', 'cpv', 'XXX0XXXX-Y');

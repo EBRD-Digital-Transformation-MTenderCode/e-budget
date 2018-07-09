@@ -17,5 +17,6 @@ enum class ErrorType constructor(val code: String, val message: String) {
     INVALID_VERIFIED("00.11", "Verified of FS must not be empty."),
     INVALID_PERIOD("01.01", "Invalid period."),
     INVALID_DATE("01.02", "Date does not match the period."),
-    PARAM_ERROR("01.03", "Should not be empty for this type of operation");
+    PARAM_ERROR("01.03", "Should not be empty for this type of operation"),
+    RULES_NOT_FOUND("02.01", "Rules not found.");
 }

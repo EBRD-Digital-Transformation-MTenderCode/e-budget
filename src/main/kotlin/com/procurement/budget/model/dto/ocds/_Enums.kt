@@ -332,7 +332,6 @@ enum class Currency constructor(private val value: String) {
     }
 }
 
-
 enum class MainGeneralActivity constructor(private val value: String) {
     DEFENCE("DEFENCE"),
     ECONOMIC_AND_FINANCIAL_AFFAIRS("ECONOMIC_AND_FINANCIAL_AFFAIRS"),
