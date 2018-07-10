@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS  ocds.budget_fs (
     amount_reserved decimal,
     created_date timestamp,
     json_data text,
-    primary key(cp_id, oc_id, token_entity)
+    primary key(cp_id, token_entity)
 );
 
 CREATE TABLE IF NOT EXISTS  ocds.budget_rules (
