@@ -9,14 +9,14 @@ import javax.validation.Valid
 import javax.validation.constraints.NotNull
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-data class EiTenderDto @JsonCreator constructor(
+data class EiTender @JsonCreator constructor(
 
         var id: String?,
 
         @field:NotNull
-        val title: String,
+        var title: String,
 
-        val description: String?,
+        var description: String?,
 
         var status: TenderStatus?,
 

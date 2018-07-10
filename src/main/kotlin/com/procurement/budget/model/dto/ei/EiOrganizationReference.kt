@@ -11,7 +11,7 @@ import javax.validation.Valid
 import javax.validation.constraints.NotNull
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-data class EiOrganizationReferenceDto @JsonCreator constructor(
+data class EiOrganizationReference @JsonCreator constructor(
 
         var id: String?,
 

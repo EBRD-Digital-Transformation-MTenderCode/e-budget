@@ -1,7 +1,7 @@
 package com.procurement.budget.model.dto.check
 
 import com.fasterxml.jackson.annotation.JsonInclude
-import com.procurement.budget.model.dto.ei.EiOrganizationReferenceDto
+import com.procurement.budget.model.dto.ei.EiOrganizationReference
 import com.procurement.budget.model.dto.fs.FsOrganizationReferenceDto
 import java.util.*
 
@@ -16,5 +16,5 @@ data class CheckResponseDto(
 
         val payer: HashSet<FsOrganizationReferenceDto>?,
 
-        val buyer: HashSet<EiOrganizationReferenceDto>?
+        val buyer: HashSet<EiOrganizationReference>?
 )

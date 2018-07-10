@@ -8,8 +8,8 @@ import com.procurement.budget.model.dto.check.CheckBudgetBreakdownDto
 import com.procurement.budget.model.dto.check.CheckRequestDto
 import com.procurement.budget.model.dto.check.CheckResponseDto
 import com.procurement.budget.model.dto.check.CheckSourcePartyDto
-import com.procurement.budget.model.dto.ei.EiDto
-import com.procurement.budget.model.dto.ei.EiOrganizationReferenceDto
+import com.procurement.budget.model.dto.ei.Ei
+import com.procurement.budget.model.dto.ei.EiOrganizationReference
 import com.procurement.budget.model.dto.fs.*
 import com.procurement.budget.model.dto.ocds.TenderStatus
 import com.procurement.budget.model.dto.ocds.TenderStatusDetails
@@ -115,7 +115,7 @@ class FsServiceImpl(private val fsDao: FsDao,
         val cpIds = budgetBreakdowns.asSequence().map { getCpIdFromOcId(it.id) }.toSet()
         val funders = HashSet<FsOrganizationReferenceDto>()
         val payers = HashSet<FsOrganizationReferenceDto>()
-        val buyers = HashSet<EiOrganizationReferenceDto>()
+        val buyers = HashSet<EiOrganizationReference>()
         val entities = fsDao.getAllByCpIds(cpIds)
         if (entities.isEmpty()) throw ErrorException(ErrorType.FS_NOT_FOUND)
         val fsMap = HashMap<String?, FsDto>()
@@ -158,7 +158,7 @@ class FsServiceImpl(private val fsDao: FsDao,
             throw ErrorException(ErrorType.INVALID_PERIOD)
     }
 
-    private fun checkPeriod(ei: EiDto, fs: FsRequestCreateDto) {
+    private fun checkPeriod(ei: Ei, fs: FsRequestCreateDto) {
         val (eiStartDate, eiEndDate) = ei.planning.budget.period
         val (fsStartDate, fsEndDate) = fs.planning.budget.period
         val fsPeriodValid = (fsStartDate.isAfter(eiStartDate) || fsStartDate.isEqual(eiStartDate))
@@ -166,20 +166,20 @@ class FsServiceImpl(private val fsDao: FsDao,
         if (!fsPeriodValid) throw ErrorException(ErrorType.INVALID_PERIOD)
     }
 
-//    private fun checkCurrency(ei: EiDto, fs: FsRequestCreateDto) {
+//    private fun checkCurrency(ei: Ei, fs: FsRequestCreateDto) {
 //        val eiCurrency = ei.planning.budget.amount.currency
 //        val fsCurrency = fs.planning.budget.amount.currency
 //        if (eiCurrency != fsCurrency) throw ErrorException(ErrorType.INVALID_CURRENCY)
 //    }
 
-    private fun checkCPV(ei: EiDto, dto: CheckRequestDto) {
+    private fun checkCPV(ei: Ei, dto: CheckRequestDto) {
         val eiCPV = ei.tender.classification.id
         val dtoCPV = dto.classification.id
         if (eiCPV.substring(0, 3).toUpperCase() != dtoCPV.substring(0, 3).toUpperCase())
             throw ErrorException(ErrorType.INVALID_CPV)
     }
 
-    private fun getFounderFromEi(buyer: EiOrganizationReferenceDto): FsOrganizationReferenceDto {
+    private fun getFounderFromEi(buyer: EiOrganizationReference): FsOrganizationReferenceDto {
         return FsOrganizationReferenceDto(
                 id = buyer.id,
                 name = buyer.name,

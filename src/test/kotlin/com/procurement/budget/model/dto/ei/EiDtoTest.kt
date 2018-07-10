@@ -9,12 +9,12 @@
 ////    @Test
 ////    @DisplayName("EiDtoRequired")
 ////    fun eiDtoWithout() {
-////        compare(EiDto::class.java, "/json/ei_request.json")
+////        compare(Ei::class.java, "/json/ei_request.json")
 ////    }
 ////
 ////    @Test
 ////    @DisplayName("EiDtoFull")
 ////    fun eiDtoFull() {
-////        compare(EiDto::class.java, "/json/ei_request_full.json")
+////        compare(Ei::class.java, "/json/ei_request_full.json")
 ////    }
 //}

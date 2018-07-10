@@ -6,18 +6,18 @@ import javax.validation.Valid
 import javax.validation.constraints.NotNull
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-data class EiDto @JsonCreator constructor(
+data class Ei @JsonCreator constructor(
 
         var token: String?,
 
         var ocid: String?,
 
         @field:Valid @field:NotNull
-        var tender: EiTenderDto,
+        var tender: EiTender,
 
         @field:Valid @field:NotNull
-        var planning: EiPlanningDto,
+        var planning: EiPlanning,
 
         @field:Valid @field:NotNull
-        var buyer: EiOrganizationReferenceDto
+        var buyer: EiOrganizationReference
 )

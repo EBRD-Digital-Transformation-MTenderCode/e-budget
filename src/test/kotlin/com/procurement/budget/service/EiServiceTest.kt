@@ -5,7 +5,7 @@
 //import com.procurement.budget.config.OCDSProperties
 //import com.procurement.budget.dao.EiDao
 //import com.procurement.budget.dao.FsDao
-//import com.procurement.budget.model.dto.ei.EiDto
+//import com.procurement.budget.model.dto.ei.Ei
 //import com.procurement.budget.model.entity.EiEntity
 //import com.procurement.budget.utils.*
 //import org.junit.jupiter.api.Assertions
@@ -35,7 +35,7 @@
 ////    private lateinit var service: EiServiceImpl
 ////    private lateinit var generationService: GenerationServiceImpl
 ////    private lateinit var eiEntity: EiEntity
-////    private lateinit var ei: EiDto
+////    private lateinit var ei: Ei
 ////
 ////    @BeforeEach
 ////    fun init() {
@@ -44,7 +44,7 @@
 ////        fsDao = mock()
 ////        generationService = mock()
 ////        service = EiServiceImpl(properties, eiDao,fsDao, generationService)
-////        ei = toObject(EiDto::class.java, getJsonFromFile(EI_JSON))
+////        ei = toObject(Ei::class.java, getJsonFromFile(EI_JSON))
 ////        eiEntity = EiEntity(
 ////                cpId = CPID,
 ////                token = UUID.fromString(TOKEN),
@@ -59,7 +59,7 @@
 ////        whenever(properties.prefix).thenReturn("ocds-t1s2t3")
 ////        whenever(generationService.generateRandomUUID()).thenReturn(UUID.fromString(TOKEN))
 ////        whenever(generationService.getNowUtc()).thenReturn(OCID_TIME_STAMP)
-////        val request = toObject(EiDto::class.java, getJsonFromFile(EI_CREATE_JSON_REQUEST))
+////        val request = toObject(Ei::class.java, getJsonFromFile(EI_CREATE_JSON_REQUEST))
 ////        val response = service.createEi(OWNER, COUNTRY, createdDate, request)
 ////        val responseExpected = getJsonFromFile(EI_JSON_RESPONSE)
 ////        val responseSerialised = toJson(response.data)
