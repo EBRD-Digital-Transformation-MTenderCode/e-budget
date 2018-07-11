@@ -29,9 +29,7 @@ interface EiService {
     fun updateEi(owner: String,
                  cpId: String,
                  token: String,
-                 updatableEi: Ei): ResponseDto
-
-    fun getEi(cpId: String): Ei
+                 eiDto: Ei): ResponseDto
 }
 
 @Service
@@ -44,12 +42,12 @@ class EiServiceImpl(private val ocdsProperties: OCDSProperties,
     override fun createEi(owner: String,
                           country: String,
                           dateTime: LocalDateTime,
-                          eiDto: Ei): ResponseDto {
-        filterForCreate(eiDto)
-        validatePeriod(eiDto)
-        validateCpv(country, eiDto)
+                          ei: Ei): ResponseDto {
+        filterForCreate(ei)
+        validatePeriod(ei)
+        validateCpv(country, ei)
         val cpId = getCpId(country)
-        eiDto.apply {
+        ei.apply {
             ocid = cpId
             tender.id = cpId
             tender.status = TenderStatus.PLANNING
@@ -57,10 +55,10 @@ class EiServiceImpl(private val ocdsProperties: OCDSProperties,
             planning.budget.id = tender.classification.id
             buyer.apply { id = identifier.scheme + SEPARATOR + identifier.id }
         }
-        val entity = getEntity(eiDto, owner, dateTime)
+        val entity = getEntity(ei, owner, dateTime)
         eiDao.save(entity)
-        eiDto.token = entity.token.toString()
-        return ResponseDto(true, null, eiDto)
+        ei.token = entity.token.toString()
+        return ResponseDto(true, null, ei)
     }
 
     override fun updateEi(owner: String,
@@ -87,11 +85,6 @@ class EiServiceImpl(private val ocdsProperties: OCDSProperties,
         eiDao.save(entity)
         eiDto.token = entity.token.toString()
         return ResponseDto(true, null, eiDto)
-    }
-
-    override fun getEi(cpId: String): Ei {
-        val entity = eiDao.getByCpId(cpId) ?: throw ErrorException(ErrorType.EI_NOT_FOUND)
-        return toObject(Ei::class.java, entity.jsonData)
     }
 
     private fun validateCpv(country: String, dto: Ei) {

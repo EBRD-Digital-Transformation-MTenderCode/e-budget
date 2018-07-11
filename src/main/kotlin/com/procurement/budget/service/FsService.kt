@@ -1,5 +1,6 @@
 package com.procurement.budget.service
 
+import com.procurement.budget.dao.EiDao
 import com.procurement.budget.dao.FsDao
 import com.procurement.budget.exception.ErrorException
 import com.procurement.budget.exception.ErrorType
@@ -10,6 +11,7 @@ import com.procurement.budget.model.dto.check.CheckResponseDto
 import com.procurement.budget.model.dto.check.CheckSourcePartyDto
 import com.procurement.budget.model.dto.ei.Ei
 import com.procurement.budget.model.dto.ei.EiOrganizationReference
+import com.procurement.budget.model.dto.ei.EiValue
 import com.procurement.budget.model.dto.fs.*
 import com.procurement.budget.model.dto.ocds.TenderStatus
 import com.procurement.budget.model.dto.ocds.TenderStatusDetails
@@ -39,15 +41,16 @@ interface FsService {
 
 @Service
 class FsServiceImpl(private val fsDao: FsDao,
-                    private val eiService: EiService,
+                    private val eiDao: EiDao,
                     private val generationService: GenerationService) : FsService {
 
     override fun createFs(cpId: String,
                           owner: String,
                           dateTime: LocalDateTime,
                           fsDto: FsRequestCreateDto): ResponseDto {
-        val ei = eiService.getEi(cpId)
-//        checkCurrency(ei, fsDto)
+        val eiEntity = eiDao.getByCpId(cpId) ?: throw ErrorException(ErrorType.EI_NOT_FOUND)
+        val ei = toObject(Ei::class.java, eiEntity.jsonData)
+        checkCurrency(ei, fsDto)
         checkPeriod(ei, fsDto)
         validatePeriod(fsDto)
         val fsTenderStatus: TenderStatus
@@ -89,6 +92,9 @@ class FsServiceImpl(private val fsDao: FsDao,
         fsDao.save(entity)
         fs.token = entity.token.toString()
         val totalAmount = fsDao.getTotalAmountByCpId(cpId) ?: BigDecimal.ZERO
+        ei.planning.budget.amount = EiValue(amount = totalAmount, currency = fs.planning.budget.amount.currency)
+        eiEntity.jsonData = toJson(ei)
+        eiDao.save(eiEntity)
         return ResponseDto(true, null, FsResponseDto(totalAmount, fs))
     }
 
@@ -124,7 +130,8 @@ class FsServiceImpl(private val fsDao: FsDao,
                 .forEach { fsMap[it.ocid] = it }
 
         for (cpId in cpIds) {
-            val ei = eiService.getEi(cpId)
+            val eiEntity = eiDao.getByCpId(cpId) ?: throw ErrorException(ErrorType.EI_NOT_FOUND)
+            val ei = toObject(Ei::class.java, eiEntity.jsonData)
             checkCPV(ei, dto)
             buyers.add(ei.buyer)
             budgetBreakdowns.forEach { br ->
@@ -166,11 +173,13 @@ class FsServiceImpl(private val fsDao: FsDao,
         if (!fsPeriodValid) throw ErrorException(ErrorType.INVALID_PERIOD)
     }
 
-//    private fun checkCurrency(ei: Ei, fs: FsRequestCreateDto) {
-//        val eiCurrency = ei.planning.budget.amount.currency
-//        val fsCurrency = fs.planning.budget.amount.currency
-//        if (eiCurrency != fsCurrency) throw ErrorException(ErrorType.INVALID_CURRENCY)
-//    }
+    private fun checkCurrency(ei: Ei, fs: FsRequestCreateDto) {
+        val fsCurrency = fs.planning.budget.amount.currency
+        val eiCurrency = ei.planning.budget.amount?.currency
+        if (eiCurrency != null) {
+            if (eiCurrency != fsCurrency) throw ErrorException(ErrorType.INVALID_CURRENCY)
+        }
+    }
 
     private fun checkCPV(ei: Ei, dto: CheckRequestDto) {
         val eiCPV = ei.tender.classification.id
