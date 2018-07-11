@@ -30,7 +30,10 @@ data class Context @JsonCreator constructor(
 
 enum class CommandType(private val value: String) {
     CREATE_EI("createEi"),
-    UPDATE_EI("updateEi");
+    UPDATE_EI("updateEi"),
+    CREATE_FS("createFs"),
+    UPDATE_FS("updateFs"),
+    CHECK_FS("checkFs");
 
     @JsonValue
     fun value(): String {
