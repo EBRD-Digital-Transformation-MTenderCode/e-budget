@@ -11,7 +11,7 @@ import javax.validation.Valid
 import javax.validation.constraints.NotNull
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-data class FsBudgetDto @JsonCreator constructor(
+data class FsBudget @JsonCreator constructor(
 
         var id: String?,
 
@@ -36,7 +36,7 @@ data class FsBudgetDto @JsonCreator constructor(
         var verified: Boolean?,
 
         @field:Valid
-        var sourceEntity: FsOrganizationReferenceDto?,
+        var sourceEntity: FsOrganizationReference?,
 
         var verificationDetails: String?
 )

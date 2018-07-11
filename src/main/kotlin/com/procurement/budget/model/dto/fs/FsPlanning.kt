@@ -6,10 +6,10 @@ import javax.validation.Valid
 import javax.validation.constraints.NotNull
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-data class FsRequestUpdatePlanningDto @JsonCreator constructor(
+data class FsPlanning @JsonCreator constructor(
 
         @field:Valid @field:NotNull
-        val budget: FsRequestUpdateBudgetDto,
+        val budget: FsBudget,
 
-        val rationale: String?
+        var rationale: String?
 )

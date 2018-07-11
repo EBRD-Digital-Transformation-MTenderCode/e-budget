@@ -18,5 +18,7 @@ enum class ErrorType constructor(val code: String, val message: String) {
     INVALID_PERIOD("01.01", "Invalid period."),
     INVALID_DATE("01.02", "Date does not match the period."),
     PARAM_ERROR("01.03", "Should not be empty for this type of operation"),
+    INVALID_EUROPEAN("01.04", "EuropeanUnionFunding must not be empty."),
+    INVALID_TENDER_ID("01.05", "Invalid tender id."),
     RULES_NOT_FOUND("02.01", "Rules not found.");
 }

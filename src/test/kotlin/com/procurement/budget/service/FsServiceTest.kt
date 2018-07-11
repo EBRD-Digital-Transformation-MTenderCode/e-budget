@@ -6,7 +6,7 @@
 //import com.procurement.budget.dao.FsDao
 //import com.procurement.budget.model.dto.check.CheckRequestDto
 //import com.procurement.budget.model.dto.ei.Ei
-//import com.procurement.budget.model.dto.fs.FsDto
+//import com.procurement.budget.model.dto.fs.Fs
 //import com.procurement.budget.model.dto.fs.FsRequestCreateDto
 //import com.procurement.budget.model.entity.FsEntity
 //import com.procurement.budget.utils.*
@@ -44,7 +44,7 @@
 ////    private lateinit var generationService: GenerationServiceImpl
 ////    private lateinit var fsEntity: FsEntity
 ////    private lateinit var eiDto: Ei
-////    private lateinit var fsDto: FsDto
+////    private lateinit var fsDto: Fs
 ////    private lateinit var fsEntities: List<FsEntity>
 ////    private lateinit var cpIds: Set<String>
 ////
@@ -56,7 +56,7 @@
 ////        generationService = mock()
 ////        fsService = FsServiceImpl(fsDao, eiService, generationService)
 ////        eiDto = toObject(Ei::class.java, getJsonFromFile(EI_JSON_CREATE))
-////        fsDto = toObject(FsDto::class.java, getJsonFromFile(FS_JSON))
+////        fsDto = toObject(Fs::class.java, getJsonFromFile(FS_JSON))
 ////        fsEntity = FsEntity(
 ////                cpId = CPID,
 ////                ocId = OCID,

@@ -1,0 +1,99 @@
+{
+    "planning":
+    {
+        "budget":
+        {
+            --"id": "",
+            --"description": "",
+            "period":
+            {
+                "startDate": "",
+                "endDate": ""
+            },
+            "amount":
+            {
+                "amount": 0,
+                "currency": "MDL"
+            },
+            "isEuropeanUnionFunded": false,
+            --"europeanUnionFunding":
+            {
+                "projectName": "",
+                "projectIdentifier": "",
+                --"uri": ""
+            }
+        },
+        --"rationale": ""
+    },
+    "tender":
+    {
+        "procuringEntity":
+        {
+            "name": "",
+            "identifier":
+            {
+                "scheme": "",
+                "id": "",
+                "legalName": "",
+                "uri": ""
+            },
+            --"additionalIdentifiers":
+            [{
+                "scheme": "",
+                "id": "",
+                "legalName": "",
+                "uri": ""
+            }],
+            "address":
+            {
+                "streetAddress": "",
+                "locality": "",
+                "region": "",
+                --"postalCode": "",
+                "countryName": ""
+            },
+            "contactPoint":
+            {
+                "name": "",
+                "email": "",
+                "telephone": "",
+                --"faxNumber": "",
+                "url": ""
+            }
+        }
+    },
+    --"buyer":
+    {
+        "name": "",
+        "identifier":
+        {
+            "id": "",
+            "scheme": "",
+            "legalName": "",
+            "uri": ""
+        },
+        --"additionalIdentifiers":
+        [{
+            "id": "",
+            "scheme": "",
+            "legalName": "",
+            "uri": ""
+        }],
+        "address":
+        {
+            "streetAddress": "",
+            "locality": "",
+            "region": "",
+            --"postalCode": "",
+            "countryName": ""
+        },
+        "contactPoint":
+        {
+            "name": "",
+            "email": "",
+            "telephone": "",
+            --"faxNumber": "",
+            "url": ""
+        }
+    }
+}

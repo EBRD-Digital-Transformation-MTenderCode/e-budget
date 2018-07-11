@@ -6,13 +6,13 @@ import javax.validation.Valid
 import javax.validation.constraints.NotEmpty
 import javax.validation.constraints.NotNull
 
-data class CheckRequestDto @JsonCreator constructor(
+data class CheckRequest @JsonCreator constructor(
 
         @field:Valid @field:NotEmpty
-        val budgetBreakdown: List<CheckBudgetBreakdownDto>,
+        val budgetBreakdown: List<CheckBudgetBreakdown>,
 
         @field:Valid @field:NotNull
-        val tenderPeriod: CheckPeriodDto,
+        val tenderPeriod: CheckPeriod,
 
         @field:Valid @field:NotNull
         val classification: Classification

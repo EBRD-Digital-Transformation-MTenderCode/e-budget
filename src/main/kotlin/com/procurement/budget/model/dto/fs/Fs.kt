@@ -6,21 +6,24 @@ import javax.validation.Valid
 import javax.validation.constraints.NotNull
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-data class FsDto @JsonCreator constructor(
+data class Fs @JsonCreator constructor(
 
         var token: String?,
 
         val ocid: String?,
 
         @field:Valid @field:NotNull
-        var tender: FsTenderDto,
+        var tender: FsTender,
 
         @field:Valid @field:NotNull
-        var planning: FsPlanningDto,
+        var planning: FsPlanning,
 
         @field:Valid
-        val funder: FsOrganizationReferenceDto?,
+        val buyer: FsOrganizationReference?,
 
         @field:Valid
-        val payer: FsOrganizationReferenceDto?
+        val funder: FsOrganizationReference?,
+
+        @field:Valid
+        val payer: FsOrganizationReference?
 )

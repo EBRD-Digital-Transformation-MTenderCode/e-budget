@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import java.time.LocalDateTime
 import javax.validation.constraints.NotNull
 
-data class CheckPeriodDto @JsonCreator constructor(
+data class CheckPeriod @JsonCreator constructor(
 
         @field:NotNull
         val startDate: LocalDateTime

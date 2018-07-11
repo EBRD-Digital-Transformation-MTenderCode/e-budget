@@ -5,7 +5,7 @@ import com.procurement.budget.model.dto.ocds.Period
 import javax.validation.Valid
 import javax.validation.constraints.NotNull
 
-data class CheckBudgetBreakdownDto @JsonCreator constructor(
+data class CheckBudgetBreakdown @JsonCreator constructor(
 
         @field:NotNull
         val id: String,
@@ -14,12 +14,12 @@ data class CheckBudgetBreakdownDto @JsonCreator constructor(
 
         @field:Valid
         @field:NotNull
-        val amount: CheckValueDto,
+        val amount: CheckValue,
 
         @field:Valid
         var period: Period?,
 
         @field:Valid
-        var sourceParty: CheckSourcePartyDto?
+        var sourceParty: CheckSourceParty?
 )
 

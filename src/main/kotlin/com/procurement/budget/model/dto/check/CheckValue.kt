@@ -7,7 +7,7 @@ import com.procurement.budget.model.dto.ocds.Currency
 import java.math.BigDecimal
 import javax.validation.constraints.NotNull
 
-data class CheckValueDto @JsonCreator constructor(
+data class CheckValue @JsonCreator constructor(
 
         @field:NotNull
         @field:JsonDeserialize(using = MoneyDeserializer::class)

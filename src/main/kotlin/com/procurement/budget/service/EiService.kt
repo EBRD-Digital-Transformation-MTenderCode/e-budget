@@ -7,7 +7,7 @@ import com.procurement.budget.exception.ErrorException
 import com.procurement.budget.exception.ErrorType
 import com.procurement.budget.model.bpe.ResponseDto
 import com.procurement.budget.model.dto.ei.Ei
-import com.procurement.budget.model.dto.fs.FsDto
+import com.procurement.budget.model.dto.fs.Fs
 import com.procurement.budget.model.dto.ocds.TenderStatus
 import com.procurement.budget.model.dto.ocds.TenderStatusDetails
 import com.procurement.budget.model.entity.EiEntity
@@ -24,7 +24,7 @@ interface EiService {
     fun createEi(owner: String,
                  country: String,
                  dateTime: LocalDateTime,
-                 ei: Ei): ResponseDto
+                 eiDto: Ei): ResponseDto
 
     fun updateEi(owner: String,
                  cpId: String,
@@ -42,12 +42,12 @@ class EiServiceImpl(private val ocdsProperties: OCDSProperties,
     override fun createEi(owner: String,
                           country: String,
                           dateTime: LocalDateTime,
-                          ei: Ei): ResponseDto {
-        filterForCreate(ei)
-        validatePeriod(ei)
-        validateCpv(country, ei)
+                          eiDto: Ei): ResponseDto {
+        filterForCreate(eiDto)
+        validatePeriod(eiDto)
+        validateCpv(country, eiDto)
         val cpId = getCpId(country)
-        ei.apply {
+        eiDto.apply {
             ocid = cpId
             tender.id = cpId
             tender.status = TenderStatus.PLANNING
@@ -55,10 +55,10 @@ class EiServiceImpl(private val ocdsProperties: OCDSProperties,
             planning.budget.id = tender.classification.id
             buyer.apply { id = identifier.scheme + SEPARATOR + identifier.id }
         }
-        val entity = getEntity(ei, owner, dateTime)
+        val entity = getEntity(eiDto, owner, dateTime)
         eiDao.save(entity)
-        ei.token = entity.token.toString()
-        return ResponseDto(true, null, ei)
+        eiDto.token = entity.token.toString()
+        return ResponseDto(true, null, eiDto)
     }
 
     override fun updateEi(owner: String,
@@ -104,7 +104,7 @@ class EiServiceImpl(private val ocdsProperties: OCDSProperties,
     private fun validatePeriodWithFs(ei: Ei, fsEntities: List<FsEntity>) {
         val (eiStartDate, eiEndDate) = ei.planning.budget.period
         fsEntities.forEach {
-            val fs = toObject(FsDto::class.java, it.jsonData)
+            val fs = toObject(Fs::class.java, it.jsonData)
             val (fsStartDate, fsEndDate) = fs.planning.budget.period
             val fsPeriodValid = (fsStartDate.isAfter(eiStartDate) || fsStartDate.isEqual(eiStartDate))
                     && (fsEndDate.isBefore(eiEndDate) || fsEndDate.isEqual(eiEndDate))

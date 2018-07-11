@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull
 data class EiValue @JsonCreator constructor(
 
         @field:JsonDeserialize(using = MoneyDeserializer::class)
-        val amount: BigDecimal?,
+        var amount: BigDecimal?,
 
         @field:NotNull
         var currency: Currency

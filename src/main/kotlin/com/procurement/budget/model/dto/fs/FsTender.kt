@@ -7,7 +7,7 @@ import com.procurement.budget.model.dto.ocds.TenderStatusDetails
 import javax.validation.Valid
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-data class FsTenderDto @JsonCreator constructor(
+data class FsTender @JsonCreator constructor(
 
         val id: String?,
 
@@ -16,5 +16,5 @@ data class FsTenderDto @JsonCreator constructor(
         val statusDetails: TenderStatusDetails?,
 
         @field:Valid
-        val procuringEntity: FsOrganizationReferenceDto?
+        val procuringEntity: FsOrganizationReference?
 )

@@ -9,7 +9,7 @@ import javax.validation.Valid
 import javax.validation.constraints.NotNull
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-data class FsOrganizationReferenceDto @JsonCreator constructor(
+data class FsOrganizationReference @JsonCreator constructor(
 
         var id: String?,
 
