@@ -47,6 +47,8 @@ data class PlanningFsCreate @JsonCreator constructor(
 
 data class BudgetFsCreate @JsonCreator constructor(
 
+        var id: String?,
+
         var description: String?,
 
         @field:Valid @field:NotNull
@@ -64,7 +66,6 @@ data class BudgetFsCreate @JsonCreator constructor(
         var europeanUnionFunding: EuropeanUnionFunding?,
 
         @field:Valid
-        var sourceEntity: OrganizationReferenceFs?,
-
-        var verificationDetails: String?
+        var sourceEntity: OrganizationReferenceFs?
 )
+

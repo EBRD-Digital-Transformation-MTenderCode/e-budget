@@ -5,7 +5,10 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.module.SimpleModule
 import com.fasterxml.jackson.databind.node.JsonNodeFactory
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
-import com.procurement.budget.model.dto.databinding.*
+import com.procurement.budget.model.dto.databinding.IntDeserializer
+import com.procurement.budget.model.dto.databinding.JsonDateDeserializer
+import com.procurement.budget.model.dto.databinding.JsonDateSerializer
+import com.procurement.budget.model.dto.databinding.StringsDeserializer
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Configuration
 import java.time.LocalDateTime

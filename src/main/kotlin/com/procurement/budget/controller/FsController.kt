@@ -2,7 +2,9 @@ package com.procurement.budget.controller
 
 import com.procurement.budget.model.bpe.ResponseDto
 import com.procurement.budget.model.dto.check.CheckRequest
-import com.procurement.budget.model.dto.fs.Fs
+import com.procurement.budget.model.dto.fs.request.FsCreate
+import com.procurement.budget.model.dto.fs.request.FsUpdate
+import com.procurement.budget.service.CheckFsService
 import com.procurement.budget.service.FsService
 import org.springframework.format.annotation.DateTimeFormat
 import org.springframework.http.HttpStatus
@@ -13,14 +15,15 @@ import javax.validation.Valid
 
 @RestController
 @RequestMapping("/fs")
-class FsController(private val fsService: FsService) {
+class FsController(private val fsService: FsService,
+                   private val checkFsService: CheckFsService) {
 
     @PostMapping
     fun createFs(@RequestParam("identifier") cpId: String,
                  @RequestParam("owner") owner: String,
                  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
                  @RequestParam("date") dateTime: LocalDateTime,
-                 @Valid @RequestBody data: Fs): ResponseEntity<ResponseDto> {
+                 @Valid @RequestBody data: FsCreate): ResponseEntity<ResponseDto> {
         return ResponseEntity(fsService.createFs(cpId, owner, dateTime, data), HttpStatus.CREATED)
     }
 
@@ -28,12 +31,12 @@ class FsController(private val fsService: FsService) {
     fun updateFs(@RequestParam("identifier") cpId: String,
                  @RequestParam("token") token: String,
                  @RequestParam("owner") owner: String,
-                 @Valid @RequestBody data: Fs): ResponseEntity<ResponseDto> {
+                 @Valid @RequestBody data: FsUpdate): ResponseEntity<ResponseDto> {
         return ResponseEntity(fsService.updateFs(cpId, token, owner, data), HttpStatus.OK)
     }
 
     @PostMapping("/check")
     fun checkFs(@Valid @RequestBody data: CheckRequest): ResponseEntity<ResponseDto> {
-        return ResponseEntity(fsService.checkFs(data), HttpStatus.OK)
+        return ResponseEntity(checkFsService.checkFs(data), HttpStatus.OK)
     }
 }

@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.procurement.budget.model.dto.databinding.BooleansDeserializer
 import com.procurement.budget.model.dto.fs.OrganizationReferenceFs
+import com.procurement.budget.model.dto.fs.OrganizationReferenceSourceEntityFs
+import com.procurement.budget.model.dto.fs.ValueFs
 import com.procurement.budget.model.dto.ocds.EuropeanUnionFunding
 import com.procurement.budget.model.dto.ocds.Period
 import javax.validation.Valid
@@ -20,13 +22,7 @@ data class FsUpdate @JsonCreator constructor(
         var tender: TenderFsUpdate,
 
         @field:Valid
-        val buyer: OrganizationReferenceFs?,
-
-        @field:Valid
-        val funder: OrganizationReferenceFs?,
-
-        @field:Valid
-        val payer: OrganizationReferenceFs?
+        val buyer: OrganizationReferenceFs?
 )
 
 
@@ -48,10 +44,15 @@ data class TenderFsUpdate @JsonCreator constructor(
 
 data class BudgetFsUpdate @JsonCreator constructor(
 
+        var id: String?,
+
         var description: String?,
 
         @field:Valid @field:NotNull
         val period: Period,
+
+        @field:Valid @field:NotNull
+        val amount: ValueFs,
 
         @field:NotNull
         @field:JsonDeserialize(using = BooleansDeserializer::class)
@@ -61,12 +62,11 @@ data class BudgetFsUpdate @JsonCreator constructor(
         @field:Valid
         var europeanUnionFunding: EuropeanUnionFunding?,
 
+        @field:Valid
+        var sourceEntity: OrganizationReferenceSourceEntityFs,
+
+
         @field:JsonDeserialize(using = BooleansDeserializer::class)
         @get:JsonProperty("verified")
-        var verified: Boolean?,
-
-        @field:Valid
-        var sourceEntity: OrganizationReferenceFs?,
-
-        var verificationDetails: String?
+        var verified: Boolean?
 )

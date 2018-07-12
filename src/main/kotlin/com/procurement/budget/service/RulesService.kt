@@ -1,8 +1,8 @@
 package com.procurement.budget.service
 
+import com.procurement.budget.dao.RulesDao
 import com.procurement.budget.exception.ErrorException
 import com.procurement.budget.exception.ErrorType
-import com.procurement.budget.dao.RulesDao
 import org.springframework.stereotype.Service
 
 interface RulesService {
