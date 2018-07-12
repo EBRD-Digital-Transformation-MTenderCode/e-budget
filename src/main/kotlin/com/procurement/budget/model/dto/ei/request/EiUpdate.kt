@@ -5,20 +5,21 @@ import javax.validation.constraints.NotNull
 
 data class EiUpdate @JsonCreator constructor(
 
-        var tender: EiUpdateTender,
+        var planning: PlanningEiUpdate?,
 
-        var planning: EiUpdatePlanning?
+        var tender: TenderEiUpdate
+
 )
 
-data class EiUpdateTender @JsonCreator constructor(
+data class PlanningEiUpdate @JsonCreator constructor(
+
+        var rationale: String?
+)
+
+data class TenderEiUpdate @JsonCreator constructor(
 
         @field:NotNull
         var title: String,
 
         var description: String?
-)
-
-data class EiUpdatePlanning @JsonCreator constructor(
-
-        var rationale: String?
 )

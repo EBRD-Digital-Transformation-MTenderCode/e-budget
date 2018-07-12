@@ -10,9 +10,14 @@ import com.procurement.budget.model.dto.check.CheckRequest
 import com.procurement.budget.model.dto.check.CheckResponse
 import com.procurement.budget.model.dto.check.CheckSourceParty
 import com.procurement.budget.model.dto.ei.Ei
-import com.procurement.budget.model.dto.ei.EiOrganizationReference
-import com.procurement.budget.model.dto.ei.EiValue
+import com.procurement.budget.model.dto.ei.OrganizationReferenceEi
+import com.procurement.budget.model.dto.ei.ValueEi
 import com.procurement.budget.model.dto.fs.*
+import com.procurement.budget.model.dto.fs.request.FsCreate
+import com.procurement.budget.model.dto.fs.response.EiForFs
+import com.procurement.budget.model.dto.fs.response.EiForFsBudget
+import com.procurement.budget.model.dto.fs.response.EiForFsPlanning
+import com.procurement.budget.model.dto.fs.response.FsResponse
 import com.procurement.budget.model.dto.ocds.TenderStatus
 import com.procurement.budget.model.dto.ocds.TenderStatusDetails
 import com.procurement.budget.model.entity.FsEntity
@@ -29,7 +34,7 @@ interface FsService {
     fun createFs(cpId: String,
                  owner: String,
                  dateTime: LocalDateTime,
-                 fsDto: Fs): ResponseDto
+                 fsDto: FsCreate): ResponseDto
 
     fun updateFs(cpId: String,
                  token: String,
@@ -47,102 +52,109 @@ class FsServiceImpl(private val fsDao: FsDao,
     override fun createFs(cpId: String,
                           owner: String,
                           dateTime: LocalDateTime,
-                          fsDto: Fs): ResponseDto {
+                          fsDto: FsCreate): ResponseDto {
         validatePeriod(fsDto)
         validateEuropeanUnionFunding(fsDto)
         val eiEntity = eiDao.getByCpId(cpId) ?: throw ErrorException(ErrorType.EI_NOT_FOUND)
         val ei = toObject(Ei::class.java, eiEntity.jsonData)
         checkPeriodWithEi(ei, fsDto)
         checkCurrency(ei, fsDto)
-        val fsTenderStatus: TenderStatus
-        val fsFunder: FsOrganizationReference?
-        val fsSourceEntity: FsOrganizationReference
-        val fsVerified: Boolean
+
+        val tenderStatusFs: TenderStatus
+        val funderFs: OrganizationReferenceFs?
+        val sourceEntityFs: OrganizationReferenceFs
+        val verifiedFs: Boolean
         if (fsDto.buyer != null) {
-            fsFunder = fsDto.buyer
-            fsFunder.apply { id = identifier?.scheme + SEPARATOR + identifier?.id }
-            fsSourceEntity = getSourceEntity(fsFunder)
-            fsVerified = true
-            fsTenderStatus = TenderStatus.ACTIVE
+            funderFs = fsDto.buyer
+            funderFs.apply { id = identifier?.scheme + SEPARATOR + identifier?.id }
+            sourceEntityFs = getSourceEntity(funderFs)
+            verifiedFs = true
+            tenderStatusFs = TenderStatus.ACTIVE
         } else {
-            fsFunder = null
-            fsSourceEntity = getSourceEntity(getFounderFromEi(ei.buyer))
-            fsVerified = false
-            fsTenderStatus = TenderStatus.PLANNING
+            funderFs = null
+            sourceEntityFs = getSourceEntity(getFounderFromEi(ei.buyer))
+            verifiedFs = false
+            tenderStatusFs = TenderStatus.PLANNING
         }
         val ocid = getOcId(cpId)
         val fs = Fs(
                 ocid = ocid,
                 token = null,
-                tender = FsTender(
+                tender = TenderFs(
                         id = ocid,
-                        status = fsTenderStatus,
+                        status = tenderStatusFs,
                         statusDetails = TenderStatusDetails.EMPTY,
                         procuringEntity = null),
-                planning = fsDto.planning,
+                planning = PlanningFs(
+                        budget = BudgetFs(
+                                sourceEntity = sourceEntityFs,
+                                verified = verifiedFs,
+                                amount = fsDto.planning.budget.amount,
+                                isEuropeanUnionFunded = fsDto.planning.budget.isEuropeanUnionFunded,
+                                europeanUnionFunding = fsDto.planning.budget.europeanUnionFunding,
+                                description = fsDto.planning.budget.description,
+                                period = fsDto.planning.budget.period,
+                                id =
+
+
+                        )
+                ),
                 buyer = null,
-                funder = fsFunder,
-                payer = fsDto.tender.procuringEntity
+                funder = funderFs,
+                payer = fsDto.tender.procuringEntity.apply { id = identifier?.scheme + SEPARATOR + identifier?.id }
         )
-        fs.apply {
-            planning.budget.apply {
-                sourceEntity = fsSourceEntity
-                verified = fsVerified
-            }
-            payer?.apply { id = identifier?.scheme + SEPARATOR + identifier?.id }
-        }
         val fsEntity = getEntity(cpId, fs, owner, dateTime)
         fsDao.save(fsEntity)
         fs.token = fsEntity.token.toString()
         //ei
         val totalAmount = fsDao.getTotalAmountByCpId(cpId) ?: BigDecimal.ZERO
-        ei.planning.budget.amount = EiValue(amount = totalAmount, currency = fs.planning.budget.amount.currency)
+        ei.planning.budget.amount = ValueEi(amount = totalAmount, currency = fs.planning.budget.amount.currency)
         eiEntity.jsonData = toJson(ei)
         eiDao.save(eiEntity)
-        return ResponseDto(true, null, FsResponseDto(getEiForFs(ei), fs))
+        return ResponseDto(true, null, FsResponse(getEiForFs(ei), fs))
     }
 
     override fun updateFs(cpId: String,
                           token: String,
                           owner: String,
                           fsDto: Fs): ResponseDto {
-        validatePeriod(fsDto)
-        val fsEntity = fsDao.getByCpIdAndToken(cpId, UUID.fromString(token))
-                ?: throw ErrorException(ErrorType.FS_NOT_FOUND)
-        if (fsEntity.owner != owner) throw ErrorException(ErrorType.INVALID_OWNER)
-        val fs = toObject(Fs::class.java, fsEntity.jsonData)
-        validateTenderId(fs, fsDto)
-        validateVerified(fs, fsDto)
-        val eiEntity = eiDao.getByCpId(cpId) ?: throw ErrorException(ErrorType.EI_NOT_FOUND)
-        val ei = toObject(Ei::class.java, eiEntity.jsonData)
-        checkCurrency(ei, fsDto)
-        checkPeriodWithEi(ei, fsDto)
-        if (fs.tender.statusDetails != TenderStatusDetails.EMPTY) throw ErrorException(ErrorType.INVALID_STATUS)
-        when (fs.tender.status) {
-            TenderStatus.ACTIVE -> updateFsWhenStatusActive(fs, fsDto)
-            TenderStatus.PLANNING -> updateFsWhenStatusPlanning(fs, fsDto)
-            else -> throw ErrorException(ErrorType.INVALID_STATUS)
-        }
-        fsEntity.jsonData = toJson(fs)
-        fsDao.save(fsEntity)
-        val totalAmount = fsDao.getTotalAmountByCpId(cpId) ?: BigDecimal.ZERO
-        var eiForFs: EiForFs? = null
-        if (totalAmount != ei.planning.budget.amount?.amount) {
-            ei.planning.budget.amount?.amount = totalAmount
-            eiEntity.jsonData = toJson(ei)
-            eiDao.save(eiEntity)
-            eiForFs = getEiForFs(ei)
-        }
-        return ResponseDto(true, null, FsResponseDto(eiForFs, fs))
+//        validatePeriod(fsDto)
+//        val fsEntity = fsDao.getByCpIdAndToken(cpId, UUID.fromString(token))
+//                ?: throw ErrorException(ErrorType.FS_NOT_FOUND)
+//        if (fsEntity.owner != owner) throw ErrorException(ErrorType.INVALID_OWNER)
+//        val fs = toObject(Fs::class.java, fsEntity.jsonData)
+//        validateTenderId(fs, fsDto)
+//        validateVerified(fs, fsDto)
+//        val eiEntity = eiDao.getByCpId(cpId) ?: throw ErrorException(ErrorType.EI_NOT_FOUND)
+//        val ei = toObject(Ei::class.java, eiEntity.jsonData)
+//        checkCurrency(ei, fsDto)
+//        checkPeriodWithEi(ei, fsDto)
+//        if (fs.tender.statusDetails != TenderStatusDetails.EMPTY) throw ErrorException(ErrorType.INVALID_STATUS)
+//        when (fs.tender.status) {
+//            TenderStatus.ACTIVE -> updateFsWhenStatusActive(fs, fsDto)
+//            TenderStatus.PLANNING -> updateFsWhenStatusPlanning(fs, fsDto)
+//            else -> throw ErrorException(ErrorType.INVALID_STATUS)
+//        }
+//        fsEntity.jsonData = toJson(fs)
+//        fsDao.save(fsEntity)
+//        val totalAmount = fsDao.getTotalAmountByCpId(cpId) ?: BigDecimal.ZERO
+//        var eiForFs: EiForFs? = null
+//        if (totalAmount != ei.planning.budget.amount?.amount) {
+//            ei.planning.budget.amount?.amount = totalAmount
+//            eiEntity.jsonData = toJson(ei)
+//            eiDao.save(eiEntity)
+//            eiForFs = getEiForFs(ei)
+//        }
+//        return ResponseDto(true, null, FsResponse(eiForFs, fs))
     }
 
     override fun checkFs(dto: CheckRequest): ResponseDto {
         val budgetBreakdowns = dto.budgetBreakdown
         checkBudgetBreakdownCurrency(budgetBreakdowns)
         val cpIds = budgetBreakdowns.asSequence().map { getCpIdFromOcId(it.id) }.toSet()
-        val funders = HashSet<FsOrganizationReference>()
-        val payers = HashSet<FsOrganizationReference>()
-        val buyers = HashSet<EiOrganizationReference>()
+        val funders = HashSet<OrganizationReferenceFs>()
+        val payers = HashSet<OrganizationReferenceFs>()
+        val buyers = HashSet<OrganizationReferenceEi>()
         val entities = fsDao.getAllByCpIds(cpIds)
         if (entities.isEmpty()) throw ErrorException(ErrorType.FS_NOT_FOUND)
         val fsMap = HashMap<String?, Fs>()
@@ -181,12 +193,12 @@ class FsServiceImpl(private val fsDao: FsDao,
         if (budgetBreakdown.asSequence().map { it.amount.currency }.toSet().size > 1) throw ErrorException(ErrorType.INVALID_CURRENCY)
     }
 
-    private fun validatePeriod(fs: Fs) {
+    private fun validatePeriod(fs: FsCreate) {
         if (!fs.planning.budget.period.startDate.isBefore(fs.planning.budget.period.endDate))
             throw ErrorException(ErrorType.INVALID_PERIOD)
     }
 
-    private fun validateEuropeanUnionFunding(fs: Fs) {
+    private fun validateEuropeanUnionFunding(fs: FsCreate) {
         if (fs.planning.budget.isEuropeanUnionFunded!!) {
             if (fs.planning.budget.europeanUnionFunding == null) throw ErrorException(ErrorType.INVALID_EUROPEAN)
         }
@@ -196,11 +208,11 @@ class FsServiceImpl(private val fsDao: FsDao,
         if (fs.tender.id != fsDto.tender.id) throw ErrorException(ErrorType.INVALID_TENDER_ID)
     }
 
-    private fun validateVerified(fs: Fs, fsDto: Fs){
+    private fun validateVerified(fs: Fs, fsDto: Fs) {
         if (fs.funder == null && fsDto.planning.budget.verified == null) throw ErrorException(ErrorType.INVALID_VERIFIED)
     }
 
-    private fun checkPeriodWithEi(ei: Ei, fs: Fs) {
+    private fun checkPeriodWithEi(ei: Ei, fs: FsCreate) {
         val (eiStartDate, eiEndDate) = ei.planning.budget.period
         val (fsStartDate, fsEndDate) = fs.planning.budget.period
         val fsPeriodValid = (fsStartDate.isAfter(eiStartDate) || fsStartDate.isEqual(eiStartDate))
@@ -208,7 +220,7 @@ class FsServiceImpl(private val fsDao: FsDao,
         if (!fsPeriodValid) throw ErrorException(ErrorType.INVALID_PERIOD)
     }
 
-    private fun checkCurrency(ei: Ei, fs: Fs) {
+    private fun checkCurrency(ei: Ei, fs: FsCreate) {
         val fsCurrency = fs.planning.budget.amount.currency
         val eiCurrency = ei.planning.budget.amount?.currency
         if (eiCurrency != null) {
@@ -223,8 +235,8 @@ class FsServiceImpl(private val fsDao: FsDao,
             throw ErrorException(ErrorType.INVALID_CPV)
     }
 
-    private fun getFounderFromEi(buyer: EiOrganizationReference): FsOrganizationReference {
-        return FsOrganizationReference(
+    private fun getFounderFromEi(buyer: OrganizationReferenceEi): OrganizationReferenceFs {
+        return OrganizationReferenceFs(
                 id = buyer.id,
                 name = buyer.name,
                 identifier = buyer.identifier,
@@ -234,8 +246,8 @@ class FsServiceImpl(private val fsDao: FsDao,
         )
     }
 
-    private fun getSourceEntity(funder: FsOrganizationReference): FsOrganizationReference {
-        return FsOrganizationReference(
+    private fun getSourceEntity(funder: OrganizationReferenceFs): OrganizationReferenceFs {
+        return OrganizationReferenceFs(
                 id = funder.id,
                 name = funder.name,
                 identifier = null,

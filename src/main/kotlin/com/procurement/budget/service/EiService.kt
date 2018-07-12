@@ -6,9 +6,9 @@ import com.procurement.budget.exception.ErrorException
 import com.procurement.budget.exception.ErrorType
 import com.procurement.budget.model.bpe.ResponseDto
 import com.procurement.budget.model.dto.ei.Ei
-import com.procurement.budget.model.dto.ei.EiBudget
-import com.procurement.budget.model.dto.ei.EiPlanning
-import com.procurement.budget.model.dto.ei.EiTender
+import com.procurement.budget.model.dto.ei.BudgetEi
+import com.procurement.budget.model.dto.ei.PlanningEi
+import com.procurement.budget.model.dto.ei.TenderEi
 import com.procurement.budget.model.dto.ei.request.EiCreate
 import com.procurement.budget.model.dto.ei.request.EiUpdate
 import com.procurement.budget.model.dto.ocds.TenderStatus
@@ -49,7 +49,7 @@ class EiServiceImpl(private val ocdsProperties: OCDSProperties,
         val cpId = getCpId(country)
         val ei = Ei(
                 ocid = cpId,
-                tender = EiTender(
+                tender = TenderEi(
                         id = cpId,
                         title = eiDto.tender.title,
                         description = eiDto.tender.description,
@@ -58,15 +58,15 @@ class EiServiceImpl(private val ocdsProperties: OCDSProperties,
                         classification = eiDto.tender.classification,
                         mainProcurementCategory = eiDto.tender.mainProcurementCategory
                 ),
-                planning = EiPlanning(
-                        budget = EiBudget(
+                planning = PlanningEi(
+                        budget = BudgetEi(
                                 id = eiDto.tender.classification.id,
                                 period = eiDto.planning.budget.period,
                                 amount = null
                         ),
                         rationale = eiDto.planning.rationale
                 ),
-                buyer =  eiDto.buyer.apply { id = identifier.scheme + SEPARATOR + identifier.id  }
+                buyer = eiDto.buyer.apply { id = identifier.scheme + SEPARATOR + identifier.id }
         )
         val entity = getEntity(ei, owner, dateTime)
         eiDao.save(entity)
@@ -107,7 +107,7 @@ class EiServiceImpl(private val ocdsProperties: OCDSProperties,
     }
 
     private fun getEntity(ei: Ei, owner: String, dateTime: LocalDateTime): EiEntity {
-        val ocId = ei.ocid ?: throw ErrorException(ErrorType.PARAM_ERROR)
+        val ocId = ei.ocid
         return EiEntity(
                 cpId = ocId,
                 token = generationService.generateRandomUUID(),
