@@ -15,10 +15,8 @@ import com.procurement.budget.model.dto.fs.response.EiForFs
 import com.procurement.budget.model.dto.fs.response.EiForFsBudget
 import com.procurement.budget.model.dto.fs.response.EiForFsPlanning
 import com.procurement.budget.model.dto.fs.response.FsResponse
+import com.procurement.budget.model.dto.ocds.*
 import com.procurement.budget.model.dto.ocds.Currency
-import com.procurement.budget.model.dto.ocds.Period
-import com.procurement.budget.model.dto.ocds.TenderStatus
-import com.procurement.budget.model.dto.ocds.TenderStatusDetails
 import com.procurement.budget.model.entity.FsEntity
 import com.procurement.budget.utils.toDate
 import com.procurement.budget.utils.toJson
@@ -51,7 +49,8 @@ class FsServiceImpl(private val fsDao: FsDao,
                           dateTime: LocalDateTime,
                           fsDto: FsCreate): ResponseDto {
         validatePeriod(fsDto.planning.budget.period)
-        validateEuropeanUnionFunding(fsDto)
+        validateEuropeanUnionFunding(fsDto.planning.budget.isEuropeanUnionFunded!!,
+                fsDto.planning.budget.europeanUnionFunding)
         val eiEntity = eiDao.getByCpId(cpId) ?: throw ErrorException(ErrorType.EI_NOT_FOUND)
         val ei = toObject(Ei::class.java, eiEntity.jsonData)
         checkPeriodWithEi(ei.planning.budget.period, fsDto.planning.budget.period)
@@ -118,6 +117,8 @@ class FsServiceImpl(private val fsDao: FsDao,
                           owner: String,
                           fsDto: FsUpdate): ResponseDto {
         validatePeriod(fsDto.planning.budget.period)
+        validateEuropeanUnionFunding(fsDto.planning.budget.isEuropeanUnionFunded!!,
+                fsDto.planning.budget.europeanUnionFunding)
         val fsEntity = fsDao.getByCpIdAndToken(cpId, UUID.fromString(token))
                 ?: throw ErrorException(ErrorType.FS_NOT_FOUND)
         if (fsEntity.owner != owner) throw ErrorException(ErrorType.INVALID_OWNER)
@@ -171,10 +172,9 @@ class FsServiceImpl(private val fsDao: FsDao,
             throw ErrorException(ErrorType.INVALID_PERIOD)
     }
 
-    private fun validateEuropeanUnionFunding(fs: FsCreate) {
-        if (fs.planning.budget.isEuropeanUnionFunded!!) {
-            if (fs.planning.budget.europeanUnionFunding == null) throw ErrorException(ErrorType.INVALID_EUROPEAN)
-        }
+    private fun validateEuropeanUnionFunding(isEuropeanUnionFunded: Boolean,
+                                             europeanUnionFunding: EuropeanUnionFunding?) {
+        if (isEuropeanUnionFunded && europeanUnionFunding == null) throw ErrorException(ErrorType.INVALID_EUROPEAN)
     }
 
     private fun validateTenderId(fs: Fs, fsDto: FsUpdate) {
