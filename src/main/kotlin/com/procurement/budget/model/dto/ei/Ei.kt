@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class Ei @JsonCreator constructor(
 
-        var token: String?,
+        var token: String? = null,
 
         var ocid: String?,
 
