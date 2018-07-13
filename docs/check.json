@@ -1,59 +1,26 @@
 {
-  "tender": {
-    "title": "",
-    "classification": {
-      "id": "12300000-5",
-      "scheme": "CPV",
-      "description": ""
-    },
-    "mainProcurementCategory": "mainProcurementCategory"
-  },
-  "planning": {
-    "budget": {
-      "period": {
-        "startDate": "2018-06-18T14:13:03Z",
-        "endDate": "2018-12-15T14:13:03Z"
+  "items": [
+    {
+      "id": "8da82fb0-2eb8-11e8-907c-df4915b32957",
+      "description": "A description of the goods, services to be provided.",
+      "classification": {
+        "scheme": "CPV",
+        "id": "15540000-5",
+        "description": "Cheese products"
       },
-      "rationale": "Star enter cup."
+      "additionalClassifications": [
+        {
+          "scheme": "CPVS",
+          "id": "CPVs-id-12341234",
+          "description": "A textual description or title for the code."
+        }
+      ],
+      "quantity": 10.0,
+      "unit": {
+        "name": "kg",
+        "id": "0971"
+      },
+      "relatedLot": "8da82fb1-2eb8-11e8-907c-df4915b32957"
     }
-  },
-  "buyer": {
-    "name": "Ritter, Campbell and Luna",
-    "identifier": {
-      "scheme": "UA-EDR",
-      "id": "266-99-6331",
-      "legalName": "Ritter, Campbell and Luna Inc",
-      "uri": "https://www.giles.org/home/"
-    },
-    "additionalIdentifiers": [
-      {
-        "scheme": "UA-EDR",
-        "id": "484-41-3372",
-        "legalName": "Ritter, Campbell and Luna Ltd",
-        "uri": "http://www.watkins-michael.com/index.htm"
-      }
-    ],
-    "address": {
-      "streetAddress": "7491 Amanda Harbor",
-      "locality": "Port Jesse",
-      "region": "Nebraska",
-      "postalCode": "84045-4609",
-      "countryName": "Qatar"
-    },
-    "contactPoint": {
-      "name": "Oscar Navarro",
-      "email": "pricesarah@gmail.com",
-      "telephone": "807.124.7099",
-      "faxNumber": "1-657-781-3064x436",
-      "url": "http://www.smith-chavez.net/tags/wp-content/search.html"
-    },
-    "details": {
-      "typeOfBuyer": "REGIONAL_AUTHORITY",
-      "mainGeneralActivity": "GENERAL_PUBLIC_SERVICES",
-      "mainSectoralActivity": "WATER",
-      "isACentralPurchasingBody": true,
-      "scale": "large"
-    },
-    "buyerProfile": "http://www.anderson.net/wp-content/list/tags/homepage/"
-  }
+  ]
 }
