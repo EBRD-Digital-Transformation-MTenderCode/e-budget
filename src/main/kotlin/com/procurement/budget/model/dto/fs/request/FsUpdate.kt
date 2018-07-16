@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.procurement.budget.model.dto.databinding.BooleansDeserializer
 import com.procurement.budget.model.dto.fs.OrganizationReferenceFs
-import com.procurement.budget.model.dto.fs.OrganizationReferenceSourceEntityFs
+import com.procurement.budget.model.dto.fs.SourceEntityFs
 import com.procurement.budget.model.dto.fs.ValueFs
 import com.procurement.budget.model.dto.ocds.EuropeanUnionFunding
 import com.procurement.budget.model.dto.ocds.Period
@@ -63,7 +63,7 @@ data class BudgetFsUpdate @JsonCreator constructor(
         var europeanUnionFunding: EuropeanUnionFunding?,
 
         @field:Valid
-        var sourceEntity: OrganizationReferenceSourceEntityFs,
+        var sourceEntity: SourceEntityFs,
 
 
         @field:JsonDeserialize(using = BooleansDeserializer::class)

@@ -58,7 +58,7 @@ class FsServiceImpl(private val fsDao: FsDao,
 
         val tenderStatusFs: TenderStatus
         val funderFs: OrganizationReferenceFs?
-        val sourceEntityFs: OrganizationReferenceSourceEntityFs
+        val sourceEntityFs: SourceEntityFs
         val verifiedFs: Boolean
         if (fsDto.buyer != null) {
             funderFs = fsDto.buyer
@@ -211,8 +211,8 @@ class FsServiceImpl(private val fsDao: FsDao,
         )
     }
 
-    private fun getSourceEntity(funder: OrganizationReferenceFs): OrganizationReferenceSourceEntityFs {
-        return OrganizationReferenceSourceEntityFs(
+    private fun getSourceEntity(funder: OrganizationReferenceFs): SourceEntityFs {
+        return SourceEntityFs(
                 id = funder.id!!,
                 name = funder.name)
     }

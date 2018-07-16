@@ -1,7 +1,7 @@
 package com.procurement.budget.controller
 
 import com.procurement.budget.model.bpe.ResponseDto
-import com.procurement.budget.model.dto.check.CheckRequest
+import com.procurement.budget.model.dto.check.CheckRq
 import com.procurement.budget.model.dto.fs.request.FsCreate
 import com.procurement.budget.model.dto.fs.request.FsUpdate
 import com.procurement.budget.service.CheckFsService
@@ -36,7 +36,7 @@ class FsController(private val fsService: FsService,
     }
 
     @PostMapping("/check")
-    fun checkFs(@Valid @RequestBody data: CheckRequest): ResponseEntity<ResponseDto> {
+    fun checkFs(@Valid @RequestBody data: CheckRq): ResponseEntity<ResponseDto> {
         return ResponseEntity(checkFsService.checkFs(data), HttpStatus.OK)
     }
 }

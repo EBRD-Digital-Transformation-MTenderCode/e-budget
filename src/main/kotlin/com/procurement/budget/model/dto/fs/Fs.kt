@@ -69,7 +69,7 @@ data class BudgetFs @JsonCreator constructor(
         @get:JsonProperty("verified")
         var verified: Boolean?,
 
-        var sourceEntity: OrganizationReferenceSourceEntityFs,
+        var sourceEntity: SourceEntityFs,
 
         var verificationDetails: String?
 )
@@ -104,7 +104,7 @@ data class OrganizationReferenceFs @JsonCreator constructor(
         val contactPoint: ContactPoint?
 )
 
-data class OrganizationReferenceSourceEntityFs @JsonCreator constructor(
+data class SourceEntityFs @JsonCreator constructor(
 
         @field:NotNull
         var id: String,
