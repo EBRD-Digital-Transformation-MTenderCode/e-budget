@@ -22,8 +22,6 @@ data class Fs @JsonCreator constructor(
 
         var planning: PlanningFs,
 
-        val buyer: OrganizationReferenceFs?,
-
         val funder: OrganizationReferenceFs?,
 
         val payer: OrganizationReferenceFs
@@ -71,7 +69,13 @@ data class BudgetFs @JsonCreator constructor(
 
         var sourceEntity: SourceEntityFs,
 
-        var verificationDetails: String?
+        var verificationDetails: String?,
+
+        val project: String?,
+
+        val projectID: String?,
+
+        val uri: String?
 )
 
 @JsonInclude(JsonInclude.Include.NON_NULL)

@@ -14,17 +14,18 @@ import javax.validation.constraints.NotNull
 
 data class FsUpdate @JsonCreator constructor(
 
-
-        @field:Valid @field:NotNull
-        var planning: PlanningFsUpdate,
-
         @field:Valid @field:NotNull
         var tender: TenderFsUpdate,
 
-        @field:Valid
-        val buyer: OrganizationReferenceFs?
+        @field:Valid @field:NotNull
+        var planning: PlanningFsUpdate
 )
 
+data class TenderFsUpdate @JsonCreator constructor(
+
+        @field:Valid
+        val procuringEntity: OrganizationReferenceFs?
+)
 
 data class PlanningFsUpdate @JsonCreator constructor(
 
@@ -32,14 +33,6 @@ data class PlanningFsUpdate @JsonCreator constructor(
         val budget: BudgetFsUpdate,
 
         var rationale: String?
-)
-
-data class TenderFsUpdate @JsonCreator constructor(
-
-        val id: String,
-
-        @field:Valid
-        val procuringEntity: OrganizationReferenceFs?
 )
 
 data class BudgetFsUpdate @JsonCreator constructor(
@@ -62,11 +55,9 @@ data class BudgetFsUpdate @JsonCreator constructor(
         @field:Valid
         var europeanUnionFunding: EuropeanUnionFunding?,
 
-        @field:Valid
-        var sourceEntity: SourceEntityFs,
+        val project: String?,
 
+        val projectID: String?,
 
-        @field:JsonDeserialize(using = BooleansDeserializer::class)
-        @get:JsonProperty("verified")
-        var verified: Boolean?
+        val uri: String?
 )

@@ -13,21 +13,14 @@ import javax.validation.constraints.NotNull
 
 data class FsCreate @JsonCreator constructor(
 
+        @field:Valid @field:NotNull
+        var tender: TenderFsCreate,
 
         @field:Valid @field:NotNull
         var planning: PlanningFsCreate,
 
-        @field:Valid @field:NotNull
-        var tender: TenderFsCreate,
-
         @field:Valid
-        val buyer: OrganizationReferenceFs?,
-
-        @field:Valid
-        val funder: OrganizationReferenceFs?,
-
-        @field:Valid
-        val payer: OrganizationReferenceFs?
+        val buyer: OrganizationReferenceFs?
 )
 
 
@@ -65,7 +58,10 @@ data class BudgetFsCreate @JsonCreator constructor(
         @field:Valid
         var europeanUnionFunding: EuropeanUnionFunding?,
 
-        @field:Valid
-        var sourceEntity: OrganizationReferenceFs?
+        val project: String?,
+
+        val projectID: String?,
+
+        val uri: String?
 )
 
