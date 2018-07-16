@@ -14,18 +14,18 @@ import javax.validation.constraints.NotNull
 
 data class FsUpdate @JsonCreator constructor(
 
-        @field:Valid @field:NotNull
-        var tender: TenderFsUpdate,
+//        @field:Valid @field:NotNull
+//        var tender: TenderFsUpdate,
 
         @field:Valid @field:NotNull
         var planning: PlanningFsUpdate
 )
 
-data class TenderFsUpdate @JsonCreator constructor(
-
-        @field:Valid
-        val procuringEntity: OrganizationReferenceFs?
-)
+//data class TenderFsUpdate @JsonCreator constructor(
+//
+//        @field:Valid
+//        val procuringEntity: OrganizationReferenceFs?
+//)
 
 data class PlanningFsUpdate @JsonCreator constructor(
 

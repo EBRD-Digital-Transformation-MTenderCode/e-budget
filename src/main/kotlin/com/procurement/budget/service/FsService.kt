@@ -49,8 +49,7 @@ class FsServiceImpl(private val fsDao: FsDao,
                           dateTime: LocalDateTime,
                           fsDto: FsCreate): ResponseDto {
         validatePeriod(fsDto.planning.budget.period)
-        validateEuropeanUnionFunding(fsDto.planning.budget.isEuropeanUnionFunded!!,
-                fsDto.planning.budget.europeanUnionFunding)
+//        validateEuropeanUnionFunding(fsDto.planning.budget.isEuropeanUnionFunded!!, fsDto.planning.budget.europeanUnionFunding)
         val eiEntity = eiDao.getByCpId(cpId) ?: throw ErrorException(ErrorType.EI_NOT_FOUND)
         val ei = toObject(Ei::class.java, eiEntity.jsonData)
         checkPeriodWithEi(ei.planning.budget.period, fsDto.planning.budget.period)
@@ -120,8 +119,7 @@ class FsServiceImpl(private val fsDao: FsDao,
                           owner: String,
                           fsDto: FsUpdate): ResponseDto {
         validatePeriod(fsDto.planning.budget.period)
-        validateEuropeanUnionFunding(fsDto.planning.budget.isEuropeanUnionFunded!!,
-                fsDto.planning.budget.europeanUnionFunding)
+        validateEuropeanUnionFunding(fsDto.planning.budget.isEuropeanUnionFunded!!, fsDto.planning.budget.europeanUnionFunding)
         val fsEntity = fsDao.getByCpIdAndToken(cpId, UUID.fromString(token))
                 ?: throw ErrorException(ErrorType.FS_NOT_FOUND)
         if (fsEntity.owner != owner) throw ErrorException(ErrorType.INVALID_OWNER)
@@ -136,7 +134,7 @@ class FsServiceImpl(private val fsDao: FsDao,
             TenderStatus.ACTIVE -> updateFs(fs, fsDto)
             TenderStatus.PLANNING -> {
                 updateFs(fs, fsDto)
-                fs.planning.budget.id = fsDto.planning.budget.id
+//                fs.planning.budget.id = fsDto.planning.budget.id
             }
             else -> throw ErrorException(ErrorType.INVALID_STATUS)
         }
