@@ -42,12 +42,14 @@ class CheckFsServiceImpl(private val fsDao: FsDao,
         val payers = HashSet<OrganizationReferenceFs>()
         val buyers = HashSet<OrganizationReferenceEi>()
         val breakdownsRs: ArrayList<BudgetBreakdownCheckRs> = arrayListOf()
-        var isEuropeanUnionFunded: Boolean = false
+        var isEuropeanUnionFunded = false
         var totalAmount: BigDecimal = BigDecimal.ZERO
         var totalCurrency: Currency = dto.planning.budget.budgetBreakdown[0].amount.currency
+        var mainProcurementCategory = ""
         for (cpId in cpIds) {
             val eiEntity = eiDao.getByCpId(cpId) ?: throw ErrorException(ErrorType.EI_NOT_FOUND)
             val ei = toObject(Ei::class.java, eiEntity.jsonData)
+            mainProcurementCategory = ei.tender.mainProcurementCategory
             checkCPV(ei, dto)
             buyers.add(ei.buyer)
             breakdownsRq.forEach { br ->
@@ -75,6 +77,7 @@ class CheckFsServiceImpl(private val fsDao: FsDao,
                                 ),
                                 rationale = dto.planning.rationale
                         ),
+                        tender = TenderCheckRs(mainProcurementCategory = mainProcurementCategory),
                         funder = funders,
                         payer = payers,
                         buyer = buyers)
@@ -89,10 +92,6 @@ class CheckFsServiceImpl(private val fsDao: FsDao,
         val eiCPV = ei.tender.classification.id
         val dtoCPV = dto.tender.classification.id
         if (eiCPV.substring(0, 3).toUpperCase() != dtoCPV.substring(0, 3).toUpperCase()) throw ErrorException(ErrorType.INVALID_CPV)
-
-        val eiMainProcurementCategory = ei.tender.mainProcurementCategory
-        val dtoMainProcurementCategory = dto.tender.mainProcurementCategory
-        if (eiMainProcurementCategory != dtoMainProcurementCategory) throw ErrorException(ErrorType.INVALID_MPC)
     }
 
     private fun processBudgetBreakdown(breakdownsRs: ArrayList<BudgetBreakdownCheckRs>,

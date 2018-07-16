@@ -57,9 +57,6 @@ data class BudgetBreakdownCheckRq @JsonCreator constructor(
 
 data class TenderCheckRq @JsonCreator constructor(
 
-        @field:NotNull
-        val mainProcurementCategory: String,
-
         @field:Valid @field:NotNull
         val classification: Classification
 )

@@ -18,6 +18,8 @@ data class CheckRs(
 
         val planning: PlanningCheckRs,
 
+        var tender: TenderCheckRs,
+
         val funder: HashSet<OrganizationReferenceFs>?,
 
         val payer: HashSet<OrganizationReferenceFs>?,
@@ -69,4 +71,9 @@ data class CheckSourceParty @JsonCreator constructor(
         val id: String,
 
         val name: String
+)
+
+data class TenderCheckRs @JsonCreator constructor(
+
+        val mainProcurementCategory: String
 )
