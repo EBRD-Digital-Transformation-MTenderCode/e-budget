@@ -19,7 +19,7 @@ class FsController(private val fsService: FsService,
                    private val checkFsService: CheckFsService) {
 
     @PostMapping
-    fun createFs(@RequestParam("identifier") cpId: String,
+    fun createFs(@RequestParam("cpid") cpId: String,
                  @RequestParam("owner") owner: String,
                  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
                  @RequestParam("date") dateTime: LocalDateTime,
@@ -28,11 +28,12 @@ class FsController(private val fsService: FsService,
     }
 
     @PutMapping
-    fun updateFs(@RequestParam("identifier") cpId: String,
+    fun updateFs(@RequestParam("cpid") cpId: String,
+                 @RequestParam("ocid") ocId: String,
                  @RequestParam("token") token: String,
                  @RequestParam("owner") owner: String,
                  @Valid @RequestBody data: FsUpdate): ResponseEntity<ResponseDto> {
-        return ResponseEntity(fsService.updateFs(cpId, token, owner, data), HttpStatus.OK)
+        return ResponseEntity(fsService.updateFs(cpId, ocId, token, owner, data), HttpStatus.OK)
     }
 
     @PostMapping("/check")

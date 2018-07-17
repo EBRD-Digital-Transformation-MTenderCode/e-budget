@@ -34,6 +34,7 @@ interface FsService {
                  fsDto: FsCreate): ResponseDto
 
     fun updateFs(cpId: String,
+                 ocId: String,
                  token: String,
                  owner: String,
                  fsDto: FsUpdate): ResponseDto
@@ -115,13 +116,14 @@ class FsServiceImpl(private val fsDao: FsDao,
     }
 
     override fun updateFs(cpId: String,
+                          ocId: String,
                           token: String,
                           owner: String,
                           fsDto: FsUpdate): ResponseDto {
         validatePeriod(fsDto.planning.budget.period)
         validateEuropeanUnionFunding(fsDto.planning.budget.isEuropeanUnionFunded!!, fsDto.planning.budget.europeanUnionFunding)
-        val fsEntity = fsDao.getByCpIdAndToken(cpId, UUID.fromString(token))
-                ?: throw ErrorException(ErrorType.FS_NOT_FOUND)
+        val fsEntity = fsDao.getByCpIdAndToken(cpId, UUID.fromString(token))?: throw ErrorException(ErrorType.FS_NOT_FOUND)
+        if (fsEntity.ocId != ocId) throw ErrorException(ErrorType.INVALID_OCID)
         if (fsEntity.owner != owner) throw ErrorException(ErrorType.INVALID_OWNER)
         val fs = toObject(Fs::class.java, fsEntity.jsonData)
         val eiEntity = eiDao.getByCpId(cpId) ?: throw ErrorException(ErrorType.EI_NOT_FOUND)

@@ -27,7 +27,7 @@ class EiController(private val eiService: EiService) {
     }
 
     @PutMapping
-    fun updateEi(@RequestParam("identifier") cpId: String,
+    fun updateEi(@RequestParam("cpid") cpId: String,
                  @RequestParam("owner") owner: String,
                  @RequestParam("token") token: String,
                  @Valid @RequestBody data: EiUpdate): ResponseEntity<ResponseDto> {
