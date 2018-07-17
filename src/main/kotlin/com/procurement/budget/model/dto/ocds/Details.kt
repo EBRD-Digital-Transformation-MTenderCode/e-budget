@@ -17,15 +17,6 @@ data class Details @JsonCreator constructor(
         val mainGeneralActivity: MainGeneralActivity,
 
         @field:NotNull
-        val mainSectoralActivity: MainSectoralActivity,
+        val mainSectoralActivity: MainSectoralActivity
 
-        @field:NotNull
-        @field:JsonDeserialize(using = BooleansDeserializer::class)
-        @get:JsonProperty("isACentralPurchasingBody")
-        val isACentralPurchasingBody: Boolean?,
-
-        val nutsCode: String?,
-
-        @field:NotNull
-        val scale: Scale
 )

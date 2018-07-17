@@ -1,26 +1,56 @@
 {
-  "items": [
-    {
-      "id": "8da82fb0-2eb8-11e8-907c-df4915b32957",
-      "description": "A description of the goods, services to be provided.",
-      "classification": {
-        "scheme": "CPV",
-        "id": "15540000-5",
-        "description": "Cheese products"
-      },
-      "additionalClassifications": [
-        {
-          "scheme": "CPVS",
-          "id": "CPVs-id-12341234",
-          "description": "A textual description or title for the code."
-        }
-      ],
-      "quantity": 10.0,
-      "unit": {
-        "name": "kg",
-        "id": "0971"
-      },
-      "relatedLot": "8da82fb1-2eb8-11e8-907c-df4915b32957"
+  "tender": {
+    "title": "TITLE",
+    "description": "tututu",
+    "classification": {
+      "id": "79200000-6",
+      "scheme": "CPV",
+      "description": "description"
     }
-  ]
+  },
+  "planning": {
+    "budget": {
+      "period": {
+        "startDate": "2018-07-08T00:00:00Z",
+        "endDate": "2018-09-01T00:00:00Z"
+      }
+    },
+    "rationale": "123"
+  },
+  "buyer": {
+    "name": "NAME",
+    "identifier": {
+      "id": "string",
+      "scheme": "string",
+      "legalName": "string",
+      "uri": "string"
+    },
+    "address": {
+      "streetAddress": "string",
+      "locality": "string",
+      "region": "string",
+      "countryName": "MOLDOVA",
+      "postalCode": "12345"
+    },
+    "additionalIdentifiers": [
+      {
+        "id": "string",
+        "scheme": "string",
+        "legalName": "string",
+        "uri": "string"
+      }
+    ],
+    "contactPoint": {
+      "name": "string",
+      "email": "string",
+      "telephone": "string",
+      "url": "string",
+      "faxNumber": "7589995"
+    },
+    "details": {
+      "typeOfBuyer": "NATIONAL_AGENCY",
+      "mainGeneralActivity": "ENVIRONMENT",
+      "mainSectoralActivity": "WATER"
+    }
+  }
 }
