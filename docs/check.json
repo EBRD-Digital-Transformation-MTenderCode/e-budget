@@ -1,56 +1,43 @@
 {
-  "tender": {
-    "title": "TITLE",
-    "description": "tututu",
-    "classification": {
-      "id": "79200000-6",
-      "scheme": "CPV",
-      "description": "description"
-    }
-  },
   "planning": {
     "budget": {
-      "period": {
-        "startDate": "2018-07-08T00:00:00Z",
-        "endDate": "2018-09-01T00:00:00Z"
-      }
+      "description": "A short free text description of the budget source. May be used to provide the title of the budget line, or the programme used to fund this project.",
+      "amount": {
+        "amount": 2.85,
+        "currency": "MDL"
+      },
+      "europeanUnionFunding": {
+        "projectIdentifier": "proj-cn-12346",
+        "projectName": "test proj name",
+        "uri": "https://jwt.io"
+      },
+      "isEuropeanUnionFunded": true,
+      "budgetBreakdown": [
+        {
+          "id": "ocds-t1s2t3-MD-1531394757741-FS-1531398489815",
+          "description": "A short free text description of this budget entry.",
+          "amount": {
+            "amount": 2.85,
+            "currency": "MDL"
+          },
+          "period": {
+            "startDate": "2018-07-09T00:00:00Z",
+            "endDate": "2018-08-19T00:00:00Z"
+          },
+          "sourceParty": {
+            "name": "Taylor, Dennis and Munoz",
+            "id": "UA-EDR-753-18-5525"
+          }
+        }
+      ]
     },
-    "rationale": "123"
+    "rationale": "The rationale for the procurement provided in free text. More detail can be provided in an attached document."
   },
-  "buyer": {
-    "name": "NAME",
-    "identifier": {
-      "id": "string",
-      "scheme": "string",
-      "legalName": "string",
-      "uri": "string"
-    },
-    "address": {
-      "streetAddress": "string",
-      "locality": "string",
-      "region": "string",
-      "countryName": "MOLDOVA",
-      "postalCode": "12345"
-    },
-    "additionalIdentifiers": [
-      {
-        "id": "string",
-        "scheme": "string",
-        "legalName": "string",
-        "uri": "string"
-      }
-    ],
-    "contactPoint": {
-      "name": "string",
-      "email": "string",
-      "telephone": "string",
-      "url": "string",
-      "faxNumber": "7589995"
-    },
-    "details": {
-      "typeOfBuyer": "NATIONAL_AGENCY",
-      "mainGeneralActivity": "ENVIRONMENT",
-      "mainSectoralActivity": "WATER"
+  "tender": {
+    "classification": {
+      "scheme": "CPV",
+      "id": "79200000-6",
+      "description": "Cheese products"
     }
   }
 }
