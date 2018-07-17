@@ -71,11 +71,11 @@ data class BudgetFs @JsonCreator constructor(
 
         var verificationDetails: String?,
 
-        val project: String?,
+        var project: String?,
 
-        val projectID: String?,
+        var projectID: String?,
 
-        val uri: String?
+        var uri: String?
 )
 
 @JsonInclude(JsonInclude.Include.NON_NULL)

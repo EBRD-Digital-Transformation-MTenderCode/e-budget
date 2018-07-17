@@ -49,7 +49,7 @@ class FsServiceImpl(private val fsDao: FsDao,
                           dateTime: LocalDateTime,
                           fsDto: FsCreate): ResponseDto {
         validatePeriod(fsDto.planning.budget.period)
-//        validateEuropeanUnionFunding(fsDto.planning.budget.isEuropeanUnionFunded!!, fsDto.planning.budget.europeanUnionFunding)
+        validateEuropeanUnionFunding(fsDto.planning.budget.isEuropeanUnionFunded!!, fsDto.planning.budget.europeanUnionFunding)
         val eiEntity = eiDao.getByCpId(cpId) ?: throw ErrorException(ErrorType.EI_NOT_FOUND)
         val ei = toObject(Ei::class.java, eiEntity.jsonData)
         checkPeriodWithEi(ei.planning.budget.period, fsDto.planning.budget.period)
@@ -93,7 +93,7 @@ class FsServiceImpl(private val fsDao: FsDao,
                                 sourceEntity = sourceEntityFs,
                                 verified = verifiedFs,
                                 project = budgetDto.project,
-                                projectID =  budgetDto.projectID,
+                                projectID = budgetDto.projectID,
                                 uri = budgetDto.uri
                         ),
                         rationale = fsDto.planning.rationale
@@ -124,7 +124,6 @@ class FsServiceImpl(private val fsDao: FsDao,
                 ?: throw ErrorException(ErrorType.FS_NOT_FOUND)
         if (fsEntity.owner != owner) throw ErrorException(ErrorType.INVALID_OWNER)
         val fs = toObject(Fs::class.java, fsEntity.jsonData)
-//        validateVerified(fs, fsDto)
         val eiEntity = eiDao.getByCpId(cpId) ?: throw ErrorException(ErrorType.EI_NOT_FOUND)
         val ei = toObject(Ei::class.java, eiEntity.jsonData)
         checkPeriodWithEi(ei.planning.budget.period, fsDto.planning.budget.period)
@@ -134,7 +133,7 @@ class FsServiceImpl(private val fsDao: FsDao,
             TenderStatus.ACTIVE -> updateFs(fs, fsDto)
             TenderStatus.PLANNING -> {
                 updateFs(fs, fsDto)
-//                fs.planning.budget.id = fsDto.planning.budget.id
+                fs.planning.budget.id = fsDto.planning.budget.id
             }
             else -> throw ErrorException(ErrorType.INVALID_STATUS)
         }
@@ -152,17 +151,19 @@ class FsServiceImpl(private val fsDao: FsDao,
     }
 
     private fun updateFs(fs: Fs, fsUpdate: FsUpdate) {
-//        val funder = fs.funder
+
         fs.planning.apply {
             rationale = fsUpdate.planning.rationale
             budget.apply {
                 period = fsUpdate.planning.budget.period
                 description = fsUpdate.planning.budget.description
                 amount.amount = fsUpdate.planning.budget.amount.amount
-                europeanUnionFunding = fsUpdate.planning.budget.europeanUnionFunding
-//                if (funder == null) {
-//                    verified = fsUpdate.planning.budget.verified
-//                }
+                project = fsUpdate.planning.budget.project
+                projectID = fsUpdate.planning.budget.projectID
+                uri = fsUpdate.planning.budget.uri
+                if (isEuropeanUnionFunded) {
+                    europeanUnionFunding = fsUpdate.planning.budget.europeanUnionFunding
+                }
             }
         }
     }
@@ -176,10 +177,6 @@ class FsServiceImpl(private val fsDao: FsDao,
                                              europeanUnionFunding: EuropeanUnionFunding?) {
         if (isEuropeanUnionFunded && europeanUnionFunding == null) throw ErrorException(ErrorType.INVALID_EUROPEAN)
     }
-
-//    private fun validateVerified(fs: Fs, fsDto: FsUpdate) {
-//        if (fs.funder == null && fsDto.planning.budget.verified == null) throw ErrorException(ErrorType.INVALID_VERIFIED)
-//    }
 
     private fun checkPeriodWithEi(eiPeriod: Period, fsPeriod: Period) {
         val (eiStartDate, eiEndDate) = eiPeriod
