@@ -23,7 +23,11 @@ class EiController(private val eiService: EiService) {
                  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
                  @RequestParam("date") dateTime: LocalDateTime,
                  @Valid @RequestBody data: EiCreate): ResponseEntity<ResponseDto> {
-        return ResponseEntity(eiService.createEi(owner, country, dateTime, data), HttpStatus.CREATED)
+        return ResponseEntity(eiService.createEi(
+                owner = owner,
+                country = country,
+                dateTime = dateTime,
+                eiDto = data), HttpStatus.CREATED)
     }
 
     @PutMapping
@@ -31,6 +35,10 @@ class EiController(private val eiService: EiService) {
                  @RequestParam("owner") owner: String,
                  @RequestParam("token") token: String,
                  @Valid @RequestBody data: EiUpdate): ResponseEntity<ResponseDto> {
-        return ResponseEntity(eiService.updateEi(owner, cpId, token, data), HttpStatus.OK)
+        return ResponseEntity(eiService.updateEi(
+                owner = owner,
+                cpId = cpId,
+                token = token,
+                eiDto = data), HttpStatus.OK)
     }
 }
