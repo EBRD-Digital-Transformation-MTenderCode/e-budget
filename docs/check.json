@@ -3,7 +3,7 @@
     "budget": {
       "description": "A short free text description of the budget source. May be used to provide the title of the budget line, or the programme used to fund this project.",
       "amount": {
-        "amount": 2.85,
+        "amount": 1.85,
         "currency": "MDL"
       },
       "europeanUnionFunding": {
@@ -17,7 +17,7 @@
           "id": "ocds-t1s2t3-MD-1531394757741-FS-1531398489815",
           "description": "A short free text description of this budget entry.",
           "amount": {
-            "amount": 2.85,
+            "amount": 1.85,
             "currency": "MDL"
           },
           "period": {
@@ -35,9 +35,9 @@
   },
   "tender": {
     "classification": {
-      "scheme": "CPV",
       "id": "79200000-6",
-      "description": "Cheese products"
+      "description": "Servicii de contabilitate, servicii de audit şi servicii fiscale",
+      "scheme": "CPV"
     }
   }
 }
