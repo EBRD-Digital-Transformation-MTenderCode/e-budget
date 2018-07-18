@@ -10,13 +10,13 @@ data class Address @JsonCreator constructor(
         @field:NotNull
         val streetAddress: String,
 
+        val postalCode: String?,
+
         @field:NotNull
         val locality: String,
 
         @field:NotNull
         val region: String,
-
-        val postalCode: String?,
 
         @field:NotNull
         val countryName: String
