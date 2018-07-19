@@ -87,7 +87,7 @@ class EiServiceImpl(private val ocdsProperties: OCDSProperties,
             tender.description = eiDto.tender.description
             planning.rationale = eiDto.planning?.rationale
         }
-        entity.jsonData = toJson(eiDto)
+        entity.jsonData = toJson(ei)
         eiDao.save(entity)
         return ResponseDto(true, null, ei)
     }

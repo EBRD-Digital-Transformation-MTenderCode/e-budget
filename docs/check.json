@@ -1,117 +1,55 @@
 {
   "tender": {
-    "procuringEntity": {
-      "name": "Edward-Company",
-      "address": {
-        "streetAddress": "232323",
-        "postalCode": "424422",
-        "addressDetails": {
-          "country": {
-            "scheme": "iso-alpha2",
-            "id": "MD",
-            "description": "MOLDOVA",
-            "uri": "http://reference.iatistandard.org/202/codelists/Country/#id1"
-          },
-          "region": {
-            "id": "MD-AN",
-            "description": "Anenii Noi"
-          },
-          "locality": {
-            "scheme": "UN/LOCODE",
-            "id": "MD AIN",
-            "description": "Anenii Noi",
-            "uri": "locality"
-          }
-        }
-      },
-      "identifier": {
-        "id": "Enotis",
-        "scheme": "MD-IDNO",
-        "legalName": "legalName",
-        "uri": "uri"
-      },
-      "additionalIdentifiers": [
-        {
-          "id": "id",
-          "scheme": "scheme",
-          "legalName": "legalName2",
-          "uri": "uri2"
-        }
-      ],
-      "contactPoint": {
-        "name": "name",
-        "email": "email",
-        "telephone": "telephone",
-        "faxNumber": "fax",
-        "url": "uri3"
-      }
+    "title": "TiTLE",
+    "classification": {
+      "id": "79200000-6",
+      "scheme": "CPV",
+      "description": "description"
     }
   },
   "planning": {
     "budget": {
-      "id": "budgetID",
-      "description": "Hello world!",
       "period": {
-        "startDate": "2018-05-25T21:00:00Z",
-        "endDate": "2018-05-26T21:00:00Z"
-      },
-      "amount": {
-        "amount": 1000,
-        "currency": "MDL"
-      },
-      "isEuropeanUnionFunded": true,
-      "europeanUnionFunding": {
-        "projectName": "PJNAME",
-        "projectIdentifier": "PJINDET",
-        "uri": "uri4"
+        "startDate": "2018-07-08T00:00:00Z",
+        "endDate": "2018-09-01T00:00:00Z"
       }
-    },
-    "rationale": "Ebudget"
+    }
   },
   "buyer": {
-    "name": "buyerName",
+    "name": "NAME",
+    "identifier": {
+      "id": "string",
+      "scheme": "MD-IDNO",
+      "legalName": "string",
+      "uri": "string"
+    },
     "address": {
-      "streetAddress": "232323",
-      "postalCode": "424422",
+      "streetAddress": "street",
+      "postalCode": "12332",
       "addressDetails": {
         "country": {
-          "scheme": "iso-alpha2",
-          "id": "MD",
-          "description": "MOLDOVA",
-          "uri": "http://reference.iatistandard.org/202/codelists/Country/#id1"
+          "id": "UA"
         },
         "region": {
-          "id": "MD-AN",
-          "description": "Anenii Noi"
+          "id": "MD-AN"
         },
         "locality": {
-          "scheme": "UN/LOCODE",
-          "id": "MD AIN",
-          "description": "Anenii Noi",
-          "uri": "locality"
+          "scheme": "UN/",
+          "id": "LOCODE",
+          "description": "description"
         }
       }
     },
-    "identifier": {
-      "id": "id",
-      "scheme": "MD-IDNO",
-      "legalName": "legalName",
-      "uri": "uri5"
-    },
-    "additionalIdentifiers": [
-      {
-        "id": "string",
-        "scheme": "string",
-        "legalName": "string",
-        "uri": "string"
-      }
-    ],
     "contactPoint": {
       "name": "string",
       "email": "string",
       "telephone": "string",
-      "faxNumber": "string",
       "url": "string"
+    },
+    "details": {
+      "typeOfBuyer": "NATIONAL_AGENCY",
+      "mainGeneralActivity": "ENVIRONMENT",
+      "mainSectoralActivity": "WATER"
     }
   }
 }
