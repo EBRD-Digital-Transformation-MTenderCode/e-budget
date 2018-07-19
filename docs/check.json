@@ -1,43 +1,117 @@
 {
-  "planning": {
-    "budget": {
-      "description": "A short free text description of the budget source. May be used to provide the title of the budget line, or the programme used to fund this project.",
-      "amount": {
-        "amount": 1.85,
-        "currency": "MDL"
-      },
-      "europeanUnionFunding": {
-        "projectIdentifier": "proj-cn-12346",
-        "projectName": "test proj name",
-        "uri": "https://jwt.io"
-      },
-      "isEuropeanUnionFunded": true,
-      "budgetBreakdown": [
-        {
-          "id": "ocds-t1s2t3-MD-1531394757741-FS-1531398489815",
-          "description": "A short free text description of this budget entry.",
-          "amount": {
-            "amount": 1.85,
-            "currency": "MDL"
+  "tender": {
+    "procuringEntity": {
+      "name": "Edward-Company",
+      "address": {
+        "streetAddress": "232323",
+        "postalCode": "424422",
+        "addressDetails": {
+          "country": {
+            "scheme": "iso-alpha2",
+            "id": "MD",
+            "description": "MOLDOVA",
+            "uri": "http://reference.iatistandard.org/202/codelists/Country/#id1"
           },
-          "period": {
-            "startDate": "2018-07-09T00:00:00Z",
-            "endDate": "2018-08-19T00:00:00Z"
+          "region": {
+            "id": "MD-AN",
+            "description": "Anenii Noi"
           },
-          "sourceParty": {
-            "name": "Taylor, Dennis and Munoz",
-            "id": "UA-EDR-753-18-5525"
+          "locality": {
+            "scheme": "UN/LOCODE",
+            "id": "MD AIN",
+            "description": "Anenii Noi",
+            "uri": "locality"
           }
         }
-      ]
-    },
-    "rationale": "The rationale for the procurement provided in free text. More detail can be provided in an attached document."
+      },
+      "identifier": {
+        "id": "Enotis",
+        "scheme": "MD-IDNO",
+        "legalName": "legalName",
+        "uri": "uri"
+      },
+      "additionalIdentifiers": [
+        {
+          "id": "id",
+          "scheme": "scheme",
+          "legalName": "legalName2",
+          "uri": "uri2"
+        }
+      ],
+      "contactPoint": {
+        "name": "name",
+        "email": "email",
+        "telephone": "telephone",
+        "faxNumber": "fax",
+        "url": "uri3"
+      }
+    }
   },
-  "tender": {
-    "classification": {
-      "id": "79200000-6",
-      "description": "Servicii de contabilitate, servicii de audit şi servicii fiscale",
-      "scheme": "CPV"
+  "planning": {
+    "budget": {
+      "id": "budgetID",
+      "description": "Hello world!",
+      "period": {
+        "startDate": "2018-05-25T21:00:00Z",
+        "endDate": "2018-05-26T21:00:00Z"
+      },
+      "amount": {
+        "amount": 1000,
+        "currency": "MDL"
+      },
+      "isEuropeanUnionFunded": true,
+      "europeanUnionFunding": {
+        "projectName": "PJNAME",
+        "projectIdentifier": "PJINDET",
+        "uri": "uri4"
+      }
+    },
+    "rationale": "Ebudget"
+  },
+  "buyer": {
+    "name": "buyerName",
+    "address": {
+      "streetAddress": "232323",
+      "postalCode": "424422",
+      "addressDetails": {
+        "country": {
+          "scheme": "iso-alpha2",
+          "id": "MD",
+          "description": "MOLDOVA",
+          "uri": "http://reference.iatistandard.org/202/codelists/Country/#id1"
+        },
+        "region": {
+          "id": "MD-AN",
+          "description": "Anenii Noi"
+        },
+        "locality": {
+          "scheme": "UN/LOCODE",
+          "id": "MD AIN",
+          "description": "Anenii Noi",
+          "uri": "locality"
+        }
+      }
+    },
+    "identifier": {
+      "id": "id",
+      "scheme": "MD-IDNO",
+      "legalName": "legalName",
+      "uri": "uri5"
+    },
+    "additionalIdentifiers": [
+      {
+        "id": "string",
+        "scheme": "string",
+        "legalName": "string",
+        "uri": "string"
+      }
+    ],
+    "contactPoint": {
+      "name": "string",
+      "email": "string",
+      "telephone": "string",
+      "faxNumber": "string",
+      "url": "string"
     }
   }
 }

@@ -21,52 +21,52 @@ data class Address @JsonCreator constructor(
 data class AddressDetails(
 
         @field:Valid @field:NotNull
-        val country: Country,
+        val country: CountryDetails,
 
         @field:Valid @field:NotNull
-        val region: Region,
+        val region: RegionDetails,
 
         @field:Valid @field:NotNull
-        val locality: Locality
+        val locality: LocalityDetails
 )
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-data class Country(
+data class CountryDetails(
 
-        val scheme: String?,
+        var scheme: String?,
 
         @field:NotNull
         val id: String,
 
-        val description: String?,
+        var description: String?,
 
-        val uri: String?
+        var uri: String?
 )
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-data class Region(
+data class RegionDetails(
 
-        val scheme: String?,
+        var scheme: String?,
 
         @field:NotNull
         val id: String,
 
-        val description: String?,
+        var description: String?,
 
-        val uri: String?
+        var uri: String?
 )
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-data class Locality(
+data class LocalityDetails(
 
         @field:NotNull
-        val scheme: String,
+        var scheme: String,
 
         @field:NotNull
         val id: String,
 
         @field:NotNull
-        val description: String,
+        var description: String,
 
-        val uri: String?
+        var uri: String?
 )
