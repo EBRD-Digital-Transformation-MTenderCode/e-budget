@@ -1,20 +1,7 @@
 package com.procurement.budget.model.dto.check
 
 import com.fasterxml.jackson.annotation.JsonCreator
-import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
-import com.procurement.budget.model.dto.databinding.BooleansDeserializer
-import com.procurement.budget.model.dto.databinding.MoneyDeserializer
-import com.procurement.budget.model.dto.fs.OrganizationReferenceFs
-import com.procurement.budget.model.dto.fs.ValueFs
-import com.procurement.budget.model.dto.fs.request.BudgetFsCreate
-import com.procurement.budget.model.dto.fs.request.PlanningFsCreate
-import com.procurement.budget.model.dto.fs.request.TenderFsCreate
 import com.procurement.budget.model.dto.ocds.Classification
-import com.procurement.budget.model.dto.ocds.Currency
-import com.procurement.budget.model.dto.ocds.EuropeanUnionFunding
-import com.procurement.budget.model.dto.ocds.Period
-import java.math.BigDecimal
 import javax.validation.Valid
 import javax.validation.constraints.NotEmpty
 import javax.validation.constraints.NotNull

@@ -1,10 +1,35 @@
 {
   "tender": {
-    "title": "TiTLE",
-    "classification": {
-      "id": "79200000-6",
-      "scheme": "CPV",
-      "description": "description"
+    "procuringEntity": {
+      "name": "NAME OF PE",
+      "identifier": {
+        "id": "7787-9898-88",
+        "scheme": "MD-IDNO",
+        "legalName": "LN",
+        "uri": "http://454.to"
+      },
+      "address": {
+        "streetAddress": "street",
+        "addressDetails": {
+          "country": {
+            "id": "MD"
+          },
+          "region": {
+            "id": "MD-CM"
+          },
+          "locality": {
+            "scheme": "UN/LOCODE",
+            "id": "123654",
+            "description": "333"
+          }
+        }
+      },
+      "contactPoint": {
+        "name": "NAME of contact person",
+        "email": "string@mail.ccc",
+        "telephone": "987987",
+        "url": "string"
+      }
     }
   },
   "planning": {
@@ -12,44 +37,60 @@
       "period": {
         "startDate": "2018-07-08T00:00:00Z",
         "endDate": "2018-09-01T00:00:00Z"
+      },
+      "amount": {
+        "amount": 120,
+        "currency": "MDL"
+      },
+      "description": "blablabla",
+      "isEuropeanUnionFunded": true,
+      "europeanUnionFunding": {
+        "projectName": "Name of this marvelous project",
+        "projectIdentifier": "projectIdentifier",
+        "uri": "uriuri"
       }
-    }
+    },
+    "rationale": "rationale"
   },
   "buyer": {
-    "name": "NAME",
+    "name": "NAME-OF-FS-buyer",
     "identifier": {
-      "id": "string",
+      "id": "ID",
       "scheme": "MD-IDNO",
-      "legalName": "string",
-      "uri": "string"
+      "legalName": "LN",
+      "uri": "fdfhfgh"
     },
     "address": {
-      "streetAddress": "street",
-      "postalCode": "12332",
+      "streetAddress": "streetAddress",
+      "postalCode": "12000",
       "addressDetails": {
         "country": {
-          "id": "UA"
+          "id": "MD"
         },
         "region": {
-          "id": "MD-AN"
+          "id": "MD-CM"
         },
         "locality": {
-          "scheme": "UN/",
-          "id": "LOCODE",
-          "description": "description"
+          "scheme": "other",
+          "id": "CC-CC",
+          "description": "descr"
         }
       }
     },
+    "additionalIdentifiers": [
+      {
+        "id": "7878787",
+        "scheme": "s=88787ng",
+        "legalName": "s654g",
+        "uri": "p"
+      }
+    ],
     "contactPoint": {
-      "name": "string",
-      "email": "string",
-      "telephone": "string",
+      "name": "contact point",
+      "email": "str___ng",
+      "telephone": "789",
+      "faxNumber": "s654tring",
       "url": "string"
-    },
-    "details": {
-      "typeOfBuyer": "NATIONAL_AGENCY",
-      "mainGeneralActivity": "ENVIRONMENT",
-      "mainSectoralActivity": "WATER"
     }
   }
 }

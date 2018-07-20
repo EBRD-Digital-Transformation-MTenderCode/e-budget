@@ -61,7 +61,7 @@ data class BudgetFs @JsonCreator constructor(
 
         @field:JsonDeserialize(using = BooleansDeserializer::class)
         @get:JsonProperty("isEuropeanUnionFunded")
-        val isEuropeanUnionFunded: Boolean,
+        var isEuropeanUnionFunded: Boolean,
 
         @field:JsonDeserialize(using = BooleansDeserializer::class)
         @get:JsonProperty("verified")
@@ -84,7 +84,7 @@ data class ValueFs @JsonCreator constructor(
         @field:JsonDeserialize(using = MoneyDeserializer::class)
         var amount: BigDecimal,
 
-        val currency: Currency
+        val currency: String
 )
 
 @JsonInclude(JsonInclude.Include.NON_NULL)

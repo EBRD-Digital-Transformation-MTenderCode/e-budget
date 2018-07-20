@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.procurement.budget.model.dto.databinding.MoneyDeserializer
 import com.procurement.budget.model.dto.ocds.*
-import com.procurement.budget.model.dto.ocds.Currency
 import java.math.BigDecimal
 import java.util.*
 import javax.validation.Valid
@@ -67,7 +66,7 @@ data class ValueEi @JsonCreator constructor(
         @field:JsonDeserialize(using = MoneyDeserializer::class)
         var amount: BigDecimal,
 
-        var currency: Currency
+        var currency: String
 )
 
 @JsonInclude(JsonInclude.Include.NON_NULL)

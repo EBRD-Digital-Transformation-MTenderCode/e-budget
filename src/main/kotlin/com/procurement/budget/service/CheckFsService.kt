@@ -10,7 +10,6 @@ import com.procurement.budget.model.dto.ei.Ei
 import com.procurement.budget.model.dto.ei.OrganizationReferenceEi
 import com.procurement.budget.model.dto.fs.Fs
 import com.procurement.budget.model.dto.fs.OrganizationReferenceFs
-import com.procurement.budget.model.dto.ocds.Currency
 import com.procurement.budget.model.dto.ocds.TenderStatus
 import com.procurement.budget.model.dto.ocds.TenderStatusDetails
 import com.procurement.budget.utils.toObject
@@ -44,7 +43,7 @@ class CheckFsServiceImpl(private val fsDao: FsDao,
         val breakdownsRs: ArrayList<BudgetBreakdownCheckRs> = arrayListOf()
         var isEuropeanUnionFunded = false
         var totalAmount: BigDecimal = BigDecimal.ZERO
-        var totalCurrency: Currency = dto.planning.budget.budgetBreakdown[0].amount.currency
+        var totalCurrency = dto.planning.budget.budgetBreakdown[0].amount.currency
         var mainProcurementCategory = ""
         for (cpId in cpIds) {
             val eiEntity = eiDao.getByCpId(cpId) ?: throw ErrorException(ErrorType.EI_NOT_FOUND)
@@ -61,7 +60,7 @@ class CheckFsServiceImpl(private val fsDao: FsDao,
                 checkFsCurrency(fs, br)
                 fs.funder?.let { funders.add(it) }
                 fs.payer.let { payers.add(it) }
-                processBudgetBreakdown(breakdownsRs, fs)
+                breakdownsRs.add(getBudgetBreakdown(br, fs))
             }
         }
 
@@ -94,17 +93,15 @@ class CheckFsServiceImpl(private val fsDao: FsDao,
         if (eiCPV.substring(0, 3).toUpperCase() != dtoCPV.substring(0, 3).toUpperCase()) throw ErrorException(ErrorType.INVALID_CPV)
     }
 
-    private fun processBudgetBreakdown(breakdownsRs: ArrayList<BudgetBreakdownCheckRs>,
-                                       fs: Fs) {
-        val bb = BudgetBreakdownCheckRs(
+    private fun getBudgetBreakdown(breakdownsRs: BudgetBreakdownCheckRq, fs: Fs): BudgetBreakdownCheckRs {
+        return BudgetBreakdownCheckRs(
                 id = fs.ocid,
                 description = fs.planning.budget.description,
                 period = fs.planning.budget.period,
-                amount = CheckValue(fs.planning.budget.amount.amount, fs.planning.budget.amount.currency),
+                amount = breakdownsRs.amount,
                 europeanUnionFunding = fs.planning.budget.europeanUnionFunding,
                 sourceParty = CheckSourceParty(id = fs.planning.budget.sourceEntity.id, name = fs.planning.budget.sourceEntity.name)
         )
-        breakdownsRs.add(bb)
     }
 
     private fun checkFsCurrency(fs: Fs, br: BudgetBreakdownCheckRq) {
@@ -114,9 +111,9 @@ class CheckFsServiceImpl(private val fsDao: FsDao,
     }
 
     private fun checkFsAmount(fs: Fs, br: BudgetBreakdownCheckRq) {
-        val fsAmount = fs.planning.budget.amount.amount
         val brAmount = br.amount.amount
-        if (brAmount.compareTo(fsAmount) == 1) throw ErrorException(ErrorType.INVALID_AMOUNT)
+        val fsAmount = fs.planning.budget.amount.amount
+        if (brAmount > fsAmount) throw ErrorException(ErrorType.INVALID_AMOUNT)
     }
 
     private fun checkFsStatus(fs: Fs) {

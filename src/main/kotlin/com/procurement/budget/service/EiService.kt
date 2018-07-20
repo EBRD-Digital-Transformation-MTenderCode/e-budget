@@ -98,7 +98,7 @@ class EiServiceImpl(private val ocdsProperties: OCDSProperties,
     }
 
     private fun validatePeriod(eiDto: EiCreate) {
-        if (!eiDto.planning.budget.period.startDate.isBefore(eiDto.planning.budget.period.endDate))
+        if (eiDto.planning.budget.period.startDate >= eiDto.planning.budget.period.endDate)
             throw ErrorException(ErrorType.INVALID_PERIOD)
     }
 

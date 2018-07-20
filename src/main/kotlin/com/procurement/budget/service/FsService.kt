@@ -15,9 +15,11 @@ import com.procurement.budget.model.dto.fs.response.EiForFs
 import com.procurement.budget.model.dto.fs.response.EiForFsBudget
 import com.procurement.budget.model.dto.fs.response.EiForFsPlanning
 import com.procurement.budget.model.dto.fs.response.FsResponse
-import com.procurement.budget.model.dto.ocds.*
-import com.procurement.budget.model.dto.ocds.Currency
+import com.procurement.budget.model.dto.ocds.Period
+import com.procurement.budget.model.dto.ocds.TenderStatus
+import com.procurement.budget.model.dto.ocds.TenderStatusDetails
 import com.procurement.budget.model.entity.FsEntity
+import com.procurement.budget.utils.localNowUTC
 import com.procurement.budget.utils.toDate
 import com.procurement.budget.utils.toJson
 import com.procurement.budget.utils.toObject
@@ -50,7 +52,12 @@ class FsServiceImpl(private val fsDao: FsDao,
                           dateTime: LocalDateTime,
                           fsDto: FsCreate): ResponseDto {
         validatePeriod(fsDto.planning.budget.period)
-        validateEuropeanUnionFunding(fsDto.planning.budget.isEuropeanUnionFunded!!, fsDto.planning.budget.europeanUnionFunding)
+        if (fsDto.planning.budget.isEuropeanUnionFunded!! && fsDto.planning.budget.europeanUnionFunding == null) {
+            throw ErrorException(ErrorType.INVALID_EUROPEAN)
+        }
+        if (!fsDto.planning.budget.isEuropeanUnionFunded!!) {
+            fsDto.planning.budget.europeanUnionFunding = null
+        }
         val eiEntity = eiDao.getByCpId(cpId) ?: throw ErrorException(ErrorType.EI_NOT_FOUND)
         val ei = toObject(Ei::class.java, eiEntity.jsonData)
         checkPeriodWithEi(ei.planning.budget.period, fsDto.planning.budget.period)
@@ -121,8 +128,14 @@ class FsServiceImpl(private val fsDao: FsDao,
                           owner: String,
                           fsDto: FsUpdate): ResponseDto {
         validatePeriod(fsDto.planning.budget.period)
-        validateEuropeanUnionFunding(fsDto.planning.budget.isEuropeanUnionFunded!!, fsDto.planning.budget.europeanUnionFunding)
-        val fsEntity = fsDao.getByCpIdAndToken(cpId, UUID.fromString(token))?: throw ErrorException(ErrorType.FS_NOT_FOUND)
+        if (fsDto.planning.budget.isEuropeanUnionFunded!! && fsDto.planning.budget.europeanUnionFunding == null) {
+            throw ErrorException(ErrorType.INVALID_EUROPEAN)
+        }
+        if (!fsDto.planning.budget.isEuropeanUnionFunded!!) {
+            fsDto.planning.budget.europeanUnionFunding = null
+        }
+        val fsEntity = fsDao.getByCpIdAndToken(cpId, UUID.fromString(token))
+                ?: throw ErrorException(ErrorType.FS_NOT_FOUND)
         if (fsEntity.ocId != ocId) throw ErrorException(ErrorType.INVALID_OCID)
         if (fsEntity.owner != owner) throw ErrorException(ErrorType.INVALID_OWNER)
         val fs = toObject(Fs::class.java, fsEntity.jsonData)
@@ -140,6 +153,7 @@ class FsServiceImpl(private val fsDao: FsDao,
             else -> throw ErrorException(ErrorType.INVALID_STATUS)
         }
         fsEntity.jsonData = toJson(fs)
+        fsEntity.amount = fs.planning.budget.amount.amount
         fsDao.save(fsEntity)
         val totalAmount = fsDao.getTotalAmountByCpId(cpId) ?: BigDecimal.ZERO
         var eiForFs: EiForFs? = null
@@ -163,32 +177,25 @@ class FsServiceImpl(private val fsDao: FsDao,
                 project = fsUpdate.planning.budget.project
                 projectID = fsUpdate.planning.budget.projectID
                 uri = fsUpdate.planning.budget.uri
-                if (isEuropeanUnionFunded) {
-                    europeanUnionFunding = fsUpdate.planning.budget.europeanUnionFunding
-                }
+                isEuropeanUnionFunded = fsUpdate.planning.budget.isEuropeanUnionFunded!!
+                europeanUnionFunding = fsUpdate.planning.budget.europeanUnionFunding
             }
         }
     }
 
     private fun validatePeriod(period: Period) {
-        if (!period.startDate.isBefore(period.endDate))
-            throw ErrorException(ErrorType.INVALID_PERIOD)
-    }
-
-    private fun validateEuropeanUnionFunding(isEuropeanUnionFunded: Boolean,
-                                             europeanUnionFunding: EuropeanUnionFunding?) {
-        if (isEuropeanUnionFunded && europeanUnionFunding == null) throw ErrorException(ErrorType.INVALID_EUROPEAN)
+        if (period.startDate >= period.endDate) throw ErrorException(ErrorType.INVALID_PERIOD)
+        if (period.endDate <= localNowUTC()) throw ErrorException(ErrorType.INVALID_PERIOD)
     }
 
     private fun checkPeriodWithEi(eiPeriod: Period, fsPeriod: Period) {
         val (eiStartDate, eiEndDate) = eiPeriod
         val (fsStartDate, fsEndDate) = fsPeriod
-        val fsPeriodValid = (fsStartDate.isAfter(eiStartDate) || fsStartDate.isEqual(eiStartDate))
-                && (fsEndDate.isBefore(eiEndDate) || fsEndDate.isEqual(eiEndDate))
+        val fsPeriodValid = (fsStartDate >= eiStartDate) && (fsEndDate <= eiEndDate)
         if (!fsPeriodValid) throw ErrorException(ErrorType.INVALID_PERIOD)
     }
 
-    private fun checkCurrency(ei: Ei, fsCurrency: Currency) {
+    private fun checkCurrency(ei: Ei, fsCurrency: String) {
         val eiCurrency = ei.planning.budget.amount?.currency
         if (eiCurrency != null) {
             if (eiCurrency != fsCurrency) throw ErrorException(ErrorType.INVALID_CURRENCY)
