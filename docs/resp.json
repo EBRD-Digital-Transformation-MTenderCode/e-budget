@@ -1,59 +1,243 @@
 {
-  "ei": {
-    "planning": {
-      "budget": {
-        "amount": {
-          "amount": 0.00,
+  "planning": {
+    "budget": {
+      "description": "wow",
+      "amount": {
+        "amount": 1000.00,
+        "currency": "MDL"
+      },
+      "isEuropeanUnionFunded": true,
+      "budgetBreakdown": [
+        {
+          "id": "ocds-t1s2t3-MD-1532078812758-FS-1532078823147",
+          "description": "Hello world!",
+          "amount": {
+            "amount": 1000.00,
+            "currency": "MDL"
+          },
+          "period": {
+            "startDate": "2018-05-25T21:00:00Z",
+            "endDate": "2018-05-26T21:00:00Z"
+          },
+          "sourceParty": {
+            "id": "MD-IDNO-id",
+            "name": "buyerName"
+          },
+          "europeanUnionFunding": {
+            "projectName": "PJNAME",
+            "projectIdentifier": "PJINDET",
+            "uri": "uri4"
+          }
+        }
+      ]
+    },
+    "rationale": "enotis"
+  },
+  "tender": {
+    "title": "gav",
+    "description": "gav gav",
+    "legalBasis": "NATIONAL_PROCUREMENT_LAW",
+    "procurementMethodRationale": "Write experience describe walk house high. Treatment shoulder word. Its newspaper toward happen next example safe middle.",
+    "procurementMethodAdditionalInfo": "Save instead agreement center. Art write enough item policy",
+    "tenderPeriod": {
+      "endDate": "2018-09-18T18:45:00Z",
+      "startDate": "2018-07-20T09:27:46Z"
+    },
+    "procuringEntity": {
+      "name": "Edward-Compan",
+      "identifier": {
+        "scheme": "rrr",
+        "id": "gggg",
+        "legalName": "fff",
+        "uri": "hhh"
+      },
+      "additionalIdentifiers": [
+        {
+          "scheme": "hhh",
+          "id": "gg",
+          "legalName": "fff",
+          "uri": "jjj"
+        }
+      ],
+      "address": {
+        "streetAddress": "",
+        "postalCode": "",
+        "addressDetails": {
+          "country": {
+            "id": "MD"
+          },
+          "region": {
+            "id": "MD-AN"
+          },
+          "locality": {
+            "scheme": "gfd",
+            "id": "gfdg",
+            "description": "dgfdfg"
+          }
+        }
+      },
+      "contactPoint": {
+        "name": "hgfh",
+        "email": "hfgh",
+        "telephone": "hgfhfh",
+        "faxNumber": "hgfh",
+        "url": "hgfhgf"
+      }
+    },
+    "lots": [
+      {
+        "id": "1",
+        "title": "lot1",
+        "description": "looot",
+        "value": {
+          "amount": 1200,
           "currency": "MDL"
+        },
+        "contractPeriod": {
+          "startDate": "2018-10-10T14:45:00Z",
+          "endDate": "2018-10-19T14:45:00Z"
+        },
+        "placeOfPerformance": {
+          "address": {
+            "streetAddress": "",
+            "postalCode": "",
+            "addressDetails": {
+              "country": {
+                "id": "MD"
+              },
+              "region": {
+                "id": "MD-AN"
+              },
+              "locality": {
+                "scheme": "gfgf",
+                "id": "gfg",
+                "description": "gfg"
+              }
+            }
+          },
+          "description": "1"
+        }
+      },
+      {
+        "id": "2",
+        "title": "lot2",
+        "description": "looot",
+        "value": {
+          "amount": 0,
+          "currency": "MDL"
+        },
+        "contractPeriod": {
+          "startDate": "2018-10-10T14:45:00Z",
+          "endDate": "2018-10-25T14:45:00Z"
+        },
+        "placeOfPerformance": {
+          "address": {
+            "streetAddress": "",
+            "postalCode": "",
+            "addressDetails": {
+              "country": {
+                "id": "MD"
+              },
+              "region": {
+                "id": "MD-AN"
+              },
+              "locality": {
+                "scheme": "UN/LOCODE",
+                "id": "MD AIN",
+                "description": "gfg5555"
+              }
+            }
+          },
+          "description": "2"
         }
       }
-    }
-  },
-  "fs": {
-    "token": "4726d823-ed10-426e-ae12-fe2224f5bec0",
-    "ocid": "ocds-t1s2t3-MD-1532068572875-FS-1532068676685",
-    "tender": {
-      "id": "ocds-t1s2t3-MD-1532068572875-FS-1532068676685",
-      "status": "planning",
-      "statusDetails": "empty"
-    },
-    "planning": {
-      "budget": {
-        "id": null,
-        "description": null,
-        "period": {
-          "startDate": "2018-07-08T00:00:00Z",
-          "endDate": "2018-08-19T00:00:00Z"
+    ],
+    "items": [
+      {
+        "id": "1",
+        "description": "",
+        "classification": {
+          "id": "30199220-8",
+          "description": "Cărţi poştale neilustrate",
+          "scheme": "CPV"
         },
-        "amount": {
-          "amount": 0.00,
-          "currency": "MDL"
+        "additionalClassifications": [
+          {
+            "id": "AB06-7",
+            "description": "Plastic",
+            "scheme": "CPVS"
+          }
+        ],
+        "quantity": 1.00,
+        "unit": {
+          "id": "MTK",
+          "name": "square metre"
         },
-        "europeanUnionFunding": null,
-        "isEuropeanUnionFunded": false,
-        "verified": false,
-        "sourceEntity": {
-          "id": "MD-IDNO-rserre",
-          "name": "NAME"
-        },
-        "verificationDetails": null,
-        "project": null,
-        "projectID": null,
-        "uri": null
+        "relatedLot": "1"
       },
-      "rationale": "rationale"
+      {
+        "id": "2",
+        "description": "",
+        "classification": {
+          "id": "30199230-1",
+          "description": "Plicuri",
+          "scheme": "CPV"
+        },
+        "additionalClassifications": [
+          {
+            "id": "AB06-7",
+            "description": "Plastic",
+            "scheme": "CPVS"
+          }
+        ],
+        "quantity": 1.00,
+        "unit": {
+          "id": "MTK",
+          "name": "square metre"
+        },
+        "relatedLot": "2"
+      }
+    ],
+    "documents": [
+      {
+        "documentType": "eligibilityCriteria",
+        "id": "e0437e30-8bf8-11e8-b758-dd76462396b0",
+        "title": "doc k lotu1",
+        "description": "doc k lotu1",
+        "relatedLots": [
+          "1"
+        ]
+      }
+    ],
+    "classification": {
+      "id": "30199200-2",
+      "description": "Plicuri, cărţi poştale şi cărţi poştale neilustrate",
+      "scheme": "CPV"
     },
-    "payer": {
-      "id": "MD-IDNO-7787-9898-88",
-      "name": "NAME OF PE",
+    "submissionMethodRationale": [
+      "submissionMethodRationale"
+    ],
+    "submissionMethodDetails": "submissionMethodDetails",
+    "procurementMethodDetails": "Licitatia deschisa",
+    "eligibilityCriteria": "eligibilityCriteria",
+    "mainProcurementCategory": "goods"
+  },
+  "ei": [
+    "ocds-t1s2t3-MD-1532078812758"
+  ],
+  "buyer": [
+    {
+      "id": "MD-IDNO-354-37-1072",
+      "name": "Burns-Davis",
       "identifier": {
-        "id": "7787-9898-88",
+        "id": "354-37-1072",
         "scheme": "MD-IDNO",
-        "legalName": "LN",
-        "uri": "http://454.to"
+        "legalName": "Burns-Davis PLC",
+        "uri": "http://edwards.net/"
       },
       "address": {
-        "streetAddress": "street",
+        "streetAddress": "232323",
+        "postalCode": "424422",
         "addressDetails": {
           "country": {
             "scheme": "iso-alpha2",
@@ -62,22 +246,134 @@
             "uri": "http://reference.iatistandard.org/202/codelists/Country/#id1"
           },
           "region": {
-            "id": "MD-CM",
-            "description": "Cimișlia"
+            "id": "MD-AN",
+            "description": "Anenii Noi"
           },
           "locality": {
             "scheme": "UN/LOCODE",
-            "id": "123654",
-            "description": "333"
+            "id": "MD AIN",
+            "description": "Anenii Noi",
+            "uri": "locality"
           }
         }
       },
+      "additionalIdentifiers": [
+        {
+          "id": "713-49-7544",
+          "scheme": "MD-IDNO",
+          "legalName": "Burns-Davis PLC",
+          "uri": "http://baker.com/posts/about.asp"
+        }
+      ],
       "contactPoint": {
-        "name": "NAME of contact person",
-        "email": "string@mail.ccc",
-        "telephone": "987987",
+        "name": "Jacqueline Soto",
+        "email": "tiffanygutierrez@yahoo.com",
+        "telephone": "724-095-3938x237",
+        "faxNumber": "897-612-1545",
+        "url": "http://hudson.biz/explore/list/category/"
+      },
+      "details": {
+        "typeOfBuyer": "MINISTRY",
+        "mainGeneralActivity": "HEALTH",
+        "mainSectoralActivity": "WATER"
+      },
+      "buyerProfile": "http://ray.com/"
+    }
+  ],
+  "funder": [
+    {
+      "id": "MD-IDNO-id",
+      "name": "buyerName",
+      "identifier": {
+        "id": "id",
+        "scheme": "MD-IDNO",
+        "legalName": "legalName",
+        "uri": "uri5"
+      },
+      "address": {
+        "streetAddress": "",
+        "postalCode": "",
+        "addressDetails": {
+          "country": {
+            "scheme": "iso-alpha2",
+            "id": "MD",
+            "description": "MOLDOVA",
+            "uri": "http://reference.iatistandard.org/202/codelists/Country/#id1"
+          },
+          "region": {
+            "id": "MD-AN",
+            "description": "Anenii Noi"
+          },
+          "locality": {
+            "scheme": "other",
+            "id": "",
+            "description": ""
+          }
+        }
+      },
+      "additionalIdentifiers": [
+        {
+          "id": "string",
+          "scheme": "string",
+          "legalName": "string",
+          "uri": "string"
+        }
+      ],
+      "contactPoint": {
+        "name": "string",
+        "email": "string",
+        "telephone": "string",
+        "faxNumber": "string",
         "url": "string"
       }
     }
-  }
+  ],
+  "payer": [
+    {
+      "id": "MD-IDNO-Enotis",
+      "name": "Edward-Company",
+      "identifier": {
+        "id": "Enotis",
+        "scheme": "MD-IDNO",
+        "legalName": "legalName",
+        "uri": "uri"
+      },
+      "address": {
+        "streetAddress": "",
+        "postalCode": "",
+        "addressDetails": {
+          "country": {
+            "scheme": "iso-alpha2",
+            "id": "MD",
+            "description": "MOLDOVA",
+            "uri": "http://reference.iatistandard.org/202/codelists/Country/#id1"
+          },
+          "region": {
+            "id": "MD-AN",
+            "description": "Anenii Noi"
+          },
+          "locality": {
+            "scheme": "other",
+            "id": "ff",
+            "description": "dfd"
+          }
+        }
+      },
+      "additionalIdentifiers": [
+        {
+          "id": "id",
+          "scheme": "scheme",
+          "legalName": "legalName2",
+          "uri": "uri2"
+        }
+      ],
+      "contactPoint": {
+        "name": "name",
+        "email": "email",
+        "telephone": "telephone",
+        "faxNumber": "fax",
+        "url": "uri3"
+      }
+    }
+  ]
 }

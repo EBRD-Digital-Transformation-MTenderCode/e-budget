@@ -20,6 +20,7 @@ import com.procurement.budget.model.dto.ocds.Period
 import com.procurement.budget.model.dto.ocds.TenderStatus
 import com.procurement.budget.model.dto.ocds.TenderStatusDetails
 import com.procurement.budget.model.entity.FsEntity
+import com.procurement.budget.utils.localNowUTC
 import com.procurement.budget.utils.toDate
 import com.procurement.budget.utils.toJson
 import com.procurement.budget.utils.toObject
@@ -183,15 +184,14 @@ class FsServiceImpl(private val fsDao: FsDao,
     }
 
     private fun validatePeriod(period: Period) {
-        if (!period.startDate.isBefore(period.endDate))
-            throw ErrorException(ErrorType.INVALID_PERIOD)
+        if (period.startDate >= period.endDate) throw ErrorException(ErrorType.INVALID_PERIOD)
+        if (period.endDate <= localNowUTC()) throw ErrorException(ErrorType.INVALID_PERIOD)
     }
 
     private fun checkPeriodWithEi(eiPeriod: Period, fsPeriod: Period) {
         val (eiStartDate, eiEndDate) = eiPeriod
         val (fsStartDate, fsEndDate) = fsPeriod
-        val fsPeriodValid = (fsStartDate.isAfter(eiStartDate) || fsStartDate.isEqual(eiStartDate))
-                && (fsEndDate.isBefore(eiEndDate) || fsEndDate.isEqual(eiEndDate))
+        val fsPeriodValid = (fsStartDate >= eiStartDate) && (fsEndDate <= eiEndDate)
         if (!fsPeriodValid) throw ErrorException(ErrorType.INVALID_PERIOD)
     }
 
