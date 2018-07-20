@@ -39,11 +39,11 @@
         "endDate": "2018-09-01T00:00:00Z"
       },
       "amount": {
-        "amount": 10001,
+        "amount": 120,
         "currency": "MDL"
       },
       "description": "blablabla",
-      "isEuropeanUnionFunded": false,
+      "isEuropeanUnionFunded": true,
       "europeanUnionFunding": {
         "projectName": "Name of this marvelous project",
         "projectIdentifier": "projectIdentifier",

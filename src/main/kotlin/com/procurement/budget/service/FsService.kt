@@ -154,6 +154,7 @@ class FsServiceImpl(private val fsDao: FsDao,
             else -> throw ErrorException(ErrorType.INVALID_STATUS)
         }
         fsEntity.jsonData = toJson(fs)
+        fsEntity.amount = fs.planning.budget.amount.amount
         fsDao.save(fsEntity)
         val totalAmount = fsDao.getTotalAmountByCpId(cpId) ?: BigDecimal.ZERO
         var eiForFs: EiForFs? = null
