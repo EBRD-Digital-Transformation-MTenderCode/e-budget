@@ -111,8 +111,8 @@ class CheckFsServiceImpl(private val fsDao: FsDao,
     }
 
     private fun checkFsAmount(fs: Fs, br: BudgetBreakdownCheckRq) {
-        val fsAmount = fs.planning.budget.amount.amount
         val brAmount = br.amount.amount
+        val fsAmount = fs.planning.budget.amount.amount
         if (brAmount > fsAmount) throw ErrorException(ErrorType.INVALID_AMOUNT)
     }
 
