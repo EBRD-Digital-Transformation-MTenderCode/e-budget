@@ -1,24 +1,96 @@
 {
-  "planning": {
-    "rationale": "enotis",
-    "budget": {
-      "description": "wow",
-      "budgetBreakdown": [
-        {
-          "id": "ocds-t1s2t3-MD-1532078812758-FS-1532078823147",
-          "amount": {
-            "amount": 0,
-            "currency": "MDL"
+  "tender": {
+    "procuringEntity": {
+      "name": "NAME OF PE",
+      "identifier": {
+        "id": "7787-9898-88",
+        "scheme": "MD-IDNO",
+        "legalName": "LN",
+        "uri": "http://454.to"
+      },
+      "address": {
+        "streetAddress": "street",
+        "addressDetails": {
+          "country": {
+            "id": "MD"
+          },
+          "region": {
+            "id": "MD-CM"
+          },
+          "locality": {
+            "scheme": "UN/LOCODE",
+            "id": "123654",
+            "description": "333"
           }
         }
-      ]
+      },
+      "contactPoint": {
+        "name": "NAME of contact person",
+        "email": "string@mail.ccc",
+        "telephone": "987987",
+        "url": "string"
+      }
     }
   },
-  "tender": {
-    "classification": {
-      "id": "30199200-2",
-      "description": "Plicuri, cărţi poştale şi cărţi poştale neilustrate",
-      "scheme": "CPV"
+  "planning": {
+    "budget": {
+      "period": {
+        "startDate": "2018-07-08T00:00:00Z",
+        "endDate": "2018-09-01T00:00:00Z"
+      },
+      "amount": {
+        "amount": 10001,
+        "currency": "MDL"
+      },
+      "description": "blablabla",
+      "isEuropeanUnionFunded": false,
+      "europeanUnionFunding": {
+        "projectName": "Name of this marvelous project",
+        "projectIdentifier": "projectIdentifier",
+        "uri": "uriuri"
+      }
+    },
+    "rationale": "rationale"
+  },
+  "buyer": {
+    "name": "NAME-OF-FS-buyer",
+    "identifier": {
+      "id": "ID",
+      "scheme": "MD-IDNO",
+      "legalName": "LN",
+      "uri": "fdfhfgh"
+    },
+    "address": {
+      "streetAddress": "streetAddress",
+      "postalCode": "12000",
+      "addressDetails": {
+        "country": {
+          "id": "MD"
+        },
+        "region": {
+          "id": "MD-CM"
+        },
+        "locality": {
+          "scheme": "other",
+          "id": "CC-CC",
+          "description": "descr"
+        }
+      }
+    },
+    "additionalIdentifiers": [
+      {
+        "id": "7878787",
+        "scheme": "s=88787ng",
+        "legalName": "s654g",
+        "uri": "p"
+      }
+    ],
+    "contactPoint": {
+      "name": "contact point",
+      "email": "str___ng",
+      "telephone": "789",
+      "faxNumber": "s654tring",
+      "url": "string"
     }
   }
 }
