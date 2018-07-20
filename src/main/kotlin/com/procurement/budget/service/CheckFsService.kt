@@ -60,7 +60,7 @@ class CheckFsServiceImpl(private val fsDao: FsDao,
                 checkFsCurrency(fs, br)
                 fs.funder?.let { funders.add(it) }
                 fs.payer.let { payers.add(it) }
-                processBudgetBreakdown(br, fs)
+                breakdownsRs.add(getBudgetBreakdown(br, fs))
             }
         }
 
@@ -93,7 +93,7 @@ class CheckFsServiceImpl(private val fsDao: FsDao,
         if (eiCPV.substring(0, 3).toUpperCase() != dtoCPV.substring(0, 3).toUpperCase()) throw ErrorException(ErrorType.INVALID_CPV)
     }
 
-    private fun processBudgetBreakdown(breakdownsRs: BudgetBreakdownCheckRq, fs: Fs): BudgetBreakdownCheckRs {
+    private fun getBudgetBreakdown(breakdownsRs: BudgetBreakdownCheckRq, fs: Fs): BudgetBreakdownCheckRs {
         return BudgetBreakdownCheckRs(
                 id = fs.ocid,
                 description = fs.planning.budget.description,
