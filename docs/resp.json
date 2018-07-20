@@ -1,0 +1,83 @@
+{
+  "ei": {
+    "planning": {
+      "budget": {
+        "amount": {
+          "amount": 0.00,
+          "currency": "MDL"
+        }
+      }
+    }
+  },
+  "fs": {
+    "token": "4726d823-ed10-426e-ae12-fe2224f5bec0",
+    "ocid": "ocds-t1s2t3-MD-1532068572875-FS-1532068676685",
+    "tender": {
+      "id": "ocds-t1s2t3-MD-1532068572875-FS-1532068676685",
+      "status": "planning",
+      "statusDetails": "empty"
+    },
+    "planning": {
+      "budget": {
+        "id": null,
+        "description": null,
+        "period": {
+          "startDate": "2018-07-08T00:00:00Z",
+          "endDate": "2018-08-19T00:00:00Z"
+        },
+        "amount": {
+          "amount": 0.00,
+          "currency": "MDL"
+        },
+        "europeanUnionFunding": null,
+        "isEuropeanUnionFunded": false,
+        "verified": false,
+        "sourceEntity": {
+          "id": "MD-IDNO-rserre",
+          "name": "NAME"
+        },
+        "verificationDetails": null,
+        "project": null,
+        "projectID": null,
+        "uri": null
+      },
+      "rationale": "rationale"
+    },
+    "payer": {
+      "id": "MD-IDNO-7787-9898-88",
+      "name": "NAME OF PE",
+      "identifier": {
+        "id": "7787-9898-88",
+        "scheme": "MD-IDNO",
+        "legalName": "LN",
+        "uri": "http://454.to"
+      },
+      "address": {
+        "streetAddress": "street",
+        "addressDetails": {
+          "country": {
+            "scheme": "iso-alpha2",
+            "id": "MD",
+            "description": "MOLDOVA",
+            "uri": "http://reference.iatistandard.org/202/codelists/Country/#id1"
+          },
+          "region": {
+            "id": "MD-CM",
+            "description": "Cimișlia"
+          },
+          "locality": {
+            "scheme": "UN/LOCODE",
+            "id": "123654",
+            "description": "333"
+          }
+        }
+      },
+      "contactPoint": {
+        "name": "NAME of contact person",
+        "email": "string@mail.ccc",
+        "telephone": "987987",
+        "url": "string"
+      }
+    }
+  }
+}

@@ -1,55 +1,58 @@
 {
   "tender": {
-    "title": "TiTLE",
     "classification": {
-      "id": "79200000-6",
-      "scheme": "CPV",
-      "description": "description"
+      "id": "7845454-0",
+      "scheme": "CPV"
+    },
+    "procuringEntity": {
+      "name": "NAME OF PE",
+      "address": {
+        "streetAddress": "street",
+        "addressDetails": {
+          "country": {
+            "scheme": "iso-alpha2",
+            "id": "MD",
+            "description": "MOLDOVA",
+            "uri": "http://reference.iatistandard.org/202/codelists/Country/#id1"
+          },
+          "region": {
+            "id": "MD-CM",
+            "description": "Cimișlia"
+          },
+          "locality": {
+            "scheme": "UN/LOCODE",
+            "id": "123654",
+            "description": "333"
+          }
+        }
+      },
+      "identifier": {
+        "id": "7787-9898-88",
+        "scheme": "MD-IDNO",
+        "legalName": "LN",
+        "uri": "http://454.to"
+      },
+      "contactPoint": {
+        "name": "NAME of contact person",
+        "email": "string@mail.ccc",
+        "telephone": "987987",
+        "url": "string"
+      }
     }
   },
   "planning": {
     "budget": {
       "period": {
         "startDate": "2018-07-08T00:00:00Z",
-        "endDate": "2018-09-01T00:00:00Z"
-      }
-    }
+        "endDate": "2018-08-19T00:00:00Z"
+      },
+      "amount": {
+        "amount": 0,
+        "currency": "MDL"
+      },
+      "isEuropeanUnionFunded": false
+    },
+    "rationale": "rationale"
   },
-  "buyer": {
-    "name": "NAME",
-    "identifier": {
-      "id": "string",
-      "scheme": "MD-IDNO",
-      "legalName": "string",
-      "uri": "string"
-    },
-    "address": {
-      "streetAddress": "street",
-      "postalCode": "12332",
-      "addressDetails": {
-        "country": {
-          "id": "UA"
-        },
-        "region": {
-          "id": "MD-AN"
-        },
-        "locality": {
-          "scheme": "UN/",
-          "id": "LOCODE",
-          "description": "description"
-        }
-      }
-    },
-    "contactPoint": {
-      "name": "string",
-      "email": "string",
-      "telephone": "string",
-      "url": "string"
-    },
-    "details": {
-      "typeOfBuyer": "NATIONAL_AGENCY",
-      "mainGeneralActivity": "ENVIRONMENT",
-      "mainSectoralActivity": "WATER"
-    }
-  }
+  "buyer": null
 }
