@@ -15,7 +15,6 @@ import com.procurement.budget.model.dto.fs.response.EiForFs
 import com.procurement.budget.model.dto.fs.response.EiForFsBudget
 import com.procurement.budget.model.dto.fs.response.EiForFsPlanning
 import com.procurement.budget.model.dto.fs.response.FsResponse
-import com.procurement.budget.model.dto.ocds.Currency
 import com.procurement.budget.model.dto.ocds.Period
 import com.procurement.budget.model.dto.ocds.TenderStatus
 import com.procurement.budget.model.dto.ocds.TenderStatusDetails
@@ -196,7 +195,7 @@ class FsServiceImpl(private val fsDao: FsDao,
         if (!fsPeriodValid) throw ErrorException(ErrorType.INVALID_PERIOD)
     }
 
-    private fun checkCurrency(ei: Ei, fsCurrency: Currency) {
+    private fun checkCurrency(ei: Ei, fsCurrency: String) {
         val eiCurrency = ei.planning.budget.amount?.currency
         if (eiCurrency != null) {
             if (eiCurrency != fsCurrency) throw ErrorException(ErrorType.INVALID_CURRENCY)
