@@ -18,6 +18,6 @@ class RulesServiceImpl(private val rulesDao: RulesDao) : RulesService {
     }
 
     companion object {
-        private val PARAMETER_CPV = "cpv"
+        private const val PARAMETER_CPV = "cpv"
     }
 }
