@@ -54,7 +54,7 @@ class CheckFsServiceImpl(private val fsDao: FsDao,
             breakdownsRq.forEach { br ->
                 val fs = fsMap[br.id] ?: throw ErrorException(ErrorType.FS_NOT_FOUND)
                 if (fs.planning.budget.isEuropeanUnionFunded) isEuropeanUnionFunded = true
-                totalAmount += fs.planning.budget.amount.amount
+                totalAmount +=  br.amount.amount
                 checkFsStatus(fs)
                 checkFsAmount(fs, br)
                 checkFsCurrency(fs, br)
