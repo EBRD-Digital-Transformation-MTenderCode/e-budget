@@ -45,5 +45,5 @@ data class BudgetBreakdownCheckRq @JsonCreator constructor(
 data class TenderCheckRq @JsonCreator constructor(
 
         @field:Valid @field:NotNull
-        val classification: Classification
+        val classification: Classification?
 )
