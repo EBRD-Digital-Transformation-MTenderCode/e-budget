@@ -93,12 +93,12 @@ class CheckFsServiceImpl(private val fsDao: FsDao,
         if (eiCPV.substring(0, 3).toUpperCase() != dtoCPV.substring(0, 3).toUpperCase()) throw ErrorException(ErrorType.INVALID_CPV)
     }
 
-    private fun getBudgetBreakdown(breakdownsRs: BudgetBreakdownCheckRq, fs: Fs): BudgetBreakdownCheckRs {
+    private fun getBudgetBreakdown(breakdownRq: BudgetBreakdownCheckRq, fs: Fs): BudgetBreakdownCheckRs {
         return BudgetBreakdownCheckRs(
                 id = fs.ocid,
                 description = fs.planning.budget.description,
                 period = fs.planning.budget.period,
-                amount = breakdownsRs.amount,
+                amount = breakdownRq.amount,
                 europeanUnionFunding = fs.planning.budget.europeanUnionFunding,
                 sourceParty = CheckSourceParty(id = fs.planning.budget.sourceEntity.id, name = fs.planning.budget.sourceEntity.name)
         )
