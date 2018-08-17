@@ -99,12 +99,12 @@ class CheckFsServiceImpl(private val fsDao: FsDao,
         }
     }
 
-    private fun getBudgetBreakdown(breakdownsRs: BudgetBreakdownCheckRq, fs: Fs): BudgetBreakdownCheckRs {
+    private fun getBudgetBreakdown(breakdownRq: BudgetBreakdownCheckRq, fs: Fs): BudgetBreakdownCheckRs {
         return BudgetBreakdownCheckRs(
                 id = fs.ocid,
                 description = fs.planning.budget.description,
                 period = fs.planning.budget.period,
-                amount = breakdownsRs.amount,
+                amount = breakdownRq.amount,
                 europeanUnionFunding = fs.planning.budget.europeanUnionFunding,
                 sourceParty = CheckSourceParty(id = fs.planning.budget.sourceEntity.id, name = fs.planning.budget.sourceEntity.name)
         )
