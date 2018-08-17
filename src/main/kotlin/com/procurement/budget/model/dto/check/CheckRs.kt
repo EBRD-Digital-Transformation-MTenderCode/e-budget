@@ -7,9 +7,11 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.procurement.budget.model.dto.databinding.BooleansDeserializer
 import com.procurement.budget.model.dto.ei.OrganizationReferenceEi
 import com.procurement.budget.model.dto.fs.OrganizationReferenceFs
+import com.procurement.budget.model.dto.ocds.Classification
 import com.procurement.budget.model.dto.ocds.EuropeanUnionFunding
 import com.procurement.budget.model.dto.ocds.Period
 import java.util.*
+import javax.validation.Valid
 
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 data class CheckRs(
@@ -73,7 +75,10 @@ data class CheckSourceParty @JsonCreator constructor(
         val name: String
 )
 
+@JsonInclude(value = JsonInclude.Include.NON_NULL)
 data class TenderCheckRs @JsonCreator constructor(
 
-        val mainProcurementCategory: String
+        val mainProcurementCategory: String,
+
+        var classification: Classification?
 )

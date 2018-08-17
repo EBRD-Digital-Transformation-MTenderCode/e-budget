@@ -54,7 +54,7 @@ class CheckFsServiceImpl(private val fsDao: FsDao,
             breakdownsRq.forEach { br ->
                 val fs = fsMap[br.id] ?: throw ErrorException(ErrorType.FS_NOT_FOUND)
                 if (fs.planning.budget.isEuropeanUnionFunded) isEuropeanUnionFunded = true
-                totalAmount +=  br.amount.amount
+                totalAmount += br.amount.amount
                 checkFsStatus(fs)
                 checkFsAmount(fs, br)
                 checkFsCurrency(fs, br)
@@ -76,7 +76,9 @@ class CheckFsServiceImpl(private val fsDao: FsDao,
                                 ),
                                 rationale = dto.planning.rationale
                         ),
-                        tender = TenderCheckRs(mainProcurementCategory = mainProcurementCategory),
+                        tender = TenderCheckRs(
+                                mainProcurementCategory = mainProcurementCategory,
+                                classification = dto.tender.classification),
                         funder = funders,
                         payer = payers,
                         buyer = buyers)
@@ -88,9 +90,13 @@ class CheckFsServiceImpl(private val fsDao: FsDao,
     }
 
     private fun checkCPV(ei: Ei, dto: CheckRq) {
-        val eiCPV = ei.tender.classification.id
-        val dtoCPV = dto.tender.classification.id
-        if (eiCPV.substring(0, 3).toUpperCase() != dtoCPV.substring(0, 3).toUpperCase()) throw ErrorException(ErrorType.INVALID_CPV)
+        if (dto.tender.classification != null) {
+            val dtoCPV = dto.tender.classification!!.id
+            val eiCPV = ei.tender.classification.id
+            if (eiCPV.substring(0, 3).toUpperCase() != dtoCPV.substring(0, 3).toUpperCase()) throw ErrorException(ErrorType.INVALID_CPV)
+        } else {
+            dto.tender.classification = ei.tender.classification
+        }
     }
 
     private fun getBudgetBreakdown(breakdownsRs: BudgetBreakdownCheckRq, fs: Fs): BudgetBreakdownCheckRs {
