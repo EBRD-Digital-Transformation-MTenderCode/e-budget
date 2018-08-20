@@ -51,7 +51,7 @@ class CheckFsServiceImpl(private val fsDao: FsDao,
             mainProcurementCategory = ei.tender.mainProcurementCategory
             checkCPV(ei, dto)
             buyers.add(ei.buyer)
-            breakdownsRq.forEach { br ->
+            breakdownsRq.filter {cpId == getCpIdFromOcId(it.id) }.forEach { br ->
                 val fs = fsMap[br.id] ?: throw ErrorException(ErrorType.FS_NOT_FOUND)
                 if (fs.planning.budget.isEuropeanUnionFunded) isEuropeanUnionFunded = true
                 totalAmount += br.amount.amount
