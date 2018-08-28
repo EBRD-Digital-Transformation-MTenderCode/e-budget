@@ -17,6 +17,7 @@ enum class ErrorType constructor(val code: String, val message: String) {
     INVALID_VERIFIED("00.11", "Verified of FS must not be empty."),
     INVALID_MPC("00.12", "Invalid main procurement category."),
     INVALID_OCID("00.13", "Invalid ocid."),
+    INVALID_BUDGET_BREAKDOWN_ID("00.14", "Invalid budget breakdown id."),
     INVALID_PERIOD("01.01", "Invalid period."),
     INVALID_DATE("01.02", "Date does not match the period."),
     PARAM_ERROR("01.03", "Should not be empty for this type of operation"),

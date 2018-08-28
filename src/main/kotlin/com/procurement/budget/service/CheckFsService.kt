@@ -28,7 +28,7 @@ class CheckFsServiceImpl(private val fsDao: FsDao,
 
     override fun checkFs(dto: CheckRq): ResponseDto {
         val breakdownsRq = dto.planning.budget.budgetBreakdown
-        checkBudgetBreakdownCurrency(breakdownsRq)
+        validateBudgetBreakdown(breakdownsRq)
         val cpIds = breakdownsRq.asSequence().map { getCpIdFromOcId(it.id) }.toSet()
         val entities = fsDao.getAllByCpIds(cpIds)
         if (entities.isEmpty()) throw ErrorException(ErrorType.FS_NOT_FOUND)
@@ -85,8 +85,9 @@ class CheckFsServiceImpl(private val fsDao: FsDao,
         )
     }
 
-    private fun checkBudgetBreakdownCurrency(budgetBreakdown: List<BudgetBreakdownCheckRq>) {
+    private fun validateBudgetBreakdown(budgetBreakdown: List<BudgetBreakdownCheckRq>) {
         if (budgetBreakdown.asSequence().map { it.amount.currency }.toSet().size > 1) throw ErrorException(ErrorType.INVALID_CURRENCY)
+        if (budgetBreakdown.asSequence().map { it.id }.toSet().size > budgetBreakdown.size) throw ErrorException(ErrorType.INVALID_BUDGET_BREAKDOWN_ID)
     }
 
     private fun checkCPV(ei: Ei, dto: CheckRq) {
