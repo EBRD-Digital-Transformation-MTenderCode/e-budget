@@ -14,6 +14,7 @@ import com.procurement.budget.model.dto.ei.request.EiUpdate
 import com.procurement.budget.model.dto.ocds.TenderStatus
 import com.procurement.budget.model.dto.ocds.TenderStatusDetails
 import com.procurement.budget.model.entity.EiEntity
+import com.procurement.budget.utils.localNowUTC
 import com.procurement.budget.utils.toDate
 import com.procurement.budget.utils.toJson
 import com.procurement.budget.utils.toObject
@@ -99,6 +100,8 @@ class EiServiceImpl(private val ocdsProperties: OCDSProperties,
 
     private fun validatePeriod(eiDto: EiCreate) {
         if (eiDto.planning.budget.period.startDate >= eiDto.planning.budget.period.endDate)
+            throw ErrorException(ErrorType.INVALID_PERIOD)
+        if (eiDto.planning.budget.period.startDate < localNowUTC())
             throw ErrorException(ErrorType.INVALID_PERIOD)
     }
 
