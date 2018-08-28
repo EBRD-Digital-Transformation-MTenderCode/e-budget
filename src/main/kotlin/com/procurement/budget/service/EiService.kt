@@ -101,8 +101,6 @@ class EiServiceImpl(private val ocdsProperties: OCDSProperties,
     private fun validatePeriod(eiDto: EiCreate) {
         if (eiDto.planning.budget.period.startDate >= eiDto.planning.budget.period.endDate)
             throw ErrorException(ErrorType.INVALID_PERIOD)
-        if (eiDto.planning.budget.period.startDate < localNowUTC())
-            throw ErrorException(ErrorType.INVALID_PERIOD)
     }
 
     private fun getCpId(country: String): String {
