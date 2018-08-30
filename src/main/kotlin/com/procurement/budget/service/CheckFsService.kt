@@ -87,7 +87,7 @@ class CheckFsServiceImpl(private val fsDao: FsDao,
 
     private fun validateBudgetBreakdown(budgetBreakdown: List<BudgetBreakdownCheckRq>) {
         if (budgetBreakdown.asSequence().map { it.amount.currency }.toSet().size > 1) throw ErrorException(ErrorType.INVALID_CURRENCY)
-        if (budgetBreakdown.asSequence().map { it.id }.toSet().size > budgetBreakdown.size) throw ErrorException(ErrorType.INVALID_BUDGET_BREAKDOWN_ID)
+        if (budgetBreakdown.asSequence().map { it.id }.toSet().size < budgetBreakdown.size) throw ErrorException(ErrorType.INVALID_BUDGET_BREAKDOWN_ID)
     }
 
     private fun checkCPV(ei: Ei, dto: CheckRq) {
