@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS  ocds.budget_rules (
     primary key(country, parameter)
 );
 
-INSERT INTO ocds.budget_rules (country, parameter, value)  VALUES ('MD', 'cpv', '^[0-9]2[1-9][0]{5}-[0-9]$');
-INSERT INTO ocds.budget_rules (country, parameter, value)  VALUES ('TEST', 'cpv', '^[0-9]2[1-9][0]{5}-[0-9]$');
+INSERT INTO ocds.budget_rules (country, parameter, value)  VALUES ('MD', 'cpv', '^[0-9]{2}[1-9][0]{5}-[0-9]$');
+INSERT INTO ocds.budget_rules (country, parameter, value)  VALUES ('TEST', 'cpv', '^[0-9]{2}[1-9][0]{5}-[0-9]$');
 
 ^\d[1-9]\d[1-9]\d[1-9]\d[0]\d[0]\d[0]\d[0]-\d[1-9]$
