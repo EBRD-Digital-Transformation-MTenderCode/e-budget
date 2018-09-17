@@ -3,8 +3,9 @@ package com.procurement.budget.service
 import com.procurement.budget.dao.EiDao
 import com.procurement.budget.dao.FsDao
 import com.procurement.budget.exception.ErrorException
-import com.procurement.budget.exception.ErrorType
-import com.procurement.budget.model.bpe.ResponseDto
+import com.procurement.budget.exception.ErrorType.*
+import com.procurement.budget.model.dto.bpe.CommandMessage
+import com.procurement.budget.model.dto.bpe.ResponseDto
 import com.procurement.budget.model.dto.ei.Ei
 import com.procurement.budget.model.dto.ei.OrganizationReferenceEi
 import com.procurement.budget.model.dto.ei.ValueEi
@@ -19,10 +20,7 @@ import com.procurement.budget.model.dto.ocds.Period
 import com.procurement.budget.model.dto.ocds.TenderStatus
 import com.procurement.budget.model.dto.ocds.TenderStatusDetails
 import com.procurement.budget.model.entity.FsEntity
-import com.procurement.budget.utils.localNowUTC
-import com.procurement.budget.utils.toDate
-import com.procurement.budget.utils.toJson
-import com.procurement.budget.utils.toObject
+import com.procurement.budget.utils.*
 import org.springframework.stereotype.Service
 import java.math.BigDecimal
 import java.time.LocalDateTime
@@ -30,16 +28,9 @@ import java.util.*
 
 interface FsService {
 
-    fun createFs(cpId: String,
-                 owner: String,
-                 dateTime: LocalDateTime,
-                 fsDto: FsCreate): ResponseDto
+    fun createFs(cm: CommandMessage): ResponseDto
 
-    fun updateFs(cpId: String,
-                 ocId: String,
-                 token: String,
-                 owner: String,
-                 fsDto: FsUpdate): ResponseDto
+    fun updateFs(cm: CommandMessage): ResponseDto
 }
 
 @Service
@@ -47,18 +38,20 @@ class FsServiceImpl(private val fsDao: FsDao,
                     private val eiDao: EiDao,
                     private val generationService: GenerationService) : FsService {
 
-    override fun createFs(cpId: String,
-                          owner: String,
-                          dateTime: LocalDateTime,
-                          fsDto: FsCreate): ResponseDto {
+    override fun createFs(cm: CommandMessage): ResponseDto {
+        val cpId = cm.context.cpid ?: throw ErrorException(CONTEXT)
+        val owner = cm.context.owner ?: throw ErrorException(CONTEXT)
+        val dateTime = cm.context.startDate?.toLocal() ?: throw ErrorException(CONTEXT)
+        val fsDto = toObject(FsCreate::class.java, cm.data)
+
         validatePeriod(fsDto.planning.budget.period)
         if (fsDto.planning.budget.isEuropeanUnionFunded!! && fsDto.planning.budget.europeanUnionFunding == null) {
-            throw ErrorException(ErrorType.INVALID_EUROPEAN)
+            throw ErrorException(INVALID_EUROPEAN)
         }
         if (!fsDto.planning.budget.isEuropeanUnionFunded!!) {
             fsDto.planning.budget.europeanUnionFunding = null
         }
-        val eiEntity = eiDao.getByCpId(cpId) ?: throw ErrorException(ErrorType.EI_NOT_FOUND)
+        val eiEntity = eiDao.getByCpId(cpId) ?: throw ErrorException(EI_NOT_FOUND)
         val ei = toObject(Ei::class.java, eiEntity.jsonData)
         checkPeriodWithEi(ei.planning.budget.period, fsDto.planning.budget.period)
         checkCurrency(ei, fsDto.planning.budget.amount.currency)
@@ -119,38 +112,41 @@ class FsServiceImpl(private val fsDao: FsDao,
                 currency = fs.planning.budget.amount.currency)
         eiEntity.jsonData = toJson(ei)
         eiDao.save(eiEntity)
-        return ResponseDto(true, null, FsResponse(getEiForFs(ei), fs))
+        return ResponseDto(data = FsResponse(getEiForFs(ei), fs))
     }
 
-    override fun updateFs(cpId: String,
-                          ocId: String,
-                          token: String,
-                          owner: String,
-                          fsDto: FsUpdate): ResponseDto {
+    override fun updateFs(cm: CommandMessage): ResponseDto {
+
+        val cpId = cm.context.cpid ?: throw ErrorException(CONTEXT)
+        val ocId = cm.context.ocid ?: throw ErrorException(CONTEXT)
+        val owner = cm.context.owner ?: throw ErrorException(CONTEXT)
+        val token = cm.context.token ?: throw ErrorException(CONTEXT)
+        val fsDto = toObject(FsUpdate::class.java, cm.data)
+
         validatePeriod(fsDto.planning.budget.period)
         if (fsDto.planning.budget.isEuropeanUnionFunded!! && fsDto.planning.budget.europeanUnionFunding == null) {
-            throw ErrorException(ErrorType.INVALID_EUROPEAN)
+            throw ErrorException(INVALID_EUROPEAN)
         }
         if (!fsDto.planning.budget.isEuropeanUnionFunded!!) {
             fsDto.planning.budget.europeanUnionFunding = null
         }
         val fsEntity = fsDao.getByCpIdAndToken(cpId, UUID.fromString(token))
-                ?: throw ErrorException(ErrorType.FS_NOT_FOUND)
-        if (fsEntity.ocId != ocId) throw ErrorException(ErrorType.INVALID_OCID)
-        if (fsEntity.owner != owner) throw ErrorException(ErrorType.INVALID_OWNER)
+                ?: throw ErrorException(FS_NOT_FOUND)
+        if (fsEntity.ocId != ocId) throw ErrorException(INVALID_OCID)
+        if (fsEntity.owner != owner) throw ErrorException(INVALID_OWNER)
         val fs = toObject(Fs::class.java, fsEntity.jsonData)
-        val eiEntity = eiDao.getByCpId(cpId) ?: throw ErrorException(ErrorType.EI_NOT_FOUND)
+        val eiEntity = eiDao.getByCpId(cpId) ?: throw ErrorException(EI_NOT_FOUND)
         val ei = toObject(Ei::class.java, eiEntity.jsonData)
         checkPeriodWithEi(ei.planning.budget.period, fsDto.planning.budget.period)
         checkCurrency(ei, fsDto.planning.budget.amount.currency)
-        if (fs.tender.statusDetails != TenderStatusDetails.EMPTY) throw ErrorException(ErrorType.INVALID_STATUS)
+        if (fs.tender.statusDetails != TenderStatusDetails.EMPTY) throw ErrorException(INVALID_STATUS)
         when (fs.tender.status) {
             TenderStatus.ACTIVE -> updateFs(fs, fsDto)
             TenderStatus.PLANNING -> {
                 updateFs(fs, fsDto)
                 fs.planning.budget.id = fsDto.planning.budget.id
             }
-            else -> throw ErrorException(ErrorType.INVALID_STATUS)
+            else -> throw ErrorException(INVALID_STATUS)
         }
         fsEntity.jsonData = toJson(fs)
         fsEntity.amount = fs.planning.budget.amount.amount
@@ -163,7 +159,7 @@ class FsServiceImpl(private val fsDao: FsDao,
             eiDao.save(eiEntity)
             eiForFs = getEiForFs(ei)
         }
-        return ResponseDto(true, null, FsResponse(eiForFs, fs))
+        return ResponseDto(data = FsResponse(eiForFs, fs))
     }
 
     private fun updateFs(fs: Fs, fsUpdate: FsUpdate) {
@@ -184,21 +180,21 @@ class FsServiceImpl(private val fsDao: FsDao,
     }
 
     private fun validatePeriod(period: Period) {
-        if (period.startDate >= period.endDate) throw ErrorException(ErrorType.INVALID_PERIOD)
-        if (period.endDate <= localNowUTC()) throw ErrorException(ErrorType.INVALID_PERIOD)
+        if (period.startDate >= period.endDate) throw ErrorException(INVALID_PERIOD)
+        if (period.endDate <= localNowUTC()) throw ErrorException(INVALID_PERIOD)
     }
 
     private fun checkPeriodWithEi(eiPeriod: Period, fsPeriod: Period) {
         val (eiStartDate, eiEndDate) = eiPeriod
         val (fsStartDate, fsEndDate) = fsPeriod
         val fsPeriodValid = (fsStartDate >= eiStartDate) && (fsEndDate <= eiEndDate)
-        if (!fsPeriodValid) throw ErrorException(ErrorType.INVALID_PERIOD)
+        if (!fsPeriodValid) throw ErrorException(INVALID_PERIOD)
     }
 
     private fun checkCurrency(ei: Ei, fsCurrency: String) {
         val eiCurrency = ei.planning.budget.amount?.currency
         if (eiCurrency != null) {
-            if (eiCurrency != fsCurrency) throw ErrorException(ErrorType.INVALID_CURRENCY)
+            if (eiCurrency != fsCurrency) throw ErrorException(INVALID_CURRENCY)
         }
     }
 

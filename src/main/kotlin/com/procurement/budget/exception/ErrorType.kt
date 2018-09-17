@@ -23,5 +23,6 @@ enum class ErrorType constructor(val code: String, val message: String) {
     PARAM_ERROR("01.03", "Should not be empty for this type of operation"),
     INVALID_EUROPEAN("01.04", "EuropeanUnionFunding must not be empty."),
     INVALID_TENDER_ID("01.05", "Invalid tender id."),
-    RULES_NOT_FOUND("02.01", "Rules not found.");
+    RULES_NOT_FOUND("02.01", "Rules not found."),
+    CONTEXT("20.02", "Context parameter not found.");
 }

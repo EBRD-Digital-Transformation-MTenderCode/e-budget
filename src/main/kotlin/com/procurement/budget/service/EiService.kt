@@ -3,8 +3,9 @@ package com.procurement.budget.service
 import com.procurement.budget.config.OCDSProperties
 import com.procurement.budget.dao.EiDao
 import com.procurement.budget.exception.ErrorException
-import com.procurement.budget.exception.ErrorType
-import com.procurement.budget.model.bpe.ResponseDto
+import com.procurement.budget.exception.ErrorType.*
+import com.procurement.budget.model.dto.bpe.CommandMessage
+import com.procurement.budget.model.dto.bpe.ResponseDto
 import com.procurement.budget.model.dto.ei.BudgetEi
 import com.procurement.budget.model.dto.ei.Ei
 import com.procurement.budget.model.dto.ei.PlanningEi
@@ -14,9 +15,9 @@ import com.procurement.budget.model.dto.ei.request.EiUpdate
 import com.procurement.budget.model.dto.ocds.TenderStatus
 import com.procurement.budget.model.dto.ocds.TenderStatusDetails
 import com.procurement.budget.model.entity.EiEntity
-import com.procurement.budget.utils.localNowUTC
 import com.procurement.budget.utils.toDate
 import com.procurement.budget.utils.toJson
+import com.procurement.budget.utils.toLocal
 import com.procurement.budget.utils.toObject
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
@@ -24,15 +25,9 @@ import java.util.*
 
 interface EiService {
 
-    fun createEi(owner: String,
-                 country: String,
-                 dateTime: LocalDateTime,
-                 eiDto: EiCreate): ResponseDto
+    fun createEi(cm: CommandMessage): ResponseDto
 
-    fun updateEi(owner: String,
-                 cpId: String,
-                 token: String,
-                 eiDto: EiUpdate): ResponseDto
+    fun updateEi(cm: CommandMessage): ResponseDto
 }
 
 @Service
@@ -41,10 +36,12 @@ class EiServiceImpl(private val ocdsProperties: OCDSProperties,
                     private val generationService: GenerationService,
                     private val rulesService: RulesService) : EiService {
 
-    override fun createEi(owner: String,
-                          country: String,
-                          dateTime: LocalDateTime,
-                          eiDto: EiCreate): ResponseDto {
+    override fun createEi(cm: CommandMessage): ResponseDto {
+        val owner = cm.context.owner ?: throw ErrorException(CONTEXT)
+        val country = cm.context.country ?: throw ErrorException(CONTEXT)
+        val dateTime = cm.context.startDate?.toLocal() ?: throw ErrorException(CONTEXT)
+        val eiDto = toObject(EiCreate::class.java, cm.data)
+
         validatePeriod(eiDto)
         validateCpv(country, eiDto)
         val cpId = getCpId(country)
@@ -72,16 +69,17 @@ class EiServiceImpl(private val ocdsProperties: OCDSProperties,
         val entity = getEntity(ei, owner, dateTime)
         eiDao.save(entity)
         ei.token = entity.token.toString()
-        return ResponseDto(true, null, ei)
+        return ResponseDto(data = ei)
     }
 
-    override fun updateEi(owner: String,
-                          cpId: String,
-                          token: String,
-                          eiDto: EiUpdate): ResponseDto {
-        val entity = eiDao.getByCpId(cpId) ?: throw ErrorException(ErrorType.EI_NOT_FOUND)
-        if (entity.token != UUID.fromString(token)) throw ErrorException(ErrorType.INVALID_TOKEN)
-        if (entity.owner != owner) throw ErrorException(ErrorType.INVALID_OWNER)
+    override fun updateEi(cm: CommandMessage): ResponseDto {
+        val cpId = cm.context.cpid ?: throw ErrorException(CONTEXT)
+        val owner = cm.context.owner ?: throw ErrorException(CONTEXT)
+        val token = cm.context.token ?: throw ErrorException(CONTEXT)
+        val eiDto = toObject(EiUpdate::class.java, cm.data)
+        val entity = eiDao.getByCpId(cpId) ?: throw ErrorException(EI_NOT_FOUND)
+        if (entity.token != UUID.fromString(token)) throw ErrorException(INVALID_TOKEN)
+        if (entity.owner != owner) throw ErrorException(INVALID_OWNER)
         val ei = toObject(Ei::class.java, entity.jsonData)
         ei.apply {
             tender.title = eiDto.tender.title
@@ -90,17 +88,17 @@ class EiServiceImpl(private val ocdsProperties: OCDSProperties,
         }
         entity.jsonData = toJson(ei)
         eiDao.save(entity)
-        return ResponseDto(true, null, ei)
+        return ResponseDto(data = ei)
     }
 
     private fun validateCpv(country: String, eiDto: EiCreate) {
         val cpvCodeRegex = rulesService.getCpvCodeRegex(country).toRegex()
-        if (!cpvCodeRegex.matches(eiDto.tender.classification.id)) throw ErrorException(ErrorType.INVALID_CPV)
+        if (!cpvCodeRegex.matches(eiDto.tender.classification.id)) throw ErrorException(INVALID_CPV)
     }
 
     private fun validatePeriod(eiDto: EiCreate) {
         if (eiDto.planning.budget.period.startDate >= eiDto.planning.budget.period.endDate)
-            throw ErrorException(ErrorType.INVALID_PERIOD)
+            throw ErrorException(INVALID_PERIOD)
     }
 
     private fun getCpId(country: String): String {

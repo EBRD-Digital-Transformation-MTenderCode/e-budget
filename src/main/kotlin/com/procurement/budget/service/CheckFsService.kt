@@ -3,8 +3,9 @@ package com.procurement.budget.service
 import com.procurement.budget.dao.EiDao
 import com.procurement.budget.dao.FsDao
 import com.procurement.budget.exception.ErrorException
-import com.procurement.budget.exception.ErrorType
-import com.procurement.budget.model.bpe.ResponseDto
+import com.procurement.budget.exception.ErrorType.*
+import com.procurement.budget.model.dto.bpe.CommandMessage
+import com.procurement.budget.model.dto.bpe.ResponseDto
 import com.procurement.budget.model.dto.check.*
 import com.procurement.budget.model.dto.ei.Ei
 import com.procurement.budget.model.dto.ei.OrganizationReferenceEi
@@ -19,19 +20,20 @@ import java.util.*
 
 interface CheckFsService {
 
-    fun checkFs(dto: CheckRq): ResponseDto
+    fun checkFs(cm: CommandMessage): ResponseDto
 }
 
 @Service
 class CheckFsServiceImpl(private val fsDao: FsDao,
                          private val eiDao: EiDao) : CheckFsService {
 
-    override fun checkFs(dto: CheckRq): ResponseDto {
+    override fun checkFs(cm: CommandMessage): ResponseDto {
+        val dto = toObject(CheckRq::class.java, cm.data)
         val breakdownsRq = dto.planning.budget.budgetBreakdown
         validateBudgetBreakdown(breakdownsRq)
         val cpIds = breakdownsRq.asSequence().map { getCpIdFromOcId(it.id) }.toSet()
         val entities = fsDao.getAllByCpIds(cpIds)
-        if (entities.isEmpty()) throw ErrorException(ErrorType.FS_NOT_FOUND)
+        if (entities.isEmpty()) throw ErrorException(FS_NOT_FOUND)
         val fsMap = HashMap<String?, Fs>()
         entities.asSequence()
                 .map { toObject(Fs::class.java, it.jsonData) }
@@ -46,13 +48,13 @@ class CheckFsServiceImpl(private val fsDao: FsDao,
         var totalCurrency = dto.planning.budget.budgetBreakdown[0].amount.currency
         var mainProcurementCategory = ""
         for (cpId in cpIds) {
-            val eiEntity = eiDao.getByCpId(cpId) ?: throw ErrorException(ErrorType.EI_NOT_FOUND)
+            val eiEntity = eiDao.getByCpId(cpId) ?: throw ErrorException(EI_NOT_FOUND)
             val ei = toObject(Ei::class.java, eiEntity.jsonData)
             mainProcurementCategory = ei.tender.mainProcurementCategory
             checkCPV(ei, dto)
             buyers.add(ei.buyer)
-            breakdownsRq.filter {cpId == getCpIdFromOcId(it.id) }.forEach { br ->
-                val fs = fsMap[br.id] ?: throw ErrorException(ErrorType.FS_NOT_FOUND)
+            breakdownsRq.filter { cpId == getCpIdFromOcId(it.id) }.forEach { br ->
+                val fs = fsMap[br.id] ?: throw ErrorException(FS_NOT_FOUND)
                 if (fs.planning.budget.isEuropeanUnionFunded) isEuropeanUnionFunded = true
                 totalAmount += br.amount.amount
                 checkFsStatus(fs)
@@ -64,37 +66,37 @@ class CheckFsServiceImpl(private val fsDao: FsDao,
             }
         }
 
-        return ResponseDto(true, null,
-                CheckRs(
-                        ei = cpIds,
-                        planning = PlanningCheckRs(
-                                budget = BudgetCheckRs(
-                                        description = dto.planning.budget.description,
-                                        amount = CheckValue(totalAmount, totalCurrency),
-                                        isEuropeanUnionFunded = isEuropeanUnionFunded,
-                                        budgetBreakdown = breakdownsRs
-                                ),
-                                rationale = dto.planning.rationale
+        return ResponseDto(data =
+        CheckRs(
+                ei = cpIds,
+                planning = PlanningCheckRs(
+                        budget = BudgetCheckRs(
+                                description = dto.planning.budget.description,
+                                amount = CheckValue(totalAmount, totalCurrency),
+                                isEuropeanUnionFunded = isEuropeanUnionFunded,
+                                budgetBreakdown = breakdownsRs
                         ),
-                        tender = TenderCheckRs(
-                                mainProcurementCategory = mainProcurementCategory,
-                                classification = dto.tender.classification),
-                        funder = funders,
-                        payer = payers,
-                        buyer = buyers)
+                        rationale = dto.planning.rationale
+                ),
+                tender = TenderCheckRs(
+                        mainProcurementCategory = mainProcurementCategory,
+                        classification = dto.tender.classification),
+                funder = funders,
+                payer = payers,
+                buyer = buyers)
         )
     }
 
     private fun validateBudgetBreakdown(budgetBreakdown: List<BudgetBreakdownCheckRq>) {
-        if (budgetBreakdown.asSequence().map { it.amount.currency }.toSet().size > 1) throw ErrorException(ErrorType.INVALID_CURRENCY)
-        if (budgetBreakdown.asSequence().map { it.id }.toSet().size < budgetBreakdown.size) throw ErrorException(ErrorType.INVALID_BUDGET_BREAKDOWN_ID)
+        if (budgetBreakdown.asSequence().map { it.amount.currency }.toSet().size > 1) throw ErrorException(INVALID_CURRENCY)
+        if (budgetBreakdown.asSequence().map { it.id }.toSet().size < budgetBreakdown.size) throw ErrorException(INVALID_BUDGET_BREAKDOWN_ID)
     }
 
     private fun checkCPV(ei: Ei, dto: CheckRq) {
         if (dto.tender.classification != null) {
             val dtoCPV = dto.tender.classification!!.id
             val eiCPV = ei.tender.classification.id
-            if (eiCPV.substring(0, 3).toUpperCase() != dtoCPV.substring(0, 3).toUpperCase()) throw ErrorException(ErrorType.INVALID_CPV)
+            if (eiCPV.substring(0, 3).toUpperCase() != dtoCPV.substring(0, 3).toUpperCase()) throw ErrorException(INVALID_CPV)
         } else {
             dto.tender.classification = ei.tender.classification
         }
@@ -107,28 +109,30 @@ class CheckFsServiceImpl(private val fsDao: FsDao,
                 period = fs.planning.budget.period,
                 amount = breakdownRq.amount,
                 europeanUnionFunding = fs.planning.budget.europeanUnionFunding,
-                sourceParty = CheckSourceParty(id = fs.planning.budget.sourceEntity.id, name = fs.planning.budget.sourceEntity.name)
+                sourceParty = CheckSourceParty(
+                        id = fs.planning.budget.sourceEntity.id,
+                        name = fs.planning.budget.sourceEntity.name)
         )
     }
 
     private fun checkFsCurrency(fs: Fs, br: BudgetBreakdownCheckRq) {
         val fsCurrency = fs.planning.budget.amount.currency
         val brCurrency = br.amount.currency
-        if (fsCurrency != brCurrency) throw ErrorException(ErrorType.INVALID_CURRENCY)
+        if (fsCurrency != brCurrency) throw ErrorException(INVALID_CURRENCY)
     }
 
     private fun checkFsAmount(fs: Fs, br: BudgetBreakdownCheckRq) {
         val brAmount = br.amount.amount
         val fsAmount = fs.planning.budget.amount.amount
-        if (brAmount > fsAmount) throw ErrorException(ErrorType.INVALID_AMOUNT)
+        if (brAmount > fsAmount) throw ErrorException(INVALID_AMOUNT)
     }
 
     private fun checkFsStatus(fs: Fs) {
         val fsStatus = fs.tender.status
         val fsStatusDetails = fs.tender.statusDetails
-        if (fsStatusDetails != TenderStatusDetails.EMPTY) throw ErrorException(ErrorType.INVALID_STATUS)
+        if (fsStatusDetails != TenderStatusDetails.EMPTY) throw ErrorException(INVALID_STATUS)
         if (!((fsStatus == TenderStatus.ACTIVE || fsStatus == TenderStatus.PLANNING || fsStatus == TenderStatus.PLANNED)))
-            throw ErrorException(ErrorType.INVALID_STATUS)
+            throw ErrorException(INVALID_STATUS)
     }
 
     private fun getCpIdFromOcId(ocId: String): String {
