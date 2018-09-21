@@ -6,9 +6,9 @@
     </appender>
 
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>logs/e-notice.log</file>
+        <file>logs/e-budget.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>logs/e-notice%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <fileNamePattern>logs/e-budget%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <maxFileSize>5MB</maxFileSize>
             </timeBasedFileNamingAndTriggeringPolicy>
@@ -62,11 +62,13 @@
     <logger name="com.procurement.budget" level="WARN" additivity="false">
         <appender-ref ref="FILE"/>
         <appender-ref ref="LOGSTASH"/>
+        <appender-ref ref="STDOUT"/>
     </logger>
 
     <logger name="org.springframework" level="WARN" additivity="false">
         <appender-ref ref="FILE"/>
         <appender-ref ref="LOGSTASH"/>
+        <appender-ref ref="STDOUT"/>
     </logger>
 
     <root level="INFO">
