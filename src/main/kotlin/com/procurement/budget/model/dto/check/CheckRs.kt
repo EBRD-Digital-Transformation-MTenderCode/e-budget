@@ -11,7 +11,6 @@ import com.procurement.budget.model.dto.ocds.Classification
 import com.procurement.budget.model.dto.ocds.EuropeanUnionFunding
 import com.procurement.budget.model.dto.ocds.Period
 import java.util.*
-import javax.validation.Valid
 
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 data class CheckRs(
