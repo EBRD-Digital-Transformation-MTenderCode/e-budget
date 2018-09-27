@@ -18,7 +18,6 @@ data class PlanningEiUpdate @JsonCreator constructor(
 
 data class TenderEiUpdate @JsonCreator constructor(
 
-        @field:NotNull
         var title: String,
 
         var description: String?

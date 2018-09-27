@@ -1,31 +1,45 @@
 {
-  "planning": {
-    "rationale": "rationale",
-    "budget": {
-      "description": "e",
-      "budgetBreakdown": [
-        {
-          "id": "ocds-t1s2t3-MD-1534505645576-FS-1534505682097",
-          "amount": {
-            "amount": 1000,
-            "currency": "MDL"
+  "id": "f21281ff-c48c-4c82-8efc-4cd58971d563",
+  "command": "checkFs",
+  "context": {
+    "operationId": "f21281ff-c48c-4c82-8efc-4cd58971d563",
+    "requestId": "30d38a40-c1a3-11e8-90f1-a343faca57a7",
+    "stage": "EV",
+    "processType": "createCN",
+    "operationType": "createCN",
+    "phase": "clarification",
+    "owner": "445f6851-c908-407d-9b45-14b92f3e964b",
+    "country": "MD",
+    "language": "ro",
+    "pmd": "TEST_OT",
+    "startDate": "2018-09-26T15:45:27Z"
+  },
+  "data": {
+    "planning": {
+      "budget": {
+        "budgetBreakdown": [
+          {
+            "id": "ocds-t1s2t3-MD-1537971575881-FS-1537971601281",
+            "amount": {
+              "amount": 900,
+              "currency": "MDL"
+            }
+          },
+          {
+            "id": "ocds-t1s2t3-MD-1537971575881-FS-1537971617995",
+            "amount": {
+              "amount": 800,
+              "currency": "MDL"
+            }
           }
-        },
-        {
-          "id": "ocds-t1s2t3-MD-1534500857539-FS-1534500908472",
-          "amount": {
-            "amount": 1000,
-            "currency": "MDL"
-          }
-        }
-      ]
+        ]
+      }
+    },
+    "tender": {
+      "classification": {
+        "id": "30199200"
+      }
     }
   },
-  "tender": {
-    "classification": {
-      "id": "98910000-5",
-      "description": "Servicii specifice organizaţiilor şi organismelor internaţionale",
-      "scheme": "CPV"
-    }
-  }
+  "version": "0.0.1"
 }

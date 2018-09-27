@@ -45,10 +45,10 @@ class FsServiceImpl(private val fsDao: FsDao,
         val fsDto = toObject(FsCreate::class.java, cm.data)
 
         validatePeriod(fsDto.planning.budget.period)
-        if (fsDto.planning.budget.isEuropeanUnionFunded!! && fsDto.planning.budget.europeanUnionFunding == null) {
+        if (fsDto.planning.budget.isEuropeanUnionFunded && fsDto.planning.budget.europeanUnionFunding == null) {
             throw ErrorException(INVALID_EUROPEAN)
         }
-        if (!fsDto.planning.budget.isEuropeanUnionFunded!!) {
+        if (!fsDto.planning.budget.isEuropeanUnionFunded) {
             fsDto.planning.budget.europeanUnionFunding = null
         }
         val eiEntity = eiDao.getByCpId(cpId) ?: throw ErrorException(EI_NOT_FOUND)
@@ -88,7 +88,7 @@ class FsServiceImpl(private val fsDao: FsDao,
                                 description = budgetDto.description,
                                 period = budgetDto.period,
                                 amount = budgetDto.amount,
-                                isEuropeanUnionFunded = budgetDto.isEuropeanUnionFunded!!,
+                                isEuropeanUnionFunded = budgetDto.isEuropeanUnionFunded,
                                 europeanUnionFunding = budgetDto.europeanUnionFunding,
                                 verificationDetails = null,
                                 sourceEntity = sourceEntityFs,
@@ -124,10 +124,10 @@ class FsServiceImpl(private val fsDao: FsDao,
         val fsDto = toObject(FsUpdate::class.java, cm.data)
 
         validatePeriod(fsDto.planning.budget.period)
-        if (fsDto.planning.budget.isEuropeanUnionFunded!! && fsDto.planning.budget.europeanUnionFunding == null) {
+        if (fsDto.planning.budget.isEuropeanUnionFunded && fsDto.planning.budget.europeanUnionFunding == null) {
             throw ErrorException(INVALID_EUROPEAN)
         }
-        if (!fsDto.planning.budget.isEuropeanUnionFunded!!) {
+        if (!fsDto.planning.budget.isEuropeanUnionFunded) {
             fsDto.planning.budget.europeanUnionFunding = null
         }
         val fsEntity = fsDao.getByCpIdAndToken(cpId, UUID.fromString(token))
@@ -173,7 +173,7 @@ class FsServiceImpl(private val fsDao: FsDao,
                 project = fsUpdate.planning.budget.project
                 projectID = fsUpdate.planning.budget.projectID
                 uri = fsUpdate.planning.budget.uri
-                isEuropeanUnionFunded = fsUpdate.planning.budget.isEuropeanUnionFunded!!
+                isEuropeanUnionFunded = fsUpdate.planning.budget.isEuropeanUnionFunded
                 europeanUnionFunding = fsUpdate.planning.budget.europeanUnionFunding
             }
         }
