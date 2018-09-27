@@ -78,7 +78,6 @@ data class BudgetFs @JsonCreator constructor(
         var uri: String?
 )
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
 data class ValueFs @JsonCreator constructor(
 
         @field:JsonDeserialize(using = MoneyDeserializer::class)
