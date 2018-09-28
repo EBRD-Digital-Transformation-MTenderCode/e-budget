@@ -32,7 +32,6 @@ private object JsonMapper {
         module.addDeserializer(LocalDateTime::class.java, JsonDateDeserializer())
         module.addDeserializer(String::class.java, StringsDeserializer())
         module.addDeserializer(Int::class.java, IntDeserializer())
-
         mapper.registerModule(module)
         mapper.registerKotlinModule()
         mapper.configure(DeserializationFeature.USE_BIG_INTEGER_FOR_INTS, true)
