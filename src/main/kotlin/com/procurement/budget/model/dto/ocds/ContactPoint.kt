@@ -19,6 +19,6 @@ data class ContactPoint @JsonCreator constructor(
         val faxNumber: String?,
 
         @field:NotNull
-        val url: String
+        val url: String?
 )
 
