@@ -136,6 +136,10 @@ class FsServiceImpl(private val fsDao: FsDao,
         if (!fsDto.planning.budget.isEuropeanUnionFunded) {
             fsDto.planning.budget.europeanUnionFunding = null
         }
+        if (fsDto.planning.budget.amount.amount < BigDecimal.valueOf(0.00)) {
+            throw ErrorException(ErrorType.INVALID_JSON_TYPE)
+        }
+
         val fsEntity = fsDao.getByCpIdAndToken(cpId, UUID.fromString(token))
                 ?: throw ErrorException(FS_NOT_FOUND)
         if (fsEntity.ocId != ocId) throw ErrorException(INVALID_OCID)
@@ -147,9 +151,9 @@ class FsServiceImpl(private val fsDao: FsDao,
         checkCurrency(ei, fsDto.planning.budget.amount.currency)
         if (fs.tender.statusDetails != TenderStatusDetails.EMPTY) throw ErrorException(INVALID_STATUS)
         when (fs.tender.status) {
-            TenderStatus.ACTIVE -> updateFs(fs, fsDto)
+            TenderStatus.ACTIVE -> fsUpdate(fs, fsDto)
             TenderStatus.PLANNING -> {
-                updateFs(fs, fsDto)
+                fsUpdate(fs, fsDto)
                 fs.planning.budget.id = fsDto.planning.budget.id
             }
             else -> throw ErrorException(INVALID_STATUS)
@@ -168,7 +172,7 @@ class FsServiceImpl(private val fsDao: FsDao,
         return ResponseDto(data = FsResponse(eiForFs, fs))
     }
 
-    private fun updateFs(fs: Fs, fsUpdate: FsUpdate) {
+    private fun fsUpdate(fs: Fs, fsUpdate: FsUpdate) {
 
         fs.planning.apply {
             rationale = fsUpdate.planning.rationale
