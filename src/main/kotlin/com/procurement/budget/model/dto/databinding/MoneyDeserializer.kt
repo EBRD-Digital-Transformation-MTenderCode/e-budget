@@ -22,7 +22,6 @@ class MoneyDeserializer : JsonDeserializer<BigDecimal>() {
         }
         var bd = delegate.deserialize(jsonParser, deserializationContext)
         bd = bd.setScale(2, RoundingMode.HALF_UP)
-        if (bd <= BigDecimal.valueOf(0.00)) throw ErrorException(ErrorType.INVALID_JSON_TYPE, jsonParser.currentName)
         return bd
     }
 }

@@ -3,6 +3,7 @@ package com.procurement.budget.service
 import com.procurement.budget.dao.EiDao
 import com.procurement.budget.dao.FsDao
 import com.procurement.budget.exception.ErrorException
+import com.procurement.budget.exception.ErrorType
 import com.procurement.budget.exception.ErrorType.*
 import com.procurement.budget.model.dto.bpe.CommandMessage
 import com.procurement.budget.model.dto.bpe.ResponseDto
@@ -45,12 +46,17 @@ class FsServiceImpl(private val fsDao: FsDao,
         val fsDto = toObject(FsCreate::class.java, cm.data)
 
         validatePeriod(fsDto.planning.budget.period)
+
         if (fsDto.planning.budget.isEuropeanUnionFunded && fsDto.planning.budget.europeanUnionFunding == null) {
             throw ErrorException(INVALID_EUROPEAN)
         }
         if (!fsDto.planning.budget.isEuropeanUnionFunded) {
             fsDto.planning.budget.europeanUnionFunding = null
         }
+        if (fsDto.planning.budget.amount.amount <= BigDecimal.valueOf(0.00)) {
+            throw ErrorException(ErrorType.INVALID_JSON_TYPE)
+        }
+
         val eiEntity = eiDao.getByCpId(cpId) ?: throw ErrorException(EI_NOT_FOUND)
         val ei = toObject(Ei::class.java, eiEntity.jsonData)
         checkPeriodWithEi(ei.planning.budget.period, fsDto.planning.budget.period)
@@ -244,8 +250,8 @@ class FsServiceImpl(private val fsDao: FsDao,
     }
 
     companion object {
-        private val SEPARATOR = "-"
-        private val FS_SEPARATOR = "-FS-"
+        private const val SEPARATOR = "-"
+        private const val FS_SEPARATOR = "-FS-"
     }
 
 }

@@ -8,10 +8,8 @@ import javax.validation.constraints.NotNull
 
 data class CheckValue @JsonCreator constructor(
 
-        @field:NotNull
         @field:JsonDeserialize(using = MoneyDeserializer::class)
         val amount: BigDecimal,
 
-        @field:NotNull
         val currency: String
 )
