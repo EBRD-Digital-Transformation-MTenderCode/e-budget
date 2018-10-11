@@ -6,20 +6,10 @@ import com.procurement.budget.model.entity.EiEntity
 import org.springframework.stereotype.Service
 import java.util.*
 
-interface EiDao {
-
-    fun save(entity: EiEntity)
-
-    fun getByCpIdAndToken(cpId: String, token: UUID): EiEntity?
-
-    fun getByCpId(cpId: String): EiEntity?
-
-}
-
 @Service
-class EiDaoImpl(private val session: Session) : EiDao {
+class EiDao(private val session: Session) {
 
-    override fun save(entity: EiEntity) {
+    fun save(entity: EiEntity) {
         val insert = insertInto(EI_TABLE)
         insert.value(CP_ID, entity.cpId)
                 .value(TOKEN, entity.token)
@@ -29,7 +19,7 @@ class EiDaoImpl(private val session: Session) : EiDao {
         session.execute(insert)
     }
 
-    override fun getByCpIdAndToken(cpId: String, token: UUID): EiEntity? {
+    fun getByCpIdAndToken(cpId: String, token: UUID): EiEntity? {
         val query = select()
                 .all()
                 .from(EI_TABLE)
@@ -44,7 +34,7 @@ class EiDaoImpl(private val session: Session) : EiDao {
                 row.getString(JSON_DATA)) else null
     }
 
-    override fun getByCpId(cpId: String): EiEntity? {
+    fun getByCpId(cpId: String): EiEntity? {
         val query = select()
                 .all()
                 .from(EI_TABLE)
@@ -59,11 +49,11 @@ class EiDaoImpl(private val session: Session) : EiDao {
     }
 
     companion object {
-        private val EI_TABLE = "budget_ei"
-        private val CP_ID = "cp_id"
-        private val TOKEN = "token_entity"
-        private val OWNER = "owner"
-        private val CREATED_DATE = "created_date"
-        private val JSON_DATA = "json_data"
+        private const val EI_TABLE = "budget_ei"
+        private const val CP_ID = "cp_id"
+        private const val TOKEN = "token_entity"
+        private const val OWNER = "owner"
+        private const val CREATED_DATE = "created_date"
+        private const val JSON_DATA = "json_data"
     }
 }

@@ -1,7 +1,6 @@
 package com.procurement.budget.model.dto.ei.request
 
 import com.fasterxml.jackson.annotation.JsonCreator
-import javax.validation.constraints.NotNull
 
 data class EiUpdate @JsonCreator constructor(
 

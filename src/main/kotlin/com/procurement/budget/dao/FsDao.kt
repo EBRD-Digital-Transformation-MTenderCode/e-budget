@@ -7,26 +7,10 @@ import org.springframework.stereotype.Service
 import java.math.BigDecimal
 import java.util.*
 
-
-interface FsDao {
-
-    fun save(entity: FsEntity)
-
-    fun getByCpIdAndToken(cpId: String, token: UUID): FsEntity?
-
-    fun getAllByCpId(cpId: String): List<FsEntity>
-
-    fun getAllByCpIds(cpIds: Set<String>): List<FsEntity>
-
-    fun getTotalAmountByCpId(cpId: String): BigDecimal?
-
-    fun getCountByCpId(cpId: String): Long
-}
-
 @Service
-class FsDaoImpl(private val session: Session) : FsDao {
+class FsDao(private val session: Session) {
 
-    override fun save(entity: FsEntity) {
+    fun save(entity: FsEntity) {
         val insert = insertInto(FS_TABLE)
         insert.value(CP_ID, entity.cpId)
                 .value(OC_ID, entity.ocId)
@@ -39,7 +23,7 @@ class FsDaoImpl(private val session: Session) : FsDao {
         session.execute(insert)
     }
 
-    override fun getByCpIdAndToken(cpId: String, token: UUID): FsEntity? {
+    fun getByCpIdAndToken(cpId: String, token: UUID): FsEntity? {
         val query = select()
                 .all()
                 .from(FS_TABLE)
@@ -58,7 +42,7 @@ class FsDaoImpl(private val session: Session) : FsDao {
                 row.getString(JSON_DATA)) else null
     }
 
-    override fun getAllByCpId(cpId: String): List<FsEntity> {
+    fun getAllByCpId(cpId: String): List<FsEntity> {
         val query = select()
                 .all()
                 .from(FS_TABLE)
@@ -79,7 +63,7 @@ class FsDaoImpl(private val session: Session) : FsDao {
         return entities
     }
 
-    override fun getAllByCpIds(cpIds: Set<String>): List<FsEntity> {
+    fun getAllByCpIds(cpIds: Set<String>): List<FsEntity> {
         val query = select()
                 .all()
                 .from(FS_TABLE)
@@ -100,7 +84,7 @@ class FsDaoImpl(private val session: Session) : FsDao {
         return entities
     }
 
-    override fun getTotalAmountByCpId(cpId: String): BigDecimal? {
+    fun getTotalAmountByCpId(cpId: String): BigDecimal? {
         val query = select().sum(AMOUNT).`as`(AMOUNT)
                 .from(FS_TABLE)
                 .where(eq(CP_ID, cpId))
@@ -108,7 +92,7 @@ class FsDaoImpl(private val session: Session) : FsDao {
         return row?.getDecimal(AMOUNT)
     }
 
-    override fun getCountByCpId(cpId: String): Long {
+    fun getCountByCpId(cpId: String): Long {
         val query = select().countAll()
                 .from(FS_TABLE)
                 .where(eq(CP_ID, cpId))
@@ -118,14 +102,14 @@ class FsDaoImpl(private val session: Session) : FsDao {
 
     companion object {
 
-        private val FS_TABLE = "budget_fs"
-        private val CP_ID = "cp_id"
-        private val OC_ID = "oc_id"
-        private val TOKEN = "token_entity"
-        private val OWNER = "owner"
-        private val AMOUNT = "amount"
-        private val AMOUNT_RESERVED = "amount_reserved"
-        private val CREATED_DATE = "created_date"
-        private val JSON_DATA = "json_data"
+        private const val FS_TABLE = "budget_fs"
+        private const val CP_ID = "cp_id"
+        private const val OC_ID = "oc_id"
+        private const val TOKEN = "token_entity"
+        private const val OWNER = "owner"
+        private const val AMOUNT = "amount"
+        private const val AMOUNT_RESERVED = "amount_reserved"
+        private const val CREATED_DATE = "created_date"
+        private const val JSON_DATA = "json_data"
     }
 }

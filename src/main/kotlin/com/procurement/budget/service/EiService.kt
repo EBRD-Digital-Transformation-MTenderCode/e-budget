@@ -23,20 +23,13 @@ import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 import java.util.*
 
-interface EiService {
-
-    fun createEi(cm: CommandMessage): ResponseDto
-
-    fun updateEi(cm: CommandMessage): ResponseDto
-}
-
 @Service
-class EiServiceImpl(private val ocdsProperties: OCDSProperties,
-                    private val eiDao: EiDao,
-                    private val generationService: GenerationService,
-                    private val rulesService: RulesService) : EiService {
+class EiService(private val ocdsProperties: OCDSProperties,
+                private val eiDao: EiDao,
+                private val generationService: GenerationService,
+                private val rulesService: RulesService) {
 
-    override fun createEi(cm: CommandMessage): ResponseDto {
+    fun createEi(cm: CommandMessage): ResponseDto {
         val owner = cm.context.owner ?: throw ErrorException(CONTEXT)
         val country = cm.context.country ?: throw ErrorException(CONTEXT)
         val dateTime = cm.context.startDate?.toLocal() ?: throw ErrorException(CONTEXT)
@@ -72,7 +65,7 @@ class EiServiceImpl(private val ocdsProperties: OCDSProperties,
         return ResponseDto(data = ei)
     }
 
-    override fun updateEi(cm: CommandMessage): ResponseDto {
+    fun updateEi(cm: CommandMessage): ResponseDto {
         val cpId = cm.context.cpid ?: throw ErrorException(CONTEXT)
         val owner = cm.context.owner ?: throw ErrorException(CONTEXT)
         val token = cm.context.token ?: throw ErrorException(CONTEXT)
@@ -117,7 +110,7 @@ class EiServiceImpl(private val ocdsProperties: OCDSProperties,
     }
 
     companion object {
-        private val SEPARATOR = "-"
+        private const val SEPARATOR = "-"
     }
 
 }

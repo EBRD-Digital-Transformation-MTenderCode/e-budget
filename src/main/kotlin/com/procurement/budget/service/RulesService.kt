@@ -5,15 +5,10 @@ import com.procurement.budget.exception.ErrorException
 import com.procurement.budget.exception.ErrorType
 import org.springframework.stereotype.Service
 
-interface RulesService {
-
-    fun getCpvCodeRegex(country: String): String
-}
-
 @Service
-class RulesServiceImpl(private val rulesDao: RulesDao) : RulesService {
+class RulesService(private val rulesDao: RulesDao) {
 
-    override fun getCpvCodeRegex(country: String): String {
+    fun getCpvCodeRegex(country: String): String {
         return rulesDao.getValue(country, PARAMETER_CPV) ?: throw ErrorException(ErrorType.RULES_NOT_FOUND)
     }
 

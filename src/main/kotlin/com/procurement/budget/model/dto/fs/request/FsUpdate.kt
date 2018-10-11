@@ -7,8 +7,6 @@ import com.procurement.budget.model.dto.databinding.BooleansDeserializer
 import com.procurement.budget.model.dto.fs.ValueFs
 import com.procurement.budget.model.dto.ocds.EuropeanUnionFunding
 import com.procurement.budget.model.dto.ocds.Period
-import javax.validation.Valid
-import javax.validation.constraints.NotNull
 
 data class FsUpdate @JsonCreator constructor(
 

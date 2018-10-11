@@ -18,16 +18,11 @@ import org.springframework.stereotype.Service
 import java.math.BigDecimal
 import java.util.*
 
-interface CheckFsService {
-
-    fun checkFs(cm: CommandMessage): ResponseDto
-}
-
 @Service
-class CheckFsServiceImpl(private val fsDao: FsDao,
-                         private val eiDao: EiDao) : CheckFsService {
+class CheckFsService(private val fsDao: FsDao,
+                     private val eiDao: EiDao) {
 
-    override fun checkFs(cm: CommandMessage): ResponseDto {
+    fun checkFs(cm: CommandMessage): ResponseDto {
         val dto = toObject(CheckRq::class.java, cm.data)
         val breakdownsRq = dto.planning.budget.budgetBreakdown
         validateBudgetBreakdown(breakdownsRq)

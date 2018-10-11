@@ -27,19 +27,12 @@ import java.math.BigDecimal
 import java.time.LocalDateTime
 import java.util.*
 
-interface FsService {
-
-    fun createFs(cm: CommandMessage): ResponseDto
-
-    fun updateFs(cm: CommandMessage): ResponseDto
-}
-
 @Service
-class FsServiceImpl(private val fsDao: FsDao,
-                    private val eiDao: EiDao,
-                    private val generationService: GenerationService) : FsService {
+class FsService(private val fsDao: FsDao,
+                private val eiDao: EiDao,
+                private val generationService: GenerationService) {
 
-    override fun createFs(cm: CommandMessage): ResponseDto {
+    fun createFs(cm: CommandMessage): ResponseDto {
         val cpId = cm.context.cpid ?: throw ErrorException(CONTEXT)
         val owner = cm.context.owner ?: throw ErrorException(CONTEXT)
         val dateTime = cm.context.startDate?.toLocal() ?: throw ErrorException(CONTEXT)
@@ -121,7 +114,7 @@ class FsServiceImpl(private val fsDao: FsDao,
         return ResponseDto(data = FsResponse(getEiForFs(ei), fs))
     }
 
-    override fun updateFs(cm: CommandMessage): ResponseDto {
+    fun updateFs(cm: CommandMessage): ResponseDto {
 
         val cpId = cm.context.cpid ?: throw ErrorException(CONTEXT)
         val ocId = cm.context.ocid ?: throw ErrorException(CONTEXT)

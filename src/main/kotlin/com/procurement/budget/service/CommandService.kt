@@ -7,20 +7,14 @@ import com.procurement.budget.model.dto.bpe.ResponseDto
 import com.procurement.budget.utils.toObject
 import org.springframework.stereotype.Service
 
-interface CommandService {
-
-    fun execute(cm: CommandMessage): ResponseDto
-
-}
-
 @Service
-class CommandServiceImpl(private val historyDao: HistoryDao,
-                         private val checkFsService: CheckFsService,
-                         private val eiService: EiService,
-                         private val fsService: FsService) : CommandService {
+class CommandService(private val historyDao: HistoryDao,
+                     private val checkFsService: CheckFsService,
+                     private val eiService: EiService,
+                     private val fsService: FsService) {
 
 
-    override fun execute(cm: CommandMessage): ResponseDto {
+    fun execute(cm: CommandMessage): ResponseDto {
         var historyEntity = historyDao.getHistory(cm.id, cm.command.value())
         if (historyEntity != null) {
             return toObject(ResponseDto::class.java, historyEntity.jsonData)

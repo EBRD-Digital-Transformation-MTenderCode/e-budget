@@ -4,8 +4,6 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.procurement.budget.model.dto.ei.OrganizationReferenceEi
 import com.procurement.budget.model.dto.ocds.Classification
 import com.procurement.budget.model.dto.ocds.Period
-import javax.validation.Valid
-import javax.validation.constraints.NotNull
 
 data class EiCreate @JsonCreator constructor(
 
