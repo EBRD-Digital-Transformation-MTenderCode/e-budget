@@ -56,7 +56,6 @@ data class BudgetEi @JsonCreator constructor(
 
         var period: Period,
 
-        @field:Valid
         var amount: ValueEi?
 )
 

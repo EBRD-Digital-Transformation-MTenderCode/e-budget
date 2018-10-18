@@ -91,27 +91,20 @@ data class OrganizationReferenceFs @JsonCreator constructor(
 
         var id: String?,
 
-        @field:NotNull
         val name: String,
 
-        @field:Valid @field:NotNull
         val identifier: Identifier,
 
-        @field:Valid @field:NotNull
         val address: Address,
 
-        @field:Valid
         val additionalIdentifiers: HashSet<Identifier>?,
 
-        @field:Valid @field:NotNull
         val contactPoint: ContactPoint?
 )
 
 data class SourceEntityFs @JsonCreator constructor(
 
-        @field:NotNull
         var id: String,
 
-        @field:NotNull
         val name: String
 )
