@@ -83,7 +83,7 @@ data class OrganizationReferenceEi @JsonCreator constructor(
 
         val contactPoint: ContactPoint,
 
-        val details: Details,
+        val details: Details?,
 
         val buyerProfile: String?
 )
