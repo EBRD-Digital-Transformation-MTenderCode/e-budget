@@ -7,13 +7,10 @@ import javax.validation.constraints.NotNull
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class Details @JsonCreator constructor(
 
-        @field:NotNull
-        val typeOfBuyer: TypeOfBuyer,
+        val typeOfBuyer: TypeOfBuyer?,
 
-        @field:NotNull
-        val mainGeneralActivity: MainGeneralActivity,
+        val mainGeneralActivity: MainGeneralActivity?,
 
-        @field:NotNull
-        val mainSectoralActivity: MainSectoralActivity
+        val mainSectoralActivity: MainSectoralActivity?
 
 )

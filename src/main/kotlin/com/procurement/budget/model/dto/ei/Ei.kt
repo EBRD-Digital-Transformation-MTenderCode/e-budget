@@ -56,7 +56,6 @@ data class BudgetEi @JsonCreator constructor(
 
         var period: Period,
 
-        @field:Valid
         var amount: ValueEi?
 )
 
@@ -84,7 +83,7 @@ data class OrganizationReferenceEi @JsonCreator constructor(
 
         val contactPoint: ContactPoint,
 
-        val details: Details,
+        val details: Details?,
 
         val buyerProfile: String?
 )
