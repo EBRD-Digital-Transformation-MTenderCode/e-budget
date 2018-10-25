@@ -34,7 +34,7 @@ class EiService(private val ocdsProperties: OCDSProperties,
         val country = cm.context.country ?: throw ErrorException(CONTEXT)
         val dateTime = cm.context.startDate?.toLocal() ?: throw ErrorException(CONTEXT)
         val eiDto = toObject(EiCreate::class.java, cm.data)
-
+        validateDto(eiDto)
         validatePeriod(eiDto)
         validateCpv(country, eiDto)
         val cpId = getCpId(country)
@@ -82,6 +82,15 @@ class EiService(private val ocdsProperties: OCDSProperties,
         entity.jsonData = toJson(ei)
         eiDao.save(entity)
         return ResponseDto(data = ei)
+    }
+
+    private fun validateDto(eiDto: EiCreate) {
+        val details = eiDto.buyer.details
+        if (details != null) {
+            if (details.typeOfBuyer == null && details.mainGeneralActivity == null && details.mainSectoralActivity == null) {
+                eiDto.buyer.details = null
+            }
+        }
     }
 
     private fun validateCpv(country: String, eiDto: EiCreate) {
