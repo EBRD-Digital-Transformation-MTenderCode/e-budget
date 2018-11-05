@@ -19,8 +19,8 @@ import java.math.BigDecimal
 import java.util.*
 
 @Service
-class CheckFsService(private val fsDao: FsDao,
-                     private val eiDao: EiDao) {
+class ValidationService(private val fsDao: FsDao,
+                        private val eiDao: EiDao) {
 
     fun checkFs(cm: CommandMessage): ResponseDto {
         val dto = toObject(CheckRq::class.java, cm.data)
@@ -82,6 +82,55 @@ class CheckFsService(private val fsDao: FsDao,
         )
     }
 
+
+    fun checkBudgetSources(cm: CommandMessage): ResponseDto {
+        val dto = toObject(CheckBsRq::class.java, cm.data)
+        val budgetSourcesRq = dto.planning.budget.budgetSource
+        val budgetAllocationRq = dto.planning.budget.budgetAllocation
+        val cpIds = budgetSourcesRq.asSequence().map { getCpIdFromOcId(it.budgetBreakdownID) }.toSet()
+        val entities = fsDao.getAllByCpIds(cpIds)
+        if (entities.isEmpty()) throw ErrorException(FS_NOT_FOUND)
+        val fsMap = HashMap<String?, Fs>()
+        val funders = HashSet<OrganizationReferenceFs>()
+        val payers = HashSet<OrganizationReferenceFs>()
+        entities.asSequence().map { toObject(Fs::class.java, it.jsonData) }.forEach { fsMap[it.ocid] = it }
+        for (cpId in cpIds) {
+            budgetSourcesRq.asSequence().filter { cpId == getCpIdFromOcId(it.budgetBreakdownID) }.forEach { bs ->
+                val fs = fsMap[bs.budgetBreakdownID] ?: throw ErrorException(FS_NOT_FOUND)
+                if (fs.tender.status != TenderStatus.ACTIVE) throw ErrorException(INVALID_STATUS)
+                if (fs.tender.statusDetails != TenderStatusDetails.EMPTY) throw ErrorException(INVALID_STATUS)
+                val fsValue = fs.planning.budget.amount
+                if (fsValue.currency != bs.currency) throw ErrorException(INVALID_CURRENCY)
+                if (fsValue.amount < bs.amount) throw ErrorException(INVALID_AMOUNT)
+                fs.funder?.let { funders.add(it) }
+                fs.payer.let { payers.add(it) }
+            }
+            budgetAllocationRq.asSequence().filter { cpId == getCpIdFromOcId(it.budgetBreakdownID) }.forEach { ba ->
+                val fs = fsMap[ba.budgetBreakdownID] ?: throw ErrorException(FS_NOT_FOUND)
+                if (ba.period.startDate > ba.period.endDate) throw ErrorException(INVALID_BA_PERIOD)
+                val fsPeriod = fs.planning.budget.period
+                if (ba.period.startDate < fsPeriod.startDate) throw ErrorException(INVALID_BA_PERIOD)
+                if (ba.period.endDate > fsPeriod.endDate) throw ErrorException(INVALID_BA_PERIOD)
+            }
+            val bsIds = budgetSourcesRq.asSequence().map { it.budgetBreakdownID }.toSet()
+            val baIds = budgetAllocationRq.asSequence().map { it.budgetBreakdownID }.toSet()
+            if (!bsIds.containsAll(baIds)) throw ErrorException(INVALID_BA_ID)
+
+            val eiEntity = eiDao.getByCpId(cpId) ?: throw ErrorException(EI_NOT_FOUND)
+            val ei = toObject(Ei::class.java, eiEntity.jsonData)
+        }
+        return ResponseDto(data = CheckBsRs(
+                treasuryBudgetSources = budgetSourcesRq,
+                funders = funders,
+                payers = payers,
+                buyer = null,
+                addedEI = null,
+                excludedEI = null,
+                addedFS = null,
+                excludedFS = null)
+        )
+    }
+
     private fun validateBudgetBreakdown(budgetBreakdown: List<BudgetBreakdownCheckRq>) {
         if (budgetBreakdown.asSequence().map { it.amount.currency }.toSet().size > 1) throw ErrorException(INVALID_CURRENCY)
         if (budgetBreakdown.asSequence().map { it.id }.toSet().size < budgetBreakdown.size) throw ErrorException(INVALID_BUDGET_BREAKDOWN_ID)
@@ -134,5 +183,4 @@ class CheckFsService(private val fsDao: FsDao,
         val pos = ocId.indexOf("-FS-")
         return ocId.substring(0, pos)
     }
-
 }

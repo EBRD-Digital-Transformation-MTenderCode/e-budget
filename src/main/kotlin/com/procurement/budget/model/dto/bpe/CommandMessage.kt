@@ -41,7 +41,8 @@ enum class CommandType(private val value: String) {
     UPDATE_EI("updateEi"),
     CREATE_FS("createFs"),
     UPDATE_FS("updateFs"),
-    CHECK_FS("checkFs");
+    CHECK_FS("checkFs"),
+    CHECK_BS("checkBudgetSources");
 
     @JsonValue
     fun value(): String {

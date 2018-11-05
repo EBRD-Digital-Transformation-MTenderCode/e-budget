@@ -55,7 +55,7 @@ data class BudgetFs @JsonCreator constructor(
 
         var period: Period,
 
-        val amount: ValueFs,
+        val amount: Value,
 
         var europeanUnionFunding: EuropeanUnionFunding?,
 
@@ -76,14 +76,6 @@ data class BudgetFs @JsonCreator constructor(
         var projectID: String?,
 
         var uri: String?
-)
-
-data class ValueFs @JsonCreator constructor(
-
-        @field:JsonDeserialize(using = MoneyDeserializer::class)
-        var amount: BigDecimal,
-
-        val currency: String
 )
 
 @JsonInclude(JsonInclude.Include.NON_NULL)

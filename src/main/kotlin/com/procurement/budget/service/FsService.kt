@@ -165,7 +165,7 @@ class FsService(private val fsDao: FsDao,
         return ResponseDto(data = FsResponse(eiForFs, fs))
     }
 
-    private fun fsUpdate(fs: Fs, fsUpdate: FsUpdate) {
+     private fun fsUpdate(fs: Fs, fsUpdate: FsUpdate) {
 
         fs.planning.apply {
             rationale = fsUpdate.planning.rationale
