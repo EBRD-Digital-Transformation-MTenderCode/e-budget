@@ -15,7 +15,7 @@ class CommandService(private val historyDao: HistoryDao,
 
 
     fun execute(cm: CommandMessage): ResponseDto {
-        var historyEntity = historyDao.getHistory(cm.id, cm.command.value())
+        var historyEntity = historyDao.getHistory(cm.id, cm.command.value)
         if (historyEntity != null) {
             return toObject(ResponseDto::class.java, historyEntity.jsonData)
         }
@@ -27,7 +27,7 @@ class CommandService(private val historyDao: HistoryDao,
             CommandType.CHECK_FS -> validationService.checkFs(cm)
             CommandType.CHECK_BS -> validationService.checkBudgetSources(cm)
         }
-        historyEntity = historyDao.saveHistory(cm.id, cm.command.value(), response)
+        historyEntity = historyDao.saveHistory(cm.id, cm.command.value, response)
         return toObject(ResponseDto::class.java, historyEntity.jsonData)
     }
 }
