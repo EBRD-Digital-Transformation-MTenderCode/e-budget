@@ -7,7 +7,6 @@ import com.procurement.budget.model.dto.databinding.MoneyDeserializer
 import com.procurement.budget.model.dto.ocds.*
 import java.math.BigDecimal
 import java.util.*
-import javax.validation.Valid
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class Ei @JsonCreator constructor(
