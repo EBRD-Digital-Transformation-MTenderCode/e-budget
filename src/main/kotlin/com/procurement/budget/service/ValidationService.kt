@@ -11,6 +11,7 @@ import com.procurement.budget.model.dto.ei.Ei
 import com.procurement.budget.model.dto.ei.OrganizationReferenceEi
 import com.procurement.budget.model.dto.fs.Fs
 import com.procurement.budget.model.dto.fs.OrganizationReferenceFs
+import com.procurement.budget.model.dto.ocds.Identifier
 import com.procurement.budget.model.dto.ocds.TenderStatus
 import com.procurement.budget.model.dto.ocds.TenderStatusDetails
 import com.procurement.budget.utils.toObject
@@ -86,6 +87,7 @@ class ValidationService(private val fsDao: FsDao,
     fun checkBudgetSources(cm: CommandMessage): ResponseDto {
         val dto = toObject(CheckBsRq::class.java, cm.data)
         val budgetSourcesRq = dto.planning.budget.budgetSource
+        val actualBudgetSourcesRq = dto.actualBudgetSource
         val budgetAllocationRq = dto.planning.budget.budgetAllocation
         val cpIds = budgetSourcesRq.asSequence().map { getCpIdFromOcId(it.budgetBreakdownID) }.toSet()
         val entities = fsDao.getAllByCpIds(cpIds)
@@ -118,18 +120,53 @@ class ValidationService(private val fsDao: FsDao,
 
             val eiEntity = eiDao.getByCpId(cpId) ?: throw ErrorException(EI_NOT_FOUND)
             val ei = toObject(Ei::class.java, eiEntity.jsonData)
+            val buyerRq = dto.buyer
+            ei.buyer.apply {
+                details = buyerRq.details
+                buyerRq.additionalIdentifiers?.let { ai -> updateAdditionalIdentifiers(additionalIdentifiers, ai) }
+//                updatePersons(persons, buyerRq.persons)
+
+            }
         }
+
+        var addedEI: Set<String>? = null
+        var excludedEI: Set<String>? = null
+        var addedFS: Set<String>? = null
+        var excludedFS: Set<String>? = null
+        val fsIds = budgetSourcesRq.asSequence().map { it.budgetBreakdownID }.toSet()
+        if (actualBudgetSourcesRq != null) {
+            val actualCpIds = actualBudgetSourcesRq.asSequence().map { getCpIdFromOcId(it.budgetBreakdownID) }.toSet()
+            if (cpIds.size == actualCpIds.size && cpIds.containsAll(actualCpIds)) {
+                excludedEI = actualCpIds - cpIds
+                addedEI = cpIds - actualCpIds
+            }
+            val actualFsIds = actualBudgetSourcesRq.asSequence().map { it.budgetBreakdownID }.toSet()
+            if (fsIds.size == actualFsIds.size && fsIds.containsAll(actualFsIds)) {
+                excludedFS = actualFsIds - fsIds
+                addedFS = fsIds - actualFsIds
+            }
+        }else{
+            addedEI = cpIds
+            addedFS = fsIds
+        }
+
         return ResponseDto(data = CheckBsRs(
                 treasuryBudgetSources = budgetSourcesRq,
                 funders = funders,
                 payers = payers,
                 buyer = null,
-                addedEI = null,
-                excludedEI = null,
-                addedFS = null,
-                excludedFS = null)
+                addedEI = addedEI,
+                excludedEI = excludedEI,
+                addedFS = addedFS,
+                excludedFS = excludedFS)
         )
     }
+
+    private fun updateAdditionalIdentifiers(additionalIdentifiers: HashSet<Identifier>?, ai: HashSet<Identifier>) {
+//      Updates saved version of Buyer.additionalIdentifiers selected on step 1.a.ii using next fields of additionalIdentifiers with same ID && Scheme from Request:
+        TODO()
+    }
+
 
     private fun validateBudgetBreakdown(budgetBreakdown: List<BudgetBreakdownCheckRq>) {
         if (budgetBreakdown.asSequence().map { it.amount.currency }.toSet().size > 1) throw ErrorException(INVALID_CURRENCY)
@@ -184,3 +221,6 @@ class ValidationService(private val fsDao: FsDao,
         return ocId.substring(0, pos)
     }
 }
+
+
+
