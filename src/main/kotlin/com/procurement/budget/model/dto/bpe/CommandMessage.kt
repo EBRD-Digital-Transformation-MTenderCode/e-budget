@@ -8,7 +8,6 @@ import com.procurement.budget.exception.EnumException
 import com.procurement.budget.exception.ErrorException
 
 data class CommandMessage @JsonCreator constructor(
-
         val id: String,
         val command: CommandType,
         val context: Context,
@@ -36,30 +35,21 @@ data class Context @JsonCreator constructor(
         val id: String?
 )
 
-enum class CommandType(private val value: String) {
+enum class CommandType(@JsonValue val value: String) {
     CREATE_EI("createEi"),
     UPDATE_EI("updateEi"),
     CREATE_FS("createFs"),
     UPDATE_FS("updateFs"),
-    CHECK_FS("checkFs");
-
-    @JsonValue
-    fun value(): String {
-        return this.value
-    }
+    CHECK_FS("checkFs"),
+    CHECK_BS("checkBudgetSources");
 
     override fun toString(): String {
         return this.value
     }
 }
 
-enum class ApiVersion(private val value: String) {
+enum class ApiVersion(@JsonValue val value: String) {
     V_0_0_1("0.0.1");
-
-    @JsonValue
-    fun value(): String {
-        return this.value
-    }
 
     override fun toString(): String {
         return this.value
@@ -88,7 +78,7 @@ data class ResponseErrorDto(
 fun getExceptionResponseDto(exception: Exception): ResponseDto {
     return ResponseDto(
             errors = listOf(ResponseErrorDto(
-                    code = "400.09.00",
+                    code = "400.10.00",
                     description = exception.message
             )))
 }

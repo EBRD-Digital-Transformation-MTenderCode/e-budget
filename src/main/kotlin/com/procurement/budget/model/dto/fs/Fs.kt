@@ -5,11 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.procurement.budget.model.dto.databinding.BooleansDeserializer
-import com.procurement.budget.model.dto.databinding.MoneyDeserializer
 import com.procurement.budget.model.dto.ocds.*
-import java.math.BigDecimal
-import javax.validation.Valid
-import javax.validation.constraints.NotNull
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class Fs @JsonCreator constructor(
@@ -55,7 +51,7 @@ data class BudgetFs @JsonCreator constructor(
 
         var period: Period,
 
-        val amount: ValueFs,
+        val amount: Value,
 
         var europeanUnionFunding: EuropeanUnionFunding?,
 
@@ -76,14 +72,6 @@ data class BudgetFs @JsonCreator constructor(
         var projectID: String?,
 
         var uri: String?
-)
-
-data class ValueFs @JsonCreator constructor(
-
-        @field:JsonDeserialize(using = MoneyDeserializer::class)
-        var amount: BigDecimal,
-
-        val currency: String
 )
 
 @JsonInclude(JsonInclude.Include.NON_NULL)

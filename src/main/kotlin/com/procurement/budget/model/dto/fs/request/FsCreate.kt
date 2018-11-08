@@ -4,9 +4,9 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.procurement.budget.model.dto.databinding.BooleansDeserializer
 import com.procurement.budget.model.dto.fs.OrganizationReferenceFs
-import com.procurement.budget.model.dto.fs.ValueFs
 import com.procurement.budget.model.dto.ocds.EuropeanUnionFunding
 import com.procurement.budget.model.dto.ocds.Period
+import com.procurement.budget.model.dto.ocds.Value
 
 data class FsCreate @JsonCreator constructor(
 
@@ -38,7 +38,7 @@ data class BudgetFsCreate @JsonCreator constructor(
 
         val period: Period,
 
-        val amount: ValueFs,
+        val amount: Value,
 
         @field:JsonDeserialize(using = BooleansDeserializer::class)
         val isEuropeanUnionFunded: Boolean,

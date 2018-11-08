@@ -2,9 +2,6 @@ package com.procurement.budget.model.dto.check
 
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.procurement.budget.model.dto.ocds.Classification
-import javax.validation.Valid
-import javax.validation.constraints.NotEmpty
-import javax.validation.constraints.NotNull
 
 data class CheckRq @JsonCreator constructor(
 

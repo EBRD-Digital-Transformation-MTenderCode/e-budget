@@ -1,92 +1,95 @@
 {
-  "id": "0819b1fe-9a5a-4c81-b5f5-f377caec1238",
-  "command": "createEi",
-  "context": {
-    "operationId": "0819b1fe-9a5a-4c81-b5f5-f377caec1238",
-    "requestId": "196d6150-d77e-11e8-b455-b54719027762",
-    "stage": "EI",
-    "processType": "ei",
-    "operationType": "createEI",
-    "owner": "445f6851-c908-407d-9b45-14b92f3e964b",
-    "country": "MD",
-    "language": "ro",
-    "startDate": "2018-10-24T11:15:22Z",
-    "timeStamp": 1540379722725729,
-    "isAuction": false
-  },
-  "data": {
-    "tender": {
-      "title": "Hand become put day with west join.",
-      "description": "Break along kitchen whom trip choice seem class adult travel high throughout government room receive second former family girl base same son democratic itself public girl say week.",
-      "classification": {
-        "id": "30100000-0",
-        "description": "Maşini, echipament şi accesorii de birou, cu excepţia computerelor, a imprimantelor şi a mobilierului",
-        "scheme": "CPV"
-      },
-      "mainProcurementCategory": "goods"
-    },
-    "planning": {
-      "budget": {
-        "period": {
-          "startDate": "2018-02-30T09:00:00Z",
-          "endDate": "3018-12-29T09:00:00Z"
-        }
-      },
-      "rationale": "Ground national key nothing you sometimes."
-    },
-    "buyer": {
-      "name": "Burns-Davis222",
-      "address": {
-        "streetAddress": "232323",
-        "postalCode": "424422",
-        "addressDetails": {
-          "country": {
-            "scheme": "iso-alpha2",
-            "id": "MD",
-            "description": "MOLDOVA",
-            "uri": "http://reference.iatistandard.org"
-          },
-          "region": {
-            "scheme": "CUATM",
-            "id": "1000000",
-            "description": "Anenii Noi",
-            "uri": "http://statistica.md"
-          },
-          "locality": {
-            "scheme": "CUATM",
-            "id": "1001000",
-            "description": "or.Anenii Noi",
-            "uri": "http://statistica.md"
-          }
-        }
-      },
-      "identifier": {
-        "id": "354-37-1072",
-        "scheme": "MD-IDNO",
-        "legalName": "Burns-Davis PLC",
-        "uri": "enotiss"
-      },
-      "additionalIdentifiers": [
-        {
-          "id": "713-49-7544",
-          "scheme": "MD-IDNO",
-          "legalName": "Burns-Davis PLC"
+  "buyer": {
+    "id": "",
+    "additionalIdentifiers": [
+      {
+        "scheme": "MD-SRJE",
+        "id": "",
+        "legalName": "",
+        "uri": ""
+      }
+    ],
+    "persones": [
+      {
+        "title": "",
+        "name": "",
+        "identifier": {
+          "scheme": "",
+          "id": "",
+          "uri": ""
         },
+        "businessFunctions": [
+          {
+            "type": "authority",
+            "jobTitle": "Chief Executive Officer",
+            "period": {
+              "startDate": ""
+            },
+            "documents": [
+              {
+                "id": "",
+                "documentType": "regulatoryDocument",
+                "-title": "",
+                "-description": ""
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "details": {
+      "typeOfBuyer": "",
+      "mainGeneralActivity": "",
+      "mainSectoralActivity": "",
+      "gpaProfile": {
+        "gpaAnnex": {
+          "id": "",
+          "legalName": "",
+          "uri": "https://e-gpa.wto.org/en/Appendix/Details?Agreement=GPA113&amp;Party=Moldova"
+        },
+        "gpaOrganizationType": {
+          "id": "",
+          "legalName": "",
+          "uri": ""
+        },
+        "gpaThresholds": [
+          {
+            "mainProcurementCategory": "",
+            "value": {
+              "amount": "",
+              "currency": ""
+            }
+          }
+        ]
+      },
+      "bankAccounts": [
         {
-          "id": "713-49-7544",
-          "scheme": "MD-ENOTIS",
-          "legalName": "Burns-Davis PLC",
-          "uri": "enotiss"
+          "description": "",
+          "bankName": "",
+          "address": {
+          },
+          "identifier": {
+            "scheme": "MD-BANKS",
+            "id": "300711"
+          },
+          "accountIdentification": {
+            "scheme": "MD-IBAN",
+            "id": "2600000625637"
+          },
+          "additionalAccountIdentifiers": [
+            {
+              "scheme": "MD-SETTLEMENT",
+              "id": ""
+            }
+          ]
         }
       ],
-      "contactPoint": {
-        "name": "Jacqueline Soto",
-        "email": "tiffanygutierrez@yahoo.com",
-        "telephone": "724-095-3938x237",
-        "faxNumber": "897-612-1545"
-      },
-      "details": {}
+      "legalForm": {
+        "scheme": "",
+        "id": "",
+        "description": "",
+        "uri": ""
+      }
     }
-  },
-  "version": "0.0.1"
+  }
 }

@@ -92,16 +92,7 @@ class FsDao(private val session: Session) {
         return row?.getDecimal(AMOUNT)
     }
 
-    fun getCountByCpId(cpId: String): Long {
-        val query = select().countAll()
-                .from(FS_TABLE)
-                .where(eq(CP_ID, cpId))
-        val row = session.execute(query).one()
-        return row?.getLong(1) ?: 0L
-    }
-
     companion object {
-
         private const val FS_TABLE = "budget_fs"
         private const val CP_ID = "cp_id"
         private const val OC_ID = "oc_id"
