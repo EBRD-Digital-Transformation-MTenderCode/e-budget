@@ -25,6 +25,10 @@ enum class ErrorType constructor(val code: String, val message: String) {
     INVALID_TENDER_ID("01.05", "Invalid tender id."),
     INVALID_BA_PERIOD("01.06", "Invalid budget allocation period."),
     INVALID_BA_ID("01.07", "Invalid budget allocation id."),
+    PERSONES("01.08", "Invalid persones"),
+    PERSON_NOT_FOUND("01.09", "Person not found."),
+    BF("01.10", "Invalid business functions of person."),
+    DOCUMENTS("01.1", "Documents is not valid"),
     RULES_NOT_FOUND("02.01", "Rules not found."),
     CONTEXT("20.02", "Context parameter not found.");
 }

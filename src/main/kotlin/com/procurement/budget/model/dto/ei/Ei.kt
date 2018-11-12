@@ -78,9 +78,11 @@ data class OrganizationReferenceEi @JsonCreator constructor(
 
         val address: Address,
 
-        val additionalIdentifiers: HashSet<Identifier>?,
-
         val contactPoint: ContactPoint,
+
+        var additionalIdentifiers: HashSet<Identifier>?,
+
+        var persones: HashSet<Person>?,
 
         var details: Details?,
 

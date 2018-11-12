@@ -12,7 +12,7 @@ data class CheckBsRq @JsonCreator constructor(
 
         val planning: Planning,
 
-        val buyer: OrganizationReferenceBs,
+        val buyer: OrganizationReferenceBuyer,
 
         val actualBudgetSource: Set<BudgetSource>?
 )
@@ -25,7 +25,7 @@ data class CheckBsRs @JsonCreator constructor(
 
         val payers: HashSet<OrganizationReferenceFs>?,
 
-        val buyer: OrganizationReferenceBs?,
+        val buyer: OrganizationReferenceBuyer?,
 
         val addedEI: Set<String>?,
 
@@ -72,7 +72,7 @@ data class BudgetSource @JsonCreator constructor(
 )
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-data class OrganizationReferenceBs @JsonCreator constructor(
+data class OrganizationReferenceBuyer @JsonCreator constructor(
 
         var id: String?,
 
@@ -86,34 +86,7 @@ data class OrganizationReferenceBs @JsonCreator constructor(
 
         val contactPoint: ContactPoint?,
 
+        val persones: HashSet<Person>,
+
         val details: Details?
 )
-
-//"persones": [
-//{
-//        "title": "",
-//        "name": "",
-//        "identifier": {
-//        "scheme": "",
-//        "id": "",
-//        "uri": ""
-//},
-//        "businessFunctions": [
-//        {
-//                "type": "authority",
-//                "jobTitle": "Chief Executive Officer",
-//                "period": {
-//                "startDate": ""
-//        },
-//                "documents": [
-//                {
-//                        "id": "",
-//                        "documentType": "regulatoryDocument",
-//                        "-title": "",
-//                        "-description": ""
-//                }
-//                ]
-//        }
-//        ]
-//}
-//],

@@ -11,9 +11,7 @@ import com.procurement.budget.model.dto.ei.Ei
 import com.procurement.budget.model.dto.ei.OrganizationReferenceEi
 import com.procurement.budget.model.dto.fs.Fs
 import com.procurement.budget.model.dto.fs.OrganizationReferenceFs
-import com.procurement.budget.model.dto.ocds.Identifier
-import com.procurement.budget.model.dto.ocds.TenderStatus
-import com.procurement.budget.model.dto.ocds.TenderStatusDetails
+import com.procurement.budget.model.dto.ocds.*
 import com.procurement.budget.utils.toObject
 import org.springframework.stereotype.Service
 import java.math.BigDecimal
@@ -120,13 +118,7 @@ class ValidationService(private val fsDao: FsDao,
 
             val eiEntity = eiDao.getByCpId(cpId) ?: throw ErrorException(EI_NOT_FOUND)
             val ei = toObject(Ei::class.java, eiEntity.jsonData)
-            val buyerRq = dto.buyer
-            ei.buyer.apply {
-                details = buyerRq.details
-                buyerRq.additionalIdentifiers?.let { ai -> updateAdditionalIdentifiers(additionalIdentifiers, ai) }
-//                updatePersons(persons, buyerRq.persons)
-
-            }
+            updateBuyer(ei.buyer, dto.buyer)// BR-9.2.21
         }
 
         var addedEI: Set<String>? = null
@@ -145,7 +137,7 @@ class ValidationService(private val fsDao: FsDao,
                 excludedFS = actualFsIds - fsIds
                 addedFS = fsIds - actualFsIds
             }
-        }else{
+        } else {
             addedEI = cpIds
             addedFS = fsIds
         }
@@ -162,11 +154,68 @@ class ValidationService(private val fsDao: FsDao,
         )
     }
 
-    private fun updateAdditionalIdentifiers(additionalIdentifiers: HashSet<Identifier>?, ai: HashSet<Identifier>) {
-//      Updates saved version of Buyer.additionalIdentifiers selected on step 1.a.ii using next fields of additionalIdentifiers with same ID && Scheme from Request:
-        TODO()
+    private fun updateBuyer(buyerDb: OrganizationReferenceEi, buyerDto: OrganizationReferenceBuyer) {
+        //validation
+        if (buyerDb.id != buyerDto.id) throw ErrorException(INVALID_BUYER_ID)
+        //update
+        buyerDb.persones = updatePersones(buyerDb.persones, buyerDto.persones)//BR-9.2.3
+        buyerDb.additionalIdentifiers = buyerDto.additionalIdentifiers
+        buyerDb.details = buyerDto.details
     }
 
+    private fun updatePersones(personesDb: HashSet<Person>?, personesDto: HashSet<Person>): HashSet<Person> {
+        if (personesDb == null || personesDb.isEmpty()) return personesDto
+        val personesDbIds = personesDb.asSequence().map { it.identifier.id }.toSet()
+        val personesDtoIds = personesDto.asSequence().map { it.identifier.id }.toSet()
+        if (personesDtoIds.size != personesDto.size) throw ErrorException(PERSONES)
+        //update
+        personesDb.forEach { personDb -> personDb.update(personesDto.first { it.identifier.id == personDb.identifier.id }) }
+        val newPersonesId = personesDtoIds - personesDbIds
+        val newPersones = personesDto.asSequence().filter { it.identifier.id in newPersonesId }.toHashSet()
+        return (personesDb + newPersones).toHashSet()
+    }
+
+    private fun Person.update(personDto: Person) {
+        this.title = personDto.title
+        this.name = personDto.name
+        this.businessFunctions = updateBusinessFunctions(this.businessFunctions, personDto.businessFunctions)
+    }
+
+    private fun updateBusinessFunctions(bfDb: List<BusinessFunction>, bfDto: List<BusinessFunction>): List<BusinessFunction> {
+        if (bfDb == null || bfDb.isEmpty()) return bfDto
+        val bfDbIds = bfDb.asSequence().map { it.id }.toSet()
+        val bfDtoIds = bfDto.asSequence().map { it.id }.toSet()
+        if (bfDtoIds.size != bfDto.size) throw ErrorException(BF)
+        //update
+        bfDb.forEach { bfDb -> bfDb.update(bfDto.first { it.id == bfDb.id }) }
+        val newBfId = bfDtoIds - bfDbIds
+        val newBf = bfDto.asSequence().filter { it.id in newBfId }.toHashSet()
+        return bfDb + newBf
+    }
+
+    private fun BusinessFunction.update(bfDto: BusinessFunction) {
+        this.type = bfDto.type
+        this.jobTitle = bfDto.jobTitle
+        this.period = bfDto.period
+        this.documents = updateDocuments(this.documents, bfDto.documents)
+    }
+
+    private fun updateDocuments(documentsDb: List<DocumentBF>, documentsDto: List<DocumentBF>): List<DocumentBF> {
+        //validation
+        val documentsDbIds = documentsDb.asSequence().map { it.id }.toSet()
+        val documentDtoIds = documentsDto.asSequence().map { it.id }.toSet()
+        if (documentDtoIds.size != documentsDto.size) throw ErrorException(DOCUMENTS)
+        //update
+        documentsDb.forEach { docDb -> docDb.update(documentsDto.first { it.id == docDb.id }) }
+        val newDocumentsId = documentDtoIds - documentsDbIds
+        val newDocuments = documentsDto.asSequence().filter { it.id in newDocumentsId }.toList()
+        return (documentsDb + newDocuments)
+    }
+
+    private fun DocumentBF.update(documentDto: DocumentBF) {
+        this.title = documentDto.title
+        this.description = documentDto.description
+    }
 
     private fun validateBudgetBreakdown(budgetBreakdown: List<BudgetBreakdownCheckRq>) {
         if (budgetBreakdown.asSequence().map { it.amount.currency }.toSet().size > 1) throw ErrorException(INVALID_CURRENCY)
