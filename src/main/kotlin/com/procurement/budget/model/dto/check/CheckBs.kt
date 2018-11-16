@@ -25,8 +25,6 @@ data class CheckBsRs @JsonCreator constructor(
 
         val payers: HashSet<OrganizationReferenceFs>?,
 
-        val buyer: OrganizationReferenceBuyer?,
-
         val addedEI: Set<String>?,
 
         val excludedEI: Set<String>?,
