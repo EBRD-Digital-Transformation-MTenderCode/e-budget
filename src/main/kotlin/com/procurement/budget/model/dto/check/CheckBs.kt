@@ -74,15 +74,9 @@ data class OrganizationReferenceBuyer @JsonCreator constructor(
 
         var id: String?,
 
-        val name: String,
-
-        val identifier: Identifier,
-
-        val address: Address,
+        val name: String?,
 
         val additionalIdentifiers: HashSet<Identifier>?,
-
-        val contactPoint: ContactPoint?,
 
         val persones: HashSet<Person>,
 

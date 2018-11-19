@@ -181,12 +181,12 @@ class ValidationService(private val fsDao: FsDao,
     }
 
     private fun updateBusinessFunctions(bfDb: List<BusinessFunction>, bfDto: List<BusinessFunction>): List<BusinessFunction> {
-        if (bfDb == null || bfDb.isEmpty()) return bfDto
+        if (bfDb.isEmpty()) return bfDto
         val bfDbIds = bfDb.asSequence().map { it.id }.toSet()
         val bfDtoIds = bfDto.asSequence().map { it.id }.toSet()
         if (bfDtoIds.size != bfDto.size) throw ErrorException(BF)
         //update
-        bfDb.forEach { bfDb -> bfDb.update(bfDto.first { it.id == bfDb.id }) }
+        bfDb.forEach { bf -> bf.update(bfDto.first { it.id == bf.id }) }
         val newBfId = bfDtoIds - bfDbIds
         val newBf = bfDto.asSequence().filter { it.id in newBfId }.toHashSet()
         return bfDb + newBf
