@@ -93,6 +93,7 @@ class ValidationService(private val fsDao: FsDao,
         val fsMap = HashMap<String?, Fs>()
         val funders = HashSet<OrganizationReferenceFs>()
         val payers = HashSet<OrganizationReferenceFs>()
+        var buyer: OrganizationReferenceEi? = null
         entities.asSequence().map { toObject(Fs::class.java, it.jsonData) }.forEach { fsMap[it.ocid] = it }
         for (cpId in cpIds) {
             budgetSourcesRq.asSequence().filter { cpId == getCpIdFromOcId(it.budgetBreakdownID) }.forEach { bs ->
@@ -119,6 +120,7 @@ class ValidationService(private val fsDao: FsDao,
             val eiEntity = eiDao.getByCpId(cpId) ?: throw ErrorException(EI_NOT_FOUND)
             val ei = toObject(Ei::class.java, eiEntity.jsonData)
             updateBuyer(ei.buyer, dto.buyer)// BR-9.2.21
+            buyer = ei.buyer
         }
 
         var addedEI: Set<String>? = null
@@ -144,6 +146,7 @@ class ValidationService(private val fsDao: FsDao,
 
         return ResponseDto(data = CheckBsRs(
                 treasuryBudgetSources = budgetSourcesRq,
+                buyer = buyer,
                 funders = funders,
                 payers = payers,
                 addedEI = addedEI,

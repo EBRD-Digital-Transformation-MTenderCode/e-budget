@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.procurement.budget.model.dto.databinding.MoneyDeserializer
+import com.procurement.budget.model.dto.ei.OrganizationReferenceEi
 import com.procurement.budget.model.dto.fs.OrganizationReferenceFs
 import com.procurement.budget.model.dto.ocds.*
 import java.math.BigDecimal
@@ -20,6 +21,8 @@ data class CheckBsRq @JsonCreator constructor(
 data class CheckBsRs @JsonCreator constructor(
 
         val treasuryBudgetSources: Set<BudgetSource>?,
+
+        val buyer: OrganizationReferenceEi?,
 
         val funders: HashSet<OrganizationReferenceFs>?,
 
