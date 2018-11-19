@@ -66,6 +66,8 @@ data class BudgetSource @JsonCreator constructor(
 
         val budgetBreakdownID: String,
 
+        val budgetIBAN: String?,
+
         @JsonDeserialize(using = MoneyDeserializer::class)
         val amount: BigDecimal,
 
