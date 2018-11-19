@@ -12,7 +12,7 @@ enum class ErrorType constructor(val code: String, val message: String) {
     INVALID_STATUS("00.08", "Financial source status invalid."),
     INVALID_SOURCE_ENTITY("00.09", "FS source entity invalid."),
     INVALID_BUDGET_ID("00.10", "Budget id must not be empty."),
-    INVALID_BUYER_ID("00.11", "Buyer id must not be empty."),
+    INVALID_BUYER_ID("00.11", "Invalid Buyer id."),
     INVALID_OCID_ID("00.11", "OCID of FS must not be empty."),
     INVALID_VERIFIED("00.11", "Verified of FS must not be empty."),
     INVALID_MPC("00.12", "Invalid main procurement category."),
