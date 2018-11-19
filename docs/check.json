@@ -1,11 +1,11 @@
 {
-  "id": "16733f00-ec15-11e8-b1a3-9da95259bf6b",
+  "id": "5ca21b80-ec1b-11e8-8593-c75a0429b281",
   "command": "checkBudgetSources",
   "context": {
-    "operationId": "cd6b2b9b-51e1-4b52-a668-f3ab5b368f69",
-    "requestId": "16733f00-ec15-11e8-b1a3-9da95259bf6b",
-    "cpid": "ocds-t1s2t3-MD-1542622343629",
-    "ocid": "ocds-t1s2t3-MD-1542622343629-AC-1542965261745",
+    "operationId": "a1bcd000-b00d-4644-b0e6-4b75020b1321",
+    "requestId": "5ca21b80-ec1b-11e8-8593-c75a0429b281",
+    "cpid": "ocds-t1s2t3-MD-1542645678020",
+    "ocid": "ocds-t1s2t3-MD-1542645678020-AC-1544745832237",
     "stage": "AC",
     "prevStage": "AC",
     "processType": "updateAC",
@@ -15,9 +15,9 @@
     "country": "MD",
     "language": "ro",
     "pmd": "TEST_OT",
-    "token": "bf51ddcd-c8ac-4ca5-aed4-0af11efc3bfe",
-    "startDate": "2018-11-19T16:06:34Z",
-    "timeStamp": 1542643594994,
+    "token": "63bd38a5-948b-4f0b-acab-f101b6183f17",
+    "startDate": "2018-11-19T16:51:29Z",
+    "timeStamp": 1542646289720,
     "isAuction": false
   },
   "data": {
@@ -52,7 +52,7 @@
         ],
         "budgetSource": [
           {
-            "budgetBreakdownID": "ocds-t1s2t3-MD-1542617281990-FS-1542618289358",
+            "budgetBreakdownID": "ocds-t1s2t3-MD-1542644139588-FS-1542645577348",
             "amount": 10,
             "currency": "MDL"
           }
@@ -88,7 +88,7 @@
               },
               "documents": [
                 {
-                  "id": "a58b5e64-e338-4b20-a2c1-3650b220489c-1542127310613",
+                  "id": "379e4907-5ab9-4db7-a669-9ffb6c12d781-1542640870786",
                   "documentType": "regulatoryDocument"
                 }
               ]
@@ -98,8 +98,8 @@
       ],
       "details": {
         "typeOfBuyer": "BODY_PUBLIC",
-        "mainGeneralActivity": "DEFENCE",
-        "mainSectoralActivity": "ELECTRICITY",
+        "mainGeneralActivity": "HOUSING_AND_COMMUNITY_AMENITIES",
+        "mainSectoralActivity": "RAILWAY_SERVICES",
         "gpaProfile": {
           "gpaAnnex": {
             "id": "654123",
@@ -152,7 +152,7 @@
             "additionalAccountIdentifiers": [
               {
                 "scheme": "MD-SETTLEMENT",
-                "id": ""
+                "id": "456654"
               }
             ]
           }

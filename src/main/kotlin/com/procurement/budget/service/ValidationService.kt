@@ -266,6 +266,7 @@ class ValidationService(private val fsDao: FsDao,
 
     private fun getCpIdFromOcId(ocId: String): String {
         val pos = ocId.indexOf("-FS-")
+        if (pos < 0) throw ErrorException(INVALID_BUDGET_BREAKDOWN_ID, ocId)
         return ocId.substring(0, pos)
     }
 }
