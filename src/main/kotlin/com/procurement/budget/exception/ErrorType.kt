@@ -28,6 +28,7 @@ enum class ErrorType constructor(val code: String, val message: String) {
     PERSONES("01.08", "Invalid persones"),
     PERSON_NOT_FOUND("01.09", "Person not found."),
     BF("01.10", "Invalid business functions of person."),
+    INVALID_BA("01.11", "Budget allocations are not complete."),
     DOCUMENTS("01.1", "Documents is not valid"),
     RULES_NOT_FOUND("02.01", "Rules not found."),
     CONTEXT("20.02", "Context parameter not found.");

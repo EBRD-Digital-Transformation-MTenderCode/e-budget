@@ -98,8 +98,8 @@ class ValidationService(private val fsDao: FsDao,
         for (cpId in cpIds) {
             budgetSourcesRq.asSequence().filter { cpId == getCpIdFromOcId(it.budgetBreakdownID) }.forEach { bs ->
                 val fs = fsMap[bs.budgetBreakdownID] ?: throw ErrorException(FS_NOT_FOUND)
-                if (fs.tender.status != TenderStatus.ACTIVE) throw ErrorException(INVALID_STATUS)
-                if (fs.tender.statusDetails != TenderStatusDetails.EMPTY) throw ErrorException(INVALID_STATUS)
+//                if (fs.tender.status != TenderStatus.ACTIVE) throw ErrorException(INVALID_STATUS)
+//                if (fs.tender.statusDetails != TenderStatusDetails.EMPTY) throw ErrorException(INVALID_STATUS)
                 val fsValue = fs.planning.budget.amount
                 if (fsValue.currency != bs.currency) throw ErrorException(INVALID_CURRENCY)
                 if (fsValue.amount < bs.amount) throw ErrorException(INVALID_AMOUNT)
@@ -115,8 +115,8 @@ class ValidationService(private val fsDao: FsDao,
             }
             val bsIds = budgetSourcesRq.asSequence().map { it.budgetBreakdownID }.toSet()
             val baIds = budgetAllocationRq.asSequence().map { it.budgetBreakdownID }.toSet()
+            if (bsIds.size != baIds.size) throw ErrorException(INVALID_BA)
             if (!bsIds.containsAll(baIds)) throw ErrorException(INVALID_BA_ID)
-
             val eiEntity = eiDao.getByCpId(cpId) ?: throw ErrorException(EI_NOT_FOUND)
             val ei = toObject(Ei::class.java, eiEntity.jsonData)
             updateBuyer(ei.buyer, dto.buyer)// BR-9.2.21
