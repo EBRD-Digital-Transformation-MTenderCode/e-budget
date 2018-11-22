@@ -96,6 +96,11 @@ class ValidationService(private val fsDao: FsDao,
         var buyer: OrganizationReferenceEi? = null
         entities.asSequence().map { toObject(Fs::class.java, it.jsonData) }.forEach { fsMap[it.ocid] = it }
         for (cpId in cpIds) {
+            val bsIds = budgetSourcesRq.asSequence().map { it.budgetBreakdownID }.toSet()
+            val baIds = budgetAllocationRq.asSequence().map { it.budgetBreakdownID }.toSet()
+            if (bsIds.size != baIds.size) throw ErrorException(INVALID_BA)
+            if (!bsIds.containsAll(baIds)) throw ErrorException(INVALID_BA_ID)
+            if (budgetSourcesRq.asSequence().map { it.currency }.toSet().size > 1) throw ErrorException(INVALID_CURRENCY)
             budgetSourcesRq.asSequence().filter { cpId == getCpIdFromOcId(it.budgetBreakdownID) }.forEach { bs ->
                 val fs = fsMap[bs.budgetBreakdownID] ?: throw ErrorException(FS_NOT_FOUND)
 //                if (fs.tender.status != TenderStatus.ACTIVE) throw ErrorException(INVALID_STATUS)
@@ -113,10 +118,6 @@ class ValidationService(private val fsDao: FsDao,
                 if (ba.period.startDate < fsPeriod.startDate) throw ErrorException(INVALID_BA_PERIOD)
                 if (ba.period.endDate > fsPeriod.endDate) throw ErrorException(INVALID_BA_PERIOD)
             }
-            val bsIds = budgetSourcesRq.asSequence().map { it.budgetBreakdownID }.toSet()
-            val baIds = budgetAllocationRq.asSequence().map { it.budgetBreakdownID }.toSet()
-            if (bsIds.size != baIds.size) throw ErrorException(INVALID_BA)
-            if (!bsIds.containsAll(baIds)) throw ErrorException(INVALID_BA_ID)
             val eiEntity = eiDao.getByCpId(cpId) ?: throw ErrorException(EI_NOT_FOUND)
             val ei = toObject(Ei::class.java, eiEntity.jsonData)
             updateBuyer(ei.buyer, dto.buyer)// BR-9.2.21
