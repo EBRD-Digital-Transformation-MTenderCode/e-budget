@@ -93,12 +93,18 @@ class ValidationService(private val fsDao: FsDao,
         val fsMap = HashMap<String?, Fs>()
         val funders = HashSet<OrganizationReferenceFs>()
         val payers = HashSet<OrganizationReferenceFs>()
+        var buyer: OrganizationReferenceEi? = null
         entities.asSequence().map { toObject(Fs::class.java, it.jsonData) }.forEach { fsMap[it.ocid] = it }
         for (cpId in cpIds) {
+            val bsIds = budgetSourcesRq.asSequence().map { it.budgetBreakdownID }.toSet()
+            val baIds = budgetAllocationRq.asSequence().map { it.budgetBreakdownID }.toSet()
+            if (bsIds.size != baIds.size) throw ErrorException(INVALID_BA)
+            if (!bsIds.containsAll(baIds)) throw ErrorException(INVALID_BA_ID)
+            if (budgetSourcesRq.asSequence().map { it.currency }.toSet().size > 1) throw ErrorException(INVALID_CURRENCY)
             budgetSourcesRq.asSequence().filter { cpId == getCpIdFromOcId(it.budgetBreakdownID) }.forEach { bs ->
                 val fs = fsMap[bs.budgetBreakdownID] ?: throw ErrorException(FS_NOT_FOUND)
-                if (fs.tender.status != TenderStatus.ACTIVE) throw ErrorException(INVALID_STATUS)
-                if (fs.tender.statusDetails != TenderStatusDetails.EMPTY) throw ErrorException(INVALID_STATUS)
+//                if (fs.tender.status != TenderStatus.ACTIVE) throw ErrorException(INVALID_STATUS)
+//                if (fs.tender.statusDetails != TenderStatusDetails.EMPTY) throw ErrorException(INVALID_STATUS)
                 val fsValue = fs.planning.budget.amount
                 if (fsValue.currency != bs.currency) throw ErrorException(INVALID_CURRENCY)
                 if (fsValue.amount < bs.amount) throw ErrorException(INVALID_AMOUNT)
@@ -112,13 +118,10 @@ class ValidationService(private val fsDao: FsDao,
                 if (ba.period.startDate < fsPeriod.startDate) throw ErrorException(INVALID_BA_PERIOD)
                 if (ba.period.endDate > fsPeriod.endDate) throw ErrorException(INVALID_BA_PERIOD)
             }
-            val bsIds = budgetSourcesRq.asSequence().map { it.budgetBreakdownID }.toSet()
-            val baIds = budgetAllocationRq.asSequence().map { it.budgetBreakdownID }.toSet()
-            if (!bsIds.containsAll(baIds)) throw ErrorException(INVALID_BA_ID)
-
             val eiEntity = eiDao.getByCpId(cpId) ?: throw ErrorException(EI_NOT_FOUND)
             val ei = toObject(Ei::class.java, eiEntity.jsonData)
             updateBuyer(ei.buyer, dto.buyer)// BR-9.2.21
+            buyer = ei.buyer
         }
 
         var addedEI: Set<String>? = null
@@ -144,9 +147,9 @@ class ValidationService(private val fsDao: FsDao,
 
         return ResponseDto(data = CheckBsRs(
                 treasuryBudgetSources = budgetSourcesRq,
+                buyer = buyer,
                 funders = funders,
                 payers = payers,
-                buyer = null,
                 addedEI = addedEI,
                 excludedEI = excludedEI,
                 addedFS = addedFS,
@@ -182,12 +185,12 @@ class ValidationService(private val fsDao: FsDao,
     }
 
     private fun updateBusinessFunctions(bfDb: List<BusinessFunction>, bfDto: List<BusinessFunction>): List<BusinessFunction> {
-        if (bfDb == null || bfDb.isEmpty()) return bfDto
+        if (bfDb.isEmpty()) return bfDto
         val bfDbIds = bfDb.asSequence().map { it.id }.toSet()
         val bfDtoIds = bfDto.asSequence().map { it.id }.toSet()
         if (bfDtoIds.size != bfDto.size) throw ErrorException(BF)
         //update
-        bfDb.forEach { bfDb -> bfDb.update(bfDto.first { it.id == bfDb.id }) }
+        bfDb.forEach { bf -> bf.update(bfDto.first { it.id == bf.id }) }
         val newBfId = bfDtoIds - bfDbIds
         val newBf = bfDto.asSequence().filter { it.id in newBfId }.toHashSet()
         return bfDb + newBf
@@ -267,6 +270,7 @@ class ValidationService(private val fsDao: FsDao,
 
     private fun getCpIdFromOcId(ocId: String): String {
         val pos = ocId.indexOf("-FS-")
+        if (pos < 0) throw ErrorException(INVALID_BUDGET_BREAKDOWN_ID, ocId)
         return ocId.substring(0, pos)
     }
 }

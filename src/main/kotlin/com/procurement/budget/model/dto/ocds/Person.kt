@@ -2,6 +2,7 @@ package com.procurement.budget.model.dto.ocds
 
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
+import java.time.LocalDateTime
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class Person @JsonCreator constructor(
@@ -10,7 +11,7 @@ data class Person @JsonCreator constructor(
 
         var name: String,
 
-        val identifier: Identifier,
+        val identifier: PersonIdentifier,
 
         var businessFunctions: List<BusinessFunction>
 )
@@ -24,7 +25,7 @@ data class BusinessFunction @JsonCreator constructor(
 
         var jobTitle: String,
 
-        var period: Period,
+        var period: PeriodBF,
 
         var documents: List<DocumentBF>
 )
@@ -39,4 +40,22 @@ data class DocumentBF @JsonCreator constructor(
         var title: String?,
 
         var description: String?
+)
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
+data class PersonIdentifier @JsonCreator constructor(
+
+        val id: String,
+
+        val scheme: String,
+
+        val legalName: String?,
+
+        val uri: String?
+)
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
+data class PeriodBF @JsonCreator constructor(
+
+        val startDate: LocalDateTime
 )
