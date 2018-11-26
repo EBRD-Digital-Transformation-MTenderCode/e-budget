@@ -6,7 +6,10 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.procurement.budget.model.dto.databinding.MoneyDeserializer
 import com.procurement.budget.model.dto.ei.OrganizationReferenceEi
 import com.procurement.budget.model.dto.fs.OrganizationReferenceFs
-import com.procurement.budget.model.dto.ocds.*
+import com.procurement.budget.model.dto.ocds.Details
+import com.procurement.budget.model.dto.ocds.Identifier
+import com.procurement.budget.model.dto.ocds.Period
+import com.procurement.budget.model.dto.ocds.Person
 import java.math.BigDecimal
 
 data class CheckBsRq @JsonCreator constructor(
