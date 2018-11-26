@@ -1,11 +1,11 @@
 {
-  "id": "5ca21b80-ec1b-11e8-8593-c75a0429b281",
+  "id": "3e692fc0-f187-11e8-9c40-d34df24cc1a9",
   "command": "checkBudgetSources",
   "context": {
-    "operationId": "a1bcd000-b00d-4644-b0e6-4b75020b1321",
-    "requestId": "5ca21b80-ec1b-11e8-8593-c75a0429b281",
-    "cpid": "ocds-t1s2t3-MD-1542645678020",
-    "ocid": "ocds-t1s2t3-MD-1542645678020-AC-1544745832237",
+    "operationId": "a3bcd000-b00d-4644-b0e6-4b75020b0022",
+    "requestId": "3e692fc0-f187-11e8-9c40-d34df24cc1a9",
+    "cpid": "ocds-t1s2t3-MD-1543240132177",
+    "ocid": "ocds-t1s2t3-MD-1543240132177-AC-1543858122618",
     "stage": "AC",
     "prevStage": "AC",
     "processType": "updateAC",
@@ -15,26 +15,28 @@
     "country": "MD",
     "language": "ro",
     "pmd": "TEST_OT",
-    "token": "63bd38a5-948b-4f0b-acab-f101b6183f17",
-    "startDate": "2018-11-19T16:51:29Z",
-    "timeStamp": 1542646289720,
-    "isAuction": false
+    "token": "b3ba4719-bfb4-46d5-9ba9-adbb66d6e6ac",
+    "startDate": "2018-11-26T14:26:20Z",
+    "timeStamp": 1543242380476,
+    "isAuction": false,
+    "mainProcurementCategory": "services",
+    "awardCriteria": "priceOnly"
   },
   "data": {
     "planning": {
       "implementation": {
         "transactions": [
           {
-            "id": "144",
-            "type": "advance",
+            "id": "луп-луп-луп",
+            "type": "payment",
             "value": {
-              "amount": 2000,
+              "amount": 1000,
               "currency": "MDL"
             },
             "executionPeriod": {
-              "durationInDays": "10"
+              "durationInDays": 10
             },
-            "relatedContractMilestone": "approval-3"
+            "relatedContractMilestone": "approval-MD-IDNO-MD_MD-cedfb840-f186-11e8-ab1f-cbca38c78223"
           }
         ]
       },
@@ -42,29 +44,30 @@
         "description": "описание",
         "budgetAllocation": [
           {
-            "budgetBreakdownID": "123654789-987456321",
+            "budgetBreakdownID": "ocds-t1s2t3-MD-1543240994636-FS-1543241031413",
             "period": {
               "startDate": "2018-11-30T00:00:00Z",
               "endDate": "2018-11-30T23:00:00Z"
             },
-            "relatedItem": "9ba697d2-ebe3-11e8-9cb9-6bf876bfa65b"
+            "amount": 100,
+            "relatedItem": "0251fc12-f182-11e8-8b4b-c53fea45a7b0"
           }
         ],
         "budgetSource": [
           {
-            "budgetBreakdownID": "ocds-t1s2t3-MD-1542644139588-FS-1542645577348",
-            "amount": 10,
+            "budgetBreakdownID": "ocds-t1s2t3-MD-1543240994636-FS-1543241031413",
+            "amount": 100,
             "currency": "MDL"
           }
         ]
       }
     },
     "buyer": {
-      "id": "4569",
+      "id": "MD-IDNO-MD_MD",
       "additionalIdentifiers": [
         {
           "scheme": "MD-IDNO",
-          "id": "4569512357",
+          "id": "MD_MD",
           "legalName": "LN",
           "uri": "uri"
         }
@@ -88,7 +91,7 @@
               },
               "documents": [
                 {
-                  "id": "379e4907-5ab9-4db7-a669-9ffb6c12d781-1542640870786",
+                  "id": "9b026885-a567-400f-b946-bb4b4cc6737f-1543242000970",
                   "documentType": "regulatoryDocument"
                 }
               ]
@@ -100,27 +103,6 @@
         "typeOfBuyer": "BODY_PUBLIC",
         "mainGeneralActivity": "HOUSING_AND_COMMUNITY_AMENITIES",
         "mainSectoralActivity": "RAILWAY_SERVICES",
-        "gpaProfile": {
-          "gpaAnnex": {
-            "id": "654123",
-            "legalName": "LNN",
-            "uri": "https://e-gpa.wto.org/en/Appendix/Details?Agreement=GPA113&amp;Party=Moldova"
-          },
-          "gpaOrganizationType": {
-            "id": "as-85as5",
-            "legalName": "NMNM",
-            "uri": "uri*"
-          },
-          "gpaThresholds": [
-            {
-              "mainProcurementCatogory": "goods",
-              "value": {
-                "amount": 120,
-                "currency": "MDL"
-              }
-            }
-          ]
-        },
         "bankAccounts": [
           {
             "description": "32dfgv",
@@ -129,10 +111,16 @@
               "streetAddress": "address of pe",
               "addressDetails": {
                 "country": {
-                  "id": "MD"
+                  "scheme": "iso-alpha2",
+                  "id": "MD",
+                  "description": "asasdasdasdasd",
+                  "uri": "uri"
                 },
                 "region": {
-                  "id": "0101000"
+                  "scheme": "CUATM",
+                  "id": "0101000",
+                  "description": "sadfsdaf",
+                  "uri": "tratata"
                 },
                 "locality": {
                   "scheme": "CUATM",
@@ -165,7 +153,16 @@
         }
       }
     },
-    "actualBudgetSource": []
+    "actualBudgetSource": [
+      {
+        "budgetBreakdownID": "ocds-t1s2t3-MD-1543240994636-FS-1543241031413",
+        "amount": 100.00,
+        "currency": "MDL"
+      }
+    ],
+    "itemsCPVs": [
+      "90700000-4"
+    ]
   },
   "version": "0.0.1"
 }
