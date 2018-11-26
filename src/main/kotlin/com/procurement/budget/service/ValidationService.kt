@@ -126,6 +126,7 @@ class ValidationService(private val fsDao: FsDao,
             cpvCodesFromEi.add(ei.tender.classification.id.substring(0, 3).toUpperCase())
         }
         if (cpvCodesFromEi.size > 1) throw ErrorException(INVALID_CPV)
+        if (cpvCodesFromEi.containsAll(dto.itemsCPVs)) throw ErrorException(INVALID_CPV)
         var addedEI: Set<String>? = null
         var excludedEI: Set<String>? = null
         var addedFS: Set<String>? = null
