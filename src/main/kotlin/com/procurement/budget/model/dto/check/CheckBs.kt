@@ -18,7 +18,9 @@ data class CheckBsRq @JsonCreator constructor(
 
         val buyer: OrganizationReferenceBuyer,
 
-        val actualBudgetSource: Set<BudgetSource>?
+        val actualBudgetSource: Set<BudgetSource>?,
+
+        val itemsCPVs: HashSet<String>
 )
 
 data class CheckBsRs @JsonCreator constructor(

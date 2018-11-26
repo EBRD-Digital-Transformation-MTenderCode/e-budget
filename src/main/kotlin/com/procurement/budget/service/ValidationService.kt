@@ -125,7 +125,8 @@ class ValidationService(private val fsDao: FsDao,
             buyer = ei.buyer
             cpvCodesFromEi.add(ei.tender.classification.id.substring(0, 3).toUpperCase())
         }
-        if (cpvCodesFromEi.size > 1) throw ErrorException(INVALID_CPV)
+        validateCpv(cpvCodesFromEi, dto.itemsCPVs)
+
         var addedEI: Set<String>? = null
         var excludedEI: Set<String>? = null
         var addedFS: Set<String>? = null
@@ -157,6 +158,13 @@ class ValidationService(private val fsDao: FsDao,
                 addedFS = addedFS,
                 excludedFS = excludedFS)
         )
+    }
+
+    private fun validateCpv(cpvCodesFromEi: HashSet<String>, itemsCPVs: HashSet<String>) {
+        if (cpvCodesFromEi.size > 1) throw ErrorException(INVALID_CPV)
+        val itemsCPVs = itemsCPVs.asSequence().map { it.substring(0, 3).toUpperCase() }.toHashSet()
+        if (itemsCPVs.size > 1) throw ErrorException(INVALID_CPV)
+        if (!cpvCodesFromEi.containsAll(itemsCPVs)) throw ErrorException(INVALID_CPV)
     }
 
     private fun updateBuyer(buyerDb: OrganizationReferenceEi, buyerDto: OrganizationReferenceBuyer) {
