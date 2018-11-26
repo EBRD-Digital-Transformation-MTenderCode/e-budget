@@ -94,6 +94,7 @@ class ValidationService(private val fsDao: FsDao,
         val funders = HashSet<OrganizationReferenceFs>()
         val payers = HashSet<OrganizationReferenceFs>()
         var buyer: OrganizationReferenceEi? = null
+        val cpvCodesFromEi = HashSet<String>()
         entities.asSequence().map { toObject(Fs::class.java, it.jsonData) }.forEach { fsMap[it.ocid] = it }
         for (cpId in cpIds) {
             val bsIds = budgetSourcesRq.asSequence().map { it.budgetBreakdownID }.toSet()
@@ -122,8 +123,9 @@ class ValidationService(private val fsDao: FsDao,
             val ei = toObject(Ei::class.java, eiEntity.jsonData)
             updateBuyer(ei.buyer, dto.buyer)// BR-9.2.21
             buyer = ei.buyer
+            cpvCodesFromEi.add(ei.tender.classification.id.substring(0, 3).toUpperCase())
         }
-
+        if (cpvCodesFromEi.size > 1) throw ErrorException(INVALID_CPV)
         var addedEI: Set<String>? = null
         var excludedEI: Set<String>? = null
         var addedFS: Set<String>? = null
