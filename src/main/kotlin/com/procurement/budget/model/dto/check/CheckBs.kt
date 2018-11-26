@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.procurement.budget.model.dto.databinding.MoneyDeserializer
+import com.procurement.budget.model.dto.ei.OrganizationReferenceEi
 import com.procurement.budget.model.dto.fs.OrganizationReferenceFs
 import com.procurement.budget.model.dto.ocds.*
 import java.math.BigDecimal
@@ -12,18 +13,20 @@ data class CheckBsRq @JsonCreator constructor(
 
         val planning: Planning,
 
-        val buyer: OrganizationReferenceBs
+        val buyer: OrganizationReferenceBuyer,
+
+        val actualBudgetSource: Set<BudgetSource>?
 )
 
 data class CheckBsRs @JsonCreator constructor(
 
         val treasuryBudgetSources: Set<BudgetSource>?,
 
+        val buyer: OrganizationReferenceEi?,
+
         val funders: HashSet<OrganizationReferenceFs>?,
 
         val payers: HashSet<OrganizationReferenceFs>?,
-
-        val buyer: OrganizationReferenceBs?,
 
         val addedEI: Set<String>?,
 
@@ -63,6 +66,8 @@ data class BudgetSource @JsonCreator constructor(
 
         val budgetBreakdownID: String,
 
+        val budgetIBAN: String?,
+
         @JsonDeserialize(using = MoneyDeserializer::class)
         val amount: BigDecimal,
 
@@ -70,19 +75,15 @@ data class BudgetSource @JsonCreator constructor(
 )
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-data class OrganizationReferenceBs @JsonCreator constructor(
+data class OrganizationReferenceBuyer @JsonCreator constructor(
 
         var id: String?,
 
-        val name: String,
-
-        val identifier: Identifier,
-
-        val address: Address,
+        val name: String?,
 
         val additionalIdentifiers: HashSet<Identifier>?,
 
-        val contactPoint: ContactPoint?,
+        val persones: HashSet<Person>,
 
         val details: Details?
 )
