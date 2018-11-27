@@ -95,6 +95,7 @@ class ValidationService(private val fsDao: FsDao,
         val payers = HashSet<OrganizationReferenceFs>()
         var buyer: OrganizationReferenceEi? = null
         val cpvCodesFromEi = HashSet<String>()
+        val treasuryBudgetSources = HashSet<BudgetSource>()
         entities.asSequence().map { toObject(Fs::class.java, it.jsonData) }.forEach { fsMap[it.ocid] = it }
         for (cpId in cpIds) {
             val bsIds = budgetSourcesRq.asSequence().map { it.budgetBreakdownID }.toSet()
@@ -109,8 +110,12 @@ class ValidationService(private val fsDao: FsDao,
                 val fsValue = fs.planning.budget.amount
                 if (fsValue.currency != bs.currency) throw ErrorException(INVALID_CURRENCY)
                 if (fsValue.amount < bs.amount) throw ErrorException(INVALID_AMOUNT)
-                fs.funder?.let { funders.add(it) }
-                fs.payer.let { payers.add(it) }
+                if (fs.funder != null) {
+                    funders.add(fs.funder)
+                } else {
+                    treasuryBudgetSources.add(bs)
+                }
+                payers.add(fs.payer)
             }
             budgetAllocationRq.asSequence().filter { cpId == getCpIdFromOcId(it.budgetBreakdownID) }.forEach { ba ->
                 val fs = fsMap[ba.budgetBreakdownID] ?: throw ErrorException(FS_NOT_FOUND)
@@ -121,12 +126,10 @@ class ValidationService(private val fsDao: FsDao,
             }
             val eiEntity = eiDao.getByCpId(cpId) ?: throw ErrorException(EI_NOT_FOUND)
             val ei = toObject(Ei::class.java, eiEntity.jsonData)
-            updateBuyer(ei.buyer, dto.buyer)// BR-9.2.21
-            buyer = ei.buyer
+            buyer = updateBuyer(ei.buyer, dto.buyer)// BR-9.2.21
             cpvCodesFromEi.add(ei.tender.classification.id.substring(0, 3).toUpperCase())
         }
         validateCpv(cpvCodesFromEi, dto.itemsCPVs)
-
         var addedEI: Set<String>? = null
         var excludedEI: Set<String>? = null
         var addedFS: Set<String>? = null
@@ -147,9 +150,11 @@ class ValidationService(private val fsDao: FsDao,
             addedEI = cpIds
             addedFS = fsIds
         }
-
         return ResponseDto(data = CheckBsRs(
-                treasuryBudgetSources = budgetSourcesRq,
+                treasuryBudgetSources = when {
+                    treasuryBudgetSources.isNotEmpty() -> treasuryBudgetSources
+                    else -> null
+                },
                 buyer = buyer,
                 funders = funders,
                 payers = payers,
@@ -167,13 +172,14 @@ class ValidationService(private val fsDao: FsDao,
         if (!cpvCodesFromEi.containsAll(itemsCPVs)) throw ErrorException(INVALID_CPV)
     }
 
-    private fun updateBuyer(buyerDb: OrganizationReferenceEi, buyerDto: OrganizationReferenceBuyer) {
+    private fun updateBuyer(buyerDb: OrganizationReferenceEi, buyerDto: OrganizationReferenceBuyer): OrganizationReferenceEi {
         //validation
         if (buyerDb.id != buyerDto.id) throw ErrorException(INVALID_BUYER_ID)
         //update
         buyerDb.persones = updatePersones(buyerDb.persones, buyerDto.persones)//BR-9.2.3
         buyerDb.additionalIdentifiers = buyerDto.additionalIdentifiers
         buyerDb.details = buyerDto.details
+        return buyerDb
     }
 
     private fun updatePersones(personesDb: HashSet<Person>?, personesDto: HashSet<Person>): HashSet<Person> {

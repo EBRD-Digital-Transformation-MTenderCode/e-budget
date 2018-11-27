@@ -1,11 +1,11 @@
 {
-  "id": "3e692fc0-f187-11e8-9c40-d34df24cc1a9",
+  "id": "27dbc1b0-f1b8-11e8-bdfd-717890173e66",
   "command": "checkBudgetSources",
   "context": {
-    "operationId": "a3bcd000-b00d-4644-b0e6-4b75020b0022",
-    "requestId": "3e692fc0-f187-11e8-9c40-d34df24cc1a9",
-    "cpid": "ocds-t1s2t3-MD-1543240132177",
-    "ocid": "ocds-t1s2t3-MD-1543240132177-AC-1543858122618",
+    "operationId": "98d49d3c-68c6-11e8-adc0-fa7ae01b3858",
+    "requestId": "27dbc1b0-f1b8-11e8-bdfd-717890173e66",
+    "cpid": "ocds-t1s2t3-MD-1543262113281",
+    "ocid": "ocds-t1s2t3-MD-1543262113281-AC-1544644644731",
     "stage": "AC",
     "prevStage": "AC",
     "processType": "updateAC",
@@ -15,9 +15,9 @@
     "country": "MD",
     "language": "ro",
     "pmd": "TEST_OT",
-    "token": "b3ba4719-bfb4-46d5-9ba9-adbb66d6e6ac",
-    "startDate": "2018-11-26T14:26:20Z",
-    "timeStamp": 1543242380476,
+    "token": "b8701816-21d6-418f-bbbf-073cf0d62b1d",
+    "startDate": "2018-11-26T20:16:27Z",
+    "timeStamp": 1543263387979,
     "isAuction": false,
     "mainProcurementCategory": "services",
     "awardCriteria": "priceOnly"
@@ -27,71 +27,104 @@
       "implementation": {
         "transactions": [
           {
-            "id": "луп-луп-луп",
-            "type": "payment",
+            "id": "666",
+            "type": "advance",
             "value": {
-              "amount": 1000,
+              "amount": 20000,
               "currency": "MDL"
             },
             "executionPeriod": {
               "durationInDays": 10
+            }
+          },
+          {
+            "id": "777",
+            "type": "payment",
+            "value": {
+              "amount": 40000,
+              "currency": "MDL"
             },
-            "relatedContractMilestone": "approval-MD-IDNO-MD_MD-cedfb840-f186-11e8-ab1f-cbca38c78223"
+            "executionPeriod": {
+              "durationInDays": 15
+            },
+            "relatedContractMilestone": "1"
           }
         ]
       },
       "budget": {
-        "description": "описание",
+        "description": "1111111",
         "budgetAllocation": [
           {
-            "budgetBreakdownID": "ocds-t1s2t3-MD-1543240994636-FS-1543241031413",
+            "budgetBreakdownID": "ocds-t1s2t3-MD-1543262034002-FS-1543262619845",
             "period": {
-              "startDate": "2018-11-30T00:00:00Z",
-              "endDate": "2018-11-30T23:00:00Z"
+              "startDate": "2018-10-12T00:00:00Z",
+              "endDate": "2019-01-01T00:00:00Z"
             },
-            "amount": 100,
-            "relatedItem": "0251fc12-f182-11e8-8b4b-c53fea45a7b0"
+            "amount": 1200,
+            "relatedItem": "30197730-f1b5-11e8-aef4-abd25667749b"
+          },
+          {
+            "budgetBreakdownID": "ocds-t1s2t3-MD-1543262034002-FS-1543262619845",
+            "period": {
+              "startDate": "2018-10-12T00:00:00Z",
+              "endDate": "2019-01-01T00:00:00Z"
+            },
+            "amount": 1200,
+            "relatedItem": "30195020-f1b5-11e8-aef4-abd25667749b"
+          },
+          {
+            "budgetBreakdownID": "ocds-t1s2t3-MD-1543262034002-FS-1543262619845",
+            "period": {
+              "startDate": "2018-10-12T00:00:00Z",
+              "endDate": "2019-01-01T00:00:00Z"
+            },
+            "amount": 1200,
+            "relatedItem": "30197731-f1b5-11e8-aef4-abd25667749b"
           }
         ],
         "budgetSource": [
           {
-            "budgetBreakdownID": "ocds-t1s2t3-MD-1543240994636-FS-1543241031413",
-            "amount": 100,
+            "budgetBreakdownID": "ocds-t1s2t3-MD-1543262034002-FS-1543262619845",
+            "amount": 999.99,
             "currency": "MDL"
           }
         ]
       }
     },
     "buyer": {
-      "id": "MD-IDNO-MD_MD",
+      "id": "MD-IDNO-354-37-1072",
       "additionalIdentifiers": [
         {
           "scheme": "MD-IDNO",
-          "id": "MD_MD",
-          "legalName": "LN",
-          "uri": "uri"
+          "id": "354-37-1072",
+          "legalName": "Lopez, Novak and Lane Inc",
+          "uri": "https://www.myers.com/about.html"
         }
       ],
       "persones": [
         {
-          "title": "title",
-          "name": "name",
+          "title": "213321123",
+          "name": "21323213",
           "identifier": {
             "scheme": "MD-IDNO",
-            "id": "4569123",
+            "id": "52255254-55555",
             "uri": "uri"
           },
           "businessFunctions": [
             {
-              "id": "456921",
+              "id": "Middle QA",
               "type": "authority",
               "jobTitle": "Chief Executive Officer",
               "period": {
-                "startDate": "2018-11-20T00:00:00Z"
+                "startDate": "2018-11-10T15:45:05Z"
               },
               "documents": [
                 {
-                  "id": "9b026885-a567-400f-b946-bb4b4cc6737f-1543242000970",
+                  "id": "351c15a5-403b-414c-9b5a-6de864e601c5-1543263370746",
+                  "documentType": "regulatoryDocument"
+                },
+                {
+                  "id": "1b75a39a-6d8e-4539-8bcd-5cccdcb4b660-1543263378918",
                   "documentType": "regulatoryDocument"
                 }
               ]
@@ -100,15 +133,15 @@
         }
       ],
       "details": {
-        "typeOfBuyer": "BODY_PUBLIC",
-        "mainGeneralActivity": "HOUSING_AND_COMMUNITY_AMENITIES",
-        "mainSectoralActivity": "RAILWAY_SERVICES",
+        "typeOfBuyer": "NATIONAL_AGENCY",
+        "mainGeneralActivity": "ENVIRONMENT",
+        "mainSectoralActivity": "WATER",
         "bankAccounts": [
           {
-            "description": "32dfgv",
-            "bankName": "MBank",
+            "description": "666",
+            "bankName": "E-BANK",
             "address": {
-              "streetAddress": "address of pe",
+              "streetAddress": "66666666",
               "addressDetails": {
                 "country": {
                   "scheme": "iso-alpha2",
@@ -140,26 +173,20 @@
             "additionalAccountIdentifiers": [
               {
                 "scheme": "MD-SETTLEMENT",
-                "id": "456654"
+                "id": "oooo"
               }
             ]
           }
         ],
         "legalForm": {
-          "scheme": "MD-IDNO",
-          "id": "654",
-          "description": "ddd",
-          "uri": "ddd"
+          "scheme": "rrtet",
+          "id": "ertertre",
+          "description": "ertetrret",
+          "uri": "ertertter"
         }
       }
     },
-    "actualBudgetSource": [
-      {
-        "budgetBreakdownID": "ocds-t1s2t3-MD-1543240994636-FS-1543241031413",
-        "amount": 100.00,
-        "currency": "MDL"
-      }
-    ],
+    "actualBudgetSource": [],
     "itemsCPVs": [
       "90700000-4"
     ]
