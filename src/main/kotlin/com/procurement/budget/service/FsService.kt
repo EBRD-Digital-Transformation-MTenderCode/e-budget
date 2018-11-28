@@ -47,7 +47,7 @@ class FsService(private val fsDao: FsDao,
             fsDto.planning.budget.europeanUnionFunding = null
         }
         if (fsDto.planning.budget.amount.amount <= BigDecimal.valueOf(0.00)) {
-            throw ErrorException(ErrorType.INVALID_JSON_TYPE)
+            throw ErrorException(ErrorType.INVALID_AMOUNT)
         }
 
         val eiEntity = eiDao.getByCpId(cpId) ?: throw ErrorException(EI_NOT_FOUND)
