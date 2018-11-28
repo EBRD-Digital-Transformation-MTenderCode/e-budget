@@ -13,7 +13,7 @@ data class Details @JsonCreator constructor(
 
         val mainSectoralActivity: MainSectoralActivity?,
 
-        val permits: List<Permits>,
+        val permits: List<Permits>?,
 
         val gpaProfile: GpaProfile?,
 
