@@ -2,6 +2,7 @@ package com.procurement.budget.model.dto.ocds
 
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
+import java.time.LocalDateTime
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class Details @JsonCreator constructor(
@@ -12,11 +13,51 @@ data class Details @JsonCreator constructor(
 
         val mainSectoralActivity: MainSectoralActivity?,
 
+        val permits: List<Permits>?,
+
         val gpaProfile: GpaProfile?,
 
         val bankAccounts: Set<BankAccount>?,
 
         val legalForm: LegalForm?
+)
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
+data class Permits @JsonCreator constructor(
+
+        val id: String,
+
+        val scheme: String,
+
+        val url: String?,
+
+        val permitDetails: PermitDetails
+)
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
+data class PermitDetails @JsonCreator constructor(
+
+        val issuedBy: Issue,
+
+        val issuedThought: Issue,
+
+        val validityPeriod: ValidityPeriod
+)
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
+data class ValidityPeriod @JsonCreator constructor(
+
+        val startDate: LocalDateTime,
+
+        val endDate: LocalDateTime
+)
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
+data class Issue @JsonCreator constructor(
+
+        val id: String,
+
+        val name: String
 )
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
