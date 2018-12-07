@@ -103,17 +103,18 @@ class ValidationService(private val fsDao: FsDao,
             if (bsIds.size != baIds.size) throw ErrorException(INVALID_BA)
             if (!bsIds.containsAll(baIds)) throw ErrorException(INVALID_BA_ID)
             if (budgetSourcesRq.asSequence().map { it.currency }.toSet().size > 1) throw ErrorException(INVALID_CURRENCY)
-            budgetSourcesRq.asSequence().filter { cpId == getCpIdFromOcId(it.budgetBreakdownID) }.forEach { bs ->
-                val fs = fsMap[bs.budgetBreakdownID] ?: throw ErrorException(FS_NOT_FOUND)
+            budgetSourcesRq.asSequence().filter { cpId == getCpIdFromOcId(it.budgetBreakdownID) }.forEach { bsRq ->
+                val fs = fsMap[bsRq.budgetBreakdownID] ?: throw ErrorException(FS_NOT_FOUND)
 //                if (fs.tender.status != TenderStatus.ACTIVE) throw ErrorException(INVALID_STATUS)
 //                if (fs.tender.statusDetails != TenderStatusDetails.EMPTY) throw ErrorException(INVALID_STATUS)
                 val fsValue = fs.planning.budget.amount
-                if (fsValue.currency != bs.currency) throw ErrorException(INVALID_CURRENCY)
-                if (fsValue.amount < bs.amount) throw ErrorException(INVALID_AMOUNT)
+                if (fsValue.currency != bsRq.currency) throw ErrorException(INVALID_CURRENCY)
+                if (fsValue.amount < bsRq.amount) throw ErrorException(INVALID_AMOUNT)
                 if (fs.funder != null) {
                     funders.add(fs.funder)
                 } else {
-                    treasuryBudgetSources.add(bs)
+                    bsRq.budgetIBAN = fs.planning.budget.id
+                    treasuryBudgetSources.add(bsRq)
                 }
                 payers.add(fs.payer)
             }
