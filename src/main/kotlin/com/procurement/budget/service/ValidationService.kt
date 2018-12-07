@@ -39,7 +39,7 @@ class ValidationService(private val fsDao: FsDao,
         val breakdownsRs: ArrayList<BudgetBreakdownCheckRs> = arrayListOf()
         var isEuropeanUnionFunded = false
         var totalAmount: BigDecimal = BigDecimal.ZERO
-        var totalCurrency = dto.planning.budget.budgetBreakdown[0].amount.currency
+        val totalCurrency = dto.planning.budget.budgetBreakdown[0].amount.currency
         var mainProcurementCategory = ""
         for (cpId in cpIds) {
             val eiEntity = eiDao.getByCpId(cpId) ?: throw ErrorException(EI_NOT_FOUND)
