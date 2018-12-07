@@ -59,7 +59,7 @@ data class Budget @JsonCreator constructor(
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class BudgetAllocation @JsonCreator constructor(
 
-        val budgetBreakdownId: String,
+        val budgetBreakdownID: String,
 
         val period: Period,
 
@@ -69,7 +69,7 @@ data class BudgetAllocation @JsonCreator constructor(
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class BudgetSource @JsonCreator constructor(
 
-        val budgetBreakdownId: String,
+        val budgetBreakdownID: String,
 
         var budgetIBAN: String?,
 
