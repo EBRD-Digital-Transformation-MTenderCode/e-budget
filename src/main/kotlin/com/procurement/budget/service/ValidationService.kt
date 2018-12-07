@@ -87,7 +87,7 @@ class ValidationService(private val fsDao: FsDao,
         val budgetSourcesRq = dto.planning.budget.budgetSource
         val actualBudgetSourcesRq = dto.actualBudgetSource
         val budgetAllocationRq = dto.planning.budget.budgetAllocation
-        val cpIds = budgetSourcesRq.asSequence().map { getCpIdFromOcId(it.budgetBreakdownID) }.toSet()
+        val cpIds = budgetSourcesRq.asSequence().map { getCpIdFromOcId(it.budgetBreakdownId) }.toSet()
         val entities = fsDao.getAllByCpIds(cpIds)
         if (entities.isEmpty()) throw ErrorException(FS_NOT_FOUND)
         val fsMap = HashMap<String?, Fs>()
@@ -98,13 +98,13 @@ class ValidationService(private val fsDao: FsDao,
         val treasuryBudgetSources = HashSet<BudgetSource>()
         entities.asSequence().map { toObject(Fs::class.java, it.jsonData) }.forEach { fsMap[it.ocid] = it }
         for (cpId in cpIds) {
-            val bsIds = budgetSourcesRq.asSequence().map { it.budgetBreakdownID }.toSet()
-            val baIds = budgetAllocationRq.asSequence().map { it.budgetBreakdownID }.toSet()
+            val bsIds = budgetSourcesRq.asSequence().map { it.budgetBreakdownId }.toSet()
+            val baIds = budgetAllocationRq.asSequence().map { it.budgetBreakdownId }.toSet()
             if (bsIds.size != baIds.size) throw ErrorException(INVALID_BA)
             if (!bsIds.containsAll(baIds)) throw ErrorException(INVALID_BA_ID)
             if (budgetSourcesRq.asSequence().map { it.currency }.toSet().size > 1) throw ErrorException(INVALID_CURRENCY)
-            budgetSourcesRq.asSequence().filter { cpId == getCpIdFromOcId(it.budgetBreakdownID) }.forEach { bsRq ->
-                val fs = fsMap[bsRq.budgetBreakdownID] ?: throw ErrorException(FS_NOT_FOUND)
+            budgetSourcesRq.asSequence().filter { cpId == getCpIdFromOcId(it.budgetBreakdownId) }.forEach { bsRq ->
+                val fs = fsMap[bsRq.budgetBreakdownId] ?: throw ErrorException(FS_NOT_FOUND)
 //                if (fs.tender.status != TenderStatus.ACTIVE) throw ErrorException(INVALID_STATUS)
 //                if (fs.tender.statusDetails != TenderStatusDetails.EMPTY) throw ErrorException(INVALID_STATUS)
                 val fsValue = fs.planning.budget.amount
@@ -118,8 +118,8 @@ class ValidationService(private val fsDao: FsDao,
                 }
                 payers.add(fs.payer)
             }
-            budgetAllocationRq.asSequence().filter { cpId == getCpIdFromOcId(it.budgetBreakdownID) }.forEach { ba ->
-                val fs = fsMap[ba.budgetBreakdownID] ?: throw ErrorException(FS_NOT_FOUND)
+            budgetAllocationRq.asSequence().filter { cpId == getCpIdFromOcId(it.budgetBreakdownId) }.forEach { ba ->
+                val fs = fsMap[ba.budgetBreakdownId] ?: throw ErrorException(FS_NOT_FOUND)
                 if (ba.period.startDate > ba.period.endDate) throw ErrorException(INVALID_BA_PERIOD)
                 val fsPeriod = fs.planning.budget.period
                 if (ba.period.startDate < fsPeriod.startDate) throw ErrorException(INVALID_BA_PERIOD)
@@ -135,14 +135,14 @@ class ValidationService(private val fsDao: FsDao,
         var excludedEI: Set<String>? = null
         var addedFS: Set<String>? = null
         var excludedFS: Set<String>? = null
-        val fsIds = budgetSourcesRq.asSequence().map { it.budgetBreakdownID }.toSet()
+        val fsIds = budgetSourcesRq.asSequence().map { it.budgetBreakdownId }.toSet()
         if (actualBudgetSourcesRq != null) {
-            val actualCpIds = actualBudgetSourcesRq.asSequence().map { getCpIdFromOcId(it.budgetBreakdownID) }.toSet()
+            val actualCpIds = actualBudgetSourcesRq.asSequence().map { getCpIdFromOcId(it.budgetBreakdownId) }.toSet()
             if (cpIds.size == actualCpIds.size && cpIds.containsAll(actualCpIds)) {
                 excludedEI = actualCpIds - cpIds
                 addedEI = cpIds - actualCpIds
             }
-            val actualFsIds = actualBudgetSourcesRq.asSequence().map { it.budgetBreakdownID }.toSet()
+            val actualFsIds = actualBudgetSourcesRq.asSequence().map { it.budgetBreakdownId }.toSet()
             if (fsIds.size == actualFsIds.size && fsIds.containsAll(actualFsIds)) {
                 excludedFS = actualFsIds - fsIds
                 addedFS = fsIds - actualFsIds
@@ -168,9 +168,9 @@ class ValidationService(private val fsDao: FsDao,
 
     private fun validateCpv(cpvCodesFromEi: HashSet<String>, itemsCPVs: HashSet<String>) {
         if (cpvCodesFromEi.size > 1) throw ErrorException(INVALID_CPV)
-        val itemsCPVs = itemsCPVs.asSequence().map { it.substring(0, 3).toUpperCase() }.toHashSet()
-        if (itemsCPVs.size > 1) throw ErrorException(INVALID_CPV)
-        if (!cpvCodesFromEi.containsAll(itemsCPVs)) throw ErrorException(INVALID_CPV)
+        val itemsCPVSet = itemsCPVs.asSequence().map { it.substring(0, 3).toUpperCase() }.toHashSet()
+        if (itemsCPVSet.size > 1) throw ErrorException(INVALID_CPV)
+        if (!cpvCodesFromEi.containsAll(itemsCPVSet)) throw ErrorException(INVALID_CPV)
     }
 
     private fun updateBuyer(buyerDb: OrganizationReferenceEi, buyerDto: OrganizationReferenceBuyer): OrganizationReferenceEi {
