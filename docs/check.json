@@ -1,195 +1,137 @@
 {
-  "id": "27dbc1b0-f1b8-11e8-bdfd-717890173e66",
-  "command": "checkBudgetSources",
+  "id": "9f064b20-f316-11e8-bdfd-717890173e66",
+  "command": "createFs",
   "context": {
-    "operationId": "98d49d3c-68c6-11e8-adc0-fa7ae01b3858",
-    "requestId": "27dbc1b0-f1b8-11e8-bdfd-717890173e66",
-    "cpid": "ocds-t1s2t3-MD-1543262113281",
-    "ocid": "ocds-t1s2t3-MD-1543262113281-AC-1544644644731",
-    "stage": "AC",
-    "prevStage": "AC",
-    "processType": "updateAC",
-    "operationType": "updateAC",
-    "phase": "contractPreparation",
+    "operationId": "0d03d00c-00c0-00e0-adc0-fa0ae00bbebc",
+    "requestId": "9f064b20-f316-11e8-bdfd-717890173e66",
+    "cpid": "ocds-t1s2t3-MD-1543405204908",
+    "stage": "FS",
+    "processType": "fs",
+    "operationType": "createFS",
     "owner": "445f6851-c908-407d-9b45-14b92f3e964b",
     "country": "MD",
     "language": "ro",
-    "pmd": "TEST_OT",
-    "token": "b8701816-21d6-418f-bbbf-073cf0d62b1d",
-    "startDate": "2018-11-26T20:16:27Z",
-    "timeStamp": 1543263387979,
-    "isAuction": false,
-    "mainProcurementCategory": "services",
-    "awardCriteria": "priceOnly"
+    "startDate": "2018-11-28T14:05:11Z",
+    "timeStamp": 1543413911762,
+    "isAuction": false
   },
   "data": {
-    "planning": {
-      "implementation": {
-        "transactions": [
-          {
-            "id": "666",
-            "type": "advance",
-            "value": {
-              "amount": 20000,
-              "currency": "MDL"
+    "tender": {
+      "procuringEntity": {
+        "name": "NAMEP000E2",
+        "address": {
+          "streetAddress": "street",
+          "postalCode": "785412",
+          "addressDetails": {
+            "country": {
+              "scheme": "iso-alpha2",
+              "id": "MD",
+              "description": "MOLDOVA",
+              "uri": "http://reference.iatistandard.org"
             },
-            "executionPeriod": {
-              "durationInDays": 10
+            "region": {
+              "scheme": "CUATM",
+              "id": "3400000",
+              "description": "Donduşeni",
+              "uri": "http://statistica.md"
+            },
+            "locality": {
+              "scheme": "CUATM",
+              "id": "3401000",
+              "description": "or.Donduşeni (r-l Donduşeni)",
+              "uri": "http://statistica.md"
             }
-          },
-          {
-            "id": "777",
-            "type": "payment",
-            "value": {
-              "amount": 40000,
-              "currency": "MDL"
-            },
-            "executionPeriod": {
-              "durationInDays": 15
-            },
-            "relatedContractMilestone": "1"
           }
-        ]
-      },
-      "budget": {
-        "description": "1111111",
-        "budgetAllocation": [
+        },
+        "identifier": {
+          "id": "777",
+          "scheme": "MD-IDNO",
+          "legalName": "LN"
+        },
+        "additionalIdentifiers": [
           {
-            "budgetBreakdownID": "ocds-t1s2t3-MD-1543262034002-FS-1543262619845",
-            "period": {
-              "startDate": "2018-10-12T00:00:00Z",
-              "endDate": "2019-01-01T00:00:00Z"
-            },
-            "amount": 1200,
-            "relatedItem": "30197730-f1b5-11e8-aef4-abd25667749b"
-          },
-          {
-            "budgetBreakdownID": "ocds-t1s2t3-MD-1543262034002-FS-1543262619845",
-            "period": {
-              "startDate": "2018-10-12T00:00:00Z",
-              "endDate": "2019-01-01T00:00:00Z"
-            },
-            "amount": 1200,
-            "relatedItem": "30195020-f1b5-11e8-aef4-abd25667749b"
-          },
-          {
-            "budgetBreakdownID": "ocds-t1s2t3-MD-1543262034002-FS-1543262619845",
-            "period": {
-              "startDate": "2018-10-12T00:00:00Z",
-              "endDate": "2019-01-01T00:00:00Z"
-            },
-            "amount": 1200,
-            "relatedItem": "30197731-f1b5-11e8-aef4-abd25667749b"
+            "id": "id of addIdent",
+            "scheme": "scheme",
+            "legalName": "legalname"
           }
         ],
-        "budgetSource": [
-          {
-            "budgetBreakdownID": "ocds-t1s2t3-MD-1543262034002-FS-1543262619845",
-            "amount": 999.99,
-            "currency": "MDL"
-          }
-        ]
+        "contactPoint": {
+          "name": "NAME of contact person",
+          "email": "string@mail.ccc",
+          "telephone": "987987"
+        }
       }
+    },
+    "planning": {
+      "budget": {
+        "id": "id",
+        "period": {
+          "startDate": "2018-09-02T00:00:00Z",
+          "endDate": "2019-01-01T00:00:00Z"
+        },
+        "amount": {
+          "amount": 0,
+          "currency": "MDL"
+        },
+        "description": "description",
+        "isEuropeanUnionFunded": true,
+        "europeanUnionFunding": {
+          "projectName": "Name of this marvelous project",
+          "projectIdentifier": "projectIdentifier",
+          "uri": "uriuri"
+        },
+        "project": "1",
+        "projectID": "2",
+        "uri": "3"
+      },
+      "rationale": "rationale"
     },
     "buyer": {
-      "id": "MD-IDNO-354-37-1072",
+      "name": "name Of FS Buyer",
+      "address": {
+        "streetAddress": "street",
+        "addressDetails": {
+          "country": {
+            "scheme": "iso-alpha2",
+            "id": "MD",
+            "description": "MOLDOVA",
+            "uri": "http://reference.iatistandard.org"
+          },
+          "region": {
+            "scheme": "CUATM",
+            "id": "1400000",
+            "description": "Briceni",
+            "uri": "http://statistica.md"
+          },
+          "locality": {
+            "scheme": "other",
+            "id": "buyer",
+            "description": "description"
+          }
+        }
+      },
+      "identifier": {
+        "id": "7787-9898-88",
+        "scheme": "MD-IDNO",
+        "legalName": "mem",
+        "uri": "uri"
+      },
       "additionalIdentifiers": [
         {
-          "scheme": "MD-IDNO",
-          "id": "354-37-1072",
-          "legalName": "Lopez, Novak and Lane Inc",
-          "uri": "https://www.myers.com/about.html"
+          "id": "string",
+          "scheme": "string",
+          "legalName": "string",
+          "uri": "123.221"
         }
       ],
-      "persones": [
-        {
-          "title": "213321123",
-          "name": "21323213",
-          "identifier": {
-            "scheme": "MD-IDNO",
-            "id": "52255254-55555",
-            "uri": "uri"
-          },
-          "businessFunctions": [
-            {
-              "id": "Middle QA",
-              "type": "authority",
-              "jobTitle": "Chief Executive Officer",
-              "period": {
-                "startDate": "2018-11-10T15:45:05Z"
-              },
-              "documents": [
-                {
-                  "id": "351c15a5-403b-414c-9b5a-6de864e601c5-1543263370746",
-                  "documentType": "regulatoryDocument"
-                },
-                {
-                  "id": "1b75a39a-6d8e-4539-8bcd-5cccdcb4b660-1543263378918",
-                  "documentType": "regulatoryDocument"
-                }
-              ]
-            }
-          ]
-        }
-      ],
-      "details": {
-        "typeOfBuyer": "NATIONAL_AGENCY",
-        "mainGeneralActivity": "ENVIRONMENT",
-        "mainSectoralActivity": "WATER",
-        "bankAccounts": [
-          {
-            "description": "666",
-            "bankName": "E-BANK",
-            "address": {
-              "streetAddress": "66666666",
-              "addressDetails": {
-                "country": {
-                  "scheme": "iso-alpha2",
-                  "id": "MD",
-                  "description": "asasdasdasdasd",
-                  "uri": "uri"
-                },
-                "region": {
-                  "scheme": "CUATM",
-                  "id": "0101000",
-                  "description": "sadfsdaf",
-                  "uri": "tratata"
-                },
-                "locality": {
-                  "scheme": "CUATM",
-                  "id": "0101000",
-                  "description": "DESCRIPTION"
-                }
-              }
-            },
-            "identifier": {
-              "scheme": "MD-BANKS",
-              "id": "300711"
-            },
-            "accountIdentification": {
-              "scheme": "MD-IBAN",
-              "id": "2600000625637"
-            },
-            "additionalAccountIdentifiers": [
-              {
-                "scheme": "MD-SETTLEMENT",
-                "id": "oooo"
-              }
-            ]
-          }
-        ],
-        "legalForm": {
-          "scheme": "rrtet",
-          "id": "ertertre",
-          "description": "ertetrret",
-          "uri": "ertertter"
-        }
+      "contactPoint": {
+        "name": "buyerContactPersonOfFS",
+        "email": "dfgdfg",
+        "telephone": "dfgdfgfd",
+        "faxNumber": "455-78-88",
+        "url": "url"
       }
-    },
-    "actualBudgetSource": [],
-    "itemsCPVs": [
-      "90700000-4"
-    ]
+    }
   },
   "version": "0.0.1"
 }

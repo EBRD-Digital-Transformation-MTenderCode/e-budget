@@ -39,7 +39,7 @@ class ValidationService(private val fsDao: FsDao,
         val breakdownsRs: ArrayList<BudgetBreakdownCheckRs> = arrayListOf()
         var isEuropeanUnionFunded = false
         var totalAmount: BigDecimal = BigDecimal.ZERO
-        var totalCurrency = dto.planning.budget.budgetBreakdown[0].amount.currency
+        val totalCurrency = dto.planning.budget.budgetBreakdown[0].amount.currency
         var mainProcurementCategory = ""
         for (cpId in cpIds) {
             val eiEntity = eiDao.getByCpId(cpId) ?: throw ErrorException(EI_NOT_FOUND)
@@ -103,17 +103,18 @@ class ValidationService(private val fsDao: FsDao,
             if (bsIds.size != baIds.size) throw ErrorException(INVALID_BA)
             if (!bsIds.containsAll(baIds)) throw ErrorException(INVALID_BA_ID)
             if (budgetSourcesRq.asSequence().map { it.currency }.toSet().size > 1) throw ErrorException(INVALID_CURRENCY)
-            budgetSourcesRq.asSequence().filter { cpId == getCpIdFromOcId(it.budgetBreakdownID) }.forEach { bs ->
-                val fs = fsMap[bs.budgetBreakdownID] ?: throw ErrorException(FS_NOT_FOUND)
+            budgetSourcesRq.asSequence().filter { cpId == getCpIdFromOcId(it.budgetBreakdownID) }.forEach { bsRq ->
+                val fs = fsMap[bsRq.budgetBreakdownID] ?: throw ErrorException(FS_NOT_FOUND)
 //                if (fs.tender.status != TenderStatus.ACTIVE) throw ErrorException(INVALID_STATUS)
 //                if (fs.tender.statusDetails != TenderStatusDetails.EMPTY) throw ErrorException(INVALID_STATUS)
                 val fsValue = fs.planning.budget.amount
-                if (fsValue.currency != bs.currency) throw ErrorException(INVALID_CURRENCY)
-                if (fsValue.amount < bs.amount) throw ErrorException(INVALID_AMOUNT)
+                if (fsValue.currency != bsRq.currency) throw ErrorException(INVALID_CURRENCY)
+                if (fsValue.amount < bsRq.amount) throw ErrorException(INVALID_AMOUNT)
                 if (fs.funder != null) {
                     funders.add(fs.funder)
                 } else {
-                    treasuryBudgetSources.add(bs)
+                    bsRq.budgetIBAN = fs.planning.budget.id
+                    treasuryBudgetSources.add(bsRq)
                 }
                 payers.add(fs.payer)
             }
@@ -167,9 +168,9 @@ class ValidationService(private val fsDao: FsDao,
 
     private fun validateCpv(cpvCodesFromEi: HashSet<String>, itemsCPVs: HashSet<String>) {
         if (cpvCodesFromEi.size > 1) throw ErrorException(INVALID_CPV)
-        val itemsCPVs = itemsCPVs.asSequence().map { it.substring(0, 3).toUpperCase() }.toHashSet()
-        if (itemsCPVs.size > 1) throw ErrorException(INVALID_CPV)
-        if (!cpvCodesFromEi.containsAll(itemsCPVs)) throw ErrorException(INVALID_CPV)
+        val itemsCPVSet = itemsCPVs.asSequence().map { it.substring(0, 3).toUpperCase() }.toHashSet()
+        if (itemsCPVSet.size > 1) throw ErrorException(INVALID_CPV)
+        if (!cpvCodesFromEi.containsAll(itemsCPVSet)) throw ErrorException(INVALID_CPV)
     }
 
     private fun updateBuyer(buyerDb: OrganizationReferenceEi, buyerDto: OrganizationReferenceBuyer): OrganizationReferenceEi {
