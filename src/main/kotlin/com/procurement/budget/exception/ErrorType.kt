@@ -31,5 +31,6 @@ enum class ErrorType constructor(val code: String, val message: String) {
     INVALID_BA("01.11", "Budget allocations are not complete."),
     DOCUMENTS("01.1", "Documents is not valid"),
     RULES_NOT_FOUND("02.01", "Rules not found."),
-    CONTEXT("20.02", "Context parameter not found.");
+    CONTEXT("20.02", "Context parameter not found."),
+    PERSONES_IN_BUYER_IS_EMPTY("20.03", "The list of the persones in the buyer is empty.");
 }

@@ -84,6 +84,9 @@ class ValidationService(private val fsDao: FsDao,
 
     fun checkBudgetSources(cm: CommandMessage): ResponseDto {
         val dto = toObject(CheckBsRq::class.java, cm.data)
+        if (dto.buyer.persones.isEmpty())
+            throw ErrorException(error = PERSONES_IN_BUYER_IS_EMPTY)
+
         val budgetSourcesRq = dto.planning.budget.budgetSource
         val actualBudgetSourcesRq = dto.actualBudgetSource
         val budgetAllocationRq = dto.planning.budget.budgetAllocation
