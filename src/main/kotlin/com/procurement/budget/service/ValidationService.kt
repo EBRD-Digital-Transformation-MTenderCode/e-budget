@@ -84,8 +84,10 @@ class ValidationService(private val fsDao: FsDao,
 
     fun checkBudgetSources(cm: CommandMessage): ResponseDto {
         val dto = toObject(CheckBsRq::class.java, cm.data)
-        if (dto.buyer.persones.isEmpty())
-            throw ErrorException(error = PERSONES_IN_BUYER_IS_EMPTY)
+
+        checkBuyerPersones(dto.buyer)
+        checkBuyerDetailsBankAccounts(dto.buyer)
+        checkBuyerAdditionalIdentifiers(dto.buyer)
 
         val budgetSourcesRq = dto.planning.budget.budgetSource
         val actualBudgetSourcesRq = dto.actualBudgetSource
@@ -167,6 +169,54 @@ class ValidationService(private val fsDao: FsDao,
                 addedFS = addedFS,
                 excludedFS = excludedFS)
         )
+    }
+
+    /**
+     * VR-10.6.11
+     */
+    private fun checkBuyerPersones(buyer: OrganizationReferenceBuyer) {
+        if (buyer.persones.isEmpty())
+            throw ErrorException(error = PERSONES_IN_BUYER_IS_EMPTY_OR_MISSING)
+
+        buyer.persones.forEach {
+            checkBuyerPersonBusinessFunctions(it)
+        }
+    }
+
+    /**
+     * VR-10.6.12
+     */
+    private fun checkBuyerPersonBusinessFunctions(person: Person) {
+        if (person.businessFunctions.isEmpty())
+            throw ErrorException(error = BUSINESS_FUNCTIONS_IN_PERSON_IN_BUYER_IS_EMPTY_OR_MISSING)
+
+        person.businessFunctions.forEach {
+            checkBuyerPersonBusinessFunctionsDocuments(it)
+        }
+    }
+
+    /**
+     * VR-10.6.13
+     */
+    private fun checkBuyerPersonBusinessFunctionsDocuments(businessFunctions: BusinessFunction) {
+        if (businessFunctions.documents.isEmpty())
+            throw ErrorException(error = DOCUMENTS_BUSINESS_FUNCTIONS_IN_PERSON_IN_BUYER_IS_EMPTY_OR_MISSING)
+    }
+
+    /**
+     * VR-10.6.14
+     */
+    private fun checkBuyerDetailsBankAccounts(buyer: OrganizationReferenceBuyer) {
+        if (buyer.details == null || buyer.details.bankAccounts == null || buyer.details.bankAccounts.isEmpty())
+            throw ErrorException(error = BANK_ACCOUNTS_IN_DETAILS_IN_BUYER_IS_EMPTY_OR_MISSING)
+    }
+
+    /**
+     * VR-10.6.15
+     */
+    private fun checkBuyerAdditionalIdentifiers(buyer: OrganizationReferenceBuyer) {
+        if (buyer.additionalIdentifiers == null || buyer.additionalIdentifiers.isEmpty())
+            throw ErrorException(error = ADDITIONAL_IDENTIFIERS_IN_BUYER_IS_EMPTY_OR_MISSING)
     }
 
     private fun validateCpv(cpvCodesFromEi: HashSet<String>, itemsCPVs: HashSet<String>) {
