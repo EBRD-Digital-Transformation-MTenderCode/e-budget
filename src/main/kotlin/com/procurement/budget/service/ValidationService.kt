@@ -191,16 +191,16 @@ class ValidationService(private val fsDao: FsDao,
             throw ErrorException(error = BUSINESS_FUNCTIONS_IN_PERSON_IN_BUYER_IS_EMPTY_OR_MISSING)
 
         person.businessFunctions.forEach {
-            checkBuyerPersonBusinessFunctionsDocuments(it)
+            checkBuyerPersonBusinessFunctionDocuments(it)
         }
     }
 
     /**
      * VR-10.6.13
      */
-    private fun checkBuyerPersonBusinessFunctionsDocuments(businessFunctions: BusinessFunction) {
+    private fun checkBuyerPersonBusinessFunctionDocuments(businessFunctions: BusinessFunction) {
         if (businessFunctions.documents.isEmpty())
-            throw ErrorException(error = DOCUMENTS_BUSINESS_FUNCTIONS_IN_PERSON_IN_BUYER_IS_EMPTY_OR_MISSING)
+            throw ErrorException(error = DOCUMENTS_BUSINESS_FUNCTION_IN_PERSON_IN_BUYER_IS_EMPTY_OR_MISSING)
     }
 
     /**
