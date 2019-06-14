@@ -88,6 +88,7 @@ class ValidationService(private val fsDao: FsDao,
         checkBuyerPersones(dto.buyer)
         checkBuyerDetailsBankAccounts(dto.buyer)
         checkBuyerAdditionalIdentifiers(dto.buyer)
+        checkBuyerPersonesBusinessFunctionsType(dto.buyer)
 
         val budgetSourcesRq = dto.planning.budget.budgetSource
         val actualBudgetSourcesRq = dto.actualBudgetSource
@@ -217,6 +218,19 @@ class ValidationService(private val fsDao: FsDao,
     private fun checkBuyerAdditionalIdentifiers(buyer: OrganizationReferenceBuyer) {
         if (buyer.additionalIdentifiers == null || buyer.additionalIdentifiers.isEmpty())
             throw ErrorException(error = ADDITIONAL_IDENTIFIERS_IN_BUYER_IS_EMPTY_OR_MISSING)
+    }
+
+    /**
+     * VR-10.6.16
+     */
+    private fun checkBuyerPersonesBusinessFunctionsType(buyer: OrganizationReferenceBuyer) {
+        buyer.persones.forEach {person ->
+            person.businessFunctions.forEach {businessFunction ->
+                if(businessFunction.type ==  "authority")
+                    return
+            }
+        }
+        throw ErrorException(error = INVALID_BUSINESS_FUNCTION_TYPE)
     }
 
     private fun validateCpv(cpvCodesFromEi: HashSet<String>, itemsCPVs: HashSet<String>) {
