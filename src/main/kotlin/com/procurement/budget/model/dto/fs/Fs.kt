@@ -87,7 +87,7 @@ data class OrganizationReferenceFs @JsonCreator constructor(
 
         val additionalIdentifiers: HashSet<Identifier>?,
 
-        val contactPoint: ContactPoint?
+        val contactPoint: ContactPoint
 )
 
 data class SourceEntityFs @JsonCreator constructor(
