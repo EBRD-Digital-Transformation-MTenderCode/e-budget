@@ -33,11 +33,12 @@ class EiService(private val ocdsProperties: OCDSProperties,
         val owner = cm.context.owner ?: throw ErrorException(CONTEXT)
         val country = cm.context.country ?: throw ErrorException(CONTEXT)
         val dateTime = cm.context.startDate?.toLocal() ?: throw ErrorException(CONTEXT)
+        val testMode: Boolean = cm.context.testMode?.let { it } ?: false
         val eiDto = toObject(EiCreate::class.java, cm.data)
         validateDto(eiDto)
         validatePeriod(eiDto)
         validateCpv(country, eiDto)
-        val cpId = getCpId(country)
+        val cpId = getCpId(country, testMode)
         val ei = Ei(
                 ocid = cpId,
                 tender = TenderEi(
@@ -103,8 +104,9 @@ class EiService(private val ocdsProperties: OCDSProperties,
             throw ErrorException(INVALID_PERIOD)
     }
 
-    private fun getCpId(country: String): String {
-        return ocdsProperties.prefix + SEPARATOR + country + SEPARATOR + generationService.getNowUtc()
+    private fun getCpId(country: String, testMode: Boolean): String {
+        val prefix = if(testMode) "test" else ocdsProperties.prefix
+        return prefix + SEPARATOR + country + SEPARATOR + generationService.getNowUtc()
     }
 
     private fun getEntity(ei: Ei, owner: String, dateTime: LocalDateTime): EiEntity {
