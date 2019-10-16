@@ -142,7 +142,7 @@ class ValidationService(private val fsDao: FsDao,
         var addedFS: Set<String>? = null
         var excludedFS: Set<String>? = null
         val fsIds = budgetSourcesRq.asSequence().map { it.budgetBreakdownID }.toSet()
-        if (actualBudgetSourcesRq != null) {
+        if (actualBudgetSourcesRq != null  && actualBudgetSourcesRq.isNotEmpty()) {
             val actualCpIds = actualBudgetSourcesRq.asSequence().map { getCpIdFromOcId(it.budgetBreakdownID) }.toSet()
             if (cpIds.size == actualCpIds.size && cpIds.containsAll(actualCpIds)) {
                 excludedEI = actualCpIds - cpIds
