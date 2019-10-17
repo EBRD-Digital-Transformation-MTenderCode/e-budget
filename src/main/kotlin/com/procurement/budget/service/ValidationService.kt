@@ -81,7 +81,6 @@ class ValidationService(private val fsDao: FsDao,
         )
     }
 
-
     fun checkBudgetSources(cm: CommandMessage): ResponseDto {
         val dto = toObject(CheckBsRq::class.java, cm.data)
 
@@ -93,8 +92,8 @@ class ValidationService(private val fsDao: FsDao,
         val budgetSourcesRq = dto.planning.budget.budgetSource
         val actualBudgetSourcesRq = dto.actualBudgetSource
         val budgetAllocationRq = dto.planning.budget.budgetAllocation
-        val cpIds = budgetSourcesRq.asSequence().map { getCpIdFromOcId(it.budgetBreakdownID) }.toSet()
-        val entities = fsDao.getAllByCpIds(cpIds)
+        val newEiIds = budgetSourcesRq.asSequence().map { getCpIdFromOcId(it.budgetBreakdownID) }.toSet()
+        val entities = fsDao.getAllByCpIds(newEiIds)
         if (entities.isEmpty()) throw ErrorException(FS_NOT_FOUND)
         val fsMap = HashMap<String?, Fs>()
         val funders = HashSet<OrganizationReferenceFs>()
@@ -103,7 +102,7 @@ class ValidationService(private val fsDao: FsDao,
         val cpvCodesFromEi = HashSet<String>()
         val treasuryBudgetSources = HashSet<BudgetSource>()
         entities.asSequence().map { toObject(Fs::class.java, it.jsonData) }.forEach { fsMap[it.ocid] = it }
-        for (cpId in cpIds) {
+        for (cpId in newEiIds) {
             val bsIds = budgetSourcesRq.asSequence().map { it.budgetBreakdownID }.toSet()
             val baIds = budgetAllocationRq.asSequence().map { it.budgetBreakdownID }.toSet()
             if (bsIds.size != baIds.size) throw ErrorException(INVALID_BA)
@@ -137,27 +136,30 @@ class ValidationService(private val fsDao: FsDao,
             cpvCodesFromEi.add(ei.tender.classification.id.substring(0, 3).toUpperCase())
         }
         validateCpv(cpvCodesFromEi, dto.itemsCPVs)
-        var addedEI: Set<String>? = null
-        var excludedEI: Set<String>? = null
-        var addedFS: Set<String>? = null
-        var excludedFS: Set<String>? = null
-        val fsIds = budgetSourcesRq.asSequence().map { it.budgetBreakdownID }.toSet()
-        if (actualBudgetSourcesRq != null  && actualBudgetSourcesRq.isNotEmpty()) {
-            val actualCpIds = actualBudgetSourcesRq.asSequence().map { getCpIdFromOcId(it.budgetBreakdownID) }.toSet()
-            if (cpIds.size == actualCpIds.size && cpIds.containsAll(actualCpIds)) {
-                excludedEI = actualCpIds - cpIds
-                addedEI = cpIds - actualCpIds
-            }
+
+        val addedEI: Set<String>
+        val excludedEI: Set<String>
+        val addedFS: Set<String>
+        val excludedFS: Set<String>
+        val newFsIds = budgetSourcesRq.asSequence().map { it.budgetBreakdownID }.toSet()
+        if (actualBudgetSourcesRq != null && actualBudgetSourcesRq.isNotEmpty()) {
+            val actualEiIds = actualBudgetSourcesRq.asSequence().map { getCpIdFromOcId(it.budgetBreakdownID) }.toSet()
+            val (toAddEi, toExcludeEi) = diff(left = actualEiIds, right = newEiIds)
+            addedEI = toAddEi
+            excludedEI = toExcludeEi
+
             val actualFsIds = actualBudgetSourcesRq.asSequence().map { it.budgetBreakdownID }.toSet()
-            if (fsIds.size == actualFsIds.size && fsIds.containsAll(actualFsIds)) {
-                excludedFS = actualFsIds - fsIds
-                addedFS = fsIds - actualFsIds
-            }
+            val (toAddFs, toExcludeFs) = diff(left = actualFsIds, right = newFsIds)
+            addedFS = toAddFs
+            excludedFS = toExcludeFs
         } else {
-            addedEI = cpIds
-            addedFS = fsIds
+            addedEI = newEiIds
+            excludedEI = emptySet()
+            addedFS = newFsIds
+            excludedFS = emptySet()
         }
-        return ResponseDto(data = CheckBsRs(
+        return ResponseDto(
+            data = CheckBsRs(
                 treasuryBudgetSources = when {
                     treasuryBudgetSources.isNotEmpty() -> treasuryBudgetSources
                     else -> null
@@ -168,8 +170,25 @@ class ValidationService(private val fsDao: FsDao,
                 addedEI = addedEI,
                 excludedEI = excludedEI,
                 addedFS = addedFS,
-                excludedFS = excludedFS)
+                excludedFS = excludedFS
+            )
         )
+    }
+
+    private fun <T> diff(left: Set<T>, right: Set<T>): Pair<Set<T>, Set<T>> {
+        val allElements = left + right
+        val addToLeft = mutableSetOf<T>()
+        val addToRight = mutableSetOf<T>()
+
+        allElements.forEach { element ->
+            if (left.contains(element) && !right.contains(element))
+                addToRight.add(element)
+
+            if (!left.contains(element) && right.contains(element))
+                addToLeft.add(element)
+        }
+
+        return addToLeft to addToRight
     }
 
     /**
