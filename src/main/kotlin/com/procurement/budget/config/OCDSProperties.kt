@@ -6,5 +6,10 @@ import org.springframework.stereotype.Component
 @Component
 @ConfigurationProperties(prefix = "ocds")
 class OCDSProperties(
-        var prefix: String? = null
-)
+    var prefixes: Prefixes? = null
+) {
+    class Prefixes(
+        var main: String? = null,
+        var test: String? = null
+    )
+}
