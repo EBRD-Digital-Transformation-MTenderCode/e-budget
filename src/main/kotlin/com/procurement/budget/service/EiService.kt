@@ -105,7 +105,7 @@ class EiService(private val ocdsProperties: OCDSProperties,
     }
 
     private fun getCpId(country: String, testMode: Boolean): String {
-        val prefix = if(testMode) "test" else ocdsProperties.prefix
+        val prefix: String = if (testMode) ocdsProperties.prefixes!!.test!! else ocdsProperties.prefixes!!.main!!
         return prefix + SEPARATOR + country + SEPARATOR + generationService.getNowUtc()
     }
 
