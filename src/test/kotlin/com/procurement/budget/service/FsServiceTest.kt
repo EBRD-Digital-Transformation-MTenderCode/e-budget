@@ -2,7 +2,7 @@
 //
 //import com.nhaarman.mockito_kotlin.mock
 //import com.nhaarman.mockito_kotlin.whenever
-//import com.procurement.budget.config.OCDSProperties
+//import com.procurement.budget.config.properties.OCDSProperties
 //import com.procurement.budget.dao.FsDao
 //import com.procurement.budget.model.dto.check.CheckRequestDto
 //import com.procurement.budget.model.dto.ei.Ei

@@ -1,4 +1,4 @@
-package com.procurement.budget.config
+package com.procurement.budget.config.properties
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 

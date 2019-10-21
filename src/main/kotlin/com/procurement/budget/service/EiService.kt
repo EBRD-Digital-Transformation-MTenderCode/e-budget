@@ -1,6 +1,6 @@
 package com.procurement.budget.service
 
-import com.procurement.budget.config.OCDSProperties
+import com.procurement.budget.config.properties.OCDSProperties
 import com.procurement.budget.dao.EiDao
 import com.procurement.budget.exception.ErrorException
 import com.procurement.budget.exception.ErrorType.*
