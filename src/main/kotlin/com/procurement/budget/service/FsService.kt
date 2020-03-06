@@ -77,7 +77,7 @@ class FsService(private val fsDao: FsDao,
                 ocid = ocid,
                 token = null,
                 tender = TenderFs(
-                        id = ocid,
+                        id = generationService.generateTenderId().toString(),
                         status = tenderStatusFs,
                         statusDetails = TenderStatusDetails.EMPTY,
                         procuringEntity = null),
