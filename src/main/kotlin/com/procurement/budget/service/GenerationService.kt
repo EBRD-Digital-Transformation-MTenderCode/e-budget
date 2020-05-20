@@ -15,4 +15,8 @@ class GenerationService {
     fun getNowUtc(): Long {
         return milliNowUTC()
     }
+
+    fun generateTenderId(): UUID {
+        return UUIDs.random()
+    }
 }

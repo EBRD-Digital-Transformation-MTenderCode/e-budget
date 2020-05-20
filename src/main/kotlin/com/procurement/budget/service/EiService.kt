@@ -42,7 +42,7 @@ class EiService(private val ocdsProperties: OCDSProperties,
         val ei = Ei(
                 ocid = cpId,
                 tender = TenderEi(
-                        id = cpId,
+                        id = generationService.generateTenderId().toString(),
                         title = eiDto.tender.title,
                         description = eiDto.tender.description,
                         status = TenderStatus.PLANNING,
