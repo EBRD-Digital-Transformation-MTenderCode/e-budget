@@ -6,11 +6,9 @@ spring:
     name: e-budget
 
 cassandra:
-  contact-points: 10.0.20.104,10.0.20.105,10.0.20.106
+  contact-points: localhost
   keyspace-name: ocds
   port: 9042
-  username: caclient
-  password: 6AH7vbrkMWnfK
 
 ocds:
   prefixes:
