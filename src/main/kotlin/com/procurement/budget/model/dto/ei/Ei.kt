@@ -49,7 +49,7 @@ data class TenderEi @JsonCreator constructor(
         val mainProcurementCategory: String,
 
         @JsonInclude(JsonInclude.Include.NON_EMPTY)
-        @param:JsonProperty("items") @field:JsonProperty("items") val items: List<ItemEI>?
+        @param:JsonProperty("items") @field:JsonProperty("items") var items: List<ItemEI>?
 
 )
 
