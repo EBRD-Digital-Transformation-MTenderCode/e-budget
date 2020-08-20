@@ -64,14 +64,75 @@ class EiService(
         if (entity.token != UUID.fromString(token)) throw ErrorException(INVALID_TOKEN)
         if (entity.owner != owner) throw ErrorException(INVALID_OWNER)
         val ei = toObject(Ei::class.java, entity.jsonData)
-        ei.apply {
-            tender.title = eiDto.tender.title
-            tender.description = eiDto.tender.description
-            planning.rationale = eiDto.planning?.rationale
-        }
+        validateItems(ei, eiDto)
+
+        applyUpdates(ei, eiDto)
         entity.jsonData = toJson(ei)
         eiDao.save(entity)
         return ResponseDto(data = ei)
+    }
+
+    private fun applyUpdates(ei: Ei, eiDto: EiUpdate) {
+        ei.apply {
+            tender.title = eiDto.tender.title
+            tender.description = eiDto.tender.description
+            tender.items = eiDto.tender.items
+                ?.map { item ->
+                    ItemEI(
+                        id = item.id,
+                        description = item.description,
+                        classification = item.classification.let { classification ->
+                            ItemEI.Classification(
+                                id = classification.id
+                            )
+                        },
+                        additionalClassifications = item.additionalClassifications
+                            .map { additionalClassification ->
+                                ItemEI.AdditionalClassification(
+                                    id = additionalClassification.id
+                                )
+                            },
+                        deliveryAddress = item.deliveryAddress.let { address ->
+                            ItemEI.DeliveryAddress(
+                                streetAddress = address.streetAddress,
+                                postalCode = address.postalCode,
+                                addressDetails = address.addressDetails.let { addressDetails ->
+                                    ItemEI.DeliveryAddress.AddressDetails(
+                                        country = addressDetails.country.let { country ->
+                                            ItemEI.DeliveryAddress.AddressDetails.Country(
+                                                id = country.id,
+                                                description = country.description,
+                                                scheme = country.scheme
+                                            )
+                                        },
+                                        region = addressDetails.region.let { region ->
+                                            ItemEI.DeliveryAddress.AddressDetails.Region(
+                                                id = region.id,
+                                                description = region.description,
+                                                scheme = region.scheme
+                                            )
+                                        },
+                                        locality = addressDetails.locality?.let { locality ->
+                                            ItemEI.DeliveryAddress.AddressDetails.Locality(
+                                                id = locality.id,
+                                                description = locality.description,
+                                                scheme = locality.scheme
+                                            )
+                                        }
+                                    )
+                                }
+                            )
+                        },
+                        quantity = item.quantity,
+                        unit = item.unit.let { unit ->
+                            ItemEI.Unit(
+                                id = unit.id
+                            )
+                        }
+                    )
+                }
+            planning.rationale = eiDto.planning?.rationale
+        }
     }
 
     private fun validateDto(eiDto: EiCreate) {
@@ -95,6 +156,20 @@ class EiService(
 
     private fun validateItems(eiDto: EiCreate) {
         val classificationStartingSymbols = eiDto.tender.classification.id.slice(0..2)
+        val invalidClassifications = eiDto.tender.items
+            ?.map { it.classification.id }
+            ?.filter { !it.startsWith(prefix = classificationStartingSymbols, ignoreCase = true) }
+            .orEmpty()
+        if (invalidClassifications.isNotEmpty())
+            throw ErrorException(
+                error = INVALID_CPV,
+                message = "Invalid CPV code in classification(s) '${invalidClassifications.joinToString()}'"
+            )
+    }
+
+    private fun validateItems(ei: Ei, eiDto: EiUpdate) {
+        val classificationStartingSymbols = ei.tender.classification.id.slice(0..2)
+
         val invalidClassifications = eiDto.tender.items
             ?.map { it.classification.id }
             ?.filter { !it.startsWith(prefix = classificationStartingSymbols, ignoreCase = true) }
