@@ -210,11 +210,11 @@ class EiService(
                             )
                         },
                         additionalClassifications = item.additionalClassifications
-                            .map { additionalClassification ->
+                            ?.map { additionalClassification ->
                                 ItemEI.AdditionalClassification(
                                     id = additionalClassification.id
                                 )
-                            },
+                            }.orEmpty(),
                         deliveryAddress = item.deliveryAddress.let { address ->
                             ItemEI.DeliveryAddress(
                                 streetAddress = address.streetAddress,
@@ -257,7 +257,7 @@ class EiService(
             ),
             planning = PlanningEi(
                 budget = BudgetEi(
-                    id = eiDto.tender.classification.id,
+                    id = null,
                     period = eiDto.planning.budget.period,
                     amount = null
                 ),

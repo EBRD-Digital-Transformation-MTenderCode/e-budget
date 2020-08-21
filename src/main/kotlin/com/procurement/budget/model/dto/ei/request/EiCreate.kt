@@ -35,7 +35,10 @@ data class EiCreate @JsonCreator constructor(
             @param:JsonProperty("id") @field:JsonProperty("id") val id: String,
             @param:JsonProperty("description") @field:JsonProperty("description") val description: String,
             @param:JsonProperty("classification") @field:JsonProperty("classification") val classification: Classification,
-            @param:JsonProperty("additionalClassifications") @field:JsonProperty("additionalClassifications") val additionalClassifications: List<AdditionalClassification>,
+
+            @JsonInclude(JsonInclude.Include.NON_EMPTY)
+            @param:JsonProperty("additionalClassifications") @field:JsonProperty("additionalClassifications") val additionalClassifications: List<AdditionalClassification>?,
+
             @param:JsonProperty("deliveryAddress") @field:JsonProperty("deliveryAddress") val deliveryAddress: DeliveryAddress,
             @param:JsonProperty("quantity") @field:JsonProperty("quantity") val quantity: BigDecimal,
             @param:JsonProperty("unit") @field:JsonProperty("unit") val unit: Unit

@@ -64,7 +64,8 @@ data class PlanningEi @JsonCreator constructor(
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class BudgetEi @JsonCreator constructor(
 
-        var id: String,
+        @JsonInclude(JsonInclude.Include.NON_NULL)
+        var id: String?,
 
         var period: Period,
 
@@ -106,7 +107,10 @@ data class ItemEI(
         @param:JsonProperty("id") @field:JsonProperty("id") val id: String,
         @param:JsonProperty("description") @field:JsonProperty("description") val description: String,
         @param:JsonProperty("classification") @field:JsonProperty("classification") val classification: Classification,
+
+        @JsonInclude(JsonInclude.Include.NON_EMPTY)
         @param:JsonProperty("additionalClassifications") @field:JsonProperty("additionalClassifications") val additionalClassifications: List<AdditionalClassification>,
+
         @param:JsonProperty("deliveryAddress") @field:JsonProperty("deliveryAddress") val deliveryAddress: DeliveryAddress,
         @param:JsonProperty("quantity") @field:JsonProperty("quantity") val quantity: BigDecimal,
         @param:JsonProperty("unit") @field:JsonProperty("unit") val unit: Unit
