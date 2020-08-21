@@ -210,11 +210,11 @@ class EiService(
                             )
                         },
                         additionalClassifications = item.additionalClassifications
-                            .map { additionalClassification ->
+                            ?.map { additionalClassification ->
                                 ItemEI.AdditionalClassification(
                                     id = additionalClassification.id
                                 )
-                            },
+                            }.orEmpty(),
                         deliveryAddress = item.deliveryAddress.let { address ->
                             ItemEI.DeliveryAddress(
                                 streetAddress = address.streetAddress,
