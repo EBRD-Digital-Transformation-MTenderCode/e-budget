@@ -64,7 +64,8 @@ data class PlanningEi @JsonCreator constructor(
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class BudgetEi @JsonCreator constructor(
 
-        var id: String,
+        @JsonInclude(JsonInclude.Include.NON_NULL)
+        var id: String?,
 
         var period: Period,
 
