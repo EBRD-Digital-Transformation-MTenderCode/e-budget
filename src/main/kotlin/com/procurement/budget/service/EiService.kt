@@ -257,7 +257,7 @@ class EiService(
             ),
             planning = PlanningEi(
                 budget = BudgetEi(
-                    id = null,
+                    id = eiDto.tender.classification.id,
                     period = eiDto.planning.budget.period,
                     amount = null
                 ),
