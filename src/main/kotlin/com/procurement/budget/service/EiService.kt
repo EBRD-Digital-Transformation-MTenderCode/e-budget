@@ -3,6 +3,7 @@ package com.procurement.budget.service
 import com.procurement.budget.config.properties.OCDSProperties
 import com.procurement.budget.dao.EiDao
 import com.procurement.budget.exception.ErrorException
+import com.procurement.budget.exception.ErrorType
 import com.procurement.budget.exception.ErrorType.CONTEXT
 import com.procurement.budget.exception.ErrorType.EI_NOT_FOUND
 import com.procurement.budget.exception.ErrorType.INVALID_CPV
@@ -21,11 +22,13 @@ import com.procurement.budget.model.dto.ei.request.EiUpdate
 import com.procurement.budget.model.dto.ocds.TenderStatus
 import com.procurement.budget.model.dto.ocds.TenderStatusDetails
 import com.procurement.budget.model.entity.EiEntity
+import com.procurement.budget.utils.getDuplicate
 import com.procurement.budget.utils.toDate
 import com.procurement.budget.utils.toJson
 import com.procurement.budget.utils.toLocal
 import com.procurement.budget.utils.toObject
 import org.springframework.stereotype.Service
+import java.math.BigDecimal
 import java.time.LocalDateTime
 import java.util.*
 
@@ -66,74 +69,139 @@ class EiService(
         val ei = toObject(Ei::class.java, entity.jsonData)
         validateItems(ei, eiDto)
 
-        applyUpdates(ei, eiDto)
+        val updatedItems = getUpdatedItems(ei, eiDto)
+
+        ei.apply {
+            tender.title = eiDto.tender.title
+            tender.description = eiDto.tender.description
+            tender.items = updatedItems
+            planning.rationale = eiDto.planning?.rationale
+        }
+
         entity.jsonData = toJson(ei)
         eiDao.save(entity)
         return ResponseDto(data = ei)
     }
 
-    private fun applyUpdates(ei: Ei, eiDto: EiUpdate) {
-        ei.apply {
-            tender.title = eiDto.tender.title
-            tender.description = eiDto.tender.description
-            tender.items = eiDto.tender.items
-                ?.map { item ->
-                    ItemEI(
-                        id = item.id,
-                        description = item.description,
-                        classification = item.classification.let { classification ->
-                            ItemEI.Classification(
-                                id = classification.id
-                            )
-                        },
-                        additionalClassifications = item.additionalClassifications
-                            .map { additionalClassification ->
-                                ItemEI.AdditionalClassification(
-                                    id = additionalClassification.id
-                                )
-                            },
-                        deliveryAddress = item.deliveryAddress.let { address ->
-                            ItemEI.DeliveryAddress(
-                                streetAddress = address.streetAddress,
-                                postalCode = address.postalCode,
-                                addressDetails = address.addressDetails.let { addressDetails ->
-                                    ItemEI.DeliveryAddress.AddressDetails(
-                                        country = addressDetails.country.let { country ->
-                                            ItemEI.DeliveryAddress.AddressDetails.Country(
-                                                id = country.id,
-                                                description = country.description,
-                                                scheme = country.scheme
-                                            )
-                                        },
-                                        region = addressDetails.region.let { region ->
-                                            ItemEI.DeliveryAddress.AddressDetails.Region(
-                                                id = region.id,
-                                                description = region.description,
-                                                scheme = region.scheme
-                                            )
-                                        },
-                                        locality = addressDetails.locality?.let { locality ->
-                                            ItemEI.DeliveryAddress.AddressDetails.Locality(
-                                                id = locality.id,
-                                                description = locality.description,
-                                                scheme = locality.scheme
-                                            )
-                                        }
-                                    )
-                                }
-                            )
-                        },
-                        quantity = item.quantity,
-                        unit = item.unit.let { unit ->
-                            ItemEI.Unit(
-                                id = unit.id
-                            )
-                        }
+    private fun getUpdatedItems(ei: Ei, eiDto: EiUpdate): List<ItemEI> {
+        val storedItems = ei.tender.items?.associateBy { it.id }.orEmpty()
+
+        return eiDto.tender.items
+            ?.map { item ->
+                storedItems[item.id]
+                    ?.let { storedItem -> updateStoredItem(storedItem, item) }
+                    ?: createItem(item)
+            }.orEmpty()
+    }
+
+    private fun createItem(item: EiUpdate.TenderEiUpdate.Item) =
+        ItemEI(
+            id = generationService.generateItemId().toString(),
+            description = item.description,
+            classification = item.classification.let { classification ->
+                ItemEI.Classification(
+                    id = classification.id
+                )
+            },
+            additionalClassifications = item.additionalClassifications
+                ?.map { additionalClassification ->
+                    ItemEI.AdditionalClassification(
+                        id = additionalClassification.id
                     )
                 }
-            planning.rationale = eiDto.planning?.rationale
-        }
-    }
+                .orEmpty(),
+            deliveryAddress = item.deliveryAddress.let { address ->
+                ItemEI.DeliveryAddress(
+                    streetAddress = address.streetAddress,
+                    postalCode = address.postalCode,
+                    addressDetails = address.addressDetails.let { addressDetails ->
+                        ItemEI.DeliveryAddress.AddressDetails(
+                            country = addressDetails.country.let { country ->
+                                ItemEI.DeliveryAddress.AddressDetails.Country(
+                                    id = country.id,
+                                    description = country.description,
+                                    scheme = country.scheme
+                                )
+                            },
+                            region = addressDetails.region.let { region ->
+                                ItemEI.DeliveryAddress.AddressDetails.Region(
+                                    id = region.id,
+                                    description = region.description,
+                                    scheme = region.scheme
+                                )
+                            },
+                            locality = addressDetails.locality?.let { locality ->
+                                ItemEI.DeliveryAddress.AddressDetails.Locality(
+                                    id = locality.id,
+                                    description = locality.description,
+                                    scheme = locality.scheme
+                                )
+                            }
+                        )
+                    }
+                )
+            },
+            quantity = item.quantity,
+            unit = item.unit.let { unit ->
+                ItemEI.Unit(
+                    id = unit.id
+                )
+            }
+        )
+
+    private fun updateStoredItem(storedItem: ItemEI, item: EiUpdate.TenderEiUpdate.Item) =
+        storedItem.copy(
+            description = item.description,
+            classification = item.classification.let { classification ->
+                ItemEI.Classification(
+                    id = classification.id
+                )
+            },
+            additionalClassifications = item.additionalClassifications
+                ?.map { additionalClassification ->
+                    ItemEI.AdditionalClassification(
+                        id = additionalClassification.id
+                    )
+                }
+                ?: storedItem.additionalClassifications,
+            deliveryAddress = item.deliveryAddress.let { address ->
+                ItemEI.DeliveryAddress(
+                    streetAddress = address.streetAddress,
+                    postalCode = address.postalCode,
+                    addressDetails = address.addressDetails.let { addressDetails ->
+                        ItemEI.DeliveryAddress.AddressDetails(
+                            country = addressDetails.country.let { country ->
+                                ItemEI.DeliveryAddress.AddressDetails.Country(
+                                    id = country.id,
+                                    description = country.description,
+                                    scheme = country.scheme
+                                )
+                            },
+                            region = addressDetails.region.let { region ->
+                                ItemEI.DeliveryAddress.AddressDetails.Region(
+                                    id = region.id,
+                                    description = region.description,
+                                    scheme = region.scheme
+                                )
+                            },
+                            locality = addressDetails.locality?.let { locality ->
+                                ItemEI.DeliveryAddress.AddressDetails.Locality(
+                                    id = locality.id,
+                                    description = locality.description,
+                                    scheme = locality.scheme
+                                )
+                            }
+                        )
+                    }
+                )
+            },
+            quantity = item.quantity,
+            unit = item.unit.let { unit ->
+                ItemEI.Unit(
+                    id = unit.id
+                )
+            }
+        )
 
     private fun validateDto(eiDto: EiCreate) {
         val details = eiDto.buyer.details
@@ -168,6 +236,15 @@ class EiService(
     }
 
     private fun validateItems(ei: Ei, eiDto: EiUpdate) {
+        checkClassification(ei, eiDto)
+        checkItemsQuantity(eiDto)
+        checkItemsForDuplicates(eiDto)
+    }
+
+    private fun checkClassification(
+        ei: Ei,
+        eiDto: EiUpdate
+    ) {
         val classificationStartingSymbols = ei.tender.classification.id.slice(0..2)
 
         val invalidClassifications = eiDto.tender.items
@@ -178,6 +255,24 @@ class EiService(
             throw ErrorException(
                 error = INVALID_CPV,
                 message = "Invalid CPV code in classification(s) '${invalidClassifications.joinToString()}'"
+            )
+    }
+
+    private fun checkItemsQuantity(eiDto: EiUpdate) {
+        val itemWithWrongQuantity = eiDto.tender.items?.first { it.quantity <= BigDecimal.ZERO }
+        if (itemWithWrongQuantity != null)
+            throw ErrorException(
+                error = ErrorType.INVALID_ITEM_QUANTITY,
+                message = "Quantity of item '${itemWithWrongQuantity.id}' must be greater than zero"
+            )
+    }
+
+    private fun checkItemsForDuplicates(eiDto: EiUpdate) {
+        val duplicateItem = eiDto.tender.items?.getDuplicate { it.id }
+        if (duplicateItem != null)
+            throw ErrorException(
+                error = ErrorType.DUPLICATED_ITEMS,
+                message = "Item '${duplicateItem.id}' has a duplicate"
             )
     }
 
