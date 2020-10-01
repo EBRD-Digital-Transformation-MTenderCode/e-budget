@@ -19,4 +19,8 @@ class GenerationService {
     fun generateTenderId(): UUID {
         return UUIDs.random()
     }
+
+    fun generateItemId(): UUID {
+        return UUIDs.random()
+    }
 }
