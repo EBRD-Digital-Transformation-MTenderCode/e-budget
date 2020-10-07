@@ -37,11 +37,15 @@ data class EiUpdate @JsonCreator constructor(
             @param:JsonProperty("unit") @field:JsonProperty("unit") val unit: Unit
         ) {
             data class Classification(
-                @param:JsonProperty("id") @field:JsonProperty("id") val id: String
+                @param:JsonProperty("id") @field:JsonProperty("id") val id: String,
+                @param:JsonProperty("description") @field:JsonProperty("description") val description: String,
+                @param:JsonProperty("scheme") @field:JsonProperty("scheme") val scheme: String
             )
 
             data class AdditionalClassification(
-                @param:JsonProperty("id") @field:JsonProperty("id") val id: String
+                @param:JsonProperty("id") @field:JsonProperty("id") val id: String,
+                @param:JsonProperty("description") @field:JsonProperty("description") val description: String,
+                @param:JsonProperty("scheme") @field:JsonProperty("scheme") val scheme: String
             )
 
             data class DeliveryAddress(
@@ -81,7 +85,8 @@ data class EiUpdate @JsonCreator constructor(
             }
 
             data class Unit(
-                @param:JsonProperty("id") @field:JsonProperty("id") val id: String
+                @param:JsonProperty("id") @field:JsonProperty("id") val id: String,
+                @param:JsonProperty("name") @field:JsonProperty("name") val name: String
             )
         }
     }
