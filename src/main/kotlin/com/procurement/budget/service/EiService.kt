@@ -100,13 +100,17 @@ class EiService(
             description = item.description,
             classification = item.classification.let { classification ->
                 ItemEI.Classification(
-                    id = classification.id
+                    id = classification.id,
+                    description = classification.description,
+                    scheme = classification.scheme
                 )
             },
             additionalClassifications = item.additionalClassifications
                 ?.map { additionalClassification ->
                     ItemEI.AdditionalClassification(
-                        id = additionalClassification.id
+                        id = additionalClassification.id,
+                        scheme = additionalClassification.scheme,
+                        description = additionalClassification.description
                     )
                 }
                 .orEmpty(),
@@ -144,7 +148,8 @@ class EiService(
             quantity = item.quantity,
             unit = item.unit.let { unit ->
                 ItemEI.Unit(
-                    id = unit.id
+                    id = unit.id,
+                    name = unit.name
                 )
             }
         )
@@ -154,13 +159,17 @@ class EiService(
             description = item.description,
             classification = item.classification.let { classification ->
                 ItemEI.Classification(
-                    id = classification.id
+                    id = classification.id,
+                    scheme = classification.scheme,
+                    description = classification.description
                 )
             },
             additionalClassifications = item.additionalClassifications
                 ?.map { additionalClassification ->
                     ItemEI.AdditionalClassification(
-                        id = additionalClassification.id
+                        id = additionalClassification.id,
+                        description = additionalClassification.description,
+                        scheme = additionalClassification.scheme
                     )
                 }
                 ?: storedItem.additionalClassifications,
@@ -198,7 +207,8 @@ class EiService(
             quantity = item.quantity,
             unit = item.unit.let { unit ->
                 ItemEI.Unit(
-                    id = unit.id
+                    id = unit.id,
+                    name = unit.name
                 )
             }
         )
@@ -259,7 +269,7 @@ class EiService(
     }
 
     private fun checkItemsQuantity(eiDto: EiUpdate) {
-        val itemWithWrongQuantity = eiDto.tender.items?.first { it.quantity <= BigDecimal.ZERO }
+        val itemWithWrongQuantity = eiDto.tender.items?.firstOrNull { it.quantity <= BigDecimal.ZERO }
         if (itemWithWrongQuantity != null)
             throw ErrorException(
                 error = ErrorType.INVALID_ITEM_QUANTITY,
@@ -301,13 +311,17 @@ class EiService(
                         description = item.description,
                         classification = item.classification.let { classification ->
                             ItemEI.Classification(
-                                id = classification.id
+                                id = classification.id,
+                                description = classification.description,
+                                scheme = classification.scheme
                             )
                         },
                         additionalClassifications = item.additionalClassifications
                             ?.map { additionalClassification ->
                                 ItemEI.AdditionalClassification(
-                                    id = additionalClassification.id
+                                    id = additionalClassification.id,
+                                    scheme = additionalClassification.scheme,
+                                    description = additionalClassification.description
                                 )
                             }.orEmpty(),
                         deliveryAddress = item.deliveryAddress.let { address ->
@@ -344,7 +358,8 @@ class EiService(
                         quantity = item.quantity,
                         unit = item.unit.let { unit ->
                             ItemEI.Unit(
-                                id = unit.id
+                                id = unit.id,
+                                name = unit.name
                             )
                         }
                     )
