@@ -269,7 +269,7 @@ class EiService(
     }
 
     private fun checkItemsQuantity(eiDto: EiUpdate) {
-        val itemWithWrongQuantity = eiDto.tender.items?.first { it.quantity <= BigDecimal.ZERO }
+        val itemWithWrongQuantity = eiDto.tender.items?.firstOrNull { it.quantity <= BigDecimal.ZERO }
         if (itemWithWrongQuantity != null)
             throw ErrorException(
                 error = ErrorType.INVALID_ITEM_QUANTITY,
