@@ -307,7 +307,7 @@ class EiService(
                 mainProcurementCategory = eiDto.tender.mainProcurementCategory,
                 items = eiDto.tender.items?.map { item ->
                     ItemEI(
-                        id = item.id,
+                        id = generationService.generateItemId().toString(),
                         description = item.description,
                         classification = item.classification.let { classification ->
                             ItemEI.Classification(
