@@ -116,15 +116,11 @@ data class ItemEI(
         @param:JsonProperty("unit") @field:JsonProperty("unit") val unit: Unit
 ) {
         data class Classification(
-                @param:JsonProperty("id") @field:JsonProperty("id") val id: String,
-                @param:JsonProperty("description") @field:JsonProperty("description") val description: String,
-                @param:JsonProperty("scheme") @field:JsonProperty("scheme") val scheme: String
+                @param:JsonProperty("id") @field:JsonProperty("id") val id: String
         )
 
         data class AdditionalClassification(
-                @param:JsonProperty("id") @field:JsonProperty("id") val id: String,
-                @param:JsonProperty("description") @field:JsonProperty("description") val description: String,
-                @param:JsonProperty("scheme") @field:JsonProperty("scheme") val scheme: String
+                @param:JsonProperty("id") @field:JsonProperty("id") val id: String
         )
 
         data class DeliveryAddress(
@@ -146,25 +142,29 @@ data class ItemEI(
                         data class Country(
                                 @param:JsonProperty("id") @field:JsonProperty("id") val id: String,
                                 @param:JsonProperty("description") @field:JsonProperty("description") val description: String,
-                                @param:JsonProperty("scheme") @field:JsonProperty("scheme") val scheme: String
+                                @param:JsonProperty("scheme") @field:JsonProperty("scheme") val scheme: String,
+                                @param:JsonProperty("uri") @field:JsonProperty("uri") val uri: String
                         )
 
                         data class Region(
                                 @param:JsonProperty("id") @field:JsonProperty("id") val id: String,
                                 @param:JsonProperty("description") @field:JsonProperty("description") val description: String,
-                                @param:JsonProperty("scheme") @field:JsonProperty("scheme") val scheme: String
+                                @param:JsonProperty("scheme") @field:JsonProperty("scheme") val scheme: String,
+                                @param:JsonProperty("uri") @field:JsonProperty("uri") val uri: String
                         )
 
                         data class Locality(
                                 @param:JsonProperty("id") @field:JsonProperty("id") val id: String,
                                 @param:JsonProperty("description") @field:JsonProperty("description") val description: String,
-                                @param:JsonProperty("scheme") @field:JsonProperty("scheme") val scheme: String
+                                @param:JsonProperty("scheme") @field:JsonProperty("scheme") val scheme: String,
+
+                                @JsonInclude(JsonInclude.Include.NON_NULL)
+                                @param:JsonProperty("uri") @field:JsonProperty("uri") val uri: String?
                         )
                 }
         }
 
         data class Unit(
-                @param:JsonProperty("id") @field:JsonProperty("id") val id: String,
-                @param:JsonProperty("name") @field:JsonProperty("name") val name: String
+                @param:JsonProperty("id") @field:JsonProperty("id") val id: String
         )
 }

@@ -100,17 +100,13 @@ class EiService(
             description = item.description,
             classification = item.classification.let { classification ->
                 ItemEI.Classification(
-                    id = classification.id,
-                    description = classification.description,
-                    scheme = classification.scheme
+                    id = classification.id
                 )
             },
             additionalClassifications = item.additionalClassifications
                 ?.map { additionalClassification ->
                     ItemEI.AdditionalClassification(
-                        id = additionalClassification.id,
-                        scheme = additionalClassification.scheme,
-                        description = additionalClassification.description
+                        id = additionalClassification.id
                     )
                 }
                 .orEmpty(),
@@ -124,21 +120,24 @@ class EiService(
                                 ItemEI.DeliveryAddress.AddressDetails.Country(
                                     id = country.id,
                                     description = country.description,
-                                    scheme = country.scheme
+                                    scheme = country.scheme,
+                                    uri = country.uri
                                 )
                             },
                             region = addressDetails.region.let { region ->
                                 ItemEI.DeliveryAddress.AddressDetails.Region(
                                     id = region.id,
                                     description = region.description,
-                                    scheme = region.scheme
+                                    scheme = region.scheme,
+                                    uri = region.uri
                                 )
                             },
                             locality = addressDetails.locality?.let { locality ->
                                 ItemEI.DeliveryAddress.AddressDetails.Locality(
                                     id = locality.id,
                                     description = locality.description,
-                                    scheme = locality.scheme
+                                    scheme = locality.scheme,
+                                    uri = locality.uri
                                 )
                             }
                         )
@@ -148,8 +147,7 @@ class EiService(
             quantity = item.quantity,
             unit = item.unit.let { unit ->
                 ItemEI.Unit(
-                    id = unit.id,
-                    name = unit.name
+                    id = unit.id
                 )
             }
         )
@@ -159,17 +157,13 @@ class EiService(
             description = item.description,
             classification = item.classification.let { classification ->
                 ItemEI.Classification(
-                    id = classification.id,
-                    scheme = classification.scheme,
-                    description = classification.description
+                    id = classification.id
                 )
             },
             additionalClassifications = item.additionalClassifications
                 ?.map { additionalClassification ->
                     ItemEI.AdditionalClassification(
-                        id = additionalClassification.id,
-                        description = additionalClassification.description,
-                        scheme = additionalClassification.scheme
+                        id = additionalClassification.id
                     )
                 }
                 ?: storedItem.additionalClassifications,
@@ -183,21 +177,24 @@ class EiService(
                                 ItemEI.DeliveryAddress.AddressDetails.Country(
                                     id = country.id,
                                     description = country.description,
-                                    scheme = country.scheme
+                                    scheme = country.scheme,
+                                    uri = country.uri
                                 )
                             },
                             region = addressDetails.region.let { region ->
                                 ItemEI.DeliveryAddress.AddressDetails.Region(
                                     id = region.id,
                                     description = region.description,
-                                    scheme = region.scheme
+                                    scheme = region.scheme,
+                                    uri = region.uri
                                 )
                             },
                             locality = addressDetails.locality?.let { locality ->
                                 ItemEI.DeliveryAddress.AddressDetails.Locality(
                                     id = locality.id,
                                     description = locality.description,
-                                    scheme = locality.scheme
+                                    scheme = locality.scheme,
+                                    uri = locality.uri
                                 )
                             }
                         )
@@ -207,8 +204,7 @@ class EiService(
             quantity = item.quantity,
             unit = item.unit.let { unit ->
                 ItemEI.Unit(
-                    id = unit.id,
-                    name = unit.name
+                    id = unit.id
                 )
             }
         )
@@ -269,7 +265,7 @@ class EiService(
     }
 
     private fun checkItemsQuantity(eiDto: EiUpdate) {
-        val itemWithWrongQuantity = eiDto.tender.items?.firstOrNull { it.quantity <= BigDecimal.ZERO }
+        val itemWithWrongQuantity = eiDto.tender.items?.first { it.quantity <= BigDecimal.ZERO }
         if (itemWithWrongQuantity != null)
             throw ErrorException(
                 error = ErrorType.INVALID_ITEM_QUANTITY,
@@ -307,21 +303,17 @@ class EiService(
                 mainProcurementCategory = eiDto.tender.mainProcurementCategory,
                 items = eiDto.tender.items?.map { item ->
                     ItemEI(
-                        id = generationService.generateItemId().toString(),
+                        id = item.id,
                         description = item.description,
                         classification = item.classification.let { classification ->
                             ItemEI.Classification(
-                                id = classification.id,
-                                description = classification.description,
-                                scheme = classification.scheme
+                                id = classification.id
                             )
                         },
                         additionalClassifications = item.additionalClassifications
                             ?.map { additionalClassification ->
                                 ItemEI.AdditionalClassification(
-                                    id = additionalClassification.id,
-                                    scheme = additionalClassification.scheme,
-                                    description = additionalClassification.description
+                                    id = additionalClassification.id
                                 )
                             }.orEmpty(),
                         deliveryAddress = item.deliveryAddress.let { address ->
@@ -334,21 +326,24 @@ class EiService(
                                             ItemEI.DeliveryAddress.AddressDetails.Country(
                                                 id = country.id,
                                                 description = country.description,
-                                                scheme = country.scheme
+                                                scheme = country.scheme,
+                                                uri = country.uri
                                             )
                                         },
                                         region = addressDetails.region.let { region ->
                                             ItemEI.DeliveryAddress.AddressDetails.Region(
                                                 id = region.id,
                                                 description = region.description,
-                                                scheme = region.scheme
+                                                scheme = region.scheme,
+                                                uri = region.uri
                                             )
                                         },
                                         locality = addressDetails.locality?.let { locality ->
                                             ItemEI.DeliveryAddress.AddressDetails.Locality(
                                                 id = locality.id,
                                                 description = locality.description,
-                                                scheme = locality.scheme
+                                                scheme = locality.scheme,
+                                                uri = locality.uri
                                             )
                                         }
                                     )
@@ -358,8 +353,7 @@ class EiService(
                         quantity = item.quantity,
                         unit = item.unit.let { unit ->
                             ItemEI.Unit(
-                                id = unit.id,
-                                name = unit.name
+                                id = unit.id
                             )
                         }
                     )
