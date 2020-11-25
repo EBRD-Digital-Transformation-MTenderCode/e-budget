@@ -109,8 +109,8 @@ class EiService(
                 ?.map { additionalClassification ->
                     ItemEI.AdditionalClassification(
                         id = additionalClassification.id,
-                        description = additionalClassification.description,
-                        scheme = additionalClassification.scheme
+                        scheme = additionalClassification.scheme,
+                        description = additionalClassification.description
                     )
                 }
                 .orEmpty(),
@@ -171,8 +171,8 @@ class EiService(
                 ?.map { additionalClassification ->
                     ItemEI.AdditionalClassification(
                         id = additionalClassification.id,
-                        description = additionalClassification.description,
-                        scheme = additionalClassification.scheme
+                        scheme = additionalClassification.scheme,
+                        description = additionalClassification.description
                     )
                 }
                 ?: storedItem.additionalClassifications,
@@ -275,7 +275,7 @@ class EiService(
     }
 
     private fun checkItemsQuantity(eiDto: EiUpdate) {
-        val itemWithWrongQuantity = eiDto.tender.items?.first { it.quantity <= BigDecimal.ZERO }
+        val itemWithWrongQuantity = eiDto.tender.items?.firstOrNull { it.quantity <= BigDecimal.ZERO }
         if (itemWithWrongQuantity != null)
             throw ErrorException(
                 error = ErrorType.INVALID_ITEM_QUANTITY,
@@ -313,7 +313,7 @@ class EiService(
                 mainProcurementCategory = eiDto.tender.mainProcurementCategory,
                 items = eiDto.tender.items?.map { item ->
                     ItemEI(
-                        id = item.id,
+                        id = generationService.generateItemId().toString(),
                         description = item.description,
                         classification = item.classification.let { classification ->
                             ItemEI.Classification(
@@ -326,8 +326,8 @@ class EiService(
                             ?.map { additionalClassification ->
                                 ItemEI.AdditionalClassification(
                                     id = additionalClassification.id,
-                                    description = additionalClassification.description,
-                                    scheme = additionalClassification.scheme
+                                    scheme = additionalClassification.scheme,
+                                    description = additionalClassification.description
                                 )
                             }.orEmpty(),
                         deliveryAddress = item.deliveryAddress.let { address ->
