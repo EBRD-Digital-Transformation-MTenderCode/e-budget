@@ -101,8 +101,8 @@ class EiService(
             classification = item.classification.let { classification ->
                 ItemEI.Classification(
                     id = classification.id,
-                    description = classification.description,
-                    scheme = classification.scheme
+                    scheme = classification.scheme,
+                    description = classification.description
                 )
             },
             additionalClassifications = item.additionalClassifications
@@ -163,8 +163,8 @@ class EiService(
             classification = item.classification.let { classification ->
                 ItemEI.Classification(
                     id = classification.id,
-                    description = classification.description,
-                    scheme = classification.scheme
+                    scheme = classification.scheme,
+                    description = classification.description
                 )
             },
             additionalClassifications = item.additionalClassifications
@@ -318,8 +318,8 @@ class EiService(
                         classification = item.classification.let { classification ->
                             ItemEI.Classification(
                                 id = classification.id,
-                                description = classification.description,
-                                scheme = classification.scheme
+                                scheme = classification.scheme,
+                                description = classification.description
                             )
                         },
                         additionalClassifications = item.additionalClassifications
