@@ -101,8 +101,8 @@ class EiService(
             classification = item.classification.let { classification ->
                 ItemEI.Classification(
                     id = classification.id,
-                    scheme = classification.scheme,
-                    description = classification.description
+                    description = classification.description,
+                    scheme = classification.scheme
                 )
             },
             additionalClassifications = item.additionalClassifications
