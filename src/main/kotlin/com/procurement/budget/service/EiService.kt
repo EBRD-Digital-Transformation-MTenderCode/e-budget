@@ -124,21 +124,24 @@ class EiService(
                                 ItemEI.DeliveryAddress.AddressDetails.Country(
                                     id = country.id,
                                     description = country.description,
-                                    scheme = country.scheme
+                                    scheme = country.scheme,
+                                    uri = country.uri
                                 )
                             },
                             region = addressDetails.region.let { region ->
                                 ItemEI.DeliveryAddress.AddressDetails.Region(
                                     id = region.id,
                                     description = region.description,
-                                    scheme = region.scheme
+                                    scheme = region.scheme,
+                                    uri = region.uri
                                 )
                             },
                             locality = addressDetails.locality?.let { locality ->
                                 ItemEI.DeliveryAddress.AddressDetails.Locality(
                                     id = locality.id,
                                     description = locality.description,
-                                    scheme = locality.scheme
+                                    scheme = locality.scheme,
+                                    uri = locality.uri
                                 )
                             }
                         )
@@ -168,8 +171,8 @@ class EiService(
                 ?.map { additionalClassification ->
                     ItemEI.AdditionalClassification(
                         id = additionalClassification.id,
-                        description = additionalClassification.description,
-                        scheme = additionalClassification.scheme
+                        scheme = additionalClassification.scheme,
+                        description = additionalClassification.description
                     )
                 }
                 ?: storedItem.additionalClassifications,
@@ -183,21 +186,24 @@ class EiService(
                                 ItemEI.DeliveryAddress.AddressDetails.Country(
                                     id = country.id,
                                     description = country.description,
-                                    scheme = country.scheme
+                                    scheme = country.scheme,
+                                    uri = country.uri
                                 )
                             },
                             region = addressDetails.region.let { region ->
                                 ItemEI.DeliveryAddress.AddressDetails.Region(
                                     id = region.id,
                                     description = region.description,
-                                    scheme = region.scheme
+                                    scheme = region.scheme,
+                                    uri = region.uri
                                 )
                             },
                             locality = addressDetails.locality?.let { locality ->
                                 ItemEI.DeliveryAddress.AddressDetails.Locality(
                                     id = locality.id,
                                     description = locality.description,
-                                    scheme = locality.scheme
+                                    scheme = locality.scheme,
+                                    uri = locality.uri
                                 )
                             }
                         )
@@ -312,8 +318,8 @@ class EiService(
                         classification = item.classification.let { classification ->
                             ItemEI.Classification(
                                 id = classification.id,
-                                description = classification.description,
-                                scheme = classification.scheme
+                                scheme = classification.scheme,
+                                description = classification.description
                             )
                         },
                         additionalClassifications = item.additionalClassifications
@@ -334,21 +340,24 @@ class EiService(
                                             ItemEI.DeliveryAddress.AddressDetails.Country(
                                                 id = country.id,
                                                 description = country.description,
-                                                scheme = country.scheme
+                                                scheme = country.scheme,
+                                                uri = country.uri
                                             )
                                         },
                                         region = addressDetails.region.let { region ->
                                             ItemEI.DeliveryAddress.AddressDetails.Region(
                                                 id = region.id,
                                                 description = region.description,
-                                                scheme = region.scheme
+                                                scheme = region.scheme,
+                                                uri = region.uri
                                             )
                                         },
                                         locality = addressDetails.locality?.let { locality ->
                                             ItemEI.DeliveryAddress.AddressDetails.Locality(
                                                 id = locality.id,
                                                 description = locality.description,
-                                                scheme = locality.scheme
+                                                scheme = locality.scheme,
+                                                uri = locality.uri
                                             )
                                         }
                                     )
