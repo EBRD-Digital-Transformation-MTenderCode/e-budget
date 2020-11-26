@@ -5,7 +5,14 @@ import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.procurement.budget.model.dto.databinding.BooleansDeserializer
-import com.procurement.budget.model.dto.ocds.*
+import com.procurement.budget.model.dto.ocds.Address
+import com.procurement.budget.model.dto.ocds.ContactPoint
+import com.procurement.budget.model.dto.ocds.EuropeanUnionFunding
+import com.procurement.budget.model.dto.ocds.Identifier
+import com.procurement.budget.model.dto.ocds.Period
+import com.procurement.budget.model.dto.ocds.TenderStatus
+import com.procurement.budget.model.dto.ocds.TenderStatusDetails
+import com.procurement.budget.model.dto.ocds.Value
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class Fs @JsonCreator constructor(
@@ -85,7 +92,7 @@ data class OrganizationReferenceFs @JsonCreator constructor(
 
         val address: Address,
 
-        val additionalIdentifiers: HashSet<Identifier>?,
+        val additionalIdentifiers: List<Identifier>?,
 
         val contactPoint: ContactPoint
 )

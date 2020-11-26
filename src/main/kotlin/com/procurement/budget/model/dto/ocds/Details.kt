@@ -17,7 +17,7 @@ data class Details @JsonCreator constructor(
 
         val gpaProfile: GpaProfile?,
 
-        val bankAccounts: Set<BankAccount>?,
+        val bankAccounts: List<BankAccount>?,
 
         val legalForm: LegalForm?
 )
@@ -67,7 +67,7 @@ data class GpaProfile @JsonCreator constructor(
 
         val gpaOrganizationType: GpaOrganizationType?,
 
-        val gpaThresholds: Set<GpaThreshold>?
+        val gpaThresholds: List<GpaThreshold>?
 )
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -111,7 +111,7 @@ data class BankAccount @JsonCreator constructor(
 
         val accountIdentification: AccountIdentifier,
 
-        val additionalAccountIdentifiers: Set<AccountIdentifier>?
+        val additionalAccountIdentifiers: List<AccountIdentifier>?
 )
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
