@@ -15,7 +15,6 @@ import com.procurement.budget.model.dto.ocds.Person
 import com.procurement.budget.model.dto.ocds.TenderStatus
 import com.procurement.budget.model.dto.ocds.TenderStatusDetails
 import java.math.BigDecimal
-import java.util.*
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class Ei @JsonCreator constructor(
@@ -94,9 +93,9 @@ data class OrganizationReferenceEi @JsonCreator constructor(
 
         val contactPoint: ContactPoint,
 
-        var additionalIdentifiers: HashSet<Identifier>?,
+        var additionalIdentifiers: List<Identifier>?,
 
-        var persones: HashSet<Person>?,
+        var persones: List<Person>?,
 
         var details: Details?,
 
