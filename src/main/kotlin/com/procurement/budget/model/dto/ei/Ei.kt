@@ -108,7 +108,7 @@ data class ItemEI(
         @param:JsonProperty("classification") @field:JsonProperty("classification") val classification: Classification,
 
         @JsonInclude(JsonInclude.Include.NON_EMPTY)
-        @param:JsonProperty("additionalClassifications") @field:JsonProperty("additionalClassifications") val additionalClassifications: List<AdditionalClassification>,
+        @param:JsonProperty("additionalClassifications") @field:JsonProperty("additionalClassifications") val additionalClassifications: List<AdditionalClassification>?,
 
         @param:JsonProperty("deliveryAddress") @field:JsonProperty("deliveryAddress") val deliveryAddress: DeliveryAddress,
         @param:JsonProperty("quantity") @field:JsonProperty("quantity") val quantity: BigDecimal,
