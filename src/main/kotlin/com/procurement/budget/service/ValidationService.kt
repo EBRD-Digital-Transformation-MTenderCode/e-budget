@@ -3,16 +3,52 @@ package com.procurement.budget.service
 import com.procurement.budget.dao.EiDao
 import com.procurement.budget.dao.FsDao
 import com.procurement.budget.exception.ErrorException
-import com.procurement.budget.exception.ErrorType.*
+import com.procurement.budget.exception.ErrorType.ADDITIONAL_IDENTIFIERS_IN_BUYER_IS_EMPTY_OR_MISSING
+import com.procurement.budget.exception.ErrorType.BANK_ACCOUNTS_IN_DETAILS_IN_BUYER_IS_EMPTY_OR_MISSING
+import com.procurement.budget.exception.ErrorType.BF
+import com.procurement.budget.exception.ErrorType.BUSINESS_FUNCTIONS_IN_PERSON_IN_BUYER_IS_EMPTY_OR_MISSING
+import com.procurement.budget.exception.ErrorType.DOCUMENTS
+import com.procurement.budget.exception.ErrorType.DOCUMENTS_BUSINESS_FUNCTION_IN_PERSON_IN_BUYER_IS_EMPTY_OR_MISSING
+import com.procurement.budget.exception.ErrorType.EI_NOT_FOUND
+import com.procurement.budget.exception.ErrorType.FS_NOT_FOUND
+import com.procurement.budget.exception.ErrorType.INVALID_AMOUNT
+import com.procurement.budget.exception.ErrorType.INVALID_BA
+import com.procurement.budget.exception.ErrorType.INVALID_BA_ID
+import com.procurement.budget.exception.ErrorType.INVALID_BA_PERIOD
+import com.procurement.budget.exception.ErrorType.INVALID_BUDGET_BREAKDOWN_ID
+import com.procurement.budget.exception.ErrorType.INVALID_BUSINESS_FUNCTION_TYPE
+import com.procurement.budget.exception.ErrorType.INVALID_BUYER_ID
+import com.procurement.budget.exception.ErrorType.INVALID_CPV
+import com.procurement.budget.exception.ErrorType.INVALID_CURRENCY
+import com.procurement.budget.exception.ErrorType.INVALID_STATUS
+import com.procurement.budget.exception.ErrorType.PERSONES
+import com.procurement.budget.exception.ErrorType.PERSONES_IN_BUYER_IS_EMPTY_OR_MISSING
 import com.procurement.budget.model.dto.bpe.CommandMessage
 import com.procurement.budget.model.dto.bpe.ResponseDto
-import com.procurement.budget.model.dto.check.*
+import com.procurement.budget.model.dto.check.BudgetBreakdownCheckRq
+import com.procurement.budget.model.dto.check.BudgetBreakdownCheckRs
+import com.procurement.budget.model.dto.check.BudgetCheckRs
+import com.procurement.budget.model.dto.check.BudgetSource
+import com.procurement.budget.model.dto.check.CheckBsRq
+import com.procurement.budget.model.dto.check.CheckBsRs
+import com.procurement.budget.model.dto.check.CheckRq
+import com.procurement.budget.model.dto.check.CheckRs
+import com.procurement.budget.model.dto.check.CheckSourceParty
+import com.procurement.budget.model.dto.check.CheckValue
+import com.procurement.budget.model.dto.check.OrganizationReferenceBuyer
+import com.procurement.budget.model.dto.check.PlanningCheckRs
+import com.procurement.budget.model.dto.check.TenderCheckRs
 import com.procurement.budget.model.dto.ei.Ei
 import com.procurement.budget.model.dto.ei.OrganizationReferenceEi
 import com.procurement.budget.model.dto.fs.Fs
 import com.procurement.budget.model.dto.fs.OrganizationReferenceFs
-import com.procurement.budget.model.dto.ocds.*
+import com.procurement.budget.model.dto.ocds.BusinessFunction
+import com.procurement.budget.model.dto.ocds.DocumentBF
+import com.procurement.budget.model.dto.ocds.Person
+import com.procurement.budget.model.dto.ocds.TenderStatus
+import com.procurement.budget.model.dto.ocds.TenderStatusDetails
 import com.procurement.budget.utils.toObject
+import com.procurement.budget.utils.toSetBy
 import org.springframework.stereotype.Service
 import java.math.BigDecimal
 import java.util.*
@@ -25,7 +61,7 @@ class ValidationService(private val fsDao: FsDao,
         val dto = toObject(CheckRq::class.java, cm.data)
         val breakdownsRq = dto.planning.budget.budgetBreakdown
         validateBudgetBreakdown(breakdownsRq)
-        val cpIds = breakdownsRq.asSequence().map { getCpIdFromOcId(it.id) }.toSet()
+        val cpIds = breakdownsRq.toSetBy { getCpIdFromOcId(it.id) }
         val entities = fsDao.getAllByCpIds(cpIds)
         if (entities.isEmpty()) throw ErrorException(FS_NOT_FOUND)
         val fsMap = HashMap<String?, Fs>()
@@ -33,9 +69,9 @@ class ValidationService(private val fsDao: FsDao,
                 .map { toObject(Fs::class.java, it.jsonData) }
                 .forEach { fsMap[it.ocid] = it }
 
-        val funders = HashSet<OrganizationReferenceFs>()
-        val payers = HashSet<OrganizationReferenceFs>()
-        val buyers = HashSet<OrganizationReferenceEi>()
+        val funders = mutableListOf<OrganizationReferenceFs>()
+        val payers = mutableListOf<OrganizationReferenceFs>()
+        val buyers = mutableListOf<OrganizationReferenceEi>()
         val breakdownsRs: ArrayList<BudgetBreakdownCheckRs> = arrayListOf()
         var isEuropeanUnionFunded = false
         var totalAmount: BigDecimal = BigDecimal.ZERO
@@ -62,7 +98,7 @@ class ValidationService(private val fsDao: FsDao,
 
         return ResponseDto(data =
         CheckRs(
-                ei = cpIds,
+                ei = cpIds.toList(),
                 planning = PlanningCheckRs(
                         budget = BudgetCheckRs(
                                 description = dto.planning.budget.description,
@@ -92,22 +128,22 @@ class ValidationService(private val fsDao: FsDao,
         val budgetSourcesRq = dto.planning.budget.budgetSource
         val actualBudgetSourcesRq = dto.actualBudgetSource
         val budgetAllocationRq = dto.planning.budget.budgetAllocation
-        val newEiIds = budgetSourcesRq.asSequence().map { getCpIdFromOcId(it.budgetBreakdownID) }.toSet()
+        val newEiIds = budgetSourcesRq.toSetBy { getCpIdFromOcId(it.budgetBreakdownID) }
         val entities = fsDao.getAllByCpIds(newEiIds)
         if (entities.isEmpty()) throw ErrorException(FS_NOT_FOUND)
         val fsMap = HashMap<String?, Fs>()
-        val funders = HashSet<OrganizationReferenceFs>()
-        val payers = HashSet<OrganizationReferenceFs>()
+        val funders = mutableListOf<OrganizationReferenceFs>()
+        val payers = mutableListOf<OrganizationReferenceFs>()
         var buyer: OrganizationReferenceEi? = null
-        val cpvCodesFromEi = HashSet<String>()
-        val treasuryBudgetSources = HashSet<BudgetSource>()
+        val cpvCodesFromEi = mutableListOf<String>()
+        val treasuryBudgetSources = mutableListOf<BudgetSource>()
         entities.asSequence().map { toObject(Fs::class.java, it.jsonData) }.forEach { fsMap[it.ocid] = it }
         for (cpId in newEiIds) {
-            val bsIds = budgetSourcesRq.asSequence().map { it.budgetBreakdownID }.toSet()
-            val baIds = budgetAllocationRq.asSequence().map { it.budgetBreakdownID }.toSet()
+            val bsIds = budgetSourcesRq.toSetBy { it.budgetBreakdownID }
+            val baIds = budgetAllocationRq.toSetBy { it.budgetBreakdownID }
             if (bsIds.size != baIds.size) throw ErrorException(INVALID_BA)
             if (!bsIds.containsAll(baIds)) throw ErrorException(INVALID_BA_ID)
-            if (budgetSourcesRq.asSequence().map { it.currency }.toSet().size > 1) throw ErrorException(INVALID_CURRENCY)
+            if (budgetSourcesRq.toSetBy { it.currency }.size > 1) throw ErrorException(INVALID_CURRENCY)
             budgetSourcesRq.asSequence().filter { cpId == getCpIdFromOcId(it.budgetBreakdownID) }.forEach { bsRq ->
                 val fs = fsMap[bsRq.budgetBreakdownID] ?: throw ErrorException(FS_NOT_FOUND)
 //                if (fs.tender.status != TenderStatus.ACTIVE) throw ErrorException(INVALID_STATUS)
@@ -141,14 +177,14 @@ class ValidationService(private val fsDao: FsDao,
         val excludedEI: Set<String>
         val addedFS: Set<String>
         val excludedFS: Set<String>
-        val newFsIds = budgetSourcesRq.asSequence().map { it.budgetBreakdownID }.toSet()
+        val newFsIds = budgetSourcesRq.toSetBy { it.budgetBreakdownID }
         if (actualBudgetSourcesRq != null && actualBudgetSourcesRq.isNotEmpty()) {
-            val actualEiIds = actualBudgetSourcesRq.asSequence().map { getCpIdFromOcId(it.budgetBreakdownID) }.toSet()
+            val actualEiIds = actualBudgetSourcesRq.toSetBy { getCpIdFromOcId(it.budgetBreakdownID) }
             val (toAddEi, toExcludeEi) = diff(left = actualEiIds, right = newEiIds)
             addedEI = toAddEi
             excludedEI = toExcludeEi
 
-            val actualFsIds = actualBudgetSourcesRq.asSequence().map { it.budgetBreakdownID }.toSet()
+            val actualFsIds = actualBudgetSourcesRq.toSetBy { it.budgetBreakdownID }
             val (toAddFs, toExcludeFs) = diff(left = actualFsIds, right = newFsIds)
             addedFS = toAddFs
             excludedFS = toExcludeFs
@@ -167,10 +203,10 @@ class ValidationService(private val fsDao: FsDao,
                 buyer = buyer,
                 funders = funders,
                 payers = payers,
-                addedEI = addedEI,
-                excludedEI = excludedEI,
-                addedFS = addedFS,
-                excludedFS = excludedFS
+                addedEI = addedEI.toList(),
+                excludedEI = excludedEI.toList(),
+                addedFS = addedFS.toList(),
+                excludedFS = excludedFS.toList()
             )
         )
     }
@@ -252,9 +288,9 @@ class ValidationService(private val fsDao: FsDao,
         throw ErrorException(error = INVALID_BUSINESS_FUNCTION_TYPE)
     }
 
-    private fun validateCpv(cpvCodesFromEi: HashSet<String>, itemsCPVs: HashSet<String>) {
+    private fun validateCpv(cpvCodesFromEi: List<String>, itemsCPVs: List<String>) {
         if (cpvCodesFromEi.size > 1) throw ErrorException(INVALID_CPV)
-        val itemsCPVSet = itemsCPVs.asSequence().map { it.substring(0, 3).toUpperCase() }.toHashSet()
+        val itemsCPVSet = itemsCPVs.map { it.substring(0, 3).toUpperCase() }
         if (itemsCPVSet.size > 1) throw ErrorException(INVALID_CPV)
         if (!cpvCodesFromEi.containsAll(itemsCPVSet)) throw ErrorException(INVALID_CPV)
     }
@@ -269,16 +305,16 @@ class ValidationService(private val fsDao: FsDao,
         return buyerDb
     }
 
-    private fun updatePersones(personesDb: HashSet<Person>?, personesDto: HashSet<Person>): HashSet<Person> {
+    private fun updatePersones(personesDb: List<Person>?, personesDto: List<Person>): List<Person> {
         if (personesDb == null || personesDb.isEmpty()) return personesDto
-        val personesDbIds = personesDb.asSequence().map { it.identifier.id }.toSet()
-        val personesDtoIds = personesDto.asSequence().map { it.identifier.id }.toSet()
+        val personesDbIds = personesDb.toSetBy { it.identifier.id }
+        val personesDtoIds = personesDto.toSetBy { it.identifier.id }
         if (personesDtoIds.size != personesDto.size) throw ErrorException(PERSONES)
         //update
         personesDb.forEach { personDb -> personDb.update(personesDto.first { it.identifier.id == personDb.identifier.id }) }
         val newPersonesId = personesDtoIds - personesDbIds
-        val newPersones = personesDto.asSequence().filter { it.identifier.id in newPersonesId }.toHashSet()
-        return (personesDb + newPersones).toHashSet()
+        val newPersones = personesDto.filter { it.identifier.id in newPersonesId }
+        return (personesDb + newPersones)
     }
 
     private fun Person.update(personDto: Person) {
@@ -289,13 +325,13 @@ class ValidationService(private val fsDao: FsDao,
 
     private fun updateBusinessFunctions(bfDb: List<BusinessFunction>, bfDto: List<BusinessFunction>): List<BusinessFunction> {
         if (bfDb.isEmpty()) return bfDto
-        val bfDbIds = bfDb.asSequence().map { it.id }.toSet()
-        val bfDtoIds = bfDto.asSequence().map { it.id }.toSet()
+        val bfDbIds = bfDb.toSetBy { it.id }
+        val bfDtoIds = bfDto.toSetBy { it.id }
         if (bfDtoIds.size != bfDto.size) throw ErrorException(BF)
         //update
         bfDb.forEach { bf -> bf.update(bfDto.first { it.id == bf.id }) }
         val newBfId = bfDtoIds - bfDbIds
-        val newBf = bfDto.asSequence().filter { it.id in newBfId }.toHashSet()
+        val newBf = bfDto.filter { it.id in newBfId }
         return bfDb + newBf
     }
 
@@ -308,8 +344,8 @@ class ValidationService(private val fsDao: FsDao,
 
     private fun updateDocuments(documentsDb: List<DocumentBF>, documentsDto: List<DocumentBF>): List<DocumentBF> {
         //validation
-        val documentsDbIds = documentsDb.asSequence().map { it.id }.toSet()
-        val documentDtoIds = documentsDto.asSequence().map { it.id }.toSet()
+        val documentsDbIds = documentsDb.toSetBy { it.id }
+        val documentDtoIds = documentsDto.toSetBy { it.id }
         if (documentDtoIds.size != documentsDto.size) throw ErrorException(DOCUMENTS)
         //update
         documentsDb.forEach { docDb -> docDb.update(documentsDto.first { it.id == docDb.id }) }
@@ -324,8 +360,8 @@ class ValidationService(private val fsDao: FsDao,
     }
 
     private fun validateBudgetBreakdown(budgetBreakdown: List<BudgetBreakdownCheckRq>) {
-        if (budgetBreakdown.asSequence().map { it.amount.currency }.toSet().size > 1) throw ErrorException(INVALID_CURRENCY)
-        if (budgetBreakdown.asSequence().map { it.id }.toSet().size < budgetBreakdown.size) throw ErrorException(INVALID_BUDGET_BREAKDOWN_ID)
+        if (budgetBreakdown.toSetBy { it.amount.currency }.size > 1) throw ErrorException(INVALID_CURRENCY)
+        if (budgetBreakdown.toSetBy { it.id }.size < budgetBreakdown.size) throw ErrorException(INVALID_BUDGET_BREAKDOWN_ID)
     }
 
     private fun checkCPV(ei: Ei, dto: CheckRq) {

@@ -10,22 +10,21 @@ import com.procurement.budget.model.dto.fs.OrganizationReferenceFs
 import com.procurement.budget.model.dto.ocds.Classification
 import com.procurement.budget.model.dto.ocds.EuropeanUnionFunding
 import com.procurement.budget.model.dto.ocds.Period
-import java.util.*
 
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 data class CheckRs(
 
-        val ei: Set<String>?,
+        val ei: List<String>?,
 
         val planning: PlanningCheckRs,
 
         var tender: TenderCheckRs,
 
-        val funder: HashSet<OrganizationReferenceFs>?,
+        val funder: List<OrganizationReferenceFs>?,
 
-        val payer: HashSet<OrganizationReferenceFs>?,
+        val payer: List<OrganizationReferenceFs>?,
 
-        val buyer: HashSet<OrganizationReferenceEi>?
+        val buyer: List<OrganizationReferenceEi>?
 )
 
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
