@@ -4,13 +4,26 @@ import com.procurement.budget.dao.EiDao
 import com.procurement.budget.dao.FsDao
 import com.procurement.budget.exception.ErrorException
 import com.procurement.budget.exception.ErrorType
-import com.procurement.budget.exception.ErrorType.*
+import com.procurement.budget.exception.ErrorType.CONTEXT
+import com.procurement.budget.exception.ErrorType.EI_NOT_FOUND
+import com.procurement.budget.exception.ErrorType.FS_NOT_FOUND
+import com.procurement.budget.exception.ErrorType.INVALID_CURRENCY
+import com.procurement.budget.exception.ErrorType.INVALID_EUROPEAN
+import com.procurement.budget.exception.ErrorType.INVALID_OCID
+import com.procurement.budget.exception.ErrorType.INVALID_OWNER
+import com.procurement.budget.exception.ErrorType.INVALID_PERIOD
+import com.procurement.budget.exception.ErrorType.INVALID_STATUS
 import com.procurement.budget.model.dto.bpe.CommandMessage
 import com.procurement.budget.model.dto.bpe.ResponseDto
 import com.procurement.budget.model.dto.ei.Ei
 import com.procurement.budget.model.dto.ei.OrganizationReferenceEi
 import com.procurement.budget.model.dto.ei.ValueEi
-import com.procurement.budget.model.dto.fs.*
+import com.procurement.budget.model.dto.fs.BudgetFs
+import com.procurement.budget.model.dto.fs.Fs
+import com.procurement.budget.model.dto.fs.OrganizationReferenceFs
+import com.procurement.budget.model.dto.fs.PlanningFs
+import com.procurement.budget.model.dto.fs.SourceEntityFs
+import com.procurement.budget.model.dto.fs.TenderFs
 import com.procurement.budget.model.dto.fs.request.FsCreate
 import com.procurement.budget.model.dto.fs.request.FsUpdate
 import com.procurement.budget.model.dto.fs.response.EiForFs
@@ -21,7 +34,11 @@ import com.procurement.budget.model.dto.ocds.Period
 import com.procurement.budget.model.dto.ocds.TenderStatus
 import com.procurement.budget.model.dto.ocds.TenderStatusDetails
 import com.procurement.budget.model.entity.FsEntity
-import com.procurement.budget.utils.*
+import com.procurement.budget.utils.localNowUTC
+import com.procurement.budget.utils.toDate
+import com.procurement.budget.utils.toJson
+import com.procurement.budget.utils.toLocal
+import com.procurement.budget.utils.toObject
 import org.springframework.stereotype.Service
 import java.math.BigDecimal
 import java.time.LocalDateTime
@@ -203,12 +220,12 @@ class FsService(private val fsDao: FsDao,
 
     private fun getFounderFromEi(buyer: OrganizationReferenceEi): OrganizationReferenceFs {
         return OrganizationReferenceFs(
-                id = buyer.id,
-                name = buyer.name,
-                identifier = buyer.identifier,
-                address = buyer.address,
-                additionalIdentifiers = buyer.additionalIdentifiers ?: hashSetOf(),
-                contactPoint = buyer.contactPoint
+            id = buyer.id,
+            name = buyer.name,
+            identifier = buyer.identifier,
+            address = buyer.address,
+            additionalIdentifiers = buyer.additionalIdentifiers ?: emptyList(),
+            contactPoint = buyer.contactPoint
         )
     }
 

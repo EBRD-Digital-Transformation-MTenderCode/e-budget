@@ -18,28 +18,28 @@ data class CheckBsRq @JsonCreator constructor(
 
         val buyer: OrganizationReferenceBuyer,
 
-        val actualBudgetSource: Set<BudgetSource>?,
+        val actualBudgetSource: List<BudgetSource>?,
 
-        val itemsCPVs: HashSet<String>
+        val itemsCPVs: List<String>
 )
 
 data class CheckBsRs @JsonCreator constructor(
 
-        val treasuryBudgetSources: Set<BudgetSource>?,
+        val treasuryBudgetSources: List<BudgetSource>?,
 
         val buyer: OrganizationReferenceEi?,
 
-        val funders: HashSet<OrganizationReferenceFs>?,
+        val funders: List<OrganizationReferenceFs>?,
 
-        val payers: HashSet<OrganizationReferenceFs>?,
+        val payers: List<OrganizationReferenceFs>?,
 
-        val addedEI: Set<String>?,
+        val addedEI: List<String>?,
 
-        val excludedEI: Set<String>?,
+        val excludedEI: List<String>?,
 
-        val addedFS: Set<String>?,
+        val addedFS: List<String>?,
 
-        val excludedFS: Set<String>?
+        val excludedFS: List<String>?
 )
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -51,9 +51,9 @@ data class Planning @JsonCreator constructor(
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class Budget @JsonCreator constructor(
 
-        val budgetAllocation: Set<BudgetAllocation>,
+        val budgetAllocation: List<BudgetAllocation>,
 
-        val budgetSource: Set<BudgetSource>
+        val budgetSource: List<BudgetSource>
 )
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -86,9 +86,9 @@ data class OrganizationReferenceBuyer @JsonCreator constructor(
 
         val name: String?,
 
-        val additionalIdentifiers: HashSet<Identifier>?,
+        val additionalIdentifiers: List<Identifier>?,
 
-        val persones: HashSet<Person>,
+        val persones: List<Person>,
 
         val details: Details?
 )
