@@ -35,6 +35,7 @@ import com.procurement.budget.model.dto.ocds.Period
 import com.procurement.budget.model.dto.ocds.TenderStatus
 import com.procurement.budget.model.dto.ocds.TenderStatusDetails
 import com.procurement.budget.model.entity.FsEntity
+import com.procurement.budget.utils.getDuplicate
 import com.procurement.budget.utils.localNowUTC
 import com.procurement.budget.utils.toDate
 import com.procurement.budget.utils.toJson
@@ -56,6 +57,8 @@ class FsService(private val fsDao: FsDao,
         val dateTime = cm.context.startDate?.toLocal() ?: throw ErrorException(CONTEXT)
         val fsDto = toObject(FsCreate::class.java, cm.data)
         fsDto.validateTextAttributes()
+        fsDto.validateDuplicates()
+
         validatePeriod(fsDto.planning.budget.period)
 
         if (fsDto.planning.budget.isEuropeanUnionFunded && fsDto.planning.budget.europeanUnionFunding == null) {
@@ -217,6 +220,17 @@ class FsService(private val fsDao: FsDao,
             error = ErrorType.INCORRECT_VALUE_ATTRIBUTE,
             message = "The attribute '$name' is empty or blank."
         )
+    }
+
+    private fun FsCreate.validateDuplicates() {
+        val duplicateIdentifier = tender.procuringEntity.additionalIdentifiers
+            ?.getDuplicate { it.scheme.toUpperCase() + it.id.toUpperCase() }
+
+        if (duplicateIdentifier != null)
+            throw ErrorException(
+                error = ErrorType.DUPLICATE,
+                message = "Attribute 'tender.procuringEntity.additionalIdentifiers' has duplicate by scheme '${duplicateIdentifier.scheme}' and id '${duplicateIdentifier.id}'."
+            )
     }
 
     private fun fsUpdate(fs: Fs, fsUpdate: FsUpdate) {
