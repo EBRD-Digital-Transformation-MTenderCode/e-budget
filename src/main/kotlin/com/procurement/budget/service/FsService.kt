@@ -139,6 +139,7 @@ class FsService(private val fsDao: FsDao,
         val owner = cm.context.owner ?: throw ErrorException(CONTEXT)
         val token = cm.context.token ?: throw ErrorException(CONTEXT)
         val fsDto = toObject(FsUpdate::class.java, cm.data)
+        fsDto.validateTextAttributes()
 
         validatePeriod(fsDto.planning.budget.period)
         if (fsDto.planning.budget.isEuropeanUnionFunded && fsDto.planning.budget.europeanUnionFunding == null) {
@@ -194,6 +195,17 @@ class FsService(private val fsDao: FsDao,
         planning.budget.europeanUnionFunding?.projectName.checkForBlank("planning.budget.europeanUnionFunding.projectName")
         planning.budget.europeanUnionFunding?.uri.checkForBlank("planning.budget.europeanUnionFunding.uri")
         planning.budget.id.checkForBlank("planning.budget.id")
+        planning.budget.project.checkForBlank("planning.budget.project")
+        planning.budget.projectID.checkForBlank("planning.budget.projectID")
+        planning.budget.uri.checkForBlank("planning.budget.uri")
+        planning.rationale.checkForBlank("planning.rationale")
+    }
+
+    private fun FsUpdate.validateTextAttributes() {
+        planning.budget.description.checkForBlank("planning.budget.description")
+        planning.budget.europeanUnionFunding?.projectIdentifier.checkForBlank("planning.budget.europeanUnionFunding.projectIdentifier")
+        planning.budget.europeanUnionFunding?.projectName.checkForBlank("planning.budget.europeanUnionFunding.projectName")
+        planning.budget.europeanUnionFunding?.uri.checkForBlank("planning.budget.europeanUnionFunding.uri")
         planning.budget.project.checkForBlank("planning.budget.project")
         planning.budget.projectID.checkForBlank("planning.budget.projectID")
         planning.budget.uri.checkForBlank("planning.budget.uri")
