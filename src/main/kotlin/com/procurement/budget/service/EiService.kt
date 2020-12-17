@@ -297,6 +297,15 @@ class EiService(
     }
 
     private fun EiCreate.validateDuplicates() {
+        val duplicateItemId = tender.items
+            ?.getDuplicate { it.id.toUpperCase() }
+
+        if (duplicateItemId != null)
+            throw ErrorException(
+                error = ErrorType.DUPLICATE,
+                message = "Attribute 'tender.items' has duplicate by id '${duplicateItemId}'."
+            )
+
         val duplicateAdditionalClassification = tender.items
             ?.asSequence()
             ?.flatMap {
