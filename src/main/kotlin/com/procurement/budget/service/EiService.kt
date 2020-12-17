@@ -64,6 +64,8 @@ class EiService(
         val owner = cm.context.owner ?: throw ErrorException(CONTEXT)
         val token = cm.context.token ?: throw ErrorException(CONTEXT)
         val eiDto = toObject(EiUpdate::class.java, cm.data)
+        eiDto.validateTextAttributes()
+
         val entity = eiDao.getByCpId(cpId) ?: throw ErrorException(EI_NOT_FOUND)
         if (entity.token != UUID.fromString(token)) throw ErrorException(INVALID_TOKEN)
         if (entity.owner != owner) throw ErrorException(INVALID_OWNER)
@@ -267,6 +269,22 @@ class EiService(
         buyer.identifier.legalName.checkForBlank("buyer.identifier.legalName")
         buyer.identifier.uri.checkForBlank("buyer.identifier.uri")
         buyer.name.checkForBlank("buyer.name")
+    }
+
+    private fun EiUpdate.validateTextAttributes() {
+        planning?.rationale.checkForBlank("planning.rationale")
+
+        tender.title.checkForBlank("tender.title")
+        tender.description.checkForBlank("tender.description")
+
+        tender.items?.forEach {item ->
+            item.description.checkForBlank("tender.items.description")
+            item.deliveryAddress.streetAddress.checkForBlank("tender.items.deliveryAddress.streetAddress")
+            item.deliveryAddress.postalCode.checkForBlank("tender.items.deliveryAddress.postalCode")
+            item.deliveryAddress.addressDetails.locality?.scheme.checkForBlank("deliveryAddress.addressDetails.locality.scheme")
+            item.deliveryAddress.addressDetails.locality?.id.checkForBlank("deliveryAddress.addressDetails.locality.id")
+            item.deliveryAddress.addressDetails.locality?.description.checkForBlank("deliveryAddress.addressDetails.locality.description")
+        }
     }
 
     private fun String?.checkForBlank(name: String) = this.errorIfBlank {
