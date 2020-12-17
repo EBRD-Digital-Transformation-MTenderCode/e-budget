@@ -40,5 +40,6 @@ enum class ErrorType constructor(val code: String, val message: String) {
     INVALID_BUSINESS_FUNCTION_TYPE("20.08", "A person with a business function type 'authority' should be used for the confirmation request."),
     INVALID_ITEM_QUANTITY("20.09", "Invalid item quantity."),
     DUPLICATED_ITEMS("20.10", "Duplicated items found."),
-    INCORRECT_VALUE_ATTRIBUTE("20.11", "Incorrect an attribute value.");
+    INCORRECT_VALUE_ATTRIBUTE("20.11", "Incorrect an attribute value."),
+    DUPLICATE("20.12", "Duplicate.");
 }
