@@ -309,6 +309,15 @@ class EiService(
                 error = ErrorType.DUPLICATE,
                 message = "Attribute 'tender.items.additionalClassifications' has duplicate by scheme '${duplicateAdditionalClassification.scheme}' and id '${duplicateAdditionalClassification.id}'."
             )
+
+        val duplicateAdditionalIdentifiers = buyer.additionalIdentifiers
+            ?.getDuplicate { it.scheme.toUpperCase() + it.id.toUpperCase() }
+
+        if (duplicateAdditionalIdentifiers != null)
+            throw ErrorException(
+                error = ErrorType.DUPLICATE,
+                message = "Attribute 'buyer.additionalIdentifiers' has duplicate by scheme '${duplicateAdditionalIdentifiers.scheme}' and id '${duplicateAdditionalIdentifiers.id}'."
+            )
     }
 
     private fun EiUpdate.validateDuplicates() {
