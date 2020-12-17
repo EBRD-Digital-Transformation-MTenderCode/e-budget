@@ -13,6 +13,7 @@ import com.procurement.budget.exception.ErrorType.INVALID_OCID
 import com.procurement.budget.exception.ErrorType.INVALID_OWNER
 import com.procurement.budget.exception.ErrorType.INVALID_PERIOD
 import com.procurement.budget.exception.ErrorType.INVALID_STATUS
+import com.procurement.budget.lib.errorIfBlank
 import com.procurement.budget.model.dto.bpe.CommandMessage
 import com.procurement.budget.model.dto.bpe.ResponseDto
 import com.procurement.budget.model.dto.ei.Ei
@@ -54,7 +55,7 @@ class FsService(private val fsDao: FsDao,
         val owner = cm.context.owner ?: throw ErrorException(CONTEXT)
         val dateTime = cm.context.startDate?.toLocal() ?: throw ErrorException(CONTEXT)
         val fsDto = toObject(FsCreate::class.java, cm.data)
-
+        fsDto.validateTextAttributes()
         validatePeriod(fsDto.planning.budget.period)
 
         if (fsDto.planning.budget.isEuropeanUnionFunded && fsDto.planning.budget.europeanUnionFunding == null) {
@@ -180,6 +181,30 @@ class FsService(private val fsDao: FsDao,
             eiForFs = getEiForFs(ei)
         }
         return ResponseDto(data = FsResponse(eiForFs, fs))
+    }
+
+    private fun FsCreate.validateTextAttributes() {
+        buyer?.identifier?.id.checkForBlank("buyer.identifier.id")
+        buyer?.identifier?.legalName.checkForBlank("buyer.identifier.legalName")
+        buyer?.identifier?.scheme.checkForBlank("buyer.identifier.scheme")
+        buyer?.identifier?.uri.checkForBlank("buyer.identifier.uri")
+        buyer?.name.checkForBlank("buyer.name")
+        planning.budget.description.checkForBlank("planning.budget.description")
+        planning.budget.europeanUnionFunding?.projectIdentifier.checkForBlank("planning.budget.europeanUnionFunding.projectIdentifier")
+        planning.budget.europeanUnionFunding?.projectName.checkForBlank("planning.budget.europeanUnionFunding.projectName")
+        planning.budget.europeanUnionFunding?.uri.checkForBlank("planning.budget.europeanUnionFunding.uri")
+        planning.budget.id.checkForBlank("planning.budget.id")
+        planning.budget.project.checkForBlank("planning.budget.project")
+        planning.budget.projectID.checkForBlank("planning.budget.projectID")
+        planning.budget.uri.checkForBlank("planning.budget.uri")
+        planning.rationale.checkForBlank("planning.rationale")
+    }
+
+    private fun String?.checkForBlank(name: String) = this.errorIfBlank {
+        ErrorException(
+            error = ErrorType.INCORRECT_VALUE_ATTRIBUTE,
+            message = "The attribute '$name' is empty or blank."
+        )
     }
 
     private fun fsUpdate(fs: Fs, fsUpdate: FsUpdate) {
