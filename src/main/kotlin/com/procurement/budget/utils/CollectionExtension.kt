@@ -8,7 +8,23 @@ inline fun <T, V> Collection<T>.isUnique(selector: (T) -> V): Boolean {
     return true
 }
 
+inline fun <T, V> Sequence<T>.isUnique(selector: (T) -> V): Boolean {
+    val unique = HashSet<V>()
+    forEach { item ->
+        if (!unique.add(selector(item))) return false
+    }
+    return true
+}
+
 inline fun <T, V> Collection<T>.getDuplicate(selector: (T) -> V): T? {
+    val unique = HashSet<V>()
+    forEach { item ->
+        if (!unique.add(selector(item))) return item
+    }
+    return null
+}
+
+inline fun <T, V> Sequence<T>.getDuplicate(selector: (T) -> V): T? {
     val unique = HashSet<V>()
     forEach { item ->
         if (!unique.add(selector(item))) return item

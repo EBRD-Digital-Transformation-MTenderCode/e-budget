@@ -65,6 +65,7 @@ class EiService(
         val token = cm.context.token ?: throw ErrorException(CONTEXT)
         val eiDto = toObject(EiUpdate::class.java, cm.data)
         eiDto.validateTextAttributes()
+        eiDto.validateDuplicates()
 
         val entity = eiDao.getByCpId(cpId) ?: throw ErrorException(EI_NOT_FOUND)
         if (entity.token != UUID.fromString(token)) throw ErrorException(INVALID_TOKEN)
@@ -224,6 +225,7 @@ class EiService(
 
     private fun validateDto(eiDto: EiCreate) {
         eiDto.validateTextAttributes()
+        eiDto.validateDuplicates()
 
         val details = eiDto.buyer.details
         if (details != null) {
@@ -292,6 +294,36 @@ class EiService(
             error = ErrorType.INCORRECT_VALUE_ATTRIBUTE,
             message = "The attribute '$name' is empty or blank."
         )
+    }
+
+    private fun EiCreate.validateDuplicates() {
+        val duplicateAdditionalClassification = tender.items
+            ?.asSequence()
+            ?.flatMap {
+                it.additionalClassifications?.asSequence() ?: emptySequence()
+            }
+            ?.getDuplicate { it.scheme.toUpperCase() + it.id.toUpperCase() }
+
+        if (duplicateAdditionalClassification != null)
+            throw ErrorException(
+                error = ErrorType.DUPLICATE,
+                message = "Attribute 'tender.items.additionalClassifications' has duplicate by scheme '${duplicateAdditionalClassification.scheme}' and id '${duplicateAdditionalClassification.id}'."
+            )
+    }
+
+    private fun EiUpdate.validateDuplicates() {
+        val duplicateAdditionalClassification = tender.items
+            ?.asSequence()
+            ?.flatMap {
+                it.additionalClassifications?.asSequence() ?: emptySequence()
+            }
+            ?.getDuplicate { it.scheme.toUpperCase() + it.id.toUpperCase() }
+
+        if (duplicateAdditionalClassification != null)
+            throw ErrorException(
+                error = ErrorType.DUPLICATE,
+                message = "Attribute 'tender.items.additionalClassifications' has duplicate by scheme '${duplicateAdditionalClassification.scheme}' and id '${duplicateAdditionalClassification.id}'."
+            )
     }
 
     private fun validateCpv(country: String, eiDto: EiCreate) {
