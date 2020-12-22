@@ -208,10 +208,12 @@ class FsService(private val fsDao: FsDao,
         buyer?.address?.addressDetails?.locality?.scheme.checkForBlank("buyer.address.addressDetails.locality.scheme")
         buyer?.address?.addressDetails?.locality?.id.checkForBlank("buyer.address.addressDetails.locality.id")
         buyer?.address?.addressDetails?.locality?.description.checkForBlank("buyer.address.addressDetails.locality.description")
-        buyer?.additionalIdentifiers?.mapIndexed { i, identifier -> identifier.id.checkForBlank("buyer.additionalIdentifiers.[$i]id") }
-        buyer?.additionalIdentifiers?.mapIndexed { i, identifier -> identifier.scheme.checkForBlank("buyer.additionalIdentifiers.[$i]scheme") }
-        buyer?.additionalIdentifiers?.mapIndexed { i, identifier -> identifier.legalName.checkForBlank("buyer.additionalIdentifiers.[$i]legalName")}
-        buyer?.additionalIdentifiers?.mapIndexed { i, identifier -> identifier.uri.checkForBlank("buyer.additionalIdentifiers.[$i]uri")}
+        buyer?.additionalIdentifiers?.mapIndexed { i, identifier ->
+            identifier.id.checkForBlank("buyer.additionalIdentifiers.[$i]id")
+            identifier.scheme.checkForBlank("buyer.additionalIdentifiers.[$i]scheme")
+            identifier.legalName.checkForBlank("buyer.additionalIdentifiers.[$i]legalName")
+            identifier.uri.checkForBlank("buyer.additionalIdentifiers.[$i]uri")
+        }
         buyer?.contactPoint?.name.checkForBlank("buyer.contactPoint.name")
         buyer?.contactPoint?.email.checkForBlank("buyer.contactPoint.email")
         buyer?.contactPoint?.telephone.checkForBlank("buyer.contactPoint.telephone")
@@ -221,10 +223,12 @@ class FsService(private val fsDao: FsDao,
         tender.procuringEntity.identifier.id.checkForBlank("tender.procuringEntity.identifier.id")
         tender.procuringEntity.identifier.legalName.checkForBlank("tender.procuringEntity.identifier.legalName")
         tender.procuringEntity.identifier.uri.checkForBlank("tender.procuringEntity.identifier.uri")
-        tender.procuringEntity.additionalIdentifiers?.mapIndexed { i, identifier -> identifier.id.checkForBlank("tender.procuringEntity.additionalIdentifiers.[$i]id")}
-        tender.procuringEntity.additionalIdentifiers?.mapIndexed { i, identifier -> identifier.scheme.checkForBlank("tender.procuringEntity.additionalIdentifiers.[$i]scheme")}
-        tender.procuringEntity.additionalIdentifiers?.mapIndexed { i, identifier -> identifier.legalName.checkForBlank("tender.procuringEntity.additionalIdentifiers.[$i]legalName")}
-        tender.procuringEntity.additionalIdentifiers?.mapIndexed { i, identifier -> identifier.uri.checkForBlank("tender.procuringEntity.additionalIdentifiers.[$i]uri")}
+        tender.procuringEntity.additionalIdentifiers?.mapIndexed { i, identifier ->
+            identifier.id.checkForBlank("tender.procuringEntity.additionalIdentifiers.[$i]id")
+            identifier.scheme.checkForBlank("tender.procuringEntity.additionalIdentifiers.[$i]scheme")
+            identifier.legalName.checkForBlank("tender.procuringEntity.additionalIdentifiers.[$i]legalName")
+            identifier.uri.checkForBlank("tender.procuringEntity.additionalIdentifiers.[$i]uri")
+        }
         tender.procuringEntity.address.streetAddress.checkForBlank("tender.procuringEntity.address.streetAddress")
         tender.procuringEntity.address.postalCode.checkForBlank("tender.procuringEntity.address.postalCode")
         tender.procuringEntity.address.addressDetails.locality.scheme.checkForBlank("tender.procuringEntity.address.addressDetails.locality.scheme")
