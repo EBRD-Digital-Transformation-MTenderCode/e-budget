@@ -31,6 +31,7 @@ import com.procurement.budget.model.dto.fs.response.EiForFs
 import com.procurement.budget.model.dto.fs.response.EiForFsBudget
 import com.procurement.budget.model.dto.fs.response.EiForFsPlanning
 import com.procurement.budget.model.dto.fs.response.FsResponse
+import com.procurement.budget.model.dto.ocds.Identifier
 import com.procurement.budget.model.dto.ocds.Period
 import com.procurement.budget.model.dto.ocds.TenderStatus
 import com.procurement.budget.model.dto.ocds.TenderStatusDetails
@@ -260,13 +261,17 @@ class FsService(private val fsDao: FsDao,
     }
 
     private fun FsCreate.validateDuplicates() {
-        val duplicateIdentifier = tender.procuringEntity.additionalIdentifiers
-            ?.getDuplicate { it.scheme.toUpperCase() + it.id.toUpperCase() }
+        tender.procuringEntity.additionalIdentifiers.checkIdentifiersForDuplicates("tender.procuringEntity.additionalIdentifiers")
+        buyer?.additionalIdentifiers.checkIdentifiersForDuplicates("buyer.additionalIdentifiers")
+    }
+
+    private fun List<Identifier>?.checkIdentifiersForDuplicates(attributeName: String) {
+        val duplicateIdentifier = this?.getDuplicate { it.scheme.toUpperCase() + it.id.toUpperCase() }
 
         if (duplicateIdentifier != null)
             throw ErrorException(
                 error = ErrorType.DUPLICATE,
-                message = "Attribute 'tender.procuringEntity.additionalIdentifiers' has duplicate by scheme '${duplicateIdentifier.scheme}' and id '${duplicateIdentifier.id}'."
+                message = "Attribute '$attributeName' has duplicate by scheme '${duplicateIdentifier.scheme}' and id '${duplicateIdentifier.id}'."
             )
     }
 
