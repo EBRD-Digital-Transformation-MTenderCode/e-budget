@@ -224,15 +224,12 @@ class FsService(private val fsDao: FsDao,
     }
 
     private fun FsCreate.validateDuplicates() {
-        val tenderIdentifiers = tender.procuringEntity.additionalIdentifiers.orEmpty()
-        checkIdentifiersForDuplicates(tenderIdentifiers, "tender.procuringEntity.additionalIdentifiers")
-
-        val buyerIdentifiers = buyer?.additionalIdentifiers.orEmpty()
-        checkIdentifiersForDuplicates(buyerIdentifiers, "buyer.additionalIdentifiers")
+        tender.procuringEntity.additionalIdentifiers.checkIdentifiersForDuplicates("tender.procuringEntity.additionalIdentifiers")
+        buyer?.additionalIdentifiers.checkIdentifiersForDuplicates("buyer.additionalIdentifiers")
     }
 
-    private fun FsCreate.checkIdentifiersForDuplicates(identifiers: List<Identifier>, attributeName: String) {
-        val duplicateIdentifier = identifiers.getDuplicate { it.scheme.toUpperCase() + it.id.toUpperCase() }
+    private fun List<Identifier>?.checkIdentifiersForDuplicates(attributeName: String) {
+        val duplicateIdentifier = this?.getDuplicate { it.scheme.toUpperCase() + it.id.toUpperCase() }
 
         if (duplicateIdentifier != null)
             throw ErrorException(
