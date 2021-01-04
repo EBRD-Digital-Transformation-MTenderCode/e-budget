@@ -13,6 +13,7 @@ import com.procurement.budget.exception.ErrorType.INVALID_OCID
 import com.procurement.budget.exception.ErrorType.INVALID_OWNER
 import com.procurement.budget.exception.ErrorType.INVALID_PERIOD
 import com.procurement.budget.exception.ErrorType.INVALID_STATUS
+import com.procurement.budget.lib.errorIfBlank
 import com.procurement.budget.model.dto.bpe.CommandMessage
 import com.procurement.budget.model.dto.bpe.ResponseDto
 import com.procurement.budget.model.dto.ei.Ei
@@ -30,10 +31,12 @@ import com.procurement.budget.model.dto.fs.response.EiForFs
 import com.procurement.budget.model.dto.fs.response.EiForFsBudget
 import com.procurement.budget.model.dto.fs.response.EiForFsPlanning
 import com.procurement.budget.model.dto.fs.response.FsResponse
+import com.procurement.budget.model.dto.ocds.Identifier
 import com.procurement.budget.model.dto.ocds.Period
 import com.procurement.budget.model.dto.ocds.TenderStatus
 import com.procurement.budget.model.dto.ocds.TenderStatusDetails
 import com.procurement.budget.model.entity.FsEntity
+import com.procurement.budget.utils.getDuplicate
 import com.procurement.budget.utils.localNowUTC
 import com.procurement.budget.utils.toDate
 import com.procurement.budget.utils.toJson
@@ -54,6 +57,8 @@ class FsService(private val fsDao: FsDao,
         val owner = cm.context.owner ?: throw ErrorException(CONTEXT)
         val dateTime = cm.context.startDate?.toLocal() ?: throw ErrorException(CONTEXT)
         val fsDto = toObject(FsCreate::class.java, cm.data)
+        fsDto.validateTextAttributes()
+        fsDto.validateDuplicates()
 
         validatePeriod(fsDto.planning.budget.period)
 
@@ -138,6 +143,7 @@ class FsService(private val fsDao: FsDao,
         val owner = cm.context.owner ?: throw ErrorException(CONTEXT)
         val token = cm.context.token ?: throw ErrorException(CONTEXT)
         val fsDto = toObject(FsUpdate::class.java, cm.data)
+        fsDto.validateTextAttributes()
 
         validatePeriod(fsDto.planning.budget.period)
         if (fsDto.planning.budget.isEuropeanUnionFunded && fsDto.planning.budget.europeanUnionFunding == null) {
@@ -180,6 +186,93 @@ class FsService(private val fsDao: FsDao,
             eiForFs = getEiForFs(ei)
         }
         return ResponseDto(data = FsResponse(eiForFs, fs))
+    }
+
+    private fun FsCreate.validateTextAttributes() {
+        buyer?.identifier?.id.checkForBlank("buyer.identifier.id")
+        buyer?.identifier?.legalName.checkForBlank("buyer.identifier.legalName")
+        buyer?.identifier?.scheme.checkForBlank("buyer.identifier.scheme")
+        buyer?.identifier?.uri.checkForBlank("buyer.identifier.uri")
+        buyer?.name.checkForBlank("buyer.name")
+        planning.budget.description.checkForBlank("planning.budget.description")
+        planning.budget.europeanUnionFunding?.projectIdentifier.checkForBlank("planning.budget.europeanUnionFunding.projectIdentifier")
+        planning.budget.europeanUnionFunding?.projectName.checkForBlank("planning.budget.europeanUnionFunding.projectName")
+        planning.budget.europeanUnionFunding?.uri.checkForBlank("planning.budget.europeanUnionFunding.uri")
+        planning.budget.id.checkForBlank("planning.budget.id")
+        planning.budget.project.checkForBlank("planning.budget.project")
+        planning.budget.projectID.checkForBlank("planning.budget.projectID")
+        planning.budget.uri.checkForBlank("planning.budget.uri")
+        planning.rationale.checkForBlank("planning.rationale")
+        planning.budget.id.checkForBlank("planning.budget.id")
+        buyer?.address?.streetAddress.checkForBlank("buyer.address.streetAddress")
+        buyer?.address?.postalCode.checkForBlank("buyer.address.postalCode")
+        buyer?.address?.addressDetails?.locality?.scheme.checkForBlank("buyer.address.addressDetails.locality.scheme")
+        buyer?.address?.addressDetails?.locality?.id.checkForBlank("buyer.address.addressDetails.locality.id")
+        buyer?.address?.addressDetails?.locality?.description.checkForBlank("buyer.address.addressDetails.locality.description")
+        buyer?.additionalIdentifiers?.mapIndexed { i, identifier ->
+            identifier.id.checkForBlank("buyer.additionalIdentifiers.[$i]id")
+            identifier.scheme.checkForBlank("buyer.additionalIdentifiers.[$i]scheme")
+            identifier.legalName.checkForBlank("buyer.additionalIdentifiers.[$i]legalName")
+            identifier.uri.checkForBlank("buyer.additionalIdentifiers.[$i]uri")
+        }
+        buyer?.contactPoint?.name.checkForBlank("buyer.contactPoint.name")
+        buyer?.contactPoint?.email.checkForBlank("buyer.contactPoint.email")
+        buyer?.contactPoint?.telephone.checkForBlank("buyer.contactPoint.telephone")
+        buyer?.contactPoint?.faxNumber.checkForBlank("buyer.contactPoint.faxNumber")
+        buyer?.contactPoint?.url.checkForBlank("buyer.contactPoint.url")
+        tender.procuringEntity.name.checkForBlank("tender.procuringEntity.name")
+        tender.procuringEntity.identifier.id.checkForBlank("tender.procuringEntity.identifier.id")
+        tender.procuringEntity.identifier.legalName.checkForBlank("tender.procuringEntity.identifier.legalName")
+        tender.procuringEntity.identifier.uri.checkForBlank("tender.procuringEntity.identifier.uri")
+        tender.procuringEntity.additionalIdentifiers?.mapIndexed { i, identifier ->
+            identifier.id.checkForBlank("tender.procuringEntity.additionalIdentifiers.[$i]id")
+            identifier.scheme.checkForBlank("tender.procuringEntity.additionalIdentifiers.[$i]scheme")
+            identifier.legalName.checkForBlank("tender.procuringEntity.additionalIdentifiers.[$i]legalName")
+            identifier.uri.checkForBlank("tender.procuringEntity.additionalIdentifiers.[$i]uri")
+        }
+        tender.procuringEntity.address.streetAddress.checkForBlank("tender.procuringEntity.address.streetAddress")
+        tender.procuringEntity.address.postalCode.checkForBlank("tender.procuringEntity.address.postalCode")
+        tender.procuringEntity.address.addressDetails.locality.scheme.checkForBlank("tender.procuringEntity.address.addressDetails.locality.scheme")
+        tender.procuringEntity.address.addressDetails.locality.id.checkForBlank("tender.procuringEntity.address.addressDetails.locality.id")
+        tender.procuringEntity.address.addressDetails.locality.description.checkForBlank("tender.procuringEntity.address.addressDetails.locality.description")
+        tender.procuringEntity.contactPoint.name.checkForBlank("tender.procuringEntity.contactPoint.name")
+        tender.procuringEntity.contactPoint.email.checkForBlank("tender.procuringEntity.contactPoint.email")
+        tender.procuringEntity.contactPoint.telephone.checkForBlank("tender.procuringEntity.contactPoint.telephone")
+        tender.procuringEntity.contactPoint.faxNumber.checkForBlank("tender.procuringEntity.contactPoint.faxNumber")
+        tender.procuringEntity.contactPoint.url.checkForBlank("tender.procuringEntity.contactPoint.url")
+    }
+
+    private fun FsUpdate.validateTextAttributes() {
+        planning.budget.description.checkForBlank("planning.budget.description")
+        planning.budget.europeanUnionFunding?.projectIdentifier.checkForBlank("planning.budget.europeanUnionFunding.projectIdentifier")
+        planning.budget.europeanUnionFunding?.projectName.checkForBlank("planning.budget.europeanUnionFunding.projectName")
+        planning.budget.europeanUnionFunding?.uri.checkForBlank("planning.budget.europeanUnionFunding.uri")
+        planning.budget.project.checkForBlank("planning.budget.project")
+        planning.budget.projectID.checkForBlank("planning.budget.projectID")
+        planning.budget.uri.checkForBlank("planning.budget.uri")
+        planning.rationale.checkForBlank("planning.rationale")
+    }
+
+    private fun String?.checkForBlank(name: String) = this.errorIfBlank {
+        ErrorException(
+            error = ErrorType.INCORRECT_VALUE_ATTRIBUTE,
+            message = "The attribute '$name' is empty or blank."
+        )
+    }
+
+    private fun FsCreate.validateDuplicates() {
+        tender.procuringEntity.additionalIdentifiers.checkIdentifiersForDuplicates("tender.procuringEntity.additionalIdentifiers")
+        buyer?.additionalIdentifiers.checkIdentifiersForDuplicates("buyer.additionalIdentifiers")
+    }
+
+    private fun List<Identifier>?.checkIdentifiersForDuplicates(attributeName: String) {
+        val duplicateIdentifier = this?.getDuplicate { it.scheme.toUpperCase() + it.id.toUpperCase() }
+
+        if (duplicateIdentifier != null)
+            throw ErrorException(
+                error = ErrorType.DUPLICATE,
+                message = "Attribute '$attributeName' has duplicate by scheme '${duplicateIdentifier.scheme}' and id '${duplicateIdentifier.id}'."
+            )
     }
 
     private fun fsUpdate(fs: Fs, fsUpdate: FsUpdate) {

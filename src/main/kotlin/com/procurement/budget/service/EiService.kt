@@ -10,6 +10,7 @@ import com.procurement.budget.exception.ErrorType.INVALID_CPV
 import com.procurement.budget.exception.ErrorType.INVALID_OWNER
 import com.procurement.budget.exception.ErrorType.INVALID_PERIOD
 import com.procurement.budget.exception.ErrorType.INVALID_TOKEN
+import com.procurement.budget.lib.errorIfBlank
 import com.procurement.budget.model.dto.bpe.CommandMessage
 import com.procurement.budget.model.dto.bpe.ResponseDto
 import com.procurement.budget.model.dto.ei.BudgetEi
@@ -63,6 +64,9 @@ class EiService(
         val owner = cm.context.owner ?: throw ErrorException(CONTEXT)
         val token = cm.context.token ?: throw ErrorException(CONTEXT)
         val eiDto = toObject(EiUpdate::class.java, cm.data)
+        eiDto.validateTextAttributes()
+        eiDto.validateDuplicates()
+
         val entity = eiDao.getByCpId(cpId) ?: throw ErrorException(EI_NOT_FOUND)
         if (entity.token != UUID.fromString(token)) throw ErrorException(INVALID_TOKEN)
         if (entity.owner != owner) throw ErrorException(INVALID_OWNER)
@@ -220,12 +224,124 @@ class EiService(
         )
 
     private fun validateDto(eiDto: EiCreate) {
+        eiDto.validateTextAttributes()
+        eiDto.validateDuplicates()
+
         val details = eiDto.buyer.details
         if (details != null) {
             if (details.typeOfBuyer == null && details.mainGeneralActivity == null && details.mainSectoralActivity == null) {
                 eiDto.buyer.details = null
             }
         }
+    }
+
+    private fun EiCreate.validateTextAttributes() {
+        planning.rationale.checkForBlank("planning.rationale")
+
+        tender.title.checkForBlank("tender.title")
+        tender.description.checkForBlank("tender.description")
+        tender.items?.forEach {item ->
+            item.description.checkForBlank("tender.items.description")
+            item.deliveryAddress.streetAddress.checkForBlank("tender.items.deliveryAddress.streetAddress")
+            item.deliveryAddress.postalCode.checkForBlank("tender.items.deliveryAddress.postalCode")
+            item.deliveryAddress.addressDetails.locality?.scheme.checkForBlank("deliveryAddress.addressDetails.locality.scheme")
+            item.deliveryAddress.addressDetails.locality?.id.checkForBlank("deliveryAddress.addressDetails.locality.id")
+            item.deliveryAddress.addressDetails.locality?.description.checkForBlank("deliveryAddress.addressDetails.locality.description")
+        }
+            
+        buyer.additionalIdentifiers
+            ?.forEach { additionalIdentifier ->
+            additionalIdentifier.id.checkForBlank("buyer.additionalIdentifiers.id")
+            additionalIdentifier.scheme.checkForBlank("buyer.additionalIdentifiers.scheme")
+            additionalIdentifier.legalName.checkForBlank("buyer.additionalIdentifiers.legalName")
+            additionalIdentifier.uri.checkForBlank("buyer.additionalIdentifiers.uri")
+        }
+
+        buyer.address.addressDetails.locality.description.checkForBlank("buyer.address.addressDetails.locality.description")
+        buyer.address.addressDetails.locality.id.checkForBlank("buyer.address.addressDetails.locality.id")
+        buyer.address.addressDetails.locality.scheme.checkForBlank("buyer.address.addressDetails.locality.scheme")
+        buyer.address.postalCode.checkForBlank("buyer.address.postalCode")
+        buyer.address.streetAddress.checkForBlank("buyer.address.streetAddress")
+        buyer.contactPoint.email.checkForBlank("buyer.contactPoint.email")
+        buyer.contactPoint.faxNumber.checkForBlank("buyer.contactPoint.faxNumber")
+        buyer.contactPoint.name.checkForBlank("buyer.contactPoint.name")
+        buyer.contactPoint.telephone.checkForBlank("buyer.contactPoint.telephone")
+        buyer.contactPoint.url.checkForBlank("buyer.contactPoint.url")
+        buyer.identifier.id.checkForBlank("buyer.identifier.id")
+        buyer.identifier.legalName.checkForBlank("buyer.identifier.legalName")
+        buyer.identifier.uri.checkForBlank("buyer.identifier.uri")
+        buyer.name.checkForBlank("buyer.name")
+    }
+
+    private fun EiUpdate.validateTextAttributes() {
+        planning?.rationale.checkForBlank("planning.rationale")
+
+        tender.title.checkForBlank("tender.title")
+        tender.description.checkForBlank("tender.description")
+
+        tender.items?.forEach {item ->
+            item.description.checkForBlank("tender.items.description")
+            item.deliveryAddress.streetAddress.checkForBlank("tender.items.deliveryAddress.streetAddress")
+            item.deliveryAddress.postalCode.checkForBlank("tender.items.deliveryAddress.postalCode")
+            item.deliveryAddress.addressDetails.locality?.scheme.checkForBlank("deliveryAddress.addressDetails.locality.scheme")
+            item.deliveryAddress.addressDetails.locality?.id.checkForBlank("deliveryAddress.addressDetails.locality.id")
+            item.deliveryAddress.addressDetails.locality?.description.checkForBlank("deliveryAddress.addressDetails.locality.description")
+        }
+    }
+
+    private fun String?.checkForBlank(name: String) = this.errorIfBlank {
+        ErrorException(
+            error = ErrorType.INCORRECT_VALUE_ATTRIBUTE,
+            message = "The attribute '$name' is empty or blank."
+        )
+    }
+
+    private fun EiCreate.validateDuplicates() {
+        val duplicateItemId = tender.items
+            ?.getDuplicate { it.id.toUpperCase() }
+
+        if (duplicateItemId != null)
+            throw ErrorException(
+                error = ErrorType.DUPLICATE,
+                message = "Attribute 'tender.items' has duplicate by id '${duplicateItemId}'."
+            )
+
+        val duplicateAdditionalClassification = tender.items
+            ?.asSequence()
+            ?.flatMap {
+                it.additionalClassifications?.asSequence() ?: emptySequence()
+            }
+            ?.getDuplicate { it.scheme.toUpperCase() + it.id.toUpperCase() }
+
+        if (duplicateAdditionalClassification != null)
+            throw ErrorException(
+                error = ErrorType.DUPLICATE,
+                message = "Attribute 'tender.items.additionalClassifications' has duplicate by scheme '${duplicateAdditionalClassification.scheme}' and id '${duplicateAdditionalClassification.id}'."
+            )
+
+        val duplicateAdditionalIdentifiers = buyer.additionalIdentifiers
+            ?.getDuplicate { it.scheme.toUpperCase() + it.id.toUpperCase() }
+
+        if (duplicateAdditionalIdentifiers != null)
+            throw ErrorException(
+                error = ErrorType.DUPLICATE,
+                message = "Attribute 'buyer.additionalIdentifiers' has duplicate by scheme '${duplicateAdditionalIdentifiers.scheme}' and id '${duplicateAdditionalIdentifiers.id}'."
+            )
+    }
+
+    private fun EiUpdate.validateDuplicates() {
+        val duplicateAdditionalClassification = tender.items
+            ?.asSequence()
+            ?.flatMap {
+                it.additionalClassifications?.asSequence() ?: emptySequence()
+            }
+            ?.getDuplicate { it.scheme.toUpperCase() + it.id.toUpperCase() }
+
+        if (duplicateAdditionalClassification != null)
+            throw ErrorException(
+                error = ErrorType.DUPLICATE,
+                message = "Attribute 'tender.items.additionalClassifications' has duplicate by scheme '${duplicateAdditionalClassification.scheme}' and id '${duplicateAdditionalClassification.id}'."
+            )
     }
 
     private fun validateCpv(country: String, eiDto: EiCreate) {
