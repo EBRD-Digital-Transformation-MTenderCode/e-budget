@@ -358,7 +358,7 @@ class EiService(
         eiDto.tender.items
             ?.also { items ->
                 checkClassification(eiDto.tender, items)
-                checkAdditionalClassifications(items)
+                checkAdditionalClassificationsForCreate(items)
             }
     }
 
@@ -373,7 +373,7 @@ class EiService(
             )
     }
 
-    private fun checkAdditionalClassifications(items: List<EiCreate.TenderEiCreate.Item>) {
+    private fun checkAdditionalClassificationsForCreate(items: List<EiCreate.TenderEiCreate.Item>) {
         items.forEach { item ->
             val duplicated = item.additionalClassifications
                 ?.getDuplicate { classification ->
@@ -389,21 +389,20 @@ class EiService(
     }
 
     private fun validateItems(ei: Ei, eiDto: EiUpdate) {
-        checkClassification(ei, eiDto)
-        checkItemsQuantity(eiDto)
-        checkItemsForDuplicates(eiDto)
+        eiDto.tender.items
+            ?.also { items ->
+                checkClassification(ei, items)
+                checkAdditionalClassificationsForUpdate(items)
+                checkItemsQuantity(items)
+                checkItemsForDuplicates(items)
+            }
     }
 
-    private fun checkClassification(
-        ei: Ei,
-        eiDto: EiUpdate
-    ) {
+    private fun checkClassification(ei: Ei, items: List<EiUpdate.TenderEiUpdate.Item>) {
         val classificationStartingSymbols = ei.tender.classification.id.slice(0..2)
 
-        val invalidClassifications = eiDto.tender.items
-            ?.map { it.classification.id }
-            ?.filter { !it.startsWith(prefix = classificationStartingSymbols, ignoreCase = true) }
-            .orEmpty()
+        val invalidClassifications = items
+            .filter { !it.classification.id.startsWith(prefix = classificationStartingSymbols, ignoreCase = true) }
         if (invalidClassifications.isNotEmpty())
             throw ErrorException(
                 error = INVALID_CPV,
@@ -411,8 +410,23 @@ class EiService(
             )
     }
 
-    private fun checkItemsQuantity(eiDto: EiUpdate) {
-        val itemWithWrongQuantity = eiDto.tender.items?.firstOrNull { it.quantity <= BigDecimal.ZERO }
+    private fun checkAdditionalClassificationsForUpdate(items: List<EiUpdate.TenderEiUpdate.Item>) {
+        items.forEach { item ->
+            val duplicated = item.additionalClassifications
+                ?.getDuplicate { classification ->
+                    classification.id
+                }
+            if (duplicated != null) {
+                throw ErrorException(
+                    error = ErrorType.DUPLICATE,
+                    message = "Item with id: `${item.id}` has a duplicated id of Additional Classification with id: '${duplicated}'"
+                )
+            }
+        }
+    }
+
+    private fun checkItemsQuantity(items: List<EiUpdate.TenderEiUpdate.Item>) {
+        val itemWithWrongQuantity = items.firstOrNull { it.quantity <= BigDecimal.ZERO }
         if (itemWithWrongQuantity != null)
             throw ErrorException(
                 error = ErrorType.INVALID_ITEM_QUANTITY,
@@ -420,8 +434,8 @@ class EiService(
             )
     }
 
-    private fun checkItemsForDuplicates(eiDto: EiUpdate) {
-        val duplicateItem = eiDto.tender.items?.getDuplicate { it.id }
+    private fun checkItemsForDuplicates(items: List<EiUpdate.TenderEiUpdate.Item>) {
+        val duplicateItem = items.getDuplicate { it.id }
         if (duplicateItem != null)
             throw ErrorException(
                 error = ErrorType.DUPLICATED_ITEMS,
