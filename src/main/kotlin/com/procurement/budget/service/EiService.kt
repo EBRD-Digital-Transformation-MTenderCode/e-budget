@@ -240,7 +240,7 @@ class EiService(
 
         tender.title.checkForBlank("tender.title")
         tender.description.checkForBlank("tender.description")
-        tender.items?.forEach {item ->
+        tender.items?.forEach { item ->
             item.description.checkForBlank("tender.items.description")
             item.deliveryAddress.streetAddress.checkForBlank("tender.items.deliveryAddress.streetAddress")
             item.deliveryAddress.postalCode.checkForBlank("tender.items.deliveryAddress.postalCode")
@@ -248,14 +248,14 @@ class EiService(
             item.deliveryAddress.addressDetails.locality?.id.checkForBlank("deliveryAddress.addressDetails.locality.id")
             item.deliveryAddress.addressDetails.locality?.description.checkForBlank("deliveryAddress.addressDetails.locality.description")
         }
-            
+
         buyer.additionalIdentifiers
             ?.forEach { additionalIdentifier ->
-            additionalIdentifier.id.checkForBlank("buyer.additionalIdentifiers.id")
-            additionalIdentifier.scheme.checkForBlank("buyer.additionalIdentifiers.scheme")
-            additionalIdentifier.legalName.checkForBlank("buyer.additionalIdentifiers.legalName")
-            additionalIdentifier.uri.checkForBlank("buyer.additionalIdentifiers.uri")
-        }
+                additionalIdentifier.id.checkForBlank("buyer.additionalIdentifiers.id")
+                additionalIdentifier.scheme.checkForBlank("buyer.additionalIdentifiers.scheme")
+                additionalIdentifier.legalName.checkForBlank("buyer.additionalIdentifiers.legalName")
+                additionalIdentifier.uri.checkForBlank("buyer.additionalIdentifiers.uri")
+            }
 
         buyer.address.addressDetails.locality.description.checkForBlank("buyer.address.addressDetails.locality.description")
         buyer.address.addressDetails.locality.id.checkForBlank("buyer.address.addressDetails.locality.id")
@@ -279,7 +279,7 @@ class EiService(
         tender.title.checkForBlank("tender.title")
         tender.description.checkForBlank("tender.description")
 
-        tender.items?.forEach {item ->
+        tender.items?.forEach { item ->
             item.description.checkForBlank("tender.items.description")
             item.deliveryAddress.streetAddress.checkForBlank("tender.items.deliveryAddress.streetAddress")
             item.deliveryAddress.postalCode.checkForBlank("tender.items.deliveryAddress.postalCode")
@@ -371,6 +371,7 @@ class EiService(
         checkClassification(ei, eiDto)
         checkItemsQuantity(eiDto)
         checkItemsForDuplicates(eiDto)
+        checkClassificationsForDuplicates(eiDto)
     }
 
     private fun checkClassification(
@@ -406,6 +407,21 @@ class EiService(
                 error = ErrorType.DUPLICATED_ITEMS,
                 message = "Item '${duplicateItem.id}' has a duplicate"
             )
+    }
+
+    private fun checkClassificationsForDuplicates(eiDto: EiUpdate) {
+        val duplicatedClassificationId =
+            eiDto.tender.items?.forEach {
+                it.additionalClassifications?.getDuplicate { classification ->
+                    classification.id
+                }
+            }
+        if (duplicatedClassificationId != null) {
+            throw ErrorException(
+                error = ErrorType.DUPLICATED_ADDITIONAL_CLASSIFICATION_ID,
+                message = "Id '${duplicatedClassificationId}' has a duplicate"
+            )
+        }
     }
 
     private fun getCpId(country: String, testMode: Boolean): String {

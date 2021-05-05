@@ -41,5 +41,6 @@ enum class ErrorType constructor(val code: String, val message: String) {
     INVALID_ITEM_QUANTITY("20.09", "Invalid item quantity."),
     DUPLICATED_ITEMS("20.10", "Duplicated items found."),
     INCORRECT_VALUE_ATTRIBUTE("20.11", "Incorrect an attribute value."),
-    DUPLICATE("20.12", "Duplicate.");
+    DUPLICATE("20.12", "Duplicate."),
+    DUPLICATED_ADDITIONAL_CLASSIFICATION_ID("20.13", "Duplicated id of additional classifications found.");
 }
