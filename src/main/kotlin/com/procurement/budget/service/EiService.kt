@@ -240,7 +240,7 @@ class EiService(
 
         tender.title.checkForBlank("tender.title")
         tender.description.checkForBlank("tender.description")
-        tender.items?.forEach {item ->
+        tender.items?.forEach { item ->
             item.description.checkForBlank("tender.items.description")
             item.deliveryAddress.streetAddress.checkForBlank("tender.items.deliveryAddress.streetAddress")
             item.deliveryAddress.postalCode.checkForBlank("tender.items.deliveryAddress.postalCode")
@@ -248,14 +248,14 @@ class EiService(
             item.deliveryAddress.addressDetails.locality?.id.checkForBlank("deliveryAddress.addressDetails.locality.id")
             item.deliveryAddress.addressDetails.locality?.description.checkForBlank("deliveryAddress.addressDetails.locality.description")
         }
-            
+
         buyer.additionalIdentifiers
             ?.forEach { additionalIdentifier ->
-            additionalIdentifier.id.checkForBlank("buyer.additionalIdentifiers.id")
-            additionalIdentifier.scheme.checkForBlank("buyer.additionalIdentifiers.scheme")
-            additionalIdentifier.legalName.checkForBlank("buyer.additionalIdentifiers.legalName")
-            additionalIdentifier.uri.checkForBlank("buyer.additionalIdentifiers.uri")
-        }
+                additionalIdentifier.id.checkForBlank("buyer.additionalIdentifiers.id")
+                additionalIdentifier.scheme.checkForBlank("buyer.additionalIdentifiers.scheme")
+                additionalIdentifier.legalName.checkForBlank("buyer.additionalIdentifiers.legalName")
+                additionalIdentifier.uri.checkForBlank("buyer.additionalIdentifiers.uri")
+            }
 
         buyer.address.addressDetails.locality.description.checkForBlank("buyer.address.addressDetails.locality.description")
         buyer.address.addressDetails.locality.id.checkForBlank("buyer.address.addressDetails.locality.id")
@@ -279,7 +279,7 @@ class EiService(
         tender.title.checkForBlank("tender.title")
         tender.description.checkForBlank("tender.description")
 
-        tender.items?.forEach {item ->
+        tender.items?.forEach { item ->
             item.description.checkForBlank("tender.items.description")
             item.deliveryAddress.streetAddress.checkForBlank("tender.items.deliveryAddress.streetAddress")
             item.deliveryAddress.postalCode.checkForBlank("tender.items.deliveryAddress.postalCode")
@@ -355,16 +355,37 @@ class EiService(
     }
 
     private fun validateItems(eiDto: EiCreate) {
-        val classificationStartingSymbols = eiDto.tender.classification.id.slice(0..2)
-        val invalidClassifications = eiDto.tender.items
-            ?.map { it.classification.id }
-            ?.filter { !it.startsWith(prefix = classificationStartingSymbols, ignoreCase = true) }
-            .orEmpty()
+        eiDto.tender.items
+            ?.also { items ->
+                checkClassification(eiDto.tender, items)
+                checkAdditionalClassifications(items)
+            }
+    }
+
+    private fun checkClassification(tender: EiCreate.TenderEiCreate, items: List<EiCreate.TenderEiCreate.Item>) {
+        val classificationStartingSymbols = tender.classification.id.slice(0..2)
+        val invalidClassifications = items
+            .filter { !it.classification.id.startsWith(prefix = classificationStartingSymbols, ignoreCase = true) }
         if (invalidClassifications.isNotEmpty())
             throw ErrorException(
                 error = INVALID_CPV,
                 message = "Invalid CPV code in classification(s) '${invalidClassifications.joinToString()}'"
             )
+    }
+
+    private fun checkAdditionalClassifications(items: List<EiCreate.TenderEiCreate.Item>) {
+        items.forEach { item ->
+            val duplicated = item.additionalClassifications
+                ?.getDuplicate { classification ->
+                    classification.id
+                }
+            if (duplicated != null) {
+                throw ErrorException(
+                    error = ErrorType.DUPLICATE,
+                    message = "Item with id: `${item.id}` has a duplicated id of Additional Classification with id: '${duplicated}'"
+                )
+            }
+        }
     }
 
     private fun validateItems(ei: Ei, eiDto: EiUpdate) {
