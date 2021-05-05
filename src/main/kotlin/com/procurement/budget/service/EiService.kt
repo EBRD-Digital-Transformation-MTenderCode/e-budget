@@ -355,11 +355,17 @@ class EiService(
     }
 
     private fun validateItems(eiDto: EiCreate) {
-        val classificationStartingSymbols = eiDto.tender.classification.id.slice(0..2)
-        val invalidClassifications = eiDto.tender.items
-            ?.map { it.classification.id }
-            ?.filter { !it.startsWith(prefix = classificationStartingSymbols, ignoreCase = true) }
-            .orEmpty()
+        eiDto.tender.items
+            ?.also { items ->
+                checkClassification(eiDto.tender, items)
+                checkAdditionalClassifications(items)
+            }
+    }
+
+    private fun checkClassification(tender: EiCreate.TenderEiCreate, items: List<EiCreate.TenderEiCreate.Item>) {
+        val classificationStartingSymbols = tender.classification.id.slice(0..2)
+        val invalidClassifications = items
+            .filter { !it.classification.id.startsWith(prefix = classificationStartingSymbols, ignoreCase = true) }
         if (invalidClassifications.isNotEmpty())
             throw ErrorException(
                 error = INVALID_CPV,
@@ -367,11 +373,25 @@ class EiService(
             )
     }
 
+    private fun checkAdditionalClassifications(items: List<EiCreate.TenderEiCreate.Item>) {
+        items.forEach { item ->
+            val duplicated = item.additionalClassifications
+                ?.getDuplicate { classification ->
+                    classification.id
+                }
+            if (duplicated != null) {
+                throw ErrorException(
+                    error = ErrorType.DUPLICATE,
+                    message = "Item with id: `${item.id}` has a duplicated id of Additional Classification with id: '${duplicated}'"
+                )
+            }
+        }
+    }
+
     private fun validateItems(ei: Ei, eiDto: EiUpdate) {
         checkClassification(ei, eiDto)
         checkItemsQuantity(eiDto)
         checkItemsForDuplicates(eiDto)
-        checkClassificationsForDuplicates(eiDto)
     }
 
     private fun checkClassification(
@@ -407,21 +427,6 @@ class EiService(
                 error = ErrorType.DUPLICATED_ITEMS,
                 message = "Item '${duplicateItem.id}' has a duplicate"
             )
-    }
-
-    private fun checkClassificationsForDuplicates(eiDto: EiUpdate) {
-        val duplicatedClassificationId =
-            eiDto.tender.items?.forEach {
-                it.additionalClassifications?.getDuplicate { classification ->
-                    classification.id
-                }
-            }
-        if (duplicatedClassificationId != null) {
-            throw ErrorException(
-                error = ErrorType.DUPLICATED_ADDITIONAL_CLASSIFICATION_ID,
-                message = "Id '${duplicatedClassificationId}' has a duplicate"
-            )
-        }
     }
 
     private fun getCpId(country: String, testMode: Boolean): String {
