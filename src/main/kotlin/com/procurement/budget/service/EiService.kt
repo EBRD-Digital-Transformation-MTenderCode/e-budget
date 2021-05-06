@@ -65,7 +65,6 @@ class EiService(
         val token = cm.context.token ?: throw ErrorException(CONTEXT)
         val eiDto = toObject(EiUpdate::class.java, cm.data)
         eiDto.validateTextAttributes()
-        eiDto.validateDuplicates()
 
         val entity = eiDao.getByCpId(cpId) ?: throw ErrorException(EI_NOT_FOUND)
         if (entity.token != UUID.fromString(token)) throw ErrorException(INVALID_TOKEN)
@@ -306,19 +305,6 @@ class EiService(
                 message = "Attribute 'tender.items' has duplicate by id '${duplicateItemId}'."
             )
 
-        val duplicateAdditionalClassification = tender.items
-            ?.asSequence()
-            ?.flatMap {
-                it.additionalClassifications?.asSequence() ?: emptySequence()
-            }
-            ?.getDuplicate { it.scheme.toUpperCase() + it.id.toUpperCase() }
-
-        if (duplicateAdditionalClassification != null)
-            throw ErrorException(
-                error = ErrorType.DUPLICATE,
-                message = "Attribute 'tender.items.additionalClassifications' has duplicate by scheme '${duplicateAdditionalClassification.scheme}' and id '${duplicateAdditionalClassification.id}'."
-            )
-
         val duplicateAdditionalIdentifiers = buyer.additionalIdentifiers
             ?.getDuplicate { it.scheme.toUpperCase() + it.id.toUpperCase() }
 
@@ -326,21 +312,6 @@ class EiService(
             throw ErrorException(
                 error = ErrorType.DUPLICATE,
                 message = "Attribute 'buyer.additionalIdentifiers' has duplicate by scheme '${duplicateAdditionalIdentifiers.scheme}' and id '${duplicateAdditionalIdentifiers.id}'."
-            )
-    }
-
-    private fun EiUpdate.validateDuplicates() {
-        val duplicateAdditionalClassification = tender.items
-            ?.asSequence()
-            ?.flatMap {
-                it.additionalClassifications?.asSequence() ?: emptySequence()
-            }
-            ?.getDuplicate { it.scheme.toUpperCase() + it.id.toUpperCase() }
-
-        if (duplicateAdditionalClassification != null)
-            throw ErrorException(
-                error = ErrorType.DUPLICATE,
-                message = "Attribute 'tender.items.additionalClassifications' has duplicate by scheme '${duplicateAdditionalClassification.scheme}' and id '${duplicateAdditionalClassification.id}'."
             )
     }
 
