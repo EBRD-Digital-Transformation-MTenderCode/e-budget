@@ -45,7 +45,7 @@ class EiService(
         val owner = cm.context.owner ?: throw ErrorException(CONTEXT)
         val country = cm.context.country ?: throw ErrorException(CONTEXT)
         val dateTime = cm.context.startDate?.toLocal() ?: throw ErrorException(CONTEXT)
-        val testMode: Boolean = cm.context.testMode?.let { it } ?: false
+        val testMode: Boolean = cm.context.testMode ?: false
         val eiDto = toObject(EiCreate::class.java, cm.data)
         validateDto(eiDto)
         validatePeriod(eiDto)
@@ -364,8 +364,10 @@ class EiService(
 
     private fun checkClassification(tender: EiCreate.TenderEiCreate, items: List<EiCreate.TenderEiCreate.Item>) {
         val classificationStartingSymbols = tender.classification.id.slice(0..2)
-        val invalidClassifications = items
-            .filter { !it.classification.id.startsWith(prefix = classificationStartingSymbols, ignoreCase = true) }
+        val invalidClassifications = items.asSequence()
+            .map { item -> item.classification.id }
+            .filter { !it.startsWith(prefix = classificationStartingSymbols, ignoreCase = true) }
+            .toList()
         if (invalidClassifications.isNotEmpty())
             throw ErrorException(
                 error = INVALID_CPV,
@@ -400,9 +402,10 @@ class EiService(
 
     private fun checkClassification(ei: Ei, items: List<EiUpdate.TenderEiUpdate.Item>) {
         val classificationStartingSymbols = ei.tender.classification.id.slice(0..2)
-
-        val invalidClassifications = items
-            .filter { !it.classification.id.startsWith(prefix = classificationStartingSymbols, ignoreCase = true) }
+        val invalidClassifications = items.asSequence()
+            .map { item -> item.classification.id }
+            .filter { !it.startsWith(prefix = classificationStartingSymbols, ignoreCase = true) }
+            .toList()
         if (invalidClassifications.isNotEmpty())
             throw ErrorException(
                 error = INVALID_CPV,
