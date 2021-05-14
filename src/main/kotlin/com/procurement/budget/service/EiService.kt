@@ -45,7 +45,7 @@ class EiService(
         val owner = cm.context.owner ?: throw ErrorException(CONTEXT)
         val country = cm.context.country ?: throw ErrorException(CONTEXT)
         val dateTime = cm.context.startDate?.toLocal() ?: throw ErrorException(CONTEXT)
-        val testMode: Boolean = cm.context.testMode?.let { it } ?: false
+        val testMode: Boolean = cm.context.testMode ?: false
         val eiDto = toObject(EiCreate::class.java, cm.data)
         validateDto(eiDto)
         validatePeriod(eiDto)
@@ -65,7 +65,6 @@ class EiService(
         val token = cm.context.token ?: throw ErrorException(CONTEXT)
         val eiDto = toObject(EiUpdate::class.java, cm.data)
         eiDto.validateTextAttributes()
-        eiDto.validateDuplicates()
 
         val entity = eiDao.getByCpId(cpId) ?: throw ErrorException(EI_NOT_FOUND)
         if (entity.token != UUID.fromString(token)) throw ErrorException(INVALID_TOKEN)
@@ -240,7 +239,7 @@ class EiService(
 
         tender.title.checkForBlank("tender.title")
         tender.description.checkForBlank("tender.description")
-        tender.items?.forEach {item ->
+        tender.items?.forEach { item ->
             item.description.checkForBlank("tender.items.description")
             item.deliveryAddress.streetAddress.checkForBlank("tender.items.deliveryAddress.streetAddress")
             item.deliveryAddress.postalCode.checkForBlank("tender.items.deliveryAddress.postalCode")
@@ -248,14 +247,14 @@ class EiService(
             item.deliveryAddress.addressDetails.locality?.id.checkForBlank("deliveryAddress.addressDetails.locality.id")
             item.deliveryAddress.addressDetails.locality?.description.checkForBlank("deliveryAddress.addressDetails.locality.description")
         }
-            
+
         buyer.additionalIdentifiers
             ?.forEach { additionalIdentifier ->
-            additionalIdentifier.id.checkForBlank("buyer.additionalIdentifiers.id")
-            additionalIdentifier.scheme.checkForBlank("buyer.additionalIdentifiers.scheme")
-            additionalIdentifier.legalName.checkForBlank("buyer.additionalIdentifiers.legalName")
-            additionalIdentifier.uri.checkForBlank("buyer.additionalIdentifiers.uri")
-        }
+                additionalIdentifier.id.checkForBlank("buyer.additionalIdentifiers.id")
+                additionalIdentifier.scheme.checkForBlank("buyer.additionalIdentifiers.scheme")
+                additionalIdentifier.legalName.checkForBlank("buyer.additionalIdentifiers.legalName")
+                additionalIdentifier.uri.checkForBlank("buyer.additionalIdentifiers.uri")
+            }
 
         buyer.address.addressDetails.locality.description.checkForBlank("buyer.address.addressDetails.locality.description")
         buyer.address.addressDetails.locality.id.checkForBlank("buyer.address.addressDetails.locality.id")
@@ -279,7 +278,7 @@ class EiService(
         tender.title.checkForBlank("tender.title")
         tender.description.checkForBlank("tender.description")
 
-        tender.items?.forEach {item ->
+        tender.items?.forEach { item ->
             item.description.checkForBlank("tender.items.description")
             item.deliveryAddress.streetAddress.checkForBlank("tender.items.deliveryAddress.streetAddress")
             item.deliveryAddress.postalCode.checkForBlank("tender.items.deliveryAddress.postalCode")
@@ -306,19 +305,6 @@ class EiService(
                 message = "Attribute 'tender.items' has duplicate by id '${duplicateItemId}'."
             )
 
-        val duplicateAdditionalClassification = tender.items
-            ?.asSequence()
-            ?.flatMap {
-                it.additionalClassifications?.asSequence() ?: emptySequence()
-            }
-            ?.getDuplicate { it.scheme.toUpperCase() + it.id.toUpperCase() }
-
-        if (duplicateAdditionalClassification != null)
-            throw ErrorException(
-                error = ErrorType.DUPLICATE,
-                message = "Attribute 'tender.items.additionalClassifications' has duplicate by scheme '${duplicateAdditionalClassification.scheme}' and id '${duplicateAdditionalClassification.id}'."
-            )
-
         val duplicateAdditionalIdentifiers = buyer.additionalIdentifiers
             ?.getDuplicate { it.scheme.toUpperCase() + it.id.toUpperCase() }
 
@@ -326,21 +312,6 @@ class EiService(
             throw ErrorException(
                 error = ErrorType.DUPLICATE,
                 message = "Attribute 'buyer.additionalIdentifiers' has duplicate by scheme '${duplicateAdditionalIdentifiers.scheme}' and id '${duplicateAdditionalIdentifiers.id}'."
-            )
-    }
-
-    private fun EiUpdate.validateDuplicates() {
-        val duplicateAdditionalClassification = tender.items
-            ?.asSequence()
-            ?.flatMap {
-                it.additionalClassifications?.asSequence() ?: emptySequence()
-            }
-            ?.getDuplicate { it.scheme.toUpperCase() + it.id.toUpperCase() }
-
-        if (duplicateAdditionalClassification != null)
-            throw ErrorException(
-                error = ErrorType.DUPLICATE,
-                message = "Attribute 'tender.items.additionalClassifications' has duplicate by scheme '${duplicateAdditionalClassification.scheme}' and id '${duplicateAdditionalClassification.id}'."
             )
     }
 
@@ -355,34 +326,57 @@ class EiService(
     }
 
     private fun validateItems(eiDto: EiCreate) {
-        val classificationStartingSymbols = eiDto.tender.classification.id.slice(0..2)
-        val invalidClassifications = eiDto.tender.items
-            ?.map { it.classification.id }
-            ?.filter { !it.startsWith(prefix = classificationStartingSymbols, ignoreCase = true) }
-            .orEmpty()
+        eiDto.tender.items
+            ?.also { items ->
+                checkClassification(eiDto.tender, items)
+                checkAdditionalClassificationsForCreate(items)
+            }
+    }
+
+    private fun checkClassification(tender: EiCreate.TenderEiCreate, items: List<EiCreate.TenderEiCreate.Item>) {
+        val classificationStartingSymbols = tender.classification.id.slice(0..2)
+        val invalidClassifications = items.asSequence()
+            .map { item -> item.classification.id }
+            .filter { !it.startsWith(prefix = classificationStartingSymbols, ignoreCase = true) }
+            .toList()
         if (invalidClassifications.isNotEmpty())
             throw ErrorException(
                 error = INVALID_CPV,
                 message = "Invalid CPV code in classification(s) '${invalidClassifications.joinToString()}'"
             )
+    }
+
+    private fun checkAdditionalClassificationsForCreate(items: List<EiCreate.TenderEiCreate.Item>) {
+        items.forEach { item ->
+            val duplicated = item.additionalClassifications
+                ?.getDuplicate { classification ->
+                    classification.id
+                }
+            if (duplicated != null) {
+                throw ErrorException(
+                    error = ErrorType.DUPLICATE,
+                    message = "Item with id: `${item.id}` has a duplicated id of Additional Classification with id: '${duplicated}'"
+                )
+            }
+        }
     }
 
     private fun validateItems(ei: Ei, eiDto: EiUpdate) {
-        checkClassification(ei, eiDto)
-        checkItemsQuantity(eiDto)
-        checkItemsForDuplicates(eiDto)
+        eiDto.tender.items
+            ?.also { items ->
+                checkClassification(ei, items)
+                checkAdditionalClassificationsForUpdate(items)
+                checkItemsQuantity(items)
+                checkItemsForDuplicates(items)
+            }
     }
 
-    private fun checkClassification(
-        ei: Ei,
-        eiDto: EiUpdate
-    ) {
+    private fun checkClassification(ei: Ei, items: List<EiUpdate.TenderEiUpdate.Item>) {
         val classificationStartingSymbols = ei.tender.classification.id.slice(0..2)
-
-        val invalidClassifications = eiDto.tender.items
-            ?.map { it.classification.id }
-            ?.filter { !it.startsWith(prefix = classificationStartingSymbols, ignoreCase = true) }
-            .orEmpty()
+        val invalidClassifications = items.asSequence()
+            .map { item -> item.classification.id }
+            .filter { !it.startsWith(prefix = classificationStartingSymbols, ignoreCase = true) }
+            .toList()
         if (invalidClassifications.isNotEmpty())
             throw ErrorException(
                 error = INVALID_CPV,
@@ -390,8 +384,23 @@ class EiService(
             )
     }
 
-    private fun checkItemsQuantity(eiDto: EiUpdate) {
-        val itemWithWrongQuantity = eiDto.tender.items?.firstOrNull { it.quantity <= BigDecimal.ZERO }
+    private fun checkAdditionalClassificationsForUpdate(items: List<EiUpdate.TenderEiUpdate.Item>) {
+        items.forEach { item ->
+            val duplicated = item.additionalClassifications
+                ?.getDuplicate { classification ->
+                    classification.id
+                }
+            if (duplicated != null) {
+                throw ErrorException(
+                    error = ErrorType.DUPLICATE,
+                    message = "Item with id: `${item.id}` has a duplicated id of Additional Classification with id: '${duplicated}'"
+                )
+            }
+        }
+    }
+
+    private fun checkItemsQuantity(items: List<EiUpdate.TenderEiUpdate.Item>) {
+        val itemWithWrongQuantity = items.firstOrNull { it.quantity <= BigDecimal.ZERO }
         if (itemWithWrongQuantity != null)
             throw ErrorException(
                 error = ErrorType.INVALID_ITEM_QUANTITY,
@@ -399,8 +408,8 @@ class EiService(
             )
     }
 
-    private fun checkItemsForDuplicates(eiDto: EiUpdate) {
-        val duplicateItem = eiDto.tender.items?.getDuplicate { it.id }
+    private fun checkItemsForDuplicates(items: List<EiUpdate.TenderEiUpdate.Item>) {
+        val duplicateItem = items.getDuplicate { it.id }
         if (duplicateItem != null)
             throw ErrorException(
                 error = ErrorType.DUPLICATED_ITEMS,
