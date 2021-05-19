@@ -243,14 +243,23 @@ class FsService(private val fsDao: FsDao,
     }
 
     private fun FsUpdate.validateTextAttributes() {
-        planning.budget.description.checkForBlank("planning.budget.description")
-        planning.budget.europeanUnionFunding?.projectIdentifier.checkForBlank("planning.budget.europeanUnionFunding.projectIdentifier")
-        planning.budget.europeanUnionFunding?.projectName.checkForBlank("planning.budget.europeanUnionFunding.projectName")
-        planning.budget.europeanUnionFunding?.uri.checkForBlank("planning.budget.europeanUnionFunding.uri")
-        planning.budget.project.checkForBlank("planning.budget.project")
-        planning.budget.projectID.checkForBlank("planning.budget.projectID")
-        planning.budget.uri.checkForBlank("planning.budget.uri")
-        planning.rationale.checkForBlank("planning.rationale")
+        planning.apply{
+            rationale.checkForBlank("planning.rationale")
+
+            budget.apply {
+                id.checkForBlank("planning.budget.id")
+                description.checkForBlank("planning.budget.description")
+                project.checkForBlank("planning.budget.project")
+                projectID.checkForBlank("planning.budget.projectID")
+                uri.checkForBlank("planning.budget.uri")
+
+                europeanUnionFunding?.apply {
+                    projectIdentifier.checkForBlank("planning.budget.europeanUnionFunding.projectIdentifier")
+                    projectName.checkForBlank("planning.budget.europeanUnionFunding.projectName")
+                    uri.checkForBlank("planning.budget.europeanUnionFunding.uri")
+                }
+            }
+        }
     }
 
     private fun String?.checkForBlank(name: String) = this.errorIfBlank {
