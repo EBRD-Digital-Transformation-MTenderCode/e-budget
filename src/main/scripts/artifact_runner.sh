@@ -1,11 +1,10 @@
 #!/bin/sh
 if [ -n "$1" ]
 then
-  command="java -Xmx256m -Dlogging.config=/maven/config/logback.xml"
+  command="java $JAVA_OPTS -Dlogging.config=/maven/config/logback.xml"
 
   for param in `printenv | awk '/^__PROP_/{print $0}'`
   do
-    ulimit -S -v unlimited
     eq_symbol_index=`expr index ${param} =`
 
     prop_key=`expr ${param:0:$((eq_symbol_index-1))} | sed -e 's/__PROP_//; s/_/./g'`
